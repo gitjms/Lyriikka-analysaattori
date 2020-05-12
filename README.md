@@ -1,4 +1,4 @@
-# Lyriikkafrekvenssi-sovellus *LyrFreq*
+# Lyriikan sanojen frekvenssianalyysisovellus *LyrFreq*
 
 ## Aihekuvaus
 
@@ -12,11 +12,11 @@ Lyriikkatietokanta on haettu sivustolta [Worship Leader App](https://worshiplead
 * kaikkien sanojen frekvenssit top 10 (ja lisää)
 * tietyn sanan esiintymät (laululista frekvensseineen)
 * lyhyiden sanayhdistelmien esiintymät ja frekvenssit
-* uusien lyriikoiden lisääminen tai vanhojen poistaminen (admin)
+* uusien lyriikoiden lisääminen, vanhojen poistaminen, muokkaus (admin)
 
 ## Tietokantakaavio
 
-Linkissä alustava [tietokantakaavio]()
+Linkissä alustava [tietokantakaavio](https://github.com/gitjms/Lyriikka-analysaattori/blob/master/documentation/db-diagram.png)
 
 ## Suunnitellut ominaisuudet
 
