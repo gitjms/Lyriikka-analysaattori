@@ -33,7 +33,7 @@ Lyriikkatietokanta on haettu sivustolta [Worship Leader App](https://worshiplead
 
 ## Tietokantakaavio
 
-Linkissä alustava [tietokantakaavio](https://github.com/gitjms/Lyriikka-analysaattori/blob/master/documentation/db-diagram.png)
+Linkissä alustava [tietokantakaavio](https://github.com/gitjms/Lyriikka-analysaattori/blob/master/documentation/images/db-diagram.png)
 
 ## Myöhemmin mahdollisia lisäominaisuuksia
 
