@@ -7,12 +7,28 @@ Lyriikkatietokanta on haettu sivustolta [Worship Leader App](https://worshiplead
 
 ## Toimintoja
 
-* kirjautuminen, roolit: user ja admin
-* online-käyttäjät näkyvät lukumääränä (paitsi admin)
-* kaikkien sanojen frekvenssit top 10 (ja lisää)
-* tietyn sanan esiintymät (laululista frekvensseineen)
-* lyhyiden sanayhdistelmien esiintymät ja frekvenssit
-* uusien lyriikoiden lisääminen, vanhojen poistaminen, muokkaus (admin)
+- [ ] kirjautuminen, roolit: user ja admin
+- [ ] online-käyttäjät näkyvät lukumääränä (paitsi admin)
+- [ ] käyttäjien aktiivisuushistoria näkyy (admin)
+- [ ] kaikkien sanojen frekvenssit top 10(+)
+- [ ] tietyn sanan esiintymät (laululista frekvensseineen)
+- [ ] lyhyiden sanayhdistelmien esiintymät ja frekvenssit
+- [ ] uusien lyriikoiden lisääminen, vanhojen poistaminen, muokkaus (admin)
+- [ ] käyttäjien hallinta (admin)
+
+## User stories
+
+| **As ...** | **I want to ...** | **so that ...** |
+| *user* | kirjautua sisään | voin tehdä frekvenssianalyysejä |
+| *user* | tehdä frekvenssianalyysinä top 10 sanat | näen eniten käytety sanat lauluittain/kielittäin |
+| *user* | tehdä frekvenssianalyysin tietyn sanan esiintymistiheydestä | näen missä lauluissa/kielissä esiintymisiä on eniten/vähiten |
+| *user* | tehdä frekvenssianalyysinä top 10 lyhyet sanayhdistelmät | näen eniten käytety sanat lauluittain/kielittäin |
+| *user* | tehdä frekvenssianalyysin lyhyiden sanayhdistelmien esiintymistiheydestä | näen missä lauluissa/kielissä esiintymisiä on eniten/vähiten |
+| *admin* | kirjautua sisään | voin huoltaa lyriikoita tai käyttäjiä |
+| *admin* | lisätä lyriikoita | tietokanta saa lisämateriaalia |
+| *admin* | poistaa lyriikoita | poisto korjaa jonkin ongelman (esim. copyright) |
+| *admin* | muokata lyriikoita | korjaus korjaa virheen lyriikassa |
+| *admin* | poistaa käyttäjiä | lopettaneet käyttäjät saadaan pois |
 
 ## Tietokantakaavio
 
