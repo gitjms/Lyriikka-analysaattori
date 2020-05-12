@@ -5,7 +5,7 @@
 Sovellus on selainpohjainen tietokantasovellus, jolla voi tarkastella suomalaisten kristillisten laululyriikoiden sanafrekvenssejä.
 Lyriikkatietokanta on haettu sivustolta [Worship Leader App](https://worshipleaderapp.com/en/download-song-database-opensong-openlp-and-quelea), sisältäen 57 kielen lyriikoita yhteensä 72098 kappaletta. Suomenkielisiä lyriikoita on 358. Kyseessä on kristillisten laulujen tietokanta, joiden katsotaan olevan copyright-vapaita, avoimia lähteitä.
 
-## Toimintoja
+## Suunnitellut toiminnot
 
 - [ ] kirjautuminen, roolit: user ja admin
 - [ ] online-käyttäjät näkyvät lukumääränä (paitsi admin)
@@ -21,10 +21,10 @@ Lyriikkatietokanta on haettu sivustolta [Worship Leader App](https://worshiplead
 | As ... | I want to ... | so that ... |
 | :--- | :--- | :--- |
 | *user* | kirjautua sisään | voin tehdä frekvenssianalyysejä |
-| *user* | tehdä frekvenssianalyysinä <br/> top 10 sanat | näen eniten käytety sanat <br/> lauluittain/kielittäin |
-| *user* | tehdä frekvenssianalyysin <br/> tietyn sanan esiintymistiheydestä | näen missä lauluissa/kielissä <br/> esiintymisiä on eniten/vähiten |
-| *user* | tehdä frekvenssianalyysinä <br/> top 10 lyhyet sanayhdistelmät | näen eniten käytety sanat <br/> lauluittain/kielittäin |
-| *user* | tehdä frekvenssianalyysin lyhyiden <br/> sanayhdistelmien esiintymistiheydestä | näen missä lauluissa/kielissä <br/> esiintymisiä on eniten/vähiten |
+| *user* | tehdä frekvenssianalyysinä <br/> top 10 sanat | näen eniten käytety sanat <br/> lauluittain(/kielittäin) |
+| *user* | tehdä frekvenssianalyysin <br/> tietyn sanan esiintymistiheydestä | näen missä lauluissa(/kielissä) <br/> esiintymisiä on eniten/vähiten |
+| *user* | tehdä frekvenssianalyysinä <br/> top 10 lyhyet sanayhdistelmät | näen eniten käytety sanat <br/> lauluittain(/kielittäin) |
+| *user* | tehdä frekvenssianalyysin lyhyiden <br/> sanayhdistelmien esiintymistiheydestä | näen missä lauluissa(/kielissä) <br/> esiintymisiä on eniten/vähiten |
 | *admin* | kirjautua sisään | voin huoltaa lyriikoita tai käyttäjiä |
 | *admin* | lisätä lyriikoita | tietokanta saa lisämateriaalia |
 | *admin* | poistaa lyriikoita | poisto korjaa jonkin <br/> ongelman (esim. copyright) |
@@ -35,7 +35,7 @@ Lyriikkatietokanta on haettu sivustolta [Worship Leader App](https://worshiplead
 
 Linkissä alustava [tietokantakaavio](https://github.com/gitjms/Lyriikka-analysaattori/blob/master/documentation/db-diagram.png)
 
-## Suunnitellut ominaisuudet
+## Myöhemmin mahdollisia lisäominaisuuksia
 
 * kaikkien 57 maan data mukana
 * lyriikkadatan tarkastelu kielittäin
