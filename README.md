@@ -18,7 +18,8 @@ Lyriikkatietokanta on haettu sivustolta [Worship Leader App](https://worshiplead
 
 ## User stories
 
-| **As ...** | **I want to ...** | **so that ...** |
+| As ... | I want to ... | so that ... |
+| --- | --- |
 | *user* | kirjautua sisään | voin tehdä frekvenssianalyysejä |
 | *user* | tehdä frekvenssianalyysinä top 10 sanat | näen eniten käytety sanat lauluittain/kielittäin |
 | *user* | tehdä frekvenssianalyysin tietyn sanan esiintymistiheydestä | näen missä lauluissa/kielissä esiintymisiä on eniten/vähiten |
