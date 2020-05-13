@@ -1,8 +1,9 @@
 {% extends "layout.html" %}
   
 {% block body %}
-<form method="POST" action="{{ url_for('lyrics_create') }}">
+<form method="POST" action="{{ url_for('songs_create') }}">
   <input type="text" name="name"/>
+  <input type="text" name="text"/>
   <input type="submit" value="Add a new song"/>
 </form>
 {% endblock %}

@@ -5,9 +5,14 @@
     <tr>
       <th>Song</th>
     </tr>
-    {% for song in lyrics %}
+    {% for song in songs %}
     <tr>
       <td>{{ song.name }}</td>
+	  <td>
+		<form method="POST" action="{{ url_for('songs_form', songs_id=song.id) }}">
+		  <input type="submit" value="Show lyrics"/>
+		</form>
+      </td>
     </tr>
     {% endfor %}
   </table>

@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <table>
+    <tr>
+      <th>Song</th>
+    </tr>
+    <tr>
+      <td>{{ Song.name }}</td>
+	  <td>
+		<form method="POST" action="{{ url_for('songs_show', song_text=songs.song.text) }}">
+		</form>
+      </td>
+	  <td>
+		{{ Song.text }}
+      </td>
+    </tr>
+  </table>
+{% endblock %}
