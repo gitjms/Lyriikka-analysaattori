@@ -6,13 +6,14 @@
       <th>Song</th>
     </tr>
     <tr>
-      <td>{{ Song.name }}</td>
+      <td>{{ song.name }}</td>
 	  <td>
-		<form method="POST" action="{{ url_for('songs_show', song_text=songs.song.text) }}">
+		<form method="POST" action="{{ url_for('songs_show', songs_id=song.id) }}">
+		  <input type="submit" value="Hide"/>
 		</form>
       </td>
 	  <td>
-		{{ Song.text }}
+		{{ song.text }}
       </td>
     </tr>
   </table>

@@ -8,6 +8,11 @@ def songs_index():
 	return render_template("songs/list.html", songs = Song.query.all())
 
 
+@app.route("/songs/show/<songs_id>/", methods=["GET"])
+def songs_show(songs_id):
+	return render_template("songs/show.html", songs = Song.query.get(str(songs_id)))
+
+
 @app.route("/songs/new/")
 def songs_form():
 	return render_template("songs/new.html")
