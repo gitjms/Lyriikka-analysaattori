@@ -8,12 +8,16 @@
     <tr>
       <td>{{ song.name }}</td>
 	  <td>
-		<form method="POST" action="{{ url_for('songs_show', songs_id=song.id) }}">
-		  <input type="submit" value="Hide"/>
+		<form method="POST" action="{{ url_for('songs_index') }}">
+		  <input type="submit" name="Back" value="Back"/>
 		</form>
       </td>
-	  <td>
-		{{ song.text }}
+    </tr>
+    <tr>
+      <td>
+	    <p>
+		  {{ song.text }}
+        </p>
       </td>
     </tr>
   </table>

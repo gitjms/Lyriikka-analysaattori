@@ -9,15 +9,9 @@
     <tr>
       <td>{{ song.name }}</td>
 	  <td>
-		<form method="POST" action="{{ url_for('songs_form', songs_id=song.id) }}">
-		  <input type="submit" value="Show lyrics"/>
-		</form>
 		<form method="POST" action="{{ url_for('songs_show', songs_id=song.id) }}">
-		  <input type="submit" value="Hide"/>
+		  <input type="submit" name="Lyrics" value="Lyrics"/>
 		</form>
-      </td>
-	  <td>
-		{{ song.text }}
       </td>
       </td>
     </tr>
