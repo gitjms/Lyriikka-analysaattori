@@ -1,24 +1,15 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  <table>
-    <tr>
-      <th>Song</th>
-    </tr>
-    <tr>
-      <td>{{ song.name }}</td>
-	  <td>
-		<form method="POST" action="{{ url_for('songs_index') }}">
-		  <input type="submit" name="Back" value="Back"/>
-		</form>
-      </td>
-    </tr>
-    <tr>
-      <td>
-	    <p>
-		  {{ song.text }}
-        </p>
-      </td>
-    </tr>
-  </table>
+    <p>
+      <h2>{{ song.name }}</h2>
+	  <form method="POST" action="{{ url_for('songs_index') }}">
+		<input type="submit" name="Back" value="Back"/>
+	  </form>
+	  <div style="text-align: left;">
+	    <pre style="width: 100%; margin-left:auto; margin-right:auto;">
+ {{ song.text }}
+        </pre>
+	  </div>
+    </p>
 {% endblock %}
