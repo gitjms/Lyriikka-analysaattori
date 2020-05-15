@@ -15,14 +15,17 @@ def songs_index():
 
 @app.route("/songs/show/<song_id>/", methods=["GET", "POST"])
 def songs_show(song_id):
-	return render_template("songs/show.html", song = Song.query.get(str(song_id)))
+	return render_template("songs/show.html", song = Song.query.get(song_id))
 
 
-@app.route("/songs", methods=["GET", "POST"])
+@app.route("/delete/<song_id>", methods=["GET", "POST"])
 def songs_delete(song_id):
-	db.session().execute('DELETE FROM song WHERE id = ?'[int(song_id)])
-	db.session().commit()
-	flash('Song deleted')
+	qry = db.session().query(Song).filter(Song.id==song_id)
+	if request.method == "POST":
+		db.session().delete(qry.first())
+		db.session().commit()
+		flash('Song deleted')
+		return redirect('/songs')
 	return render_template("songs/list.html", songs = Song.query.all())
 
 @app.route("/songs/new/")

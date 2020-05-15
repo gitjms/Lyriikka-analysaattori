@@ -5,7 +5,6 @@
     <tr>
       <th style="text-align: left;">Songs</th>
       <th style="text-align: left;">Lyrics</th>
-      <th style="text-align: left;">Delete</th>
     </tr>
     {% for song in songs %}
     <tr>
@@ -16,7 +15,8 @@
 		</form>
       </td>
 	  <td>
-	    <form method="GET" action="{{ url_for('songs_delete', song_id=song.id) }}">
+	    <form method="POST" action="{{ url_for('songs_delete', song_id=song.id) }}">
+		  <input type="hidden" name="song_id" value="{{ song.id }}">
 		  <input type="submit" name="Delete" value="Delete"/>
 		</form>
       </td>
