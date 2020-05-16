@@ -5,6 +5,10 @@
 Sovellus on selainpohjainen tietokantasovellus, jolla voi tarkastella suomalaisten kristillisten laululyriikoiden sanafrekvenssejä.
 Lyriikkatietokanta on haettu sivustolta [Worship Leader App](https://worshipleaderapp.com/en/download-song-database-opensong-openlp-and-quelea), sisältäen 57 kielen lyriikoita yhteensä 72098 kappaletta. Suomenkielisiä lyriikoita on 358. Kyseessä on kristillisten laulujen tietokanta, joiden katsotaan olevan copyright-vapaita, avoimia lähteitä.
 
+### Sovellus
+
+Löydät sovelluksen [täältä](https://lyrfreq.herokuapp.com/).
+
 ## Suunnitellut toiminnot
 
 - [ ] kirjautuminen, roolit: user ja admin
