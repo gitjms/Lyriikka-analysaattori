@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% block page_content %}{% endblock %}
+</div>
+    <p>
+	  <form class="form-group" method="POST" action="{{ url_for('songs_edit', song_id=song.id) }}">
+		<input class="form-control" type="submit" name="Back" value="Back"/>
+		<input class="form-control" type="submit" name="Submit" value="Submit"/><br><br>
+		  <h5 style="margin-left:1em;">
+Title:
+		  </h5>
+	      <textarea class="form-control text-left" id="text_send" name="name" type="text/javascript">
+{{ song.name }}
+		  </textarea>
+		  <h5 style="margin-left:1em;">
+Author(s):
+		  </h5>
+		<textarea class="form-control text-left" id="text_send" name="author" type="text/javascript">
+{{ song.author }}
+		</textarea>
+		<h5 style="margin-left:1em;">
+Lyrics:
+		</h5>
+		<textarea id="styled" class="form-control text-left" id="text_send" name="text" type="text/javascript">
+{{ song.text }}
+		</textarea>
+	  </form>
+    </p>
+{% endblock %}

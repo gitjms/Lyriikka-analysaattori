@@ -13,5 +13,7 @@ from application import views
 
 from application.songs import models
 from application.songs import views
+from os import urandom
+app.config["SECRET_KEY"] = urandom(32)
 
 db.create_all()

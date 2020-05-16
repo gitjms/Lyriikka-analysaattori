@@ -1,21 +1,67 @@
 <!DOCTYPE html>
-  <html>
+  <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fi" lang="fi">
     <head>
       <meta charset="utf-8">
       <title>LyrFreq</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	  <link rel="stylesheet" href="jquery-ui-1.10.3.custom/css/le-frog/jquery-ui-1.10.3.custom.min.css" />
+	  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">  
+	  <link rel="javascript" href="{{ url_for('static', filename='scripts.js') }}">  
     </head>
 
     <body>
 	<ul>
-	  <li><a href="{{ url_for('songs_main') }}">Main menu</a></li>
+	  <li><a href="{{ url_for('songs_main') }}">Home</a></li>
 	  <li><a href="{{ url_for('songs_index') }}">List songs</a></li>
 	  <li><a href="{{ url_for('songs_form') }}">Add a song</a></li>
     </ul>
+	
+	<div class="container-fluid">
+      <nav class="navbar navbar-default navbar-static-top navbar-dark bg-dark navbar-expand-lg">
+        <a class="navbar-brand" href="{{ url_for('songs_main') }}"> Home </a>
+        <a class="navbar-brand-middle text-light" href="{{ navbar_link }}"><h2>{{ navbar_otsikko }}</h2></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#toggler" aria-controls="toggler" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="toggler">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('songs_index') }}">List songs</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('songs_form') }}">Add a song</a>
+            </li>
+          </ul>
+
+        </div>
+      </nav>
 
       {% block body %}
       <p>
 		Tähän tuodaan sisältö muualta.
       </p>
       {% endblock %}
+
+	</div>
+
     </body>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+	
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.min.css" />
+	
+	<script>
+	$("styled").resizable();
+	</script>
+    
   </html>

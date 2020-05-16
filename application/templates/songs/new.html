@@ -3,6 +3,7 @@
 {% block body %}
 <form method="POST" action="{{ url_for('song_create') }}">
   <input type="text" name="name"/>
+  <input type="text" name="author"/>
   <input type="text" name="text"/>
   <input type="submit" value="Add a new song"/>
 </form>
