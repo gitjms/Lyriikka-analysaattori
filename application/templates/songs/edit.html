@@ -1,37 +1,33 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="container">
-    {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
-        {{ message }}
-    </div>
-    {% endfor %}
 
-    {% block page_content %}{% endblock %}
-</div>
     <p>
-	  <form class="form-group" method="POST" action="{{ url_for('songs_edit', song_id=song.id) }}">
-		<input class="form-control" type="submit" name="Back" value="Back"/>
-		<input class="form-control" type="submit" name="Submit" value="Submit"/><br><br>
-		  <h5 style="margin-left:1em;">
-Title:
-		  </h5>
-	      <textarea class="form-control text-left" id="text_send" name="name" type="text/javascript">
+	  <form method="POST" action="{{ url_for('songs_edit', song_id=song.id) }}">
+	    <div class="col-auto">
+		  <button class="btn btn-primary" id="Back" type="submit" name="Back" value="Back" type="text"/>Back</button>
+
+		  <button class="btn btn-primary" id="Submit" type="submit" name="Submit" value="Submit"/>Submit</button>
+		</div>
+	    <div class="col-auto">
+		  <label for="name" class="col-sm-2 col-form-label">Title:</label>
+	      <textarea class="form-control text-left" id="name" name="name" type="text">
 {{ song.name }}
 		  </textarea>
-		  <h5 style="margin-left:1em;">
-Author(s):
-		  </h5>
-		<textarea class="form-control text-left" id="text_send" name="author" type="text/javascript">
+		</div>
+	    <div class="col-auto">
+		  <label for="author" class="col-sm-2 col-form-label">Author(s):</label>
+		  <textarea class="form-control text-left" id="author" name="author" type="text">
 {{ song.author }}
-		</textarea>
-		<h5 style="margin-left:1em;">
-Lyrics:
-		</h5>
-		<textarea id="styled" class="form-control text-left" id="text_send" name="text" type="text/javascript">
+		  </textarea>
+		</div>
+	    <div class="col-auto">
+		  <label for="text" class="col-sm-2 col-form-label">Lyrics:</label>
+		  <textarea class="form-control text-left" id="text" name="text" type="text">
 {{ song.text }}
-		</textarea>
+		  </textarea>
+		</div>
 	  </form>
     </p>
 {% endblock %}
+

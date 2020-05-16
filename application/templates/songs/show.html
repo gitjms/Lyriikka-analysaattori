@@ -2,11 +2,13 @@
 
 {% block body %}
     <p>
+	  <form method="POST" action="{{ url_for('songs_index') }}">
+		<div class="col-auto">
+		  <button class="btn btn-primary" id="Back" type="submit" name="Back" value="Back" type="text"/>Back</button>
+		</div>
+	  </form><br>
       <h2>{{ song.name }}</h2>
 	  <h4>{{ song.author }}</h4>
-	  <form method="POST" action="{{ url_for('songs_index') }}">
-		<input type="submit" name="Back" value="Back"/>
-	  </form>
 	  <div style="text-align: left;">
 	    <pre style="width: 100%; margin-left:auto; margin-right:auto;">
  {{ song.text }}
