@@ -1,6 +1,7 @@
 from application import app, db
 from flask import redirect, url_for, render_template, request, flash
 from application.songs.models import Song
+from application.songs.forms import SongForm
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 #-----------------------------------------
@@ -16,6 +17,9 @@ def songs_main():
 #-----------------------------------------
 @app.route("/songs", methods=["GET", "POST"])
 def songs_index():
+	#if request.method == "POST":
+	#	if request.form.get("Back") == "Back":
+	#		return redirect(url_for("songs_main"))
 	return render_template("songs/list.html", songs = Song.query.all())
 
 
@@ -24,6 +28,9 @@ def songs_index():
 #-----------------------------------------
 @app.route("/songs/show/<song_id>/", methods=["GET", "POST"])
 def songs_show(song_id):
+	if request.method == "GET":
+		if request.form.get("Back") == "Back":
+			return render_template("songs/list.html", song = Song.query.all())
 	return render_template("songs/show.html", song = Song.query.get(song_id))
 
 
@@ -86,7 +93,7 @@ def songs_delete(song_id):
 #-----------------------------------------
 @app.route("/songs/new/", methods=["GET"])
 def songs_new():
-	return render_template("songs/new.html")
+	return render_template("songs/new.html", form = SongForm())
 
 
 #-----------------------------------------

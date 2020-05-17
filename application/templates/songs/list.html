@@ -1,38 +1,44 @@
 {% extends "layout.html" %}
 
 {% block body %}
-
-  <table>
-    <tr>
-      <th style="text-align: left;">Songs</th>
-    </tr>
+  <p>
+	<!--<form method="POST" action="{{ url_for('songs_index') }}">
+	  <div class="col-auto">
+		<button class="btn btn-primary" id="Back" type="submit" name="Back" value="Back" type="text"/>Back</button>
+	  </div>
+	</form><br>-->
+    <table>
+      <tr>
+        <th style="text-align: left;">Songs</th>
+      </tr>
     {% for song in songs %}
-    <tr>
-      <td>{{ song.id }}.  {{ song.name }}</td>
-	  <td>
-		<form method="POST" action="{{ url_for('songs_show', song_id=song.id) }}">
-		  <div class="col-auto">
-		    <button class="btn btn-primary" id="Show" type="submit" name="Show" value="Show" type="text"/>Show Lyrics</button>
-		  </div>
-		</form>
-      </td>
-	  <td>
-	    <form method="POST" action="{{ url_for('songs_edit', song_id=song.id) }}">
-		  <input type="hidden" name="song_id" value="{{ song.id }}">
-		  <div class="col-auto">
-		    <button class="btn btn-primary" id="Edit" type="submit" name="Edit" value="Edit" type="text"/>Edit</button>
-		  </div>
-		</form>
-      </td>
-	  <td>
-	    <form method="POST" action="{{ url_for('songs_delete', song_id=song.id) }}">
-		  <input type="hidden" name="song_id" value="{{ song.id }}">
-		  <div class="col-auto">
-		    <button class="btn btn-primary" id="Delete" type="submit" name="Delete" value="Delete" type="text"/>Delete</button>
-		  </div>
-		</form>
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
+      <tr>
+        <td>{{ song.id }}.  {{ song.name }}</td>
+	    <td>
+		  <form method="POST" action="{{ url_for('songs_show', song_id=song.id) }}">
+		    <div class="col-auto">
+		      <button class="btn btn-primary" id="Show" type="submit" name="Show" value="Show" type="text"/>Show Lyrics</button>
+		    </div>
+		  </form>
+        </td>
+	    <td>
+	      <form method="POST" action="{{ url_for('songs_edit', song_id=song.id) }}">
+		    <input type="hidden" name="song_id" value="{{ song.id }}">
+		    <div class="col-auto">
+		      <button class="btn btn-primary" id="Edit" type="submit" name="Edit" value="Edit" type="text"/>Edit</button>
+		    </div>
+		  </form>
+        </td>
+	    <td>
+	      <form method="POST" action="{{ url_for('songs_delete', song_id=song.id) }}">
+		    <input type="hidden" name="song_id" value="{{ song.id }}">
+		    <div class="col-auto">
+		      <button class="btn btn-primary" id="Delete" type="submit" name="Delete" value="Delete" type="text"/> Delete</button>
+		    </div>
+		  </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </p>
 {% endblock %}

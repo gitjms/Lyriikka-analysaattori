@@ -3,6 +3,15 @@ body {
 	font-family: Tahoma, sans-serif;
 }
 
+.myFloat_Left {
+    float: left;
+	overflow: hidden;
+}
+
+.myFloat_Right {
+    float: right;
+	overflow: hidden;
+}
 
 .clickable {
     cursor: pointer;

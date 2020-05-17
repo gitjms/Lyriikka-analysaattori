@@ -1,14 +1,16 @@
 {% extends "layout.html" %}
 
 {% block body %}
-
     <p>
 	  <form method="POST" action="{{ url_for('songs_edit', song_id=song.id) }}">
 	    <div class="col-auto">
-		  <button class="btn btn-primary" id="Back" type="submit" name="Back" value="Back" type="text"/>Back</button>
+		  <button class="btn btn-primary myFloat_Left" id="Back" type="submit" name="Back" value="Back" type="text"/>Back</button>
 
-		  <button class="btn btn-primary" id="Submit" type="submit" name="Submit" value="Submit"/>Submit</button>
+		  <button class="btn btn-primary myFloat_Right" id="Submit" type="submit" name="Submit" value="Submit"/>Submit</button>
+
+		  <div style="clear: both;"></div>
 		</div>
+
 	    <div class="col-auto">
 		  <label for="name" class="col-sm-2 col-form-label">Title:</label>
 	      <textarea class="form-control text-left" id="name" name="name" type="text">
