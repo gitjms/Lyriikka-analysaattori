@@ -7,28 +7,28 @@ class User(db.Model):
 
 	__tablename__ = "account"
 
-    id = db.Column(db.Integer, primary_key=True)
+	id = db.Column(db.Integer, primary_key=True)
 	date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
-    date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(),onupdate=db.func.current_timestamp())
-    name = db.Column(db.String(144), nullable=False)
-    username = db.Column(db.String(144), nullable=False)
-    password = db.Column(db.String(144), nullable=False)
-    admin = db.Column(db.Boolean, default=False, nullable=False)
+	date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(),onupdate=db.func.current_timestamp())
+	name = db.Column(db.String(144), nullable=False)
+	username = db.Column(db.String(144), nullable=False)
+	password = db.Column(db.String(144), nullable=False)
+	admin = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, name, username, password, admin):
-        self.name = name
-        self.username = username
-        self.password = password
-        self.admin = admin
+	def __init__(self, name, username, password, admin):
+		self.name = name
+		self.username = username
+		self.password = password
+		self.admin = admin
 
-    def get_id(self):
-        return self.id
+	def get_id(self):
+		return self.id
 
-    def is_active(self):
-        return True
+	def is_active(self):
+		return True
 
-    def is_anonymous(self):
-        return False
+	def is_anonymous(self):
+		return False
 
-    def is_authenticated(self):
-        return True
+	def is_authenticated(self):
+		return True

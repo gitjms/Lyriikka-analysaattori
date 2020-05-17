@@ -9,6 +9,6 @@
 
 textarea {
     resize: none;
-	white-space: nowrap;
-	overflow-x: scroll;
+    white-space: nowrap;
+    overflow-x: scroll;
 }
