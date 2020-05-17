@@ -1,5 +1,6 @@
 from application import app, db
 from flask import redirect, url_for, render_template, request, flash
+from flask_wtf import FlaskForm
 from application.songs.models import Song
 from application.songs.forms import SongForm
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
@@ -37,35 +38,49 @@ def songs_show(song_id):
 #-----------------------------------------
 #		EDIT: songs_edit()
 #-----------------------------------------
+@app.route("/songs/edit/<song_id>/", methods=["GET"])
+def songs_edit():
+	return render_template("songs/edit.html", form = SongForm())
+
+
+#-----------------------------------------
+#		EDIT: songs_edit()
+#-----------------------------------------
 @app.route("/songs/edit/<song_id>/", methods=["GET", "POST"])
-def songs_edit(song_id):
+def songs_editing(song_id):
+	form = SongForm(request.form)
+
+	if request.form.get("Back") == "Back":
+		return redirect(url_for("songs_index"))
+
 	if request.method == "GET":
-		if request.form.get("Back") == "Back":
-			return redirect(url_for("songs_index"))
-		return render_template("songs/edit.html", song = Song.query.get(song_id))
+		return render_template("songs/edit.html", song = Song.query.get(song_id), form = form)
 	elif request.method == "POST":
-		if request.form.get("Back") == "Back":
-			return redirect(url_for("songs_index"))
 		if request.form.get("Submit") == "Submit":
-			song_name = request.form.get("name").strip()
-			song_author = request.form.get("author").strip()
-			song_text = request.form.get("text").strip()
-			if (song_name and song_author and song_text):
-				song = Song.query.get(song_id)
-				song.name = song_name
-				song.author = song_author
-				song.text = song_text
+
+			if not form.validate():
+				return render_template("songs/edit.html", song = Song.query.get(song_id), form = form)
+
+			song = Song.query.get(song_id)
+			song_title = request.form.get("title")
+			song_author = request.form.get("author")
+			song_lyrics = request.form.get("lyrics")
+			if (song_title == song.title and song_author == song.author and song_lyrics == song.lyrics):
+				flash("No changes made.", "warning")
+			else:
 				try:
+					song = Song.query.filter_by(id=song_id).first()
+					song.title = song_title
+					song.author = song_author
+					song.lyrics = song_lyrics
 					db.session().add(song)
 					db.session().commit()
-					flash("Data updated.", "success")
-				except exc.SQLAlchemyError:
+					flash("Changes updated.", "success")
+				except IntegrityError:
 					db.session.rollback()
-					flash("Data not updated", "danger")
+					flash("Song exists already.", "danger")
 					pass
-			else:
-				flash("No empty strings.", "warning")
-		return render_template("songs/edit.html", song = Song.query.get(song_id))
+		return render_template("songs/edit.html", song = Song.query.get(song_id), form = form)
 	return render_template("songs/list.html", song = Song.query.all())
 
 
@@ -101,28 +116,23 @@ def songs_new():
 #-----------------------------------------
 @app.route("/songs/", methods=["POST"])
 def song_create():
+	form = SongForm(request.form)
+
 	if request.form.get("Back") == "Back":
 		return redirect(url_for("songs_index"))
-	song_name = request.form.get("name").strip()
-	song_author = request.form.get("author").strip()
-	song_text = request.form.get("text").strip()
-	if (song_name and song_author and song_text):
-		song = Song(song_name,song_author,song_text)
-		try:
-			db.session().add(song)
-			db.session().commit()
-			flash("Song added.", "success")
-		except SQLAlchemyError:
-			db.session.rollback()
-			flash("Song exists already.", "danger")
-			pass
-		except IntegrityError:
-			db.session.rollback()
-			flash("Song exists already.", "danger")
-			pass
-			
-	else:
-		flash("No empty strings.", "warning")
+
+	if not form.validate():
+		return render_template("songs/new.html", form = form)
+
+	song = Song(form.title.data,form.author.data,form.lyrics.data)
+	try:
+		db.session().add(song)
+		db.session().commit()
+		flash("Song added.", "success")
+	except IntegrityError:
+		db.session.rollback()
+		flash("Song already exists. Consider changing title.", "danger")
+		return render_template("songs/new.html", form = form)
 
 	return render_template("songs/list.html", songs = Song.query.all())
 

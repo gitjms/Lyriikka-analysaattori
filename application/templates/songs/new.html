@@ -3,29 +3,54 @@
 {% block body %}
     <p>
 	  <form method="POST" action="{{ url_for('song_create') }}">
-	    <div class="col-auto">
-		  <button class="btn btn-primary myFloat_Left" id="Back" type="submit" name="Back" value="Back"/>Back</button>
 
-		  <button class="btn btn-primary myFloat_Right" id="Submit" type="submit" name="Submit" value="Add a new song"/>Submit</button>
+	    <div class="col-auto">
+		  <button class="btn btn-primary myFloat_Left" type="submit" name="Back" value="Back"/>Back</button>
+
+		  <button class="btn btn-primary myFloat_Right" type="submit" name="Submit" value="Add a new song"/>Submit</button>
 
 		  <div style="clear: both;"></div>
 		</div>
 
 	    <div class="col-auto">
-		  <label for="name" class="col-sm-2 col-form-label">Title:</label>
-	      <textarea class="form-control text-left" id="name" name="name" type="text">
+		  <label for="title" class="col-sm-2 col-form-label">Title:</label>
+	      <textarea class="form-control text-left" id="title" name="title" type="text" rows="1">{{ form.title().split(">",1)[1] }}
 		  </textarea>
 		</div>
+		<td>
+		  <ul>
+			{% for error in form.title.errors %}
+			<li>{{ error }}</li>
+			{% endfor %}
+		  </ul>
+		</td>
+
 	    <div class="col-auto">
 		  <label for="author" class="col-sm-2 col-form-label">Author(s):</label>
-		  <textarea class="form-control text-left" id="author" name="author" type="text">
+		  <textarea class="form-control text-left" id="author" name="author" type="text" rows="1">{{ form.author().split(">",1)[1] }}
 		  </textarea>
 		</div>
+		<td>
+		  <ul>
+			{% for error in form.author.errors %}
+			<li>{{ error }}</li>
+			{% endfor %}
+		  </ul>
+		</td>
+
 	    <div class="col-auto">
-		  <label for="text" class="col-sm-2 col-form-label">Lyrics:</label>
-		  <textarea class="form-control text-left" id="text" name="text" type="text">
+		  <label for="lyrics" class="col-sm-2 col-form-label">Lyrics:</label>
+		  <textarea class="form-control text-left" id="lyrics" name="lyrics" type="text">{{ form.lyrics().split(">",1)[1] }}
 		  </textarea>
 		</div>
+		<td>
+		  <ul>
+			{% for error in form.lyrics.errors %}
+			<li>{{ error }}</li>
+			{% endfor %}
+		  </ul>
+		</td>
+
 	  </form>
     </p>
 {% endblock %}

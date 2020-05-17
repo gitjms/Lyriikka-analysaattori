@@ -2,9 +2,10 @@
 
 {% block body %}
     <p>
-	  <form method="POST" action="{{ url_for('songs_edit', song_id=song.id) }}">
+	  <form method="POST" action="{{ url_for('songs_editing', song_id=song.id) }}">
+
 	    <div class="col-auto">
-		  <button class="btn btn-primary myFloat_Left" id="Back" type="submit" name="Back" value="Back" type="text"/>Back</button>
+		  <button class="btn btn-primary myFloat_Left" type="submit" name="Back" value="Back" type="text"/>Back</button>
 
 		  <button class="btn btn-primary myFloat_Right" id="Submit" type="submit" name="Submit" value="Submit"/>Submit</button>
 
@@ -12,23 +13,41 @@
 		</div>
 
 	    <div class="col-auto">
-		  <label for="name" class="col-sm-2 col-form-label">Title:</label>
-	      <textarea class="form-control text-left" id="name" name="name" type="text">
-{{ song.name }}
-		  </textarea>
+		  <label for="title" class="col-sm-2 col-form-label">Title:</label>
+	      <input class="form-control" id="title" name="title" type="text" value="{{ song.title }}"></input >
 		</div>
+		<td>
+		  <ul>
+			{% for error in form.title.errors %}
+			<li>{{ error }}</li>
+			{% endfor %}
+		  </ul>
+		</td>
+
 	    <div class="col-auto">
 		  <label for="author" class="col-sm-2 col-form-label">Author(s):</label>
-		  <textarea class="form-control text-left" id="author" name="author" type="text">
-{{ song.author }}
-		  </textarea>
+		  <input class="form-control" id="author" name="author" type="text" value="{{ song.author }}"></input >
 		</div>
+		<td>
+		  <ul>
+			{% for error in form.author.errors %}
+			<li>{{ error }}</li>
+			{% endfor %}
+		  </ul>
+		</td>
+
 	    <div class="col-auto">
-		  <label for="text" class="col-sm-2 col-form-label">Lyrics:</label>
-		  <textarea class="form-control text-left" id="text" name="text" type="text">
-{{ song.text }}
-		  </textarea>
+		  <label for="lyrics" class="col-sm-2 col-form-label">Lyrics:</label>
+		  <textarea class="form-control" id="lyrics" name="lyrics" type="text"  rows="10">{{ song.lyrics }}</textarea>
 		</div>
+		<td>
+		  <ul>
+			{% for error in form.lyrics.errors %}
+			<li>{{ error }}</li>
+			{% endfor %}
+		  </ul>
+		</td>
+
 	  </form>
     </p>
 {% endblock %}

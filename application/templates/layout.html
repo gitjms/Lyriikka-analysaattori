@@ -5,16 +5,16 @@
       <title>LyrFreq</title>
 	  
 	  <!-- Bootstrap CSS -->
-	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-	  <!-- -->
-	
-	  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.min.css" />
+	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 	  
 	  <!-- CSS -->
 	  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+	  <!-- 
+	
+	  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.min.css" />
+	  
+	  -->
 	  
     </head>
 
@@ -44,20 +44,20 @@
 		  </div>
 	    </form>
         <a class="navbar-brand" href="{{ url_for('songs_main') }}">
-		  <img src="{{url_for('static', filename='images/brand.png')}}" width="100" height="30" class="d-inline-block align-top" alt="" class="image-responsive">
+		  <img src="{{url_for('static', filename='images/brand.png')}}" width="80" height="30" class="d-inline-block align-top image-responsive myLogo" alt="">
 		</a>
 
         <div class="collapse navbar-collapse" id="toggler">
           <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('songs_index') }}">List songs</a>
+              <a class="nav-link" class="col-lg-2" href="{{ url_for('songs_index') }}">List songs</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('songs_new') }}">Add a song</a>
             </li>
           </ul>
 		  
-		  <nav class="navbar navbar-light bg-light justify-content-between">
+		  <nav class="navbar navbar-dark justify-content-between" style="background-color: #470500;">
 			<a class="navbar-brand">Search song by name:</a>
 			  <form class="form-inline my-2 my-lg-0">
 				<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -84,12 +84,11 @@
 
 	</div>
 
-	<!-- Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-	
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<!-- Bootstrap 4.5.0 -->
+    <!-- jQuery, Popper.js, and JS -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
 	<!-- JS -->
 	<script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
@@ -99,7 +98,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script>
 	$(document).ready(function(){
-		$(".alert").delay(2000).slideUp(300);
+		$(".alert").delay(3000).slideUp(300);
 	});
 	</script>
 

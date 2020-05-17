@@ -4,7 +4,7 @@
     <p>
 	  <form method="GET" action="{{ url_for('songs_index') }}">
 		<div class="col-auto">
-		  <button class="btn btn-primary myFloat_Left" id="Back" type="submit" name="Back" value="Back"/>Back</button>
+		  <button class="btn btn-primary myFloat_Left" type="submit" name="Back" value="Back"/>Back</button>
 		</div>
 
 		<div style="clear: both;"></div>
@@ -13,7 +13,7 @@
 	  <div class="col-auto">
 	    <h2>
 		  <small class="text-muted">Title:</small>
-			{{ song.name }}
+			{{ song.title }}
 	    </h2>
 	  </div>
 
@@ -26,7 +26,7 @@
 
 	  <div class="col-auto">
 	    <pre class="lead" style="width: 100%; margin-left:auto; margin-right:auto;">
-{{ song.text }}
+{{ song.lyrics }}
         </pre>
 	  </div>
     </p>
