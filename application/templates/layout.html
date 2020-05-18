@@ -36,12 +36,13 @@
           <span class="navbar-toggler-icon"></span>
           </button>
 		  
-		  {% if current_user.is_authenticated %}
+		  {% if g.user.is_authenticated %}
 		  <a style="color:#b0746a; font-size:18px;">
-			Logged in as {{ current_user.name }}
+			Logged in as {{ g.user.username }}
 		  </a><a style="color:white; font-size:18px;" href="{{ url_for('auth_logout') }}">Logout</a>
 		  {% else %}
 		  <a style="color:white; font-size:18px;" href="{{ url_for('auth_login') }}">Login</a>
+		  <a style="color:white; font-size:18px;" href="{{ url_for('auth_create') }}">Create account</a>
 		  {% endif %}
 
           <a class="navbar-brand" href="{{ url_for('songs_main') }}">

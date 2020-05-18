@@ -1,5 +1,6 @@
-from flask import redirect, url_for, render_template, request, flash
+from flask import redirect, url_for, render_template, request, flash, g
 from flask_wtf import FlaskForm
+from flask_login import login_required, current_user
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
@@ -8,6 +9,12 @@ from application.songs.models import Song
 from application.songs.forms import SongForm
 
 # Lomakkeen näyttämisen ja lähetyksen vastaanottava toiminnallisuus.
+
+
+@app.before_request
+def before_request():
+	g.user = current_user
+
 
 #-----------------------------------------
 #		INDEX: songs_main()
@@ -42,16 +49,18 @@ def songs_show(song_id):
 #-----------------------------------------
 #		EDIT: songs_edit()
 #-----------------------------------------
-@app.route("/songs/edit/<song_id>/", methods=["GET"])
-def songs_edit():
-	form = SongForm(request.form)
-	return render_template("songs/edit.html", form = form)
+# @app.route("/songs/edit/<song_id>/", methods=["GET"])
+# @login_required
+# def songs_edit():
+	# form = SongForm(request.form)
+	# return render_template("songs/edit.html", form = form)
 
 
 #-----------------------------------------
 #		EDIT: songs_edit()
 #-----------------------------------------
 @app.route("/songs/edit/<song_id>/", methods=["GET", "POST"])
+@login_required
 def songs_editing(song_id):
 	form = SongForm(request.form)
 
@@ -93,6 +102,7 @@ def songs_editing(song_id):
 #		DELETE: songs_delete()
 #-----------------------------------------
 @app.route("/songs/delete/<song_id>", methods=["POST"])
+@login_required
 def songs_delete(song_id):
 	qry = db.session().query(Song).filter(Song.id==song_id)
 	if request.method == "POST":
@@ -112,6 +122,7 @@ def songs_delete(song_id):
 #		CREATE: song_create()
 #-----------------------------------------
 @app.route("/songs/new/", methods=["GET", "POST"])
+@login_required
 def songs_create():
 	form = SongForm(request.form)
 

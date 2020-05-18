@@ -3,12 +3,13 @@
 {% block body %}
 {{ error }}
 <form method="POST" action="{{ url_for('auth_login') }}">
+  <h4>Login</h4>
   <table>
   <thead>
 
 	<tr>
       <th>
-	    <button class="btn btn-primary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Cancel</button>
+	    <button class="btn btn-success myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Cancel</button>
       </th>
 	  <th style="width:200px;"></th>
 
@@ -25,7 +26,7 @@
       </td>
 
 	  <td rowspan="2">
-	    <button class="btn btn-primary" type="submit" name="Guest" style="width:100px;" value="Guest"/>Login as guest</button>
+	    <button class="btn btn-success" type="submit" name="Guest" style="width:100px;" value="Guest"/>Login as guest</button>
 	  </td>
     </tr>
 
@@ -40,7 +41,11 @@
 
     <tr>
       <td>
-	    <button class="btn btn-primary myFloat_Left" type="submit" name="Login" style="width:75px;" value="Login"/>Login</button>
+	    <button class="btn btn-success myFloat_Left" type="submit" name="Login" style="width:75px;" value="Login"/>Login</button>
+      </td>
+      <td>
+	    <label style="font-weight:bold;" for="Remember">Remember this session?</label>
+	    <input type="checkbox" id="Remember" name="remember_me"></input >
       </td>
 	</tr>
 

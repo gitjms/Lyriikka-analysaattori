@@ -39,6 +39,6 @@ login_manager.login_message = "Please login."
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(user_id)
+	return User.query.get(user_id)
 
 db.create_all()

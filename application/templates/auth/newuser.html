@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+  
+{% block body %}
+{{ error }}
+    <p>
+	  <form action="" method=POST class="form-horizontal">
+    <h4>Create account </h4>
+	<table>
+	<thead>
+	<tr>
+      <th>
+        <div class="control-group">
+          <div class="controls">
+	        <button class="btn btn-success myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Cancel</button>
+          </div>
+        </div>
+	  </th>
+	</tr>
+
+	<tr>
+      <th>
+        <div class="control-group">
+          <div class="controls">
+            <input type="text" id="fullname" name="fullname" class="input-xlarge"
+            placeholder="Enter Full Name" value="{{ request.form.fullname }}"
+            >
+          </div>
+        </div>
+	  </th>
+	</tr>
+
+	<tr>
+      <th>
+        <div class="control-group">
+          <div class="controls">
+            <input type="text" id="username" name="username" class="input-xlarge"
+            placeholder="Enter Username" value="{{ request.form.username }}"
+            >
+          </div>
+        </div>
+	  </th>
+	</tr>
+
+	<tr>
+      <th>
+        <div class="control-group">
+          <div class="controls">
+		    <input type="password" id="password" name="password" class="input-xlarge myInput"
+            placeholder="Enter Password" value="{{ request.form.password }}"
+            ><label style="margin-left: 5px" for="password" class="lead col-form-label">min/max 4 characters</label>
+          </div>
+        </div>
+	  </th>
+	</tr>
+
+	<tr>
+      <th>
+        <div>
+	      <label for="Remember">Remember this session?</label>
+	      <input type="checkbox" id="Remember" name="remember_me"></input >
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <button type="submit" class="btn btn-success myFloat_Left" style="width:75px;">Create</button>
+          </div>
+        </div>
+	  </th>
+	</tr>
+
+	</thead>
+	</table>
+  </form>
+    </p>
+{% endblock %}

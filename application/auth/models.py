@@ -10,13 +10,13 @@ class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
 	date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(),onupdate=db.func.current_timestamp())
-	name = db.Column(db.String(144), nullable=False)
+	fullname = db.Column(db.String(144), nullable=False)
 	username = db.Column(db.String(144), nullable=False)
 	password = db.Column(db.String(144), nullable=False)
 	admin = db.Column(db.Boolean, default=False, nullable=False)
 
-	def __init__(self, name, username, password, admin):
-		self.name = name
+	def __init__(self, fullname, username, password, admin):
+		self.fullname = fullname
 		self.username = username
 		self.password = password
 		self.admin = admin
