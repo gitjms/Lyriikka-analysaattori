@@ -1,9 +1,11 @@
-from application import app, db
 from flask import redirect, url_for, render_template, request, flash
 from flask_wtf import FlaskForm
+
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+
+from application import app, db
 from application.songs.models import Song
 from application.songs.forms import SongForm
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 # Lomakkeen näyttämisen ja lähetyksen vastaanottava toiminnallisuus.
 
@@ -42,7 +44,8 @@ def songs_show(song_id):
 #-----------------------------------------
 @app.route("/songs/edit/<song_id>/", methods=["GET"])
 def songs_edit():
-	return render_template("songs/edit.html", form = SongForm())
+	form = SongForm(request.form)
+	return render_template("songs/edit.html", form = form)
 
 
 #-----------------------------------------
@@ -110,7 +113,8 @@ def songs_delete(song_id):
 #-----------------------------------------
 @app.route("/songs/new/", methods=["GET"])
 def songs_new():
-	return render_template("songs/new.html", form = SongForm())
+	form = SongForm(request.form)
+	return render_template("songs/new.html", form = form)
 
 
 #-----------------------------------------

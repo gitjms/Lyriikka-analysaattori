@@ -4,24 +4,24 @@
     <p>
 	  <form method="GET" action="{{ url_for('songs_index') }}">
 		<div class="col-auto">
-		  <button class="btn btn-primary myFloat_Left" type="submit" name="Back" value="Back"/>Back</button>
+		  <button class="btn btn-primary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>
 		</div>
 
 		<div style="clear: both;"></div>
 	  </form><br><br>
 
 	  <div class="col-auto">
-	    <h2>
+	    <h4>
 		  <small class="text-muted">Title:</small>
 			{{ song.title }}
-	    </h2>
+	    </h4>
 	  </div>
 
 	  <div class="col-auto">
-	    <h4>
+	    <h5>
 		  <small class="text-muted">Author(s):</small>
 			{{ song.author }}
-	    </h4>
+	    </h5>
 	  </div><br>
 
 	  <div class="col-auto">

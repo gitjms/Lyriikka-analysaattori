@@ -7,7 +7,7 @@
     float: right;
 }
 
-textarea {
+.textarea {
     resize: none;
     white-space: nowrap;
     overflow-x: scroll;
