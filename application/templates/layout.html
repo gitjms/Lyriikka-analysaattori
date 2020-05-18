@@ -35,6 +35,14 @@
           <button class="navbar-toggler custom_Btn" type="button" data-toggle="collapse" data-target="#toggler" aria-controls="toggler" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           </button>
+		  
+		  {% if current_user.is_authenticated %}
+		  <a style="color:#b0746a; font-size:18px;">
+			Logged in as {{ current_user.name }}
+		  </a><a style="color:white; font-size:18px;" href="{{ url_for('auth_logout') }}">Logout</a>
+		  {% else %}
+		  <a style="color:white; font-size:18px;" href="{{ url_for('auth_login') }}">Login</a>
+		  {% endif %}
 
           <a class="navbar-brand" href="{{ url_for('songs_main') }}">
 		    <img src="{{url_for('static', filename='images/brandlogo.png')}}" width="80" height="30" class="d-inline-block align-top image-responsive myLogo" alt="">
@@ -46,11 +54,11 @@
                 <a class="nav-link" class="col-lg-2" href="{{ url_for('songs_index') }}">List songs</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('songs_new') }}">Add a song</a>
+                <a class="nav-link" href="{{ url_for('songs_create') }}">Add a song</a>
               </li>
             </ul>
 		  
-		    <nav class="navbar navbar-dark justify-content-between" style="background-color: #470500;">
+		    <nav class="navbar navbar-dark justify-content-between" style="background-color: #5e1b0f;">
 			  <a class="navbar-brand">Search song by name:</a>
 			    <form class="form-inline my-2 my-lg-0">
 				  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

@@ -4,19 +4,31 @@
 {{ error }}
 <form method="POST" action="{{ url_for('auth_login') }}">
   <table>
+  <thead>
+
 	<tr>
-      <td colspan="2">
+      <th>
 	    <button class="btn btn-primary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Cancel</button>
-      </td>
+      </th>
+	  <th style="width:200px;"></th>
+
+      <th rowspan="4" style="width:35px;"> or </th>
+	  <th></th>
 	</tr>
-    <tr>
+
+	<tr>
       <td>
 	{{ form.username.label }}
       </td>
       <td>
 	{{ form.username }}
       </td>
+
+	  <td rowspan="2">
+	    <button class="btn btn-primary" type="submit" name="Guest" style="width:100px;" value="Guest"/>Login as guest</button>
+	  </td>
     </tr>
+
     <tr>
       <td>
 	{{ form.password.label }}
@@ -25,10 +37,14 @@
 	{{ form.password }}
 	  </td>
     </tr>
+
     <tr>
-      <td colspan="2">
-	    <button class="btn btn-primary myFloat_Left" type="submit" name="Show" style="width:75px;" value="Login"/>Login</button>
+      <td>
+	    <button class="btn btn-primary myFloat_Left" type="submit" name="Login" style="width:75px;" value="Login"/>Login</button>
       </td>
-    </tr>
+	</tr>
+
+  </thead>
+  </table>
 </form>
 {% endblock %}

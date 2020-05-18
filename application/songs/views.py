@@ -109,20 +109,14 @@ def songs_delete(song_id):
 
 
 #-----------------------------------------
-#		NEW: songs_new()
-#-----------------------------------------
-@app.route("/songs/new/", methods=["GET"])
-def songs_new():
-	form = SongForm(request.form)
-	return render_template("songs/new.html", form = form)
-
-
-#-----------------------------------------
 #		CREATE: song_create()
 #-----------------------------------------
-@app.route("/songs/new/", methods=["POST"])
-def song_create():
+@app.route("/songs/new/", methods=["GET", "POST"])
+def songs_create():
 	form = SongForm(request.form)
+
+	if request.method == "GET":
+		return render_template("songs/new.html", form = form)
 
 	if request.form.get("Back") == "Back":
 		return redirect(url_for("songs_index"))

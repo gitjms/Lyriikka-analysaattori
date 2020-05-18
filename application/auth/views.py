@@ -20,15 +20,21 @@ def auth_login():
 	if request.method == "GET":
 		return render_template("auth/loginform.html", form = form)
 
-	if not form.validate():
-		flash("You may login with guest account. Username: user, Password: user", "warning")
-		return render_template("auth/loginform.html", form = form)
+	if request.form.get("Guest") == "Guest":
+		username = "guest"
+		password = "guest"
+	elif request.form.get("Login") == "Login":
+		if not form.validate():
+			flash("Login failed.", "warning")
+			return render_template("auth/loginform.html", form = form, error = "Login failed.")
 
-	user = User.query.filter_by(username=form.username.data, password=form.password.data).first()
+		username = form.username.data
+		password = form.password.data
+
+	user = User.query.filter_by(username=username, password=password).first()
 	if not user:
 		flash("No such username or password.", "warning")
 		return render_template("auth/loginform.html", form = form, error = "No such username or password")
-
 
 	flash("User " + user.name + " identified.", "success")
 	login_user(user)

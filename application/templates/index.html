@@ -9,16 +9,5 @@
   <p class="lead">
 	Analyze songs' word frequencies.
   </p>
-  
 
-	{% if current_user.is_authenticated %}
-      <p>
-	Logged in as {{ current_user.name }}
-      </p>
-	  <a style="font-family:verdana; font-size:20px;" href="{{ url_for('auth_logout') }}">Logout</a>
-    {% else %}
-      <a style="font-family:verdana; font-size:20px;" href="{{ url_for('auth_login') }}">Login</a>
-    {% endif %}
-
-
-{% endblock %}
+{% endblock %}Hakutulokset
