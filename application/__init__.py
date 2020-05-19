@@ -27,7 +27,7 @@ from application.auth import models
 from application.auth import views
 
 #----------------------------------------------
-# login stuff
+# login
 #----------------------------------------------
 from application.auth.models import User
 from os import urandom
@@ -45,7 +45,7 @@ def load_user(user_id):
 	return User.query.get(user_id)
 
 #----------------------------------------------
-# initiate admin and guest users
+# create admin and guest accounts
 #----------------------------------------------
 from sqlalchemy.event import listen
 from sqlalchemy import event, DDL
@@ -57,7 +57,7 @@ def insert_initial_values(*args, **kwargs):
 	db.session.commit()
 
 #----------------------------------------------
-# initiate 5 default songs
+# create 5 default songs
 #----------------------------------------------
 from application.songs.models import Song
 
