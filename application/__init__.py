@@ -7,13 +7,13 @@ from flask_migrate import Migrate
 
 if os.environ.get("HEROKU"):
 	app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
-	app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-	app.config["ENV"] = 'production'
+	# app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+	# app.config["ENV"] = 'production'
 else:
 	app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///songs.db"
 	app.config["SQLALCHEMY_ECHO"] = True
-	app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-	app.config["ENV"] = 'development'
+	# app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+	# app.config["ENV"] = 'development'
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
