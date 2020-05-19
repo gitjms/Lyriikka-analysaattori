@@ -57,14 +57,17 @@ def insert_initial_accounts(*args, **kwargs):
 	db.session.commit()
 
 #----------------------------------------------
-# create 5 default songs
+# 5 default songs
 #----------------------------------------------
 from application.songs.models import Song
+from pathlib import Path
 
 @event.listens_for(Song.__table__, 'after_create')
 def insert_initial_songs(*args, **kwargs):
 	for i in range(1,6):
-		document_path = os.getcwd()+'/application/static/default_songs/song'+str(i)+'.txt'
+		file = 'static/default_songs/song'+str(i)+'.txt'
+		document_path = Path(__file__).parent / file
+
 		file = open(document_path, 'r', encoding='utf8')
 		title = file.readline().rstrip()
 		author = file.readline().rstrip()
