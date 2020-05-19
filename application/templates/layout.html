@@ -23,6 +23,11 @@
           {% endfor %}
         {% endif %}
 	  {% endwith %}
+<!--
+	  <div class="container-fluid">
+		<h3>{{session['counter']}}</h3>
+	  </div>
+-->
 	  </div>
 	  <div class="container-fluid">
         <nav class="navbar fixed-bottom navbar-expand-lg navbar-dark" style="background-color: #7d1c09;">
@@ -39,14 +44,14 @@
 		  <a style="color:white; font-size:18px;" href="{{ url_for('auth_create') }}">Create account</a>
 		  {% endif %}
 
-          <a class="navbar-brand" href="{{ url_for('songs_main') }}">
+          <a class="navbar-brand" href="{{ url_for('songs_index') }}">
 		    <img src="{{url_for('static', filename='images/brandlogo.png')}}" width="80" height="30" class="d-inline-block align-top image-responsive myLogo" alt="">
 		  </a>
 
           <div class="collapse navbar-collapse" id="toggler">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
               <li class="nav-item">
-                <a class="nav-link" class="col-lg-2" href="{{ url_for('songs_index') }}">List songs</a>
+                <a class="nav-link" href="{{ url_for('songs_list') }}">List songs</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('songs_create') }}">Add a song</a>
@@ -54,10 +59,10 @@
             </ul>
 		  
 		    <nav class="navbar navbar-dark justify-content-between" style="background-color: #5e1b0f;">
-			  <a class="navbar-brand">Search song by name:</a>
+			  <a class="navbar-brand">Search for word:</a>
 			    <form class="form-inline my-2 my-lg-0">
-				  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-				  <button class="btn btn-outline-success my-2 my-sm-0 custom_Btn" type="submit">Search</button>
+				  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" type="submit" href="{{ url_for('words_find') }}">
+				  <button class="btn btn-outline-success my-2 my-sm-0 custom_Btn">Search</button>
 			    </form>
 		    </nav>
           </div>

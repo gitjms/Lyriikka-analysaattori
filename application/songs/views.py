@@ -16,21 +16,20 @@ def before_request():
 
 
 #-----------------------------------------
-#		INDEX: songs_main()
+#		INDEX: songs_index()
 #-----------------------------------------
 @app.route("/")
-def songs_main():
+def songs_index():
 	return render_template("index.html")
 
 
 #-----------------------------------------
-#		LIST: songs_index()
+#		LIST: songs_list()
 #-----------------------------------------
 @app.route("/songs", methods=["GET", "POST"])
 @login_required
-def songs_index():
+def songs_list():
 	song_list = [g.user.id,1]
-
 	return render_template("songs/list.html", songs = Song.query.filter(Song.account_id.in_((song_list))))
 
 
@@ -40,9 +39,8 @@ def songs_index():
 @app.route("/songs/show/<song_id>/", methods=["GET", "POST"])
 @login_required
 def songs_show(song_id):
-	if request.method == "GET":
-		if request.form.get("Back") == "Back":
-			return render_template("songs/list.html", song = Song.query.filter_by(id=song.account_id).first())
+	if request.method == "GET" and request.form.get("Back") == "Back":
+		return render_template("songs/list.html", song = Song.query.filter_by(id=song.account_id).first())
 	return render_template("songs/show.html", song = Song.query.get(song_id))
 
 
@@ -55,7 +53,7 @@ def songs_editing(song_id):
 	form = SongForm(request.form)
 
 	if request.form.get("Back") == "Back":
-		return redirect(url_for("songs_index"))
+		return redirect(url_for("songs_list"))
 
 	if request.method == "GET":
 		return render_template("songs/edit.html", song = Song.query.get(song_id), form = form)
@@ -120,7 +118,7 @@ def songs_create():
 		return render_template("songs/new.html", form = form)
 
 	if request.form.get("Back") == "Back":
-		return redirect(url_for("songs_index"))
+		return redirect(url_for("songs_list"))
 
 	if not form.validate():
 		return render_template("songs/new.html", form = form)
@@ -138,4 +136,3 @@ def songs_create():
 		return render_template("songs/new.html", form = form)
 
 	return render_template("songs/list.html", songs = Song.query.all())
-

@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <p>
+
+	  <div class="col-auto">
+	    <h3>
+		  <small class="text-muted">Word to find:</small>
+			{{ words.word }}
+	    </h3>
+	  </div><br>
+
+      {% for word in words %}
+  
+        <td>{{ song.id }}.  {{ song.title }}</td>
+	  
+      {% endfor %}
+
+    </p>
+{% endblock %}

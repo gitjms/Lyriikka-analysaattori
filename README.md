@@ -14,14 +14,21 @@ Löydät sovelluksen [täältä](https://lyrfreq.herokuapp.com/).
 
 ## Suunnitellut toiminnot
 
-- [ ] kirjautuminen, roolit: user ja admin
-- [ ] online-käyttäjät näkyvät lukumääränä (paitsi admin)
-- [ ] käyttäjien aktiivisuushistoria näkyy (admin)
+- [x] kirjautuminen, roolit: user ja admin
 - [ ] kaikkien sanojen frekvenssit top 10(+)
 - [ ] tietyn sanan esiintymät (laululista frekvensseineen)
 - [ ] lyhyiden sanayhdistelmien esiintymät ja frekvenssit
-- [ ] uusien lyriikoiden lisääminen, vanhojen poistaminen, muokkaus (admin)
+- [x] uusien lyriikoiden lisääminen, vanhojen poistaminen, muokkaus
 - [ ] käyttäjien hallinta (admin)
+
+## Käyttäjät
+
+Valmiita oletuskäyttäjiä ovat *admin* täysillä oikeuksilla (toisten käyttäjien poisto) sekä *guest* rajoitetuilla (user) oikeuksilla.
+
+Käyttäjä voivat myös luoda oman (user) tilinsä salasanoineen.
+
+Kukin käyttäjä näkee kaikki viisi oletuslaulua sekä itse lisäämänsä laulut. Muiden lisäämiä lauluja ei nähdä. Vain admin voi lisätä yleisesti saatavilla olevia lauluja.
+
 
 ## User stories
 

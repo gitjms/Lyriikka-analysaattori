@@ -26,6 +26,9 @@ from application.auth import views
 from application.songs import models
 from application.songs import views
 
+from application.words import models
+from application.words import views
+
 #----------------------------------------------
 # login
 #----------------------------------------------

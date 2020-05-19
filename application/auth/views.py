@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash, g
+from flask import render_template, request, redirect, url_for, flash, g, session
 from flask_login import login_user, logout_user, current_user, login_required
 
 import bcrypt as hash_bcrypt
@@ -63,6 +63,7 @@ def auth_login():
 	flash("User " + user.username + " identified.", "success")
 	login_user(user, remember = remember_me)
 	db.session.permanent = True
+	session['user_id'] = user.id
 
 	return redirect(request.args.get('next') or url_for("index"))
 
@@ -80,23 +81,26 @@ def auth_create():
 	if request.form.get("Back") == "Back":
 		return redirect(url_for("index"))
 
-	remember_me = False
-	if 'remember_me' in request.form:
-		flash("remembered.", "success")
-		remember_me = True
-
 	if not form.validate():
-		return render_template("auth/newuser.html", form = form, error = "Fields must not be empty.")
+		return render_template("auth/newuser.html", form = form, error = "Check your password.")
 
 	pw_hash = bcrypt.generate_password_hash(form.password.data)
 	
 	user = User(form.fullname.data,form.username.data,form.password.data,False)
+
+	remember_me = False
+	if 'remember_me' in request.form:
+		flash_text = "User added and logged in. Session remembered."
+		remember_me = True
+	else:
+		flash_text = "User added and logged in."
+
 	try:
 		db.session().add(user)
 		db.session().commit()
 		login_user(user, remember = remember_me)
 		db.session.permanent = True
-		flash("User added.", "success")
+		flash(flash_text, "success")
 	except IntegrityError:
 		db.session.rollback()
 		flash("User already exists. Consider changing username.", "danger")
@@ -110,5 +114,5 @@ def auth_create():
 #-----------------------------------------
 @app.route("/auth/logout")
 def auth_logout():
-    logout_user()
-    return redirect(url_for("index"))
+	logout_user()
+	return redirect(url_for("index"))
