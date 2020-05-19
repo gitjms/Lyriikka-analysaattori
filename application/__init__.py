@@ -45,10 +45,20 @@ def load_user(user_id):
 	return User.query.get(user_id)
 
 #----------------------------------------------
-# 5 default songs
+# admin and guest accounts
 #----------------------------------------------
 from sqlalchemy.event import listen
 from sqlalchemy import event, DDL
+
+@event.listens_for(User.__table__, 'after_create')
+def insert_initial_accounts(*args, **kwargs):
+	db.session.add(User(fullname='admin',username='admin',password='admin', admin=True))
+	db.session.add(User(fullname='guest',username='guest',password='guest', admin=False))
+	db.session.commit()
+
+#----------------------------------------------
+# 5 default songs
+#----------------------------------------------
 from application.songs.models import Song
 
 @event.listens_for(Song.__table__, 'after_create')
@@ -64,15 +74,5 @@ def insert_initial_songs(*args, **kwargs):
 		song.account_id = 1
 		db.session.add(song)
 		db.session.commit()
-
-#----------------------------------------------
-# admin and guest accounts
-#----------------------------------------------
-
-@event.listens_for(User.__table__, 'after_create')
-def insert_initial_accounts(*args, **kwargs):
-	db.session.add(User(fullname='admin',username='admin',password='admin', admin=True))
-	db.session.add(User(fullname='guest',username='guest',password='guest', admin=False))
-	db.session.commit()
 
 db.create_all()
