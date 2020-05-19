@@ -19,12 +19,12 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 from application import views
-
-from application.songs import models
-from application.songs import views
  
 from application.auth import models
 from application.auth import views
+
+from application.songs import models
+from application.songs import views
 
 #----------------------------------------------
 # login
@@ -45,7 +45,7 @@ def load_user(user_id):
 	return User.query.get(user_id)
 
 #----------------------------------------------
-# create admin and guest accounts
+# admin and guest accounts
 #----------------------------------------------
 from sqlalchemy.event import listen
 from sqlalchemy import event, DDL
@@ -66,8 +66,8 @@ def insert_initial_songs(*args, **kwargs):
 	for i in range(1,6):
 		document_path = os.getcwd()+'/application/static/default_songs/song'+str(i)+'.txt'
 		file = open(document_path, 'r', encoding='utf8')
-		title = file.readline()
-		author = file.readline()
+		title = file.readline().rstrip()
+		author = file.readline().rstrip()
 		lyrics = file.read()
 
 		song = Song(title,author,lyrics)
