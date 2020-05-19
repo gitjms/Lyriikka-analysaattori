@@ -51,7 +51,7 @@ from sqlalchemy.event import listen
 from sqlalchemy import event, DDL
 
 @event.listens_for(User.__table__, 'after_create')
-def insert_initial_values(*args, **kwargs):
+def insert_initial_accounts(*args, **kwargs):
 	db.session.add(User(fullname='admin',username='admin',password='admin', admin=True))
 	db.session.add(User(fullname='guest',username='guest',password='guest', admin=False))
 	db.session.commit()
@@ -62,9 +62,9 @@ def insert_initial_values(*args, **kwargs):
 from application.songs.models import Song
 
 @event.listens_for(Song.__table__, 'after_create')
-def insert_initial_values(*args, **kwargs):
+def insert_initial_songs(*args, **kwargs):
 	for i in range(1,6):
-		document_path = os.getcwd()+'\\application\\static\\default_songs\\song'+str(i)+'.txt'
+		document_path = os.getcwd()+'/application/static/default_songs/song'+str(i)+'.txt'
 		file = open(document_path, 'r', encoding='utf8')
 		title = file.readline()
 		author = file.readline()
