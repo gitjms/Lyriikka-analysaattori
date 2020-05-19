@@ -1,5 +1,4 @@
 from application import db
-
 from application import views
 
 
@@ -10,10 +9,13 @@ class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
 	date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(),onupdate=db.func.current_timestamp())
+
 	fullname = db.Column(db.String(144), nullable=False)
 	username = db.Column(db.String(144), nullable=False)
 	password = db.Column(db.String(144), nullable=False)
 	admin = db.Column(db.Boolean, default=False, nullable=False)
+
+	songs = db.relationship("Song", backref='account', lazy=True)
 
 	def __init__(self, fullname, username, password, admin):
 		self.fullname = fullname

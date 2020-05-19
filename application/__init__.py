@@ -26,6 +26,9 @@ from application.songs import views
 from application.auth import models
 from application.auth import views
 
+#----------------------------------------------
+# login stuff
+#----------------------------------------------
 from application.auth.models import User
 from os import urandom
 app.config["SECRET_KEY"] = urandom(32)
@@ -40,5 +43,36 @@ login_manager.login_message = "Please login."
 @login_manager.user_loader
 def load_user(user_id):
 	return User.query.get(user_id)
+
+#----------------------------------------------
+# initiate admin and guest users
+#----------------------------------------------
+from sqlalchemy.event import listen
+from sqlalchemy import event, DDL
+
+@event.listens_for(User.__table__, 'after_create')
+def insert_initial_values(*args, **kwargs):
+	db.session.add(User(fullname='admin',username='admin',password='admin', admin=True))
+	db.session.add(User(fullname='guest',username='guest',password='guest', admin=False))
+	db.session.commit()
+
+#----------------------------------------------
+# initiate 5 default songs
+#----------------------------------------------
+from application.songs.models import Song
+
+@event.listens_for(Song.__table__, 'after_create')
+def insert_initial_values(*args, **kwargs):
+	for i in range(1,6):
+		document_path = os.getcwd()+'\\application\\static\\default_songs\\song'+str(i)+'.txt'
+		file = open(document_path, 'r', encoding='utf8')
+		title = file.readline()
+		author = file.readline()
+		lyrics = file.read()
+
+		song = Song(title,author,lyrics)
+		song.account_id = 1
+		db.session.add(song)
+		db.session.commit()
 
 db.create_all()

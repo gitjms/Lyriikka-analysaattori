@@ -10,7 +10,6 @@ from application.songs.forms import SongForm
 
 # Lomakkeen näyttämisen ja lähetyksen vastaanottava toiminnallisuus.
 
-
 @app.before_request
 def before_request():
 	g.user = current_user
@@ -28,32 +27,23 @@ def songs_main():
 #		LIST: songs_index()
 #-----------------------------------------
 @app.route("/songs", methods=["GET", "POST"])
+@login_required
 def songs_index():
-	#if request.method == "POST":
-	#	if request.form.get("Back") == "Back":
-	#		return redirect(url_for("songs_main"))
-	return render_template("songs/list.html", songs = Song.query.all())
+	song_list = [g.user.id,1]
+
+	return render_template("songs/list.html", songs = Song.query.filter(Song.account_id.in_((song_list))))
 
 
 #-----------------------------------------
 #		SHOW: songs_show()
 #-----------------------------------------
 @app.route("/songs/show/<song_id>/", methods=["GET", "POST"])
+@login_required
 def songs_show(song_id):
 	if request.method == "GET":
 		if request.form.get("Back") == "Back":
-			return render_template("songs/list.html", song = Song.query.all())
+			return render_template("songs/list.html", song = Song.query.filter_by(id=song.account_id).first())
 	return render_template("songs/show.html", song = Song.query.get(song_id))
-
-
-#-----------------------------------------
-#		EDIT: songs_edit()
-#-----------------------------------------
-# @app.route("/songs/edit/<song_id>/", methods=["GET"])
-# @login_required
-# def songs_edit():
-	# form = SongForm(request.form)
-	# return render_template("songs/edit.html", form = form)
 
 
 #-----------------------------------------
@@ -136,6 +126,8 @@ def songs_create():
 		return render_template("songs/new.html", form = form)
 
 	song = Song(form.title.data,form.author.data,form.lyrics.data)
+	song.account_id = g.user.id
+
 	try:
 		db.session().add(song)
 		db.session().commit()
