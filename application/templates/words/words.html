@@ -1,20 +1,51 @@
 {% extends "layout.html" %}
 
+{{ error }}
 {% block body %}
-    <p>
-
+    <form method="GET" action="{{ url_for('words_find') }}">
 	  <div class="col-auto">
 	    <h3>
-		  <small class="text-muted">Word to find:</small>
-			{{ words.word }}
+		  <small class="text-muted" style="margin: 30px">Word to find:</small>
+			 <font size="+4">[</font>&nbsp;&nbsp;<i>{{  word  }}</i>&nbsp;&nbsp;<font size="+4">]</font>
 	    </h3>
-	  </div><br>
+	  </div>
+	</form><br><br>
 
-      {% for word in words %}
+	  {% for err in error %}
+        <h4>{{ err }}</h4>
+      {% endfor %}
+
+	  <!-- <div class="col-auto"> -->
+	  <div class="col-sm-5 col-sm-offset-1">
+          {% if results %}
+            <h2>Frequencies</h2>
+            <br>
+            <div id="results">
+              <table class="table table-striped" style="max-width: 300px;">
+                <thead>
+                  <tr>
+                    <th>Word</th>
+                    <th>Count</th>
+                    <th style="float: left; width: 200px;">Count (no stop words)</th>
+                  </tr>
+                </thead>
+				{% for result in results%}
+                  <tr>
+                    <td>{{ result[0] }}</td>
+                    <td>{{ result[1] }}</td>
+                    <td>{{ result[2] }}</td>
+                  </tr>
+                {% endfor %}
+              </table>
+            </div>
+          {% endif %}
+        </div>
+
+      <h2>Sources</h2>
+      {% for song in songs %}
   
-        <td>{{ song.id }}.  {{ song.title }}</td>
+        <td>{{ song.id }}.  {{ song.lyrics }}</td><br><br>
 	  
       {% endfor %}
 
-    </p>
 {% endblock %}

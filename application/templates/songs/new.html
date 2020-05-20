@@ -1,13 +1,12 @@
 {% extends "layout.html" %}
   
 {% block body %}
-    <p>
+
 	  <form method="POST" action="{{ url_for('songs_create') }}">
 
 	    <div class="col-auto">
-		  <button class="btn btn-primary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>
 
-		  <button class="btn btn-primary myFloat_Right" type="submit" name="Submit" style="width:75px;" value="Add a new song"/>Submit</button>
+		  <button class="btn btn-sm btn-primary myFloat_Right" type="submit" name="Submit" style="width:75px;" value="Add a new song"/>Submit</button>
 
 		  <div style="clear: both;"></div>
 		</div>
@@ -52,5 +51,5 @@
 		</td>
 
 	  </form>
-    </p>
+
 {% endblock %}

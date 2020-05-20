@@ -66,7 +66,7 @@ from application.songs.models import Song
 
 @event.listens_for(Song.__table__, 'after_create')
 def insert_initial_songs(*args, **kwargs):
-	for i in range(1,6):
+	for i in range(1,7):
 		document_path = os.getcwd()+'/application/static/default_songs/song'+str(i)+'.txt'
 		file = open(document_path, 'r', encoding='utf8')
 		title = file.readline().rstrip()

@@ -2,73 +2,74 @@
   
 {% block body %}
 {{ error }}
-    <p>
-	  <form action="" method=POST class="form-horizontal">
-    <h4>Create account </h4>
+  <h4>Create account </h4>
+
+  <form method=POST class="form-horizontal">
 	<table>
 	<thead>
-	<tr>
-      <th>
-        <div class="control-group">
-          <div class="controls">
-	        <button class="btn btn-success myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Cancel</button>
-          </div>
-        </div>
-	  </th>
-	</tr>
+      <div class="control-group">
+        <div class="controls">
+	
+		  <tr>
+	        <button class="btn btn-sm btn-secondary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Cancel</button>
+		  </tr><br><br>
 
-	<tr>
-      <th>
-        <div class="control-group">
-          <div class="controls">
-            <input type="text" id="fullname" name="fullname" class="input-xlarge"
-            placeholder="Enter Full Name" value="{{ request.form.fullname }}"
-            >
-          </div>
-        </div>
-	  </th>
-	</tr>
+		  <tr>
+		    <td>
+		      <label for="fullname" class="col-form-label">Full Name:</label>
+		    </td>
+		    <td>
+              <input type="text" id="fullname" name="fullname" class="input-xlarge"
+            placeholder="Enter Full Name" value="{{ request.form.fullname }}" required></input>
+		    </td>
+		    <td>
+		    </td>
+		  </tr>
 
-	<tr>
-      <th>
-        <div class="control-group">
-          <div class="controls">
-            <input type="text" id="username" name="username" class="input-xlarge"
-            placeholder="Enter Username" value="{{ request.form.username }}"
-            >
-          </div>
-        </div>
-	  </th>
-	</tr>
+		  <tr>
+		    <td>
+		      <label for="username" class="col-form-label">Username:</label>
+		    </td>
+		    <td>
+              <input type="text" id="username" name="username" class="input-xlarge"
+            placeholder="Enter Username" value="{{ request.form.username }}" required></input>
+		    </td>
+		    <td>
+		    </td>
+		  </tr>
 
-	<tr>
-      <th>
-        <div class="control-group">
-          <div class="controls">
-		    <input type="password" id="password" name="password" class="input-xlarge myInput"
-            placeholder="Enter Password" value="{{ request.form.password }}"
-            ><label style="margin-left: 5px" for="password" class="lead col-form-label">min/max 4 characters</label>
-          </div>
-        </div>
-	  </th>
-	</tr>
+		  <tr>
+		    <td>
+		      <label for="password" class="col-form-label">Password:</label>
+		    </td>
+		    <td>
+		      <input type="text" id="password" name="password" class="input-xlarge"
+            placeholder="Enter Password" value="{{ request.form.password }}" required></input>
+		    </td>
+		    <td>
+		      <label style="margin-left: 5px" class="lead col-form-label">min 4 characters</label>
+		    </td>
+		  </tr>
 
-	<tr>
-      <th>
-        <div>
-	      <label for="Remember">Remember this session?</label>
-	      <input type="checkbox" id="Remember" name="remember_me"></input >
+		  <tr>
+		    <td style="float: left;">
+	          <label for="Remember">Remember this session?</label>
+		    </td>
+		    <td>
+		      <input type="checkbox" id="Remember" name="remember_me"></input >
+		    </td>
+		  </tr>
+
+		  <tr>
+		    <td style="float: left;">
+              <button type="submit" class="btn btn-sm btn-success myFloat_Left" style="width:75px;">Create</button>
+		    </td>
+		  </tr>
+
         </div>
-        <div class="control-group">
-          <div class="controls">
-            <button type="submit" class="btn btn-success myFloat_Left" style="width:75px;">Create</button>
-          </div>
-        </div>
-	  </th>
-	</tr>
+      </div>
 
 	</thead>
 	</table>
   </form>
-    </p>
 {% endblock %}

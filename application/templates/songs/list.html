@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  <p>
+
     <table>
       <tr>
         <th style="text-align: left;">Songs</th>
@@ -12,7 +12,7 @@
 	    <td>
 		  <form method="POST" action="{{ url_for('songs_show', song_id=song.id) }}">
 		    <div class="col-auto">
-		      <button class="btn btn-primary" type="submit" name="Show" style="width:75px;" value="Show"/>Lyrics</button>
+		      <button class="btn btn-sm btn-primary" type="submit" name="Show" style="width:75px;" value="Show"/>Lyrics</button>
 		    </div>
 		  </form>
         </td>
@@ -20,7 +20,7 @@
 	      <form method="POST" action="{{ url_for('songs_editing', song_id=song.id) }}">
 		    <input type="hidden" name="song_id" value="{{ song.id }}">
 		    <div class="col-auto">
-		      <button class="btn btn-primary" type="submit" name="Edit" style="width:75px;" value="Edit"/>Edit</button>
+		      <button class="btn btn-sm btn-primary" type="submit" name="Edit" style="width:75px;" value="Edit"/>Edit</button>
 		    </div>
 		  </form>
         </td>
@@ -28,12 +28,12 @@
 	      <form method="POST" action="{{ url_for('songs_delete', song_id=song.id) }}">
 		    <input type="hidden" name="song_id" value="{{ song.id }}">
 		    <div class="col-auto">
-		      <button class="btn btn-primary" type="submit" name="Delete" style="width:75px;" value="Delete"/> Delete</button>
+		      <button class="btn btn-sm btn-secondary" type="submit" name="Delete" style="width:75px;" value="Delete"/> Delete</button>
 		    </div>
 		  </form>
         </td>
       </tr>
       {% endfor %}
     </table>
-  </p>
+
 {% endblock %}

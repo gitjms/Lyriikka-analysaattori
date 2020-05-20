@@ -61,7 +61,7 @@ def songs_editing(song_id):
 		if request.form.get("Submit") == "Submit":
 
 			if not form.validate():
-				return render_template("songs/edit.html", song = Song.query.get(song_id), form = form)
+				return render_template("songs/edit.html", song = Song.query.get(song_id), form = form, error = "Fields must not be empty.")
 
 			song = Song.query.get(song_id)
 			song_title = request.form.get("title")
@@ -77,11 +77,9 @@ def songs_editing(song_id):
 					song.lyrics = song_lyrics
 					db.session().add(song)
 					db.session().commit()
-					flash("Changes updated.", "success")
 				except IntegrityError:
 					db.session.rollback()
 					flash("Song exists already.", "danger")
-					pass
 		return render_template("songs/edit.html", song = Song.query.get(song_id), form = form)
 	return render_template("songs/list.html", song = Song.query.all())
 
@@ -97,11 +95,9 @@ def songs_delete(song_id):
 		try:
 			db.session().delete(qry.first())
 			db.session().commit()
-			flash("Song deleted.", "success")
 		except SQLAlchemyError:
 			db.session.rollback()
 			flash("Song not deleted.", "danger")
-			pass
 		return redirect('/songs')
 	return render_template("songs/list.html", songs = Song.query.all())
 
@@ -117,11 +113,8 @@ def songs_create():
 	if request.method == "GET":
 		return render_template("songs/new.html", form = form)
 
-	if request.form.get("Back") == "Back":
-		return redirect(url_for("songs_list"))
-
 	if not form.validate():
-		return render_template("songs/new.html", form = form)
+		return render_template("songs/new.html", form = form, error = "Fields must not be empty.")
 
 	song = Song(form.title.data,form.author.data,form.lyrics.data)
 	song.account_id = g.user.id
@@ -129,7 +122,6 @@ def songs_create():
 	try:
 		db.session().add(song)
 		db.session().commit()
-		flash("Song added.", "success")
 	except IntegrityError:
 		db.session.rollback()
 		flash("Song already exists. Consider changing title.", "danger")

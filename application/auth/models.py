@@ -1,17 +1,21 @@
 from application import db
 from application import views
 
+import datetime
+
+from sqlalchemy import DateTime
+
 
 class User(db.Model):
 
 	__tablename__ = "account"
 
-	id = db.Column(db.Integer, primary_key=True)
-	date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
+	id = db.Column(db.Integer(), primary_key=True)
+	date_created = db.Column(db.DateTime(), default=db.func.current_timestamp())
 
-	fullname = db.Column(db.String(144), nullable=False)
-	username = db.Column(db.String(144), nullable=False)
-	password = db.Column(db.String(144), nullable=False)
+	fullname = db.Column(db.String(120), nullable=False)
+	username = db.Column(db.String(80), nullable=False)
+	password = db.Column(db.String(80), nullable=False)
 	admin = db.Column(db.Boolean, default=False, nullable=False)
 
 	songs = db.relationship("Song", backref='account', lazy=True)
@@ -33,3 +37,4 @@ class User(db.Model):
 
 	def is_authenticated(self):
 		return True
+

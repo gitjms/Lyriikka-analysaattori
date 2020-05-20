@@ -2,11 +2,13 @@
 
 ## Aihekuvaus
 
-Sovellus on selainpohjainen tietokantasovellus, jolla voi tarkastella suomalaisten kristillisten laululyriikoiden sanafrekvenssejä.
+Sovellus on selainpohjainen tietokantasovellus, jolla voi tarkastella englanninkielisten kristillisten laululyriikoiden sanafrekvenssejä.
 
-Lyriikkatietokanta on haettu sivustolta [Worship Leader App](https://worshipleaderapp.com/en/download-song-database-opensong-openlp-and-quelea), sisältäen 57 kielen lyriikoita yhteensä 72098 kappaletta. Suomenkielisiä lyriikoita on 358. Kyseessä on kristillisten laulujen tietokanta, joiden katsotaan olevan copyright-vapaita lähteitä.
+Lyriikkatietokanta on haettu sivustolta [Worship Leader App](https://worshipleaderapp.com/en/download-song-database-opensong-openlp-and-quelea), sisältäen 57 kielen lyriikoita yhteensä 72098 kappaletta. Kyseessä on kristillisten laulujen tietokanta, joiden katsotaan olevan copyright-vapaita lähteitä.
 
 Sovellukseen on asetettu vain viisi oletuslaulua valmiiksi.
+
+Stop-words on kopioitu sivulta [Flask by Example](https://realpython.com/flask-by-example-part-1-project-setup/).
 
 ### Sovellus
 
@@ -14,12 +16,16 @@ Löydät sovelluksen [täältä](https://lyrfreq.herokuapp.com/).
 
 ## Suunnitellut toiminnot
 
+### Sivuston toiminta
 - [x] kirjautuminen, roolit: user ja admin
+- [x] uusien lyriikoiden lisääminen, vanhojen poistaminen, muokkaus
+- [x] käyttäjätilien lukumääräinfo (admin)
+- [x] käyttäjätilien hallinta (admin)
+
+### Yhteenvetokyselyt
 - [ ] kaikkien sanojen frekvenssit top 10(+)
 - [ ] tietyn sanan esiintymät (laululista frekvensseineen)
 - [ ] lyhyiden sanayhdistelmien esiintymät ja frekvenssit
-- [x] uusien lyriikoiden lisääminen, vanhojen poistaminen, muokkaus
-- [ ] käyttäjien hallinta (admin)
 
 ## Käyttäjät
 

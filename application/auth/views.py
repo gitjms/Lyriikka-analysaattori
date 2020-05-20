@@ -34,7 +34,6 @@ def auth_login():
 
 	remember_me = False
 	if 'remember_me' in request.form:
-		flash("remembered.", "success")
 		remember_me = True
 
 	if request.form.get("Guest") == "Guest":
@@ -43,7 +42,7 @@ def auth_login():
 	elif request.form.get("Login") == "Login":
 		if not form.validate():
 			flash("Login failed.", "warning")
-			return render_template("auth/loginform.html", form = form)
+			return render_template("auth/loginform.html", form = form, error = "Fields must not be empty. Check password length.")
 
 		username = form.username.data
 		password = form.password.data.encode('utf-8')
@@ -57,13 +56,11 @@ def auth_login():
 
 	# Compare Password with hashed password
 	if hash_bcrypt.checkpw(password,true_password) == False:
-		flash("No such username or password.", "warning")
+		flash("No such password.", "warning")
 		return render_template("auth/loginform.html", form = form)
 
-	flash("User " + user.username + " identified.", "success")
 	login_user(user, remember = remember_me)
 	db.session.permanent = True
-	session['user_id'] = user.id
 
 	return redirect(request.args.get('next') or url_for("index"))
 
@@ -82,31 +79,79 @@ def auth_create():
 		return redirect(url_for("index"))
 
 	if not form.validate():
-		return render_template("auth/newuser.html", form = form, error = "Check your password.")
+		flash("Create account failed.", "warning")
+		return render_template("auth/newuser.html", form = form, error = "Fields must not be empty. Check password length.")
 
 	pw_hash = bcrypt.generate_password_hash(form.password.data)
 	
 	user = User(form.fullname.data,form.username.data,form.password.data,False)
 
 	remember_me = False
-	if 'remember_me' in request.form:
-		flash_text = "User added and logged in. Session remembered."
-		remember_me = True
-	else:
-		flash_text = "User added and logged in."
 
 	try:
 		db.session().add(user)
 		db.session().commit()
 		login_user(user, remember = remember_me)
 		db.session.permanent = True
-		flash(flash_text, "success")
+		sumSessionCounter(True)
 	except IntegrityError:
 		db.session.rollback()
-		flash("User already exists. Consider changing username.", "danger")
-		return render_template("auth/newuser.html", form = form)
+		flash("Failed.", "danger")
+		return render_template("auth/newuser.html", form = form, error = "User already exists. Consider changing username.")
 
 	return redirect(request.args.get('next') or url_for("index"))
+
+
+#-----------------------------------------
+#		LIST: users_list()
+#-----------------------------------------
+@app.route("/auth", methods=["POST"])
+@login_required
+def users_list():
+	return render_template("auth/list.html", users = User.query.all())
+
+
+#-----------------------------------------
+#		DELETE: user_delete()
+#-----------------------------------------
+@app.route("/auth/delete/<user_id>", methods=["POST"])
+@login_required
+def user_delete(user_id):
+	user_qry = db.session().query(User).filter(User.id==user_id)
+
+	if request.method == "POST":
+		try:
+			db.session().delete(user_qry.first())
+			db.session().commit()
+			sumSessionCounter(False)
+		except SQLAlchemyError:
+			db.session.rollback()
+			flash("User not deleted.", "danger")
+
+	return render_template("auth/list.html", users = User.query.all())
+
+
+#-----------------------------------------
+#		CHANGE ADMIN STATUS user_adminate()
+#-----------------------------------------
+@app.route("/auth/status/<user_id>", methods=["POST"])
+@login_required
+def user_adminate(user_id):
+	user_qry = db.session().query(User).filter(User.id==user_id)
+
+	if user_qry.first().admin:
+		user_qry.first().admin = False
+	else:
+		user_qry.first().admin = True
+
+	if request.method == "POST":
+		try:
+			db.session().commit()
+		except SQLAlchemyError:
+			db.session.rollback()
+			flash("User's status not changed.", "danger")
+
+	return render_template("auth/list.html", users = User.query.all())
 
 
 #-----------------------------------------
@@ -116,3 +161,13 @@ def auth_create():
 def auth_logout():
 	logout_user()
 	return redirect(url_for("index"))
+
+
+def sumSessionCounter(add):
+	try:
+		if add:
+			session['counter'] += 1
+		else:
+			session['counter'] -= 1
+	except KeyError:
+		session['counter'] = 1

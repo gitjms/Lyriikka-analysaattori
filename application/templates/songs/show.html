@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 
+{{ error }}
 {% block body %}
-    <p>
 	  <form method="GET" action="{{ url_for('songs_list') }}">
 		<div class="col-auto">
-		  <button class="btn btn-primary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>
+		  <button class="btn btn-sm btn-secondary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>
 		</div>
 
 		<div style="clear: both;"></div>
@@ -29,5 +29,5 @@
 {{ song.lyrics }}
         </pre>
 	  </div>
-    </p>
+
 {% endblock %}

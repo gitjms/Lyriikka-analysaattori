@@ -8,73 +8,129 @@
 	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 	  
 	  <!-- CSS -->
-	  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-	  
+	  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+
     </head>
 
     <body>
-	  <div class="container" style="min-height:100% width:80%">
-	  {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          {% for category, message in messages %}
-		    <div class="alert alert-{{ category }} alert-dismissible" role="alert" id="alert">
-			<span>{{ message }}</span>
-		    </div>
-          {% endfor %}
-        {% endif %}
-	  {% endwith %}
-<!--
-	  <div class="container-fluid">
-		<h3>{{session['counter']}}</h3>
-	  </div>
--->
-	  </div>
-	  <div class="container-fluid">
-        <nav class="navbar fixed-bottom navbar-expand-lg navbar-dark" style="background-color: #7d1c09;">
-          <button class="navbar-toggler custom_Btn" type="button" data-toggle="collapse" data-target="#toggler" aria-controls="toggler" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-          </button>
-		  
-		  {% if g.user.is_authenticated %}
-		  <a style="color:#b0746a; font-size:18px;">
-			Logged in as {{ g.user.username }}
-		  </a><a style="color:white; font-size:18px;" href="{{ url_for('auth_logout') }}">Logout</a>
-		  {% else %}
-		  <a style="color:white; font-size:18px;" href="{{ url_for('auth_login') }}">Login</a>
-		  <a style="color:white; font-size:18px;" href="{{ url_for('auth_create') }}">Create account</a>
-		  {% endif %}
+	  <div class="container-fluid" >
 
-          <a class="navbar-brand" href="{{ url_for('songs_index') }}">
-		    <img src="{{url_for('static', filename='images/brandlogo.png')}}" width="80" height="30" class="d-inline-block align-top image-responsive myLogo" alt="">
-		  </a>
+		<!-- FLASH MESSAGES -->
 
-          <div class="collapse navbar-collapse" id="toggler">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('songs_list') }}">List songs</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('songs_create') }}">Add a song</a>
-              </li>
-            </ul>
+		{% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+		      <div class="alert alert-{{ category }} alert-dismissible" role="alert" id="alert">
+			    <span>{{ message }}</span>
+		      </div>
+            {% endfor %}
+          {% endif %}
+	    {% endwith %}
+	  </div>
+
+	  <!-- NAVBAR -->
+
+	  <div class="container-fluid">
+        <nav class="navbar navbar-expand-md navbar-dark nav-justified" style="background-color: #7d1c09;">
+		<table>
+		<thead>
+		<tr>
+
+          <!-- LYRFREQ HOME LOGO -->
+
+		  <th rowspan="2">
+            <a class="navbar-brand" href="{{ url_for('songs_index') }}">
+		      <img src="{{url_for('static', filename='images/brandlogo.png')}}" width="100" height="45" class="d-inline-flex align-top image-responsive myLogo" alt="LyrFreq">
+		    </a>
+		  </th>
+
+          <!-- LOGIN / LOGOUT / CREATE ACCOUNT -->
 		  
-		    <nav class="navbar navbar-dark justify-content-between" style="background-color: #5e1b0f;">
-			  <a class="navbar-brand">Search for word:</a>
-			    <form class="form-inline my-2 my-lg-0">
-				  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" type="submit" href="{{ url_for('words_find') }}">
-				  <button class="btn btn-outline-success my-2 my-sm-0 custom_Btn">Search</button>
-			    </form>
+		  <th colspan="2" style="text-align: left;">
+		  <div class="navbar navbar-dark justify-content-between">
+		    {% if g.user.is_authenticated %}
+		      <a style="color:#b0746a; font-size:18px;">
+			    Hello {{ g.user.username }}
+		      </a>
+		      <a style="margin-left: 20px; margin-right: 20px; color:white; font-size:18px;" href="{{ url_for('auth_logout') }}">Logout</a>
+		    {% else %}
+		      <a style="margin-left: 20px; margin-right: 20px;color:white; font-size:18px;" href="{{ url_for('auth_login') }}">Login</a>
+		      <a style="margin-left: 20px; margin-right: 20px;color:white; font-size:18px;" href="{{ url_for('auth_create') }}">Create account</a>
+		    {% endif %}
+            </div>
+		  </th>
+
+		  <!-- SEARCH WORD -->
+
+		  <th rowspan="2">
+		    <nav class="navbar-nav" >
+			  <form class="form-inline my-0 my-lg-0" action="/words/show/" method="POST">
+				<input class="form-control mr-sm-2" type="text" style="max-width: 170px" placeholder="Search for Word" aria-label="Search" name="wordsearch" id="wordsearch">
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			  </form>
 		    </nav>
-          </div>
+		  </th>
+		</tr>
+
+		<!-- LIST SONGS / ADD SONGS -->
+
+		<tr>
+		  {% if g.user.is_authenticated %}
+            <div class="navbar navbar-dark justify-content-between">
+			  <style type="text/css">
+			    a:link {color: #000000; text-decoration: underline; }
+			    a:active {color: #0000ff; text-decoration: underline; }
+			    a:visited {color: #008000; text-decoration: underline; }
+			    a:hover {color: #ff0000; text-decoration: none; }
+			  </style>
+		      <td>
+			    <a class="nav-item nav-link active" href="{{ url_for('songs_list') }}" style="color: white" >List songs</a>
+		      </td>
+		      <td>
+                <a class="nav-item nav-link active" href="{{ url_for('songs_create') }}" style="color: white">Add songs</a>
+		      </td>
+            </div>
+		  {% else %}
+            <div class="navbar navbar-dark justify-content-between">
+		      <td>
+			    <a class="nav-item nav-link disabled" href="{{ url_for('songs_list') }}">List songs</a>
+		      </td>
+		      <td>
+                <a class="nav-item nav-link disabled" href="{{ url_for('songs_create') }}">Add songs</a>
+		      </td>
+            </div>
+		  {% endif %}
+		</tr>
+
+		</thead>
+		</table>
         </nav>
 
+		<!-- GRAY TEXT AREA -->
 
 	    <div class="jumbotron jumbotron-fluid">
 		  <div class="container">
 		    {% block body %}{% endblock %}
 		  </div>
 	    </div>
+
 	  </div>
+
+	  <!-- FOR ADMIN ONLY: LIST USERS -->
+
+	  {% if g.user.admin %}
+	    <div class="container-fluid" >
+		  <form action="/auth" method="post">
+		    <button class="btn btn-sm btn-primary" type="submit" style="width:75px; float: right;">List users</button>
+		  </form>
+	    </div>
+
+        <!-- REGISTERED USERS COUNTER -->
+
+		<div class="container-fluid">
+		  <div style="text-align: left; color: #5e1b0f; font-size:15px;" class="lead">Registered users: {{session['counter']}}</div >
+	    </div>
+      {% endif %}
 
 	<!-- Bootstrap 4.5.0 -->
     <!-- jQuery, Popper.js, and JS -->
