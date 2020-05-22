@@ -34,6 +34,7 @@ def auth_login():
 
 	remember_me = False
 	if 'remember_me' in request.form:
+		flash("remembered.", "success")
 		remember_me = True
 
 	if request.form.get("Guest") == "Guest":

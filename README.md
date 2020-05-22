@@ -6,9 +6,12 @@ Sovellus on selainpohjainen tietokantasovellus, jolla voi tarkastella englannink
 
 Lyriikkatietokanta on haettu sivustolta [Worship Leader App](https://worshipleaderapp.com/en/download-song-database-opensong-openlp-and-quelea), sisältäen 57 kielen lyriikoita yhteensä 72098 kappaletta. Kyseessä on kristillisten laulujen tietokanta, joiden katsotaan olevan copyright-vapaita lähteitä.
 
-Sovellukseen on asetettu vain viisi oletuslaulua valmiiksi.
+Sovellukseen on asetettu vain kuusi oletuslaulua valmiiksi.
 
-Stop-words on kopioitu sivulta [Flask by Example](https://realpython.com/flask-by-example-part-1-project-setup/).
+*Stop words* on kopioitu sivulta [Flask by Example](https://realpython.com/flask-by-example-part-1-project-setup/) ja hieman täydennetty. Kyse on turhista sanoista, joita ei haluta laskea mukaan, kuten esimerkiksi lyriikoiden verse- ja chorusosamerkinnät yms.
+Parempi olisi käyttää isoja kirjastoja, jotka saa ladattua käyttöön *Natural Language Toolkit* (NLTK) nimisestä palvelusta. Kyseisen alustan datamäärä on kuitenkin niin iso, ettei sitä kannata tässä pikkusovelluksessa käyttää.
+
+Kyseessä on lingvistinen data, jonka avulla voi tehdä monenlaista tiedonlouhintaa kielten parissa. Koko data-arkisto on kooltaan yli 3GT, mutta siitä voi kulloiseenkin tutkimukseen ottaa käyttöön pienemmän osan. Esimerkiksi nettisivujen ja chättien tutkimiseen on oma kirjastonsa, Reuters Corpus pitää puolestaan sisällään yli 1,3 miljoonaa sanaa uutisläteistä, ja Shakespearen tarinoita löytää Gutenberg-korpuksesta.
 
 ### Sovellus
 
@@ -33,8 +36,11 @@ Valmiita oletuskäyttäjiä ovat *admin* täysillä oikeuksilla (toisten käytt�
 
 Käyttäjä voivat myös luoda oman (user) tilinsä salasanoineen.
 
-Kukin käyttäjä näkee kaikki viisi oletuslaulua sekä itse lisäämänsä laulut. Muiden lisäämiä lauluja ei nähdä. Vain admin voi lisätä yleisesti saatavilla olevia lauluja.
+Kukin käyttäjä näkee kaikki oletuslaulut sekä itse lisäämänsä laulut. Muiden lisäämiä lauluja ei nähdä. Vain admin voi lisätä yleisesti saatavilla olevia lauluja.
 
+## Tietokannat ja tiedonhaku
+
+Tietokantataulut ovt *User* eli käyttäjät, *Song*, eli laulut sekä *Words* eli tulostaulu. Tulostauluun kerätään tiedot sanafrekvensseistä sekä haetun sana esiintymisistä.
 
 ## User stories
 

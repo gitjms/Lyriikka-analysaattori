@@ -9,6 +9,8 @@
 	  
 	  <!-- CSS -->
 	  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+	
+	<script type="text/javascript" src="{{ url_for('static', filename='Chart.min.js') }}"></script>
 
     </head>
 
@@ -65,7 +67,7 @@
 		  <th rowspan="2">
 		    <nav class="navbar-nav" >
 			  <form class="form-inline my-0 my-lg-0" action="/words/show/" method="POST">
-				<input class="form-control mr-sm-2" type="text" style="max-width: 170px" placeholder="Search for Word" aria-label="Search" name="wordsearch" id="wordsearch">
+				<input class="form-control mr-sm-2" type="text" style="max-width: 170px" placeholder="Search for Word" aria-label="Search" name="wordsearch" id="wordsearch" required>
 				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 			  </form>
 		    </nav>
@@ -137,6 +139,9 @@
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	
+	<!--  -->
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
 
 	<!-- JS -->
 	<script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
@@ -146,7 +151,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script>
 	$(document).ready(function(){
-		$(".alert").delay(3000).slideUp(300);
+		$(".alert").delay(5000).slideUp(300);
 	});
 	</script>
 

@@ -4,48 +4,127 @@
 {% block body %}
     <form method="GET" action="{{ url_for('words_find') }}">
 	  <div class="col-auto">
-	    <h3>
-		  <small class="text-muted" style="margin: 30px">Word to find:</small>
-			 <font size="+4">[</font>&nbsp;&nbsp;<i>{{  word  }}</i>&nbsp;&nbsp;<font size="+4">]</font>
-	    </h3>
-	  </div>
-	</form><br><br>
 
-	  {% for err in error %}
-        <h4>{{ err }}</h4>
-      {% endfor %}
+	    {% for err in error %}
+          <h4>{{ err }}</h4>
+        {% endfor %}
 
-	  <!-- <div class="col-auto"> -->
-	  <div class="col-sm-5 col-sm-offset-1">
-          {% if results %}
-            <h2>Frequencies</h2>
-            <br>
-            <div id="results">
-              <table class="table table-striped" style="max-width: 300px;">
-                <thead>
-                  <tr>
-                    <th>Word</th>
-                    <th>Count</th>
-                    <th style="float: left; width: 200px;">Count (no stop words)</th>
-                  </tr>
-                </thead>
-				{% for result in results%}
-                  <tr>
-                    <td>{{ result[0] }}</td>
-                    <td>{{ result[1] }}</td>
-                    <td>{{ result[2] }}</td>
-                  </tr>
-                {% endfor %}
-              </table>
+        {% if frequencies %}
+
+	      <h3>
+		    <small class="text-muted">Word:</small>&nbsp;&nbsp;
+			<font size="+4"><i>[</i></font>&nbsp;&nbsp;<i>{{  word  }}</i>&nbsp;&nbsp;<font size="+4"><i>]</i></font><br>
+			<small class="text-muted">total match count:&nbsp;</small>
+			<font size="+3"><i>{{  count  }}</i></font>,&nbsp;&nbsp;
+			<small class="text-muted">song(s):</small>&nbsp;
+			<font size="+3"><i>{{  song_count  }}</i></font>
+	      </h3>
+		  <br><br>
+
+          <h3>Frequencies
+		    <small class="text-muted">(top 10)</small>
+		  </h3>
+          <br>
+
+	      <div class="col-sm-10 col-sm-offset-1">
+            <div id="frequencies">
+			  {% for freq in frequencies %}
+                <h5>song: {{ freq[0] }},  count: {{ freq[2] }}</h5>
+                <table class="table table-striped" style="max-width: 300px;">
+                  <thead>
+                    <tr>
+                      <th>Word</th>
+                      <th>Count</th>
+                    </tr>
+                  </thead>
+			      {% for res in freq[1] %}
+                    <tr>
+                      <td>{{ res[0] }}</td>
+                      <td>{{ res[1] }}</td>
+                    </tr>
+                  {% endfor %}
+                </table><br>
+				
+              {% endfor %}
             </div>
-          {% endif %}
-        </div>
+          </div>
+		  
+		  <center>
+		  <div class="wrapper">
+		  <canvas id="myChart" width="400" height="200"></canvas>
+		  </div>
+		  </center>
 
-      <h2>Sources</h2>
-      {% for song in songs %}
-  
-        <td>{{ song.id }}.  {{ song.lyrics }}</td><br><br>
+		  <script>
+		  var ctx = document.getElementById('myChart').getContext('2d');
+		  var myChart = new Chart(ctx, {
+		    type: 'bar',
+		    data: {
+			  labels: [{% for lab in graph_data %}
+						"{{ lab[0] }}",
+					  {% endfor %}],
+			  datasets: [{
+                label: '',
+			      data: [{% for freq in graph_data %}
+						{{ freq[1] }},
+					  {% endfor %}],
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+                ],
+			    borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+              }]
+			},
+			options: {
+			legend: {
+				display: false
+				},
+			  scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+            }
+          }
+		  });
+		  </script>
+	
+
+          <div id="songs">
+            <h3>Source(s)</h3><br>
+            {% for song in songs %}
+              <h5>
+			    <small class="text-muted">song:</small>
+				  {{ song[0] }},
+                <small class="text-muted">title:</small>
+                <em>{{ song[2] }}</em>
+			  </h5>
+              <td>{{ song[1] }}</td><br><br>
+            {% endfor %}
+          </div>
 	  
-      {% endfor %}
+        {% else %}
+	      <h3>
+		    <small class="text-muted">Word:</small>&nbsp;&nbsp;
+			<font size="+4"><i>[</i></font>&nbsp;&nbsp;<i>{{  word  }}</i>&nbsp;&nbsp;<font size="+4"><i>]</i></font>
+			&nbsp;&nbsp;&#8594;&nbsp;&nbsp;&nbsp;no results
+	      </h3>
+        {% endif %}
+
+	  </div>
+	</form>
 
 {% endblock %}

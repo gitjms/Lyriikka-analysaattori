@@ -15,5 +15,5 @@ stops = [
     'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's',
     't', 'can', 'will', 'just', 'don', 'should', 'now', 'id', 'var',
     'function', 'js', 'd', 'script', '\'script', 'fjs', 'document', 'r',
-    'b', 'g', 'e', '\'s', 'c', 'f', 'h', 'l', 'k','bridge','chorus','verse','V1','V2','V3','V4','V5','V6','V7','V8','V9','V10','B1','B2','B3','B4','B5','B6','B7','B8','B9','B10','C1','C2','C3','C4','C5','C6','C7','C8','C9','C10','\n'
+    'b', 'g', 'e', '\'s', 'c', 'f', 'h', 'l', 'k','bridge','chorus','verse','v1','v2','v3','v4','v5','v6','v7','v8','v9','v10','b1','b2','b3','b4','b5','b6','b7','b8','b9','b10','c1','c2','c3','c4','c5','c6','c7','c8','c9','c10','\'n','\n','\'n\'n','\'r','\'r\'n'
 ]
