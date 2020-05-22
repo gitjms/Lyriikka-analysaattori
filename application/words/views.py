@@ -92,12 +92,12 @@ def words_find():
 	# stops = stopwords.words('english')#('finnish')
 	no_stop_words_list = []
 	results_list = []
-	results_list_page = []
 	results = {}
 	graph_list = []
 	for words_list in new_raw_words_list: # [count, [song_id, raw_words] ]
 		no_stop_words = [Markup(w.lower()) for w in words_list[1][1] if w.lower() not in stops]
 		no_stop_words_count = Counter(no_stop_words)
+		graph_list.append(no_stop_words)
 		no_stop_words_list.append([words_list[1][0], no_stop_words_count])
 		# save the results
 		results = sorted(
@@ -118,25 +118,23 @@ def words_find():
 		page_songs = new_songlist
 		
 		# data for graph
-		labels = []
 		values = []
 		result_values = {}
-		for item in results_list:
-			for i in item[1]:
-				if (i[0].find('<mark><strong>') != -1):
+		labels = []
+		for item in graph_list:
+			for i in item:
+				if (i.find('<mark><strong>') != -1):
 					j = word_to_find
-					labels.append(j)
+					values.append(j)
 				else:
-					labels.append(i[0])
-				values.append(i[1])
-				
-		values_count = Counter(labels)
+					values.append(i)
+		values_count = Counter(values)
 		result_values = sorted(
 			values_count.items(),
 			key=operator.itemgetter(1),
 			reverse=True
 		)[:10]
-		
+
 		for i in range(len(raw_word_count)):
 			try:
 				result = Words(
