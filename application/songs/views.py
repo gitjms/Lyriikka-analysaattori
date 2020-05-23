@@ -6,6 +6,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from application import app, db
 from application.songs.models import Song
+from application.authors.models import Author
 from application.songs.forms import SongForm
 
 # Lomakkeen näyttämisen ja lähetyksen vastaanottava toiminnallisuus.
@@ -116,9 +117,13 @@ def songs_create():
 	if not form.validate():
 		return render_template("songs/new.html", form = form, error = "Fields must not be empty.")
 
-	song = Song(form.title.data,form.author.data,form.lyrics.data)
+	song = Song(form.title.data,form.lyrics.data)
 	song.account_id = g.user.id
-
+	
+	authors = form.author.data.split(',')
+	new_authors = [w for w in Author(authors)]
+	song.author.extend(new_authors)
+	
 	try:
 		db.session().add(song)
 		db.session().commit()

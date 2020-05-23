@@ -11,7 +11,7 @@ class LoginForm(FlaskForm):
 		csrf = False
 
 class CreateForm(FlaskForm):
-	fullname = StringField("Full name", [validators.Length(min=1)])
+	name = StringField("Full name", [validators.Length(min=1)])
 	username = StringField("Username", [validators.Length(min=1)])
 	password = PasswordField("Password", [validators.Length(min=4)])
  
@@ -19,7 +19,7 @@ class CreateForm(FlaskForm):
 		csrf = False
 
 class AuthForm(FlaskForm):
-	fullname = StringField("Full name", [validators.Length(min=1)])
+	name = StringField("Full name", [validators.Length(min=1)])
 	username = StringField("Username", [validators.Length(min=1)])
 	password = PasswordField("Password", [validators.Length(min=4)])
  

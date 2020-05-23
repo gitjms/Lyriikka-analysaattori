@@ -1,27 +1,24 @@
 from application import db
 from application import views
+from application.models import Base
 
 import datetime
 
 from sqlalchemy import DateTime
 
-
-class User(db.Model):
+class User(Base):
 
 	__tablename__ = "account"
 
-	id = db.Column(db.Integer(), primary_key=True)
 	date_created = db.Column(db.DateTime(), default=db.func.current_timestamp())
 
-	fullname = db.Column(db.String(120), nullable=False)
+	name = db.Column(db.String(80), nullable=False)
 	username = db.Column(db.String(80), nullable=False)
 	password = db.Column(db.String(80), nullable=False)
 	admin = db.Column(db.Boolean, default=False, nullable=False)
 
-	songs = db.relationship("Song", backref='account', lazy=True)
-
-	def __init__(self, fullname, username, password, admin):
-		self.fullname = fullname
+	def __init__(self, name, username, password, admin):
+		self.name = name
 		self.username = username
 		self.password = password
 		self.admin = admin

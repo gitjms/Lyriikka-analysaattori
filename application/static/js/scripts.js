@@ -8,3 +8,6 @@ function textAreaAdjust(o) {
   o.style.height = (25+o.scrollHeight)+"px";
 }
 
+$(document).ready(function() {
+    $('form:first *:input[type!=hidden]:first').focus();
+});

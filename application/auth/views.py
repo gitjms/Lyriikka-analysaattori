@@ -85,7 +85,7 @@ def auth_create():
 
 	pw_hash = bcrypt.generate_password_hash(form.password.data)
 	
-	user = User(form.fullname.data,form.username.data,form.password.data,False)
+	user = User(form.name.data,form.username.data,form.password.data,False)
 
 	remember_me = False
 

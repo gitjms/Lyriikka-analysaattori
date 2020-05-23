@@ -10,6 +10,7 @@ class Words(db.Model):
 
 	id = db.Column(db.Integer, primary_key=True)
 	word = db.Column(db.String(), nullable=False)
+	matches = db.Column(db.Integer, nullable=False)
 	result_all = db.Column(JSON, nullable=False)
 	result_no_stop_words = db.Column(JSON, nullable=False)
 
@@ -17,6 +18,7 @@ class Words(db.Model):
 
 	def __init__(self, word, result_all, result_no_stop_words):
 		self.word = word
+		self.matches = matches
 		self.result_all = result_all
 		self.result_no_stop_words = result_no_stop_words
 

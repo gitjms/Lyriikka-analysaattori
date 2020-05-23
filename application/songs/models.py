@@ -1,16 +1,18 @@
 from application import db
 from application import views
 
-
 class Song(db.Model):
+
+	__tablename__ = 'song'
+
 	id = db.Column(db.Integer, primary_key=True)
-	title = db.Column(db.String(144), nullable=False, unique=True)
-	author = db.Column(db.String(144), nullable=False)
+	title = db.Column(db.String(80), nullable=False, unique=True)
 	lyrics = db.Column(db.String(2000), nullable=False)
+	language = db.Column(db.String(80), nullable=False)
 
 	account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
 
-	def __init__(self, title, author, lyrics):
+	def __init__(self, title, lyrics, language):
 		self.title = title
-		self.author = author
 		self.lyrics = lyrics
+		self.language = language
