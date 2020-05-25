@@ -1,5 +1,7 @@
 from flask import redirect, url_for, render_template, request, flash, g
 from flask_wtf import FlaskForm
+from wtforms import SelectField
+from wtforms.validators import DataRequired
 from flask_login import login_required, current_user
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
@@ -66,16 +68,18 @@ def songs_editing(song_id):
 
 			song = Song.query.get(song_id)
 			song_title = request.form.get("title")
-			song_author = request.form.get("author")
 			song_lyrics = request.form.get("lyrics")
-			if (song_title == song.title and song_author == song.author and song_lyrics == song.lyrics):
+			song_language = request.form.get("language")
+			song_author = request.form.get("author")
+			if (song_title == song.title and song_author == song.author and song_lyrics == song.lyrics and song_language == song.language):
 				flash("No changes made.", "warning")
 			else:
 				try:
 					song = Song.query.filter_by(id=song_id).first()
 					song.title = song_title
-					song.author = song_author
 					song.lyrics = song_lyrics
+					song.language = song_language
+					song.author = song_author
 					db.session().add(song)
 					db.session().commit()
 				except IntegrityError:
@@ -114,22 +118,42 @@ def songs_create():
 	if request.method == "GET":
 		return render_template("songs/new.html", form = form)
 
+	language = SelectField('language', [DataRequired()],
+		choices=[('', ''),
+				('finnish', 'finnish'),
+				('english', 'english'),
+				('french', 'french')])
+
 	if not form.validate():
 		return render_template("songs/new.html", form = form, error = "Fields must not be empty.")
 
-	song = Song(form.title.data,form.lyrics.data)
+	song = Song(form.title.data,form.lyrics.data,form.language.data)
 	song.account_id = g.user.id
 	
 	authors = form.author.data.split(',')
-	new_authors = [w for w in Author(authors)]
-	song.author.extend(new_authors)
-	
+	for auth in authors:
+		author = Author(auth)
+	try:
+		db.session().add(author)
+		db.session().commit()
+	except SQLAlchemyError:
+		db.session.rollback()
+		flash("Author(s) not added to database.", "danger")
+		return render_template("songs/new.html", form = form)
+
+	song.authors.extend([w for w in Author.query.filter_by(name=auth)])
+
 	try:
 		db.session().add(song)
 		db.session().commit()
 	except IntegrityError:
 		db.session.rollback()
-		flash("Song already exists. Consider changing title.", "danger")
+		flash("Song already exists. Consider changing title.", "warning")
+		return render_template("songs/new.html", form = form)
+	except SQLAlchemyError:
+		db.session.rollback()
+		flash("Something went wrong.", "danger")
 		return render_template("songs/new.html", form = form)
 
 	return render_template("songs/list.html", songs = Song.query.all())
+

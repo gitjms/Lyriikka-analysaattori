@@ -20,7 +20,7 @@
 	      <form method="POST" action="{{ url_for('songs_editing', song_id=song.id) }}">
 		    <input type="hidden" name="song_id" value="{{ song.id }}">
 		    <div class="col-auto">
-		      <button class="btn btn-sm btn-primary" type="submit" name="Edit" style="width:75px;" value="Edit"/>Edit</button>
+		      <button class="btn btn-sm btn-warning" type="submit" name="Edit" style="width:75px;" value="Edit"/>Edit</button>
 		    </div>
 		  </form>
         </td>
@@ -28,7 +28,7 @@
 	      <form method="POST" action="{{ url_for('songs_delete', song_id=song.id) }}">
 		    <input type="hidden" name="song_id" value="{{ song.id }}">
 		    <div class="col-auto">
-		      <button class="btn btn-sm btn-secondary" type="submit" name="Delete" style="width:75px;" value="Delete"/> Delete</button>
+		      <button class="btn btn-sm btn-danger" type="submit" name="Delete" style="width:75px;" value="Delete"/> Delete</button>
 		    </div>
 		  </form>
         </td>

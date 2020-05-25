@@ -4,12 +4,17 @@
 
 	  <form method="POST" action="{{ url_for('songs_create') }}">
 
-	    <div class="col-auto">
+		<table>
+		  <tr >
+		  <div class="col-auto">
+			{{ form.language() }}
 
-		  <button class="btn btn-sm btn-primary myFloat_Right" type="submit" name="Submit" style="width:75px;" value="Add a new song"/>Submit</button>
+		    <button class="btn btn-sm btn-primary myFloat_Right" type="submit" name="Submit" style="width:75px;" value="Add a new song"/>Submit</button>
 
-		  <div style="clear: both;"></div>
-		</div>
+		  </div>
+	    </tr>
+		</table><br>
+
 
 	    <div class="col-auto">
 		  <label for="title" class="col-sm-2 col-form-label">Title:</label>

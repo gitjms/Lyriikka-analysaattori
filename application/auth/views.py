@@ -140,9 +140,10 @@ def user_delete(user_id):
 def user_adminate(user_id):
 	user_qry = db.session().query(User).filter(User.id==user_id)
 
-	if user_qry.first().admin:
+	form = CreateForm(request.form)
+	if request.form.get("userate") == "userate":
 		user_qry.first().admin = False
-	else:
+	elif request.form.get("adminate") == "adminate":
 		user_qry.first().admin = True
 
 	if request.method == "POST":

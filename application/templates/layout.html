@@ -122,19 +122,30 @@
 
 	  </div>
 
-	  <!-- FOR ADMIN ONLY: LIST USERS -->
+	  <!-- FOR ADMIN ONLY -->
 
 	  {% if g.user.admin %}
-	    <div class="container-fluid" >
-		  <form action="/auth" method="post">
-		    <button class="btn btn-sm btn-primary" type="submit" style="width:75px; float: right;">List users</button>
-		  </form>
-	    </div>
 
         <!-- REGISTERED USERS COUNTER -->
 
 		<div class="container-fluid">
 		  <div style="text-align: left; color: #5e1b0f; font-size:15px;" class="lead">Registered users: {{session['counter']}}</div >
+	    </div>
+
+        <!-- JOIN TABLES -->
+
+		<div class="container-fluid">
+		  <form action="/" method="POST">
+		    <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px" name="join" id="join">Add default songs</button>
+		  </form>
+	    </div>
+
+        <!-- LIST USERS -->
+
+	    <div class="container-fluid" >
+		  <form action="/auth" method="POST">
+		    <button class="btn btn-sm btn-primary" type="submit" style="float: right;" name="join">List users</button>
+		  </form>
 	    </div>
       {% endif %}
 
