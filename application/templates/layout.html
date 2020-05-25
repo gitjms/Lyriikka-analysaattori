@@ -98,7 +98,8 @@
             </div>
 		    {% endif %}
 		    <td>
-			  <form class="form-inline my-0 my-lg-0" action="/words/show/" method="POST">
+			  <form name="mainpage" class="form-inline my-0 my-lg-0" action="/words/show/" method="POST">
+			    <input type="hidden">
 			    <div class="btn-group-sm" role="group" aria-label="Language choice">
 	            <button type="button" class="btn btn-secondary" style="margin-left: 30px; color: #5e1b0f; font-weight: bold;" name="langchoice" id="fi" value="fi">Fi</button>
 			    <button type="button" class="btn btn-secondary" style="margin-left: 5px; color: #5e1b0f; font-weight: bold;" name="langchoice" id="en" value="en">En</button>

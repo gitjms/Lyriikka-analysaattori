@@ -13,7 +13,7 @@ class User(Base):
 	date_created = db.Column(db.DateTime(), default=db.func.current_timestamp())
 
 	name = db.Column(db.String(80), nullable=False)
-	username = db.Column(db.String(80), nullable=False)
+	username = db.Column(db.String(80), nullable=False, unique=True)
 	password = db.Column(db.String(80), nullable=False)
 	admin = db.Column(db.Boolean, default=False, nullable=False)
 

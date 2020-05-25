@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from flask import redirect, url_for, render_template, request, flash, g
 from flask_wtf import FlaskForm
 from wtforms import SelectField

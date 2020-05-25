@@ -26,7 +26,7 @@
 
 	    <div class="col-auto">
 		  <label for="author" class="col-sm-2 col-form-label">Author(s):</label>
-		  <input class="form-control" id="author" name="author" type="text" value="{{ song.author }}"></input >
+		  <input class="form-control" id="author" name="author" type="text" value="{% for auth in song.authors %}{{ auth.name }}{{ ", " if not loop.last }}{% endfor %}"></input >
 		</div>
 		<td>
 		  <ul>

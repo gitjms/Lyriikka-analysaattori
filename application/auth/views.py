@@ -26,15 +26,14 @@ def before_request():
 def auth_login():
 	form = LoginForm(request.form)
 
-	if request.form.get("Back") == "Back":
-		return redirect(url_for("index"))
-
 	if request.method == "GET":
 		return render_template("auth/loginform.html", form = form)
 
+	if request.form.get("Back") == "Back":
+		return redirect(url_for("index"))
+
 	remember_me = False
 	if 'remember_me' in request.form:
-		flash("remembered.", "success")
 		remember_me = True
 
 	if request.form.get("Guest") == "Guest":
@@ -42,7 +41,6 @@ def auth_login():
 		password = u"guest".encode('utf-8')
 	elif request.form.get("Login") == "Login":
 		if not form.validate():
-			flash("Login failed.", "warning")
 			return render_template("auth/loginform.html", form = form, error = "Fields must not be empty. Check password length.")
 
 		username = form.username.data
@@ -79,15 +77,17 @@ def auth_create():
 	if request.form.get("Back") == "Back":
 		return redirect(url_for("index"))
 
-	if not form.validate():
+	remember_me = False
+	if 'remember_me' in request.form:
+		remember_me = True
+
+	if not form.validate_on_submit():
 		flash("Create account failed.", "warning")
 		return render_template("auth/newuser.html", form = form, error = "Fields must not be empty. Check password length.")
 
 	pw_hash = bcrypt.generate_password_hash(form.password.data)
 	
 	user = User(form.name.data,form.username.data,form.password.data,False)
-
-	remember_me = False
 
 	try:
 		db.session().add(user)

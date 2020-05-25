@@ -1,5 +1,4 @@
-from flask import render_template, request, g
-# from flask_wtf import FlaskForm
+from flask import render_template, redirect, url_for, request, g
 from flask_login import login_required, current_user
 
 
@@ -7,7 +6,7 @@ from application import app, db
 from application.songs.models import Song
 from application.words.forms import WordForm
 # STOPWORDS FROM CATALOGUES:
-# from nltk.corpus import stopwords
+from nltk.corpus import stopwords
 # OWN STOPWORDS:
 # from application.stopwords.stopwords import stops
 from application.textproc.proc import proc_text, stop_words, store_db
@@ -30,8 +29,12 @@ def words_find():
 	user_list = [g.user.id,1]
 	form = WordForm(request.form)
 	word_to_find = request.form['wordsearch']
-	language = request.form['langchoice']
+	if 'mainpage' in request.form:
+		language = request.form['langchoice']
+		flash('hep',"success")
 
+	return redirect(url_for("index"))
+	
 	# get data from database
 	qry_list = db.session().query(Song.id,Song.lyrics,Song.title).filter(Song.account_id.in_((user_list))).all()
 	song_list = []
