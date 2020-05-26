@@ -60,7 +60,7 @@ Linkissä [*User stories*](https://github.com/gitjms/Lyriikka-analysaattori/tree
 
 ## Tietokantakaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/82897301-1ec31680-9f60-11ea-9d1b-a074f796905c.png" alt="release" width="612" height="180" >
+<img src="https://user-images.githubusercontent.com/46410240/82897301-1ec31680-9f60-11ea-9d1b-a074f796905c.png" alt="release" width="466" height="578" >
 
 ## Myöhemmin mahdollisia lisäominaisuuksia
 
