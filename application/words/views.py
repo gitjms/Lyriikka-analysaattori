@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 from application import app, db
 from application.songs.models import Song
 # from application.words.forms import WordForm
-from application.textproc.proc import proc_text, stop_words, store_db
+from application.words.proc import proc_text, stop_words, store_db
 
 # Lomakkeen näyttämisen ja lähetyksen vastaanottava toiminnallisuus.
 

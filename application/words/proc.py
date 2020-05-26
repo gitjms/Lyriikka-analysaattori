@@ -1,10 +1,12 @@
 from flask import flash, g, Markup
 
+import os
 import operator
 import re
 import nltk
+import itertools
 # STOPWORDS FROM CATALOGUES:
-from nltk.corpus import stopwords
+from application.nltk_data import stopwords
 # OWN STOPWORDS:
 # from application.stopwords.stopwords import stops
 from collections import Counter
@@ -19,7 +21,9 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 def proc_text(song_list, word_to_find):
 
 	text_list = [] # [ song_id, lyrics, song_title ]
+	
 	nltk.data.path.append('./nltk_data/')
+
 	for song in song_list:
 		tokens = nltk.word_tokenize(song[1])
 		text_list.append([song[0], nltk.Text(tokens), song[2]])
@@ -64,7 +68,11 @@ def proc_text(song_list, word_to_find):
 # stop words
 def stop_words(new_raw_words_list, language):
 
-	stops = stopwords.words(language)#stopwords.stopwords.stops#
+	# stops = stopwords(language)#stopwords.stopwords.stops#
+	document_path = os.getcwd()+'/application/nltk_data/stopwords/'+language
+	with open(document_path, 'r', encoding='utf-8') as f:
+		stops = f.readlines()
+
 	no_stop_words_list = []
 	results_list = []
 	results = {}

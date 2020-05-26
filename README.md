@@ -35,6 +35,7 @@ Ohjelmaan voi siis rekisteröityä luomalla omat tunnukset, mutta helpoin tapa k
 ### Yhteenvetokyselyt
 - [x] kaikkien sanojen frekvenssit top 10(+)
 - [x] tietyn sanan esiintymät (laululista frekvensseineen)
+- [ ] sanan esiintymisfrekvenssien vertailu kielittäin
 - [ ] lyhyiden sanayhdistelmien esiintymät ja frekvenssit
 
 ## Käyttäjät
@@ -66,6 +67,6 @@ Linkissä alustava [tietokantakaavio](https://github.com/gitjms/Lyriikka-analysa
 ## Myöhemmin mahdollisia lisäominaisuuksia
 
 * kaikkien 57 maan data mukana
-* lyriikkadatan tarkastelu kielittäin
-* tietyn sanan frekvenssi suhteessa kieleen ja koko dataan
-* muitakin kuin vain kristillisiä lyriikoita
+* muitakin kuin vain kristillisiä lyriikoita, eli laulugenret mukaan
+ * sanafrekvenssit genreittäin
+* sanafrekvenssit lauluntekijöiden mukaan

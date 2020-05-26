@@ -59,7 +59,12 @@ def auth_login():
 		flash("No such password.", "warning")
 		return render_template("auth/loginform.html", form = form)
 
-	login_user(user, remember = remember_me)
+	try:
+		login_user(user, remember = remember_me)
+	except IntegrityError:
+		flash("Problems with login.", "danger")
+		return redirect(url_for("index"))
+		
 	db.session.permanent = True
 
 	return redirect(request.args.get('next') or url_for("index"))
