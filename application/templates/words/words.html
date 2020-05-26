@@ -9,7 +9,7 @@
           <h4>{{ err }}</h4>
         {% endfor %}
 
-        {% if frequencies %}
+        {% if frequencies is not none %}
 
 		  <!-- SEARCH WORD AND MATCH COUNTS -->
 		  
@@ -90,16 +90,6 @@
 		  <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Song Source(s)" onClick="showHideDiv('songtables')" style="width: 200px;"/><br><br>
 
 
-		<!-- IF NOT RESULTS -->
-        {% else %}
-	      <h3>
-		    <small class="text-muted">Word:</small>&nbsp;&nbsp;
-			<font size="+4"><i>[</i></font>&nbsp;&nbsp;<i>{{  word  }}</i>&nbsp;&nbsp;<font size="+4"><i>]</i></font>
-			&nbsp;&nbsp;&#8594;&nbsp;&nbsp;&nbsp;no results
-	      </h3>
-        {% endif %}
-
-
 		<!-- JAVASCRIPT FOR BARCHART -->
 		  <script>
 		  var ctx = document.getElementById('myChart').getContext('2d');
@@ -160,6 +150,16 @@
           }
 		  });
 		  </script>
+
+
+		<!-- IF NOT RESULTS -->
+        {% else %}
+	      <h3>
+		    <small class="text-muted">Word:</small>&nbsp;&nbsp;
+			<font size="+4"><i>[</i></font>&nbsp;&nbsp;<i>{{  word  }}</i>&nbsp;&nbsp;<font size="+4"><i>]</i></font>
+			&nbsp;&nbsp;&#8594;&nbsp;&nbsp;&nbsp;no results
+	      </h3>
+        {% endif %}
 
 	  </div>
 	</form>

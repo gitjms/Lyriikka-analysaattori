@@ -8,7 +8,7 @@ Lyriikkatietokanta on haettu sivustolta [Worship Leader App](https://worshiplead
 
 Sovellukseen on asetettu kuusi oletuslaulua kustakin kolmesta kielestä valmiiksi. Kun sovelluksen käynnistää ensimmäisen kerran ja tietokantataulut syntyvät, tulee laulut syöttää tauluihin. Tämä onnistuu kirjautumalla admin-tunnuksilla sisään, jolloin sivun alalaidassa näkyy kaksi nappia: *List users* ja *Add default songs*. Jälkimmäistä nappia painamalla laulut ja niiden tekijät syötetään automaattisesti omiin tauluihinsa sekä liitostiedot liitostauluun.
 
-*Stop words*, eli turhien sanojen lista, on haettu *Natural Language Toolkit* (NLTK) nimisestä palvelusta. Kyseessä on lingvistinen data, jonka avulla voi tehdä monenlaista tiedonlouhintaa kielten parissa. Koko data-arkisto on kooltaan yli 3GT, mutta siitä voi kulloiseenkin tutkimukseen ottaa käyttöön pienemmän osan. Esimerkiksi nettisivujen ja chättien tutkimiseen on oma kirjastonsa, Reuters Corpus pitää puolestaan sisällään yli 1,3 miljoonaa sanaa uutisläteistä, ja Shakespearen tarinoita löytää Gutenberg-korpuksesta.
+*Stop words* (eli turhien sanojen lista, kuten engalannin *I*, *me*, *my*, *myself*, ...), on haettu *Natural Language Toolkit* (NLTK) nimisestä palvelusta. Kyseessä on lingvistinen data, jonka avulla voi tehdä monenlaista tiedonlouhintaa kielten parissa. Koko data-arkisto on kooltaan yli 3GT, mutta siitä voi kulloiseenkin tutkimukseen ottaa käyttöön pienemmän osan. Esimerkiksi nettisivujen ja chättien tutkimiseen on oma kirjastonsa, Reuters Corpus pitää puolestaan sisällään yli 1,3 miljoonaa sanaa uutisläteistä, ja Shakespearen tarinoita löytää Gutenberg-korpuksesta.
 
 ### Sovellus
 

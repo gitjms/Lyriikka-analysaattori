@@ -130,7 +130,7 @@ def defaults():
 		with open(document_path, encoding='utf-8') as f:
 			for line in itertools.islice(f, 2, None):
 				lyrics += line
-		language = 'fi'
+		language = 'finnish'
 
 		song = Song(title,lyrics,language)
 		song.account_id = 1
@@ -161,7 +161,7 @@ def defaults():
 		with open(document_path, encoding='utf-8') as f:
 			for line in itertools.islice(f, 2, None):
 				lyrics += line
-		language = 'en'
+		language = 'english'
 
 		song = Song(title,lyrics,language)
 		song.account_id = 1
@@ -192,7 +192,7 @@ def defaults():
 		with open(document_path, encoding='utf-8') as f:
 			for line in itertools.islice(f, 2, None):
 				lyrics += line
-		language = 'fr'
+		language = 'french'
 
 		song = Song(title,lyrics,language)
 		song.account_id = 1

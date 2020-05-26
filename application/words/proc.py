@@ -21,8 +21,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 def proc_text(song_list, word_to_find):
 
 	text_list = [] # [ song_id, lyrics, song_title ]
-	
-	nltk.data.path.append('./nltk_data/')
+	nltk.data.path.append(os.getcwd()+'/application/nltk_data/')
 
 	for song in song_list:
 		tokens = nltk.word_tokenize(song[1])
@@ -68,10 +67,11 @@ def proc_text(song_list, word_to_find):
 # stop words
 def stop_words(new_raw_words_list, language):
 
-	# stops = stopwords(language)#stopwords.stopwords.stops#
 	document_path = os.getcwd()+'/application/nltk_data/stopwords/'+language
+	stops = []
 	with open(document_path, 'r', encoding='utf-8') as f:
-		stops = f.readlines()
+		for line in f:
+			stops.append(line.rstrip("\n"))
 
 	no_stop_words_list = []
 	results_list = []

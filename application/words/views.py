@@ -33,7 +33,12 @@ def words_find():
 		return redirect(url_for("index"))
 	
 	# get data from database
-	qry_list = db.session().query(Song.id,Song.lyrics,Song.title).filter(Song.account_id.in_((user_list))).all()
+	qry_list = db.session().query(Song.id,Song.lyrics,Song.title,Song.language).filter(Song.account_id.in_((user_list))).filter(Song.language==language).all()
+	print('                    ')
+	print('                    ')
+	print(qry_list)
+	print('                    ')
+	print('                    ')
 	song_list = []
 	for i in qry_list:
 		raw_to_string = ' '.join([str(elem) for elem in i])
