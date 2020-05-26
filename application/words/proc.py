@@ -4,10 +4,7 @@ import os
 import operator
 import re
 import nltk
-# STOPWORDS FROM CATALOGUES:
-from application.nltk_data import stopwords
-# OWN STOPWORDS:
-# from application.stopwords.stopwords import stops
+from nltk.corpus import stopwords
 from collections import Counter
 
 from application import db
@@ -66,11 +63,7 @@ def proc_text(song_list, word_to_find):
 # stop words
 def stop_words(new_raw_words_list, language):
 
-	document_path = os.getcwd()+'/application/nltk_data/stopwords/'+language
-	stops = []
-	with open(document_path, 'r', encoding='utf-8') as f:
-		for line in f:
-			stops.append(line.rstrip("\n"))
+	stops = stopwords.words(language)
 
 	no_stop_words_list = []
 	results_list = []
