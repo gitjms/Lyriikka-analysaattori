@@ -1,7 +1,6 @@
 from flask import render_template, redirect, flash, url_for, request, g
 from flask_login import login_required, current_user
 
-
 from application import app, db
 from application.songs.models import Song
 # from application.words.forms import WordForm

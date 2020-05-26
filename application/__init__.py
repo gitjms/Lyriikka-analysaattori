@@ -67,6 +67,7 @@ from sqlalchemy import event, DDL
 @event.listens_for(User.__table__, 'after_create')
 def insert_initial_accounts(*args, **kwargs):
 	db.session.add(User(name='admin',username='admin',password='admin', admin=True))
+	db.session.commit()
 	db.session.add(User(name='guest',username='guest',password='guest', admin=False))
 	db.session.commit()
 
