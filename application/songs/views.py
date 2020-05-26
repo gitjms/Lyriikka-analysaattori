@@ -34,7 +34,27 @@ def songs_index():
 @login_required
 def songs_list():
 	song_list = [g.user.id,1]
-	return render_template("songs/list.html", songs = Song.query.filter(Song.account_id.in_((song_list))))
+	
+	if request.method == "GET":
+		songs = Song.query.filter(Song.account_id.in_((song_list))).all()
+
+	if request.method == "POST":
+		if request.form['sort'] == "langasc":
+			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.language.asc()).all()
+		elif request.form['sort'] == "langdesc":
+			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.language.desc()).all()
+		elif request.form['sort'] == "alphasc":
+			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.title.asc()).all()
+		elif request.form['sort'] == "alphdesc":
+			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.title.desc()).all()
+		elif request.form['sort'] == "langalphasc":
+			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.language).order_by(Song.title.asc()).all()
+		elif request.form['sort'] == "langalphdesc":
+			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.language).order_by(Song.title.desc()).all()
+		else:
+			songs = Song.query.filter(Song.account_id.in_((song_list))).all()
+
+	return render_template("songs/list.html", songs=songs)
 
 
 #-----------------------------------------

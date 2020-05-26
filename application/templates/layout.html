@@ -21,19 +21,6 @@
     <body>
 	  <div class="container-fluid" >
 
-		<!-- FLASH MESSAGES -->
-
-		{% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            {% for category, message in messages %}
-		      <div class="alert alert-{{ category }} alert-dismissible" role="alert" id="alert">
-			    <span>{{ message }}</span>
-		      </div>
-            {% endfor %}
-          {% endif %}
-	    {% endwith %}
-	  </div>
-
 	  <!-- NAVBAR -->
 
 	  <div class="container-fluid">
@@ -139,6 +126,19 @@
 		  {% endif %}
 
 		</nav>
+	  </div>
+
+		<!-- FLASH MESSAGES -->
+
+		{% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+		      <div class="alert alert-{{ category }} alert-dismissible" role="alert" id="alert">
+			    <span>{{ message }}</span>
+		      </div>
+            {% endfor %}
+          {% endif %}
+	    {% endwith %}
 	  </div>
 
 	  <!-- GRAY TEXT AREA -->

@@ -2,13 +2,41 @@
 
 {% block body %}
 
+
+	<div class="form-group">
+	<form action= "{{ url_for('songs_list') }}" method="POST">
+	<table>
+	<tr>
+	<td>
+	<b style="margin-right:10px;"> Sort by:</b>
+	</td>
+	<td>
+	<select class="form-control" id="sort" name="sort" style="width: 270px; margin-right:10px;" >
+	  <option name="sort" type="submit" value="id"></option>
+	  <option name="sort" type="submit" value="langasc">language ascending</option>
+      <option name="sort" type="submit" value="langdesc">language descending</option>
+      <option name="sort" type="submit" value="alphasc">alphabetic. ascending</option>
+      <option name="sort" type="submit" value="alphdesc">alphabetic. descending</option>
+      <option name="sort" type="submit" value="langalphasc">language alphabetic. ascending</option>
+      <option name="sort" type="submit" value="langalphdesc">language alphabetic. descending</option>
+	</select>
+	</td>
+	<td>
+	<button class="btn btn-secondary btn-sm" type="submit" value="Submit">Submit</button>
+	</td>
+	</tr>
+	</table>
+	</form>
+	</div>
+
     <table>
       <tr>
         <th style="text-align: left;">Songs</th>
       </tr>
     {% for song in songs %}
       <tr>
-        <td>{{ song.id }}.  {{ song.title }}</td>
+        <td style="text-align: right; padding-right: 10px;">{{ song.id }}.</td>
+		<td>{{ song.title }}</td>
 	    <td>
 		  <form method="POST" action="{{ url_for('songs_show', song_id=song.id) }}">
 		    <div class="col-auto">

@@ -24,7 +24,7 @@ Ohjelmaan voi siis rekisteröityä luomalla omat tunnukset, mutta helpoin tapa k
 
 ### Sivuston toiminta
 - [x] kirjautuminen, roolit: user ja admin
-- [x] uusien lyriikoiden lisääminen, vanhojen poistaminen, muokkaus ja tarkastelu
+- [x] uusien lyriikoiden lisääminen, vanhojen poistaminen, muokkaus ja tarkastelu, sort
 - [x] käyttäjätilien poistaminen (admin)
 - [x] käyttäjätilien asettaminen admin-rooliin tai peruskäyttäjä-rooliin (admin)
 - [x] sanahaku yhdellä sanalla kolmella kielivalinnalla
