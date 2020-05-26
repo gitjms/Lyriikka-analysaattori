@@ -4,7 +4,6 @@ import os
 import operator
 import re
 import nltk
-import itertools
 # STOPWORDS FROM CATALOGUES:
 from application.nltk_data import stopwords
 # OWN STOPWORDS:
@@ -30,7 +29,7 @@ def proc_text(song_list, word_to_find):
 	# remove punctuation, count raw words
 	raw_word_count = [] # Counter(raw_words)
 	raw_words_list = [] # [ song_id, raw_words ]
-	for txt in text_list: # [ song_id, lyrics ]
+	for txt in text_list: # [ song_id, lyrics, song_title ]
 		count = 0
 		raw_words = []
 		nonPunct = re.compile('.*[A-Za-z].*')
@@ -58,7 +57,7 @@ def proc_text(song_list, word_to_find):
 			w_list.append(w)
 		if count > 0:
 			new_string = ' '.join(w_list)
-			new_songlist.append([item[0],Markup(new_string),item[2]])
+			new_songlist.append([item[0],Markup(new_string.rsplit(' ', 1)[0]),item[2]])
 			new_raw_words_list.append([count, [item[0], w_list]])
 
 	return raw_word_count, new_songlist, new_raw_words_list, tot_count
@@ -102,6 +101,7 @@ def store_db(raw_word_count, no_stop_words_list, results_list, new_songlist, gra
 	result_set.append([raw_word_count, no_stop_words_list])
 	page_results = results_list
 	page_songs = new_songlist
+	
 	counts = []
 	
 	for item in results_list:
