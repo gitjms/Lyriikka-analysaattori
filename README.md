@@ -38,7 +38,7 @@ Ohjelmaan voi siis rekisteröityä luomalla omat tunnukset, mutta helpoin tapa k
 
 ## Käyttäjät
 
-Valmiita oletuskäyttäjiä ovat *admin* täysillä oikeuksilla (toisten käyttäjien poisto) sekä *guest* rajoitetuilla (user) oikeuksilla.
+Valmiita oletuskäyttäjiä ovat *admin* täysillä oikeuksilla (toisten käyttäjien poisto ja roolin vaihdot) sekä *guest* rajoitetuilla (user) oikeuksilla.
 
 Käyttäjä voivat myös luoda oman (user) tilinsä salasanoineen.
 
@@ -48,11 +48,11 @@ Kukin käyttäjä näkee kaikki oletuslaulut sekä itse lisäämänsä laulut. M
 
 Tietokantataulut
 
-- **User** eli käyttäjät (taulunimi *account*), sisältäen koko nimen, käyttäjätunnuksen, salasanan, rekisteröintiajan sekä käyttäjäroolin
-- **Song**, eli laulut sisältäen laulun nimen, lyriikan, kielen sekä käyttäjä-id:n joka on laulun lisännyt
-- **Author** eli laulujen tekijä/tekijät sisältäen nimen
-- **Words** eli sanahakujen tulostaulu (taulunimi *results*) sisältäen hakusanan, löytöjen määrän, tiedot sanafrekvensseistä sekä laulujen id:t
-- **Author_song** eli liitostaulu laulujen ja niiden tekijöiden välillä
+- **User** käyttäjät (taulunimi *account*), sisältäen koko nimen, käyttäjätunnuksen, salasanan, rekisteröintiajan sekä käyttäjäroolin
+- **Song** laulut sisältäen laulun nimen, lyriikan, kielen sekä käyttäjä-id:n joka on laulun lisännyt
+- **Author** laulujen tekijä/tekijät sisältäen nimen
+- **Words** sanahakujen tulostaulu (taulunimi *results*) sisältäen hakusanan, löytöjen määrän, tiedot sanafrekvensseistä sekä laulujen id:t
+- **Author_song** liitostaulu laulujen ja niiden tekijöiden välillä
 
 ## User stories
 
@@ -60,7 +60,7 @@ Linkissä [*User stories*](https://github.com/gitjms/Lyriikka-analysaattori/tree
 
 ## Tietokantakaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/82897301-1ec31680-9f60-11ea-9d1b-a074f796905c.png" alt="release" width="466" height="578" >
+<img src="https://user-images.githubusercontent.com/46410240/82905018-f7724680-9f6b-11ea-803a-96fcd9aeb6b1.png" alt="release" width="466" height="578" >
 
 ## Myöhemmin mahdollisia lisäominaisuuksia
 
