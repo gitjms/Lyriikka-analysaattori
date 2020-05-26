@@ -11,6 +11,10 @@
 	  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 	
 	  <script type="text/javascript" src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
+	
+	  <script type="text/javascript" src="{{ url_for('static', filename='js/tables.js') }}"></script>
+	
+	  <script type="text/javascript" src="{{ url_for('static', filename='js/barchart.js') }}"></script>
 
     </head>
 
@@ -34,120 +38,138 @@
 
 	  <div class="container-fluid">
         <nav class="navbar navbar-expand-md navbar-dark nav-justified" style="background-color: #7d1c09;">
-		<table>
-		<thead>
 
-		<tr>
-          <!-- LYRFREQ HOME LOGO -->
-		  <th rowspan="2">
-            <a class="navbar-brand" href="{{ url_for('songs_index') }}">
+		  <table>
+		  <tbody>
+		    <td rowspan="2">
+              <!-- LYRFREQ HOME LOGO -->
+              <a class="navbar-brand" href="{{ url_for('songs_index') }}">
 		      <img src="{{url_for('static', filename='images/brandlogo.png')}}" width="100" height="45" class="d-inline-flex align-top image-responsive myLogo" alt="LyrFreq">
-		    </a>
-		  </th>
-          <!-- LOGIN / LOGOUT / CREATE ACCOUNT -->
-		  <th colspan="2" style="text-align: left;">
-		  <div class="navbar navbar-dark justify-content-between">
-		    {% if g.user.is_authenticated %}
-		      <a style="color:#b0746a; font-size:18px;">
-			    Hello {{ g.user.username }}
 		      </a>
-		      <a style="margin-left: 20px; margin-right: 20px; color:white; font-size:18px;" href="{{ url_for('auth_logout') }}">Logout</a>
-		    {% else %}
-		      <a style="margin-left: 20px; margin-right: 20px;color:white; font-size:18px;" href="{{ url_for('auth_login') }}">Login</a>
-		      <a style="margin-left: 20px; margin-right: 20px;color:white; font-size:18px;" href="{{ url_for('auth_create') }}">Create account</a>
-		    {% endif %}
-            </div>
-		  </th>
-		  <!-- SEARCH WORD -->
-		  <th>
-		    <nav class="navbar-nav" >
-			  <form class="form-inline my-0 my-lg-0" action="/words/show/" method="POST">
-				<input class="form-control mr-sm-2" type="text" style="max-width: 170px" placeholder="Search for Word" aria-label="Search" name="wordsearch" id="wordsearch" required>
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-			  </form>
-		    </nav>
-		  </th>
-		  </tr>
-
-		  <!-- LIST SONGS / ADD SONGS -->
-
-		  <tr>
-		    {% if g.user.is_authenticated %}
-            <div class="navbar navbar-dark justify-content-between">
-			  <style type="text/css">
-			    a:link {color: #000000; text-decoration: underline; }
-			    a:active {color: #0000ff; text-decoration: underline; }
-			    a:visited {color: #008000; text-decoration: underline; }
-			    a:hover {color: #ff0000; text-decoration: none; }
-			  </style>
-		      <td>
-			    <a class="nav-item nav-link active" href="{{ url_for('songs_list') }}" style="color: white" >List songs</a>
-		      </td>
-		      <td>
-                <a class="nav-item nav-link active" href="{{ url_for('songs_create') }}" style="color: white">Add songs</a>
-		      </td>
-            </div>
-		    {% else %}
-            <div class="navbar navbar-dark justify-content-between">
-		      <td>
-			    <a class="nav-item nav-link disabled" href="{{ url_for('songs_list') }}">List songs</a>
-		      </td>
-		      <td>
-                <a class="nav-item nav-link disabled" href="{{ url_for('songs_create') }}">Add songs</a>
-		      </td>
-            </div>
-		    {% endif %}
-		    <td>
-			  <form name="mainpage" class="form-inline my-0 my-lg-0" action="/words/show/" method="POST">
-			    <input type="hidden">
-			    <div class="btn-group-sm" role="group" aria-label="Language choice">
-	            <button type="button" class="btn btn-secondary" style="margin-left: 30px; color: #5e1b0f; font-weight: bold;" name="langchoice" id="fi" value="fi">Fi</button>
-			    <button type="button" class="btn btn-secondary" style="margin-left: 5px; color: #5e1b0f; font-weight: bold;" name="langchoice" id="en" value="en">En</button>
-			    <button type="button" class="btn btn-secondary" style="margin-left: 5px; color: #5e1b0f; font-weight: bold;" name="langchoice" id="fr" value="fr">Fr</button>
-                </div>
-              </form>
 		    </td>
-		</tr>
+		  </tbody>
+		  </table>
 
-		</thead>
-		</table>
-        </nav>
+		  <div class="container-fluid">
+		  <div class="navbar navbar-dark justify-content-between">
+		    <nav class="navbar-nav" style="float: left; height: 60px;">
+		    <table>
+		    <tbody>
+		      <tr>
+		        <td style="float: left; margin-right: 40px;">
+                <!-- LOGIN / LOGOUT / CREATE ACCOUNT -->
+		        {% if g.user.is_authenticated %}
+		          <a style="color:#b0746a; font-size:18px;">
+			      Hello {{ g.user.username }}
+		          </a>
+		        </td>
+		        <td style="float: left;">
+		          <a style="color:white; font-size:18px;" href="{{ url_for('auth_logout') }}">Logout</a>
+		        </td>
+		        {% else %}
+		        <td style="float: left; margin-right: 40px;">
+		          <a style="color:white; font-size:18px;" href="{{ url_for('auth_login') }}">Login</a>
+		        </td>
+		        <td style="float: left;">
+		          <a style="color:white; font-size:18px;" href="{{ url_for('auth_create') }}">Create account</a>
+		        {% endif %}
+		        </td>
+			  </tr>
 
-		<!-- GRAY TEXT AREA -->
+		      <tr>
+		        <!-- LIST SONGS / ADD SONGS -->
+		        {% if g.user.is_authenticated %}
+		        <td style="float: left; margin-right: 40px;">
+			      <style type="text/css">
+			        a:link {color: #000000; text-decoration: underline; }
+			        a:active {color: #0000ff; text-decoration: underline; }
+			        a:visited {color: #008000; text-decoration: underline; }
+			        a:hover {color: #ff0000; text-decoration: none; }
+			      </style>
+			        <a class="nav-item nav-link active" href="{{ url_for('songs_list') }}" style="color: white" >List songs</a>
+		        </td>
+		        <td style="float: left;">
+                    <a class="nav-item nav-link active" href="{{ url_for('songs_create') }}" style="color: white">Add songs</a>
+		        </td>
+		        {% else %}
+		        <td style="float: left; margin-right: 40px;">
+			        <a class="nav-item nav-link disabled" href="{{ url_for('songs_list') }}">List songs</a>
+		        </td>
+		        <td style="float: left;">
+                    <a class="nav-item nav-link disabled" href="{{ url_for('songs_create') }}">Add songs</a>
+		        </td>
+		        {% endif %}
+		      </tr>
+		    </tbody>
+		    </table>
+			</nav>
+          </div>
+          </div>
 
-	    <div class="jumbotron jumbotron-fluid">
-		  <div class="container">
-		    {% block body %}{% endblock %}
+		  {% if g.user.is_authenticated %}
+		  <div class="container-fluid">
+		  <div class="navbar navbar-dark justify-content-between">
+		  <!-- SEARCH WORD -->
+	      <div class="form-group">
+		    <nav class="navbar-nav" style="float: right; height: 60px;">
+			  <form class="form-inline my-0 my-lg-0"action="/words/find/" method="POST" name="wordform">
+		        <table>
+		        <tbody>
+			      <tr colspan="3">
+				    <input class="form-control mr-sm-2" type="text" style="max-width: 160px" placeholder="Quick Word Search" aria-label="Search" name="wordsearch" id="wordsearch" required></input>
+			      </tr>
+			      <tr>
+		            <td>
+                      <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px;" name="langchoice" id="langchoice" value="finnish">Fi</button>
+				    </td>
+		            <td>
+			          <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px; margin-left: 3px;" name="langchoice" id="langchoice" value="english">En</button>
+				    </td>
+		            <td>
+			          <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px; margin-left: 3px;" name="langchoice" id="langchoice" value="french">Fr</button>
+				    </td>
+			      </tr>
+		        </tbody>
+		        </table>
+              </form>
+		    </nav>
+          </div>
 		  </div>
-	    </div>
+		  </div>
+		  {% endif %}
 
+		</nav>
 	  </div>
+
+	  <!-- GRAY TEXT AREA -->
+
+	  <div class="jumbotron jumbotron-fluid">
+		<div class="container">
+		  {% block body %}{% endblock %}
+		</div>
+	  </div>
+
 
 	  <!-- FOR ADMIN ONLY -->
 
 	  {% if g.user.admin %}
 
-        <!-- REGISTERED USERS COUNTER -->
+      <!-- ADD DEFAULT AUTHORS AND SONGS -->
 
-		<div class="container-fluid">
-		  <div style="text-align: left; color: #5e1b0f; font-size:15px;" class="lead">Registered users: {{session['counter']}}</div >
-	    </div>
+	  <div class="container-fluid">
+		<form action="/defaults" method="POST">
+		  <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px" name="defaultsongs" id="defaultsongs">Add default songs</button>
+		</form>
+	  </div>
 
-        <!-- JOIN TABLES -->
+      <!-- LIST USERS -->
 
-		<div class="container-fluid">
-		  <form action="/" method="POST">
-		    <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px" name="join" id="join">Add default songs</button>
-		  </form>
-	    </div>
+	  <div class="container-fluid" >
+		<form action="/admin" method="POST">
+		    <button class="btn btn-sm btn-primary" type="submit" style="float: right;" name="listusers" id="listusers">List users</button>
+		</form>
+	  </div>
 
-        <!-- LIST USERS -->
-
-	    <div class="container-fluid" >
-		  <form action="/auth" method="POST">
-		    <button class="btn btn-sm btn-primary" type="submit" style="float: right;" name="join">List users</button>
-		  </form>
-	    </div>
       {% endif %}
 
 	<!-- Bootstrap 4.5.0 -->
@@ -167,7 +189,18 @@
 	$(document).ready(function(){
 		$(".alert").delay(4000).slideUp(300);
 	});
-	</script>
+	</script><script type=text/javascript>
+			$(function() {
+			  $('a#process_input').bind('click', function() {
+				$.getJSON('/words/find/', {
+				  proglang: $('input[name="wordsearch"]').val(),
+				}, function(data) {
+				  $("#result").text(data.result);
+				});
+				return false;
+			  });
+			});
+		</script>
 
     </body>
     

@@ -15,37 +15,21 @@
 		  </tr><br><br>
 
 		  <tr>
-		    <td>
-		      <label for="name" class="col-form-label">Full Name:</label>
-		    </td>
-		    <td>
-              <input type="text" id="name" name="name" class="input-xlarge"
-            placeholder="Enter Full Name" value="{{ request.form.name }}" required></input>
-		    </td>
-		    <td>
-		    </td>
+            <td>
+			  {{ form.name(autofocus=true, required=true, placeholder="Enter Full Name") }}
+            </td>
 		  </tr>
 
 		  <tr>
-		    <td>
-		      <label for="username" class="col-form-label">Username:</label>
-		    </td>
-		    <td>
-              <input type="text" id="username" name="username" class="input-xlarge"
-            placeholder="Enter Username" value="{{ request.form.username }}" required></input>
-		    </td>
-		    <td>
-		    </td>
+            <td>
+			  {{ form.username(required=true, placeholder="Enter Username") }}
+            </td>
 		  </tr>
 
 		  <tr>
-		    <td>
-		      <label for="password" class="col-form-label">Password:</label>
-		    </td>
-		    <td>
-		      <input type="text" id="password" name="password" class="input-xlarge"
-            placeholder="Enter Password" value="{{ request.form.password }}" required></input>
-		    </td>
+            <td>
+			  {{ form.password(required=true, placeholder="Enter Password") }}
+            </td>
 		    <td>
 		      <label style="margin-left: 5px" class="lead col-form-label">min 4 characters</label>
 		    </td>

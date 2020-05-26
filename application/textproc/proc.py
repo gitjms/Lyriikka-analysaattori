@@ -3,7 +3,10 @@ from flask import flash, g, Markup
 import operator
 import re
 import nltk
+# STOPWORDS FROM CATALOGUES:
 from nltk.corpus import stopwords
+# OWN STOPWORDS:
+# from application.stopwords.stopwords import stops
 from collections import Counter
 
 from application import db
@@ -59,15 +62,9 @@ def proc_text(song_list, word_to_find):
 
 
 # stop words
-def stop_words(new_raw_words_list, lang):
+def stop_words(new_raw_words_list, language):
 
-	if lang == 'fi':
-		stops = stopwords.words('finnish')
-	elif lang == 'fr':
-		stops = stopwords.words('french')
-	else: # lang == 'en'
-		stops = stopwords.words('english')
-
+	stops = stopwords.words(language)#stopwords.stopwords.stops#
 	no_stop_words_list = []
 	results_list = []
 	results = {}
@@ -92,11 +89,16 @@ def stop_words(new_raw_words_list, lang):
 # database storing
 def store_db(raw_word_count, no_stop_words_list, results_list, new_songlist, graph_list, word_to_find, tot_count):
 
+	errors = []
 	result_set = []
 	result_set.append([raw_word_count, no_stop_words_list])
 	page_results = results_list
 	page_songs = new_songlist
-		
+	counts = []
+	
+	for item in results_list:
+		counts.append(item[2])
+
 	# data for graph
 	values = []
 	result_values = {}
@@ -120,11 +122,11 @@ def store_db(raw_word_count, no_stop_words_list, results_list, new_songlist, gra
 		try:
 			result = Words(
 				word = word_to_find,
-				matches = tot_count,
+				matches = counts[i],
 				result_all = raw_word_count[i],
 				result_no_stop_words = no_stop_words_list[i][1]
 			)
-			result.word_song = no_stop_words_list[i][0]
+			result.song_id = no_stop_words_list[i][0]
 
 			db.session.add(result)
 			db.session.commit()

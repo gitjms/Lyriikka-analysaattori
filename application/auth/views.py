@@ -8,7 +8,8 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from application import app, db
 from application.auth.models import User
-from application.auth.forms import LoginForm, CreateForm
+from application.auth.forms import LoginForm
+from application.auth.forms import CreateForm
 
 # Lomakkeen näyttämisen ja lähetyksen vastaanottava toiminnallisuus.
 
@@ -93,67 +94,14 @@ def auth_create():
 		db.session().add(user)
 		db.session().commit()
 		login_user(user, remember = remember_me)
-		db.session.permanent = True
-		sumSessionCounter(True)
+		db.session.permanent = remember_me
+		count_users()
 	except IntegrityError:
 		db.session.rollback()
 		flash("Failed.", "danger")
 		return render_template("auth/newuser.html", form = form, error = "User already exists. Consider changing username.")
 
 	return redirect(request.args.get('next') or url_for("index"))
-
-
-#-----------------------------------------
-#		LIST: users_list()
-#-----------------------------------------
-@app.route("/auth", methods=["POST"])
-@login_required
-def users_list():
-	return render_template("auth/list.html", users = User.query.all())
-
-
-#-----------------------------------------
-#		DELETE: user_delete()
-#-----------------------------------------
-@app.route("/auth/delete/<user_id>", methods=["POST"])
-@login_required
-def user_delete(user_id):
-	user_qry = db.session().query(User).filter(User.id==user_id)
-
-	if request.method == "POST":
-		try:
-			db.session().delete(user_qry.first())
-			db.session().commit()
-			sumSessionCounter(False)
-		except SQLAlchemyError:
-			db.session.rollback()
-			flash("User not deleted.", "danger")
-
-	return render_template("auth/list.html", users = User.query.all())
-
-
-#-----------------------------------------
-#		CHANGE ADMIN STATUS user_adminate()
-#-----------------------------------------
-@app.route("/auth/status/<user_id>", methods=["POST"])
-@login_required
-def user_adminate(user_id):
-	user_qry = db.session().query(User).filter(User.id==user_id)
-
-	form = CreateForm(request.form)
-	if request.form.get("userate") == "userate":
-		user_qry.first().admin = False
-	elif request.form.get("adminate") == "adminate":
-		user_qry.first().admin = True
-
-	if request.method == "POST":
-		try:
-			db.session().commit()
-		except SQLAlchemyError:
-			db.session.rollback()
-			flash("User's status not changed.", "danger")
-
-	return render_template("auth/list.html", users = User.query.all())
 
 
 #-----------------------------------------
@@ -165,11 +113,9 @@ def auth_logout():
 	return redirect(url_for("index"))
 
 
-def sumSessionCounter(add):
-	try:
-		if add:
-			session['counter'] += 1
-		else:
-			session['counter'] -= 1
-	except KeyError:
-		session['counter'] = 1
+#-----------------------------------------
+#		COUNT USERS: count_users()
+#-----------------------------------------
+@app.route("/auth/count")
+def count_users():
+	return db.session().query(User).count()

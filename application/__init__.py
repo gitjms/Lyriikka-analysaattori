@@ -23,6 +23,8 @@ migrate = Migrate(app, db)
 
 from application import views
 from application import models
+
+from application.admin import views
  
 from application.auth import models
 from application.auth import views
@@ -57,7 +59,7 @@ def load_user(user_id):
 	return User.query.get(user_id)
 
 #----------------------------------------------
-# admin and guest accounts
+# create admin and guest accounts
 #----------------------------------------------
 from sqlalchemy.event import listen
 from sqlalchemy import event, DDL

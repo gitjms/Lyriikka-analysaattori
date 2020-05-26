@@ -1,14 +1,10 @@
-from flask import render_template, redirect, url_for, request, g
+from flask import render_template, redirect, flash, url_for, request, g
 from flask_login import login_required, current_user
 
 
 from application import app, db
 from application.songs.models import Song
-from application.words.forms import WordForm
-# STOPWORDS FROM CATALOGUES:
-from nltk.corpus import stopwords
-# OWN STOPWORDS:
-# from application.stopwords.stopwords import stops
+# from application.words.forms import WordForm
 from application.textproc.proc import proc_text, stop_words, store_db
 
 # Lomakkeen näyttämisen ja lähetyksen vastaanottava toiminnallisuus.
@@ -21,19 +17,20 @@ def before_request():
 #-----------------------------------------
 #		SHOW: words_find()
 #-----------------------------------------
-@app.route("/words/show/", methods=["GET", "POST"])
+@app.route("/words/find/", methods=["GET", "POST"])
 @login_required
 def words_find():
 	errors = []
 
-	user_list = [g.user.id,1]
-	form = WordForm(request.form)
-	word_to_find = request.form['wordsearch']
-	if 'mainpage' in request.form:
-		language = request.form['langchoice']
-		flash('hep',"success")
+	# form = wordform(request.form)
 
-	return redirect(url_for("index"))
+	user_list = [g.user.id,1]
+
+	if request.method == "POST":
+		word_to_find = request.form.get('wordsearch')
+		language = request.form.get('langchoice')
+	else:
+		return redirect(url_for("index"))
 	
 	# get data from database
 	qry_list = db.session().query(Song.id,Song.lyrics,Song.title).filter(Song.account_id.in_((user_list))).all()
@@ -46,11 +43,15 @@ def words_find():
 	raw_word_count, new_songlist, new_raw_words_list, tot_count = proc_text(song_list, word_to_find)
 	
 	# stop words, get count data for html and graph
-	graph_list, results_list, no_stop_words_list = stop_words(new_raw_words_list, language)
+	if tot_count > 0:
+		graph_list, results_list, no_stop_words_list = stop_words(new_raw_words_list, language)
+	else:
+		return render_template("words/words.html", frequencies = None, songs=None, word=word_to_find, errors=errors, count = 0, song_count=0, graph_data=None)
 
 	# store to database
 	page_results = None
 	page_songs = None
+
 	if tot_count > 0:
 		page_results, page_songs, result_values = store_db(raw_word_count, no_stop_words_list, results_list, new_songlist, graph_list, word_to_find, tot_count)
 

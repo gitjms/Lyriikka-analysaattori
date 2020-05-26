@@ -3,7 +3,6 @@ from application import views
 
 from sqlalchemy.dialects.postgresql import JSON
 
-
 class Words(db.Model):
 
 	__tablename__ = 'results'
@@ -16,7 +15,7 @@ class Words(db.Model):
 
 	song_id = db.Column(db.Integer, db.ForeignKey('song.id'), nullable=False)
 
-	def __init__(self, word, result_all, result_no_stop_words):
+	def __init__(self, word, matches, result_all, result_no_stop_words):
 		self.word = word
 		self.matches = matches
 		self.result_all = result_all

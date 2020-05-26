@@ -30,15 +30,15 @@
 		  <b style="float: left; margin-right:10px;">{{ user.id }}.</b>
 		</td>
 	    {% if user.admin %}
-		<td><a style="color: red;margin-right:20px;">{{ user.fullname }}</a></td>
+		<td><a style="color: red;margin-right:20px;">{{ user.name }}</a></td>
 		<td><a style="color: red;margin-right:10px;">{{ user.username }}</a></td>
 		<td><a style="color: red;margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
         {% elif user.username == 'guest'%}
-		<td><a style="color: green;margin-right:20px;">{{ user.fullname }}</a></td>
+		<td><a style="color: green;margin-right:20px;">{{ user.name }}</a></td>
 		<td><a style="color: green;margin-right:10px;">{{ user.username }}</a></td>
 		<td><a style="color: green;margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
         {% else %}
-		<td><a style="margin-right:20px;">{{ user.fullname }}</a></td>
+		<td><a style="margin-right:20px;">{{ user.name }}</a></td>
 		<td><a style="margin-right:10px;">{{ user.username }}</a></td>
 		<td><a style="margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
         {% endif %}

@@ -30,8 +30,8 @@
 		</td>
 
 	    <div class="col-auto">
-		  <label for="author" class="col-sm-2 col-form-label">Author(s):</label>
-		  <textarea class="form-control text-left" id="author" name="author" type="text" rows="1" style="overflow:auto;">{{ form.author().split(">",1)[1] }}
+		  <label for="author" class="col-lg-2 col-form-label">Author(s): <small style="float: right;">separate authors with comma</small></label>
+		  <textarea class="form-control text-left" id="author" name="author" type="text" rows="1" style="overflow:auto;" placeholder="Firstname Lastname, Firstname Lastname, ...">{{ form.author().split(">",1)[1] }}
 		  </textarea>
 		</div>
 		<td>

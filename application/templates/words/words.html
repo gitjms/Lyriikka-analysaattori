@@ -11,50 +11,96 @@
 
         {% if frequencies %}
 
+		  <!-- SEARCH WORD AND MATCH COUNTS -->
+		  
+		  <h1>Results</h1>
+
 	      <h3>
 		    <small class="text-muted">Word:</small>&nbsp;&nbsp;
 			<font size="+4"><i>[</i></font>&nbsp;&nbsp;<i>{{  word  }}</i>&nbsp;&nbsp;<font size="+4"><i>]</i></font><br>
-			<small class="text-muted">total match count:&nbsp;</small>
-			<font size="+3"><i>{{  count  }}</i></font>,&nbsp;&nbsp;
-			<small class="text-muted">song(s):</small>&nbsp;
-			<font size="+3"><i>{{  song_count  }}</i></font>
+			<small class="text-muted">Total match count:&nbsp;</small>
+			<font size="+3"><i>{{  count  }}</i></font>&nbsp;&nbsp;
+			<small class="text-muted">in</small>&nbsp;&nbsp;
+			<font size="+3"><i>{{  song_count  }}</i></font>&nbsp;&nbsp;
+			<small class="text-muted">song(s)</small>
 	      </h3>
-		  <br><br>
+		  <br>
 
-          <h3>Frequencies
-		    <small class="text-muted">(top 10)</small>
-		  </h3>
-          <br>
 
-	      <div class="col-sm-10 col-sm-offset-1">
-            <div id="frequencies">
-			  {% for freq in frequencies %}
-                <h5>song: {{ freq[0] }},  count: {{ freq[2] }}</h5>
-                <table class="table table-striped" style="max-width: 300px;">
-                  <thead>
-                    <tr>
-                      <th>Word</th>
-                      <th>Count</th>
-                    </tr>
-                  </thead>
-			      {% for res in freq[1] %}
-                    <tr>
-                      <td>{{ res[0] }}</td>
-                      <td>{{ res[1] }}</td>
-                    </tr>
-                  {% endfor %}
-                </table><br>
-				
+		  <!-- FREQUENCY BAR CHART -->
+
+		  <center>
+		  <div class="wrapper">
+		  <canvas id="myChart" width="500" height="200"></canvas>
+		  </div>
+		  </center><br>
+
+		  
+		  <!-- HIDDEN FREQUENCY TABLES AND BUTTON -->
+
+		  <div id="freqtables" style="display: none">
+
+            <h3>Frequencies
+		      <small class="text-muted">(top 10)</small>
+		    </h3><br>
+
+	        <div class="col-sm-10 col-sm-offset-1">
+              <div id="frequencies">
+			    {% for freq in frequencies %}
+                  <h5>song: {{ freq[0] }},  count: {{ freq[2] }}</h5>
+                  <table class="table table-striped" style="max-width: 300px;">
+                    <thead>
+                      <tr>
+                        <th>Word</th>
+                        <th>Count</th>
+                      </tr>
+                    </thead>
+			        {% for res in freq[1] %}
+                      <tr>
+                        <td>{{ res[0] }}</td>
+                        <td>{{ res[1] }}</td>
+                      </tr>
+                    {% endfor %}
+                  </table><br>
+                {% endfor %}
+              </div>
+            </div>
+		  </div>
+
+		  <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Frequency Table(s)" onClick="showHideDiv('freqtables')" style="width: 200px;"/><br><br>
+		  
+		  <!-- HIDDEN SONG SOURCES AND BUTTON -->
+
+		  <div id="songtables" style="display: none">
+
+            <div id="songs">
+              <h3>Source(s)</h3><br>
+              {% for song in songs %}
+                <h5>
+			      <small class="text-muted">song:</small>
+				    {{ song[0] }},
+                  <small class="text-muted">title:</small>
+                  <em>{{ song[2] }}</em>
+			    </h5>
+                <td>{{ song[1] }}</td><br><br>
               {% endfor %}
             </div>
           </div>
-		  
-		  <center>
-		  <div class="wrapper">
-		  <canvas id="myChart" width="400" height="200"></canvas>
-		  </div>
-		  </center>
 
+		  <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Song Source(s)" onClick="showHideDiv('songtables')" style="width: 200px;"/><br><br>
+
+
+		<!-- IF NOT RESULTS -->
+        {% else %}
+	      <h3>
+		    <small class="text-muted">Word:</small>&nbsp;&nbsp;
+			<font size="+4"><i>[</i></font>&nbsp;&nbsp;<i>{{  word  }}</i>&nbsp;&nbsp;<font size="+4"><i>]</i></font>
+			&nbsp;&nbsp;&#8594;&nbsp;&nbsp;&nbsp;no results
+	      </h3>
+        {% endif %}
+
+
+		<!-- JAVASCRIPT FOR BARCHART -->
 		  <script>
 		  var ctx = document.getElementById('myChart').getContext('2d');
 		  var myChart = new Chart(ctx, {
@@ -74,7 +120,11 @@
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
                 'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(57, 93, 162, 0.2)',
+                'rgba(102, 189, 55, 0.2)',
+                'rgba(241, 115, 195, 0.2)',
+                'rgba(187, 121, 67, 0.2)'
                 ],
 			    borderColor: [
                 'rgba(255, 99, 132, 1)',
@@ -82,7 +132,11 @@
                 'rgba(255, 206, 86, 1)',
                 'rgba(75, 192, 192, 1)',
                 'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
+                'rgba(255, 159, 64, 1)',
+                'rgba(57, 93, 162, 1)',
+                'rgba(102, 189, 55, 1)',
+                'rgba(241, 115, 195, 1)',
+                'rgba(187, 121, 67, 1)'
                 ],
                 borderWidth: 1
               }]
@@ -91,7 +145,12 @@
 			legend: {
 				display: false
 				},
-			  scales: {
+			title: {
+				display: true,
+				fontSize: 18,
+				text: 'Top 10 Word Frequencies in Match Songs'
+				},
+			scales: {
                 yAxes: [{
                   ticks: {
                     beginAtZero: true
@@ -101,28 +160,6 @@
           }
 		  });
 		  </script>
-	
-
-          <div id="songs">
-            <h3>Source(s)</h3><br>
-            {% for song in songs %}
-              <h5>
-			    <small class="text-muted">song:</small>
-				  {{ song[0] }},
-                <small class="text-muted">title:</small>
-                <em>{{ song[2] }}</em>
-			  </h5>
-              <td>{{ song[1] }}</td><br><br>
-            {% endfor %}
-          </div>
-	  
-        {% else %}
-	      <h3>
-		    <small class="text-muted">Word:</small>&nbsp;&nbsp;
-			<font size="+4"><i>[</i></font>&nbsp;&nbsp;<i>{{  word  }}</i>&nbsp;&nbsp;<font size="+4"><i>]</i></font>
-			&nbsp;&nbsp;&#8594;&nbsp;&nbsp;&nbsp;no results
-	      </h3>
-        {% endif %}
 
 	  </div>
 	</form>
