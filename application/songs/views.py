@@ -39,17 +39,13 @@ def songs_list():
 		songs = Song.query.filter(Song.account_id.in_((song_list))).all()
 
 	if request.method == "POST":
-		if request.form['sort'] == "langasc":
-			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.language.asc()).all()
-		elif request.form['sort'] == "langdesc":
-			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.language.desc()).all()
-		elif request.form['sort'] == "alphasc":
+		if request.form['sort'] == "titasc":
 			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.title.asc()).all()
-		elif request.form['sort'] == "alphdesc":
+		elif request.form['sort'] == "titdesc":
 			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.title.desc()).all()
-		elif request.form['sort'] == "langalphasc":
+		elif request.form['sort'] == "langtitasc":
 			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.language).order_by(Song.title.asc()).all()
-		elif request.form['sort'] == "langalphdesc":
+		elif request.form['sort'] == "langtitdesc":
 			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.language).order_by(Song.title.desc()).all()
 		else:
 			songs = Song.query.filter(Song.account_id.in_((song_list))).all()

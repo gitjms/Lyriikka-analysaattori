@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 from application import app, db
 from application.songs.models import Song
 # from application.words.forms import WordForm
-from application.words.proc import proc_text, stop_words, store_db
+from application.words.proc import proc_text, stop_words, create_results, store_db
 
 # Lomakkeen näyttämisen ja lähetyksen vastaanottava toiminnallisuus.
 
@@ -20,42 +20,86 @@ def before_request():
 @login_required
 def words_find():
 	errors = []
+	filtered = False
+	save = False
 
 	# form = wordform(request.form)
 
 	user_list = [g.user.id,1]
 
-	if request.method == "POST":
-		word_to_find = request.form.get('wordsearch')
-		language = request.form.get('langchoice')
-	else:
+	if request.method == "GET":
 		return redirect(url_for("index"))
+
+	if request.method == "POST":
+		if request.form.get('filter') is None:
+			word_to_find = request.form.get('wordsearch')
+			language = request.form.get('langchoice')
+		elif request.form.get('filter') is not None:
+			data = request.form.get('filter').split(',')
+			word_to_find = data[0]
+			language = data[1]
+			if data[2] == "True":
+				filtered = False
+			elif data[2] == "False":
+				filtered = True
+		
+		if request.form.get('save') is not None:
+			data = request.form.get('save').split(',')
+			word_to_find = data[0]
+			language = data[1]
+			if data[2] == "True":
+				filtered = True
+			elif data[2] == "False":
+				filtered = False
+			save = True
 	
 	# get data from database
 	qry_list = db.session().query(Song.id,Song.lyrics,Song.title,Song.language).filter(Song.account_id.in_((user_list))).filter(Song.language==language).all()
 
 	song_list = []
 	for i in qry_list:
-		raw_to_string = ' '.join([str(elem) for elem in i])
-		song_list.append([i[0], replace_chars(raw_to_string),i[2]])
+		song_list.append([i[0], replace_chars(i[1]), i[2]])
 
+	#-------------------------------------------------------
 	# process lyrics
+	# 
+	# -> proc.proc_text()
+	#
+	#-------------------------------------------------------
 	raw_word_count, new_songlist, new_raw_words_list, tot_count = proc_text(song_list, word_to_find)
 	
+	#-------------------------------------------------------
 	# stop words, get count data for html and graph
+	# 
+	# -> proc.stop_words()
+	#
+	#-------------------------------------------------------
 	if tot_count > 0:
-		graph_list, results_list, no_stop_words_list = stop_words(new_raw_words_list, language)
+		graph_list, results_list, words_list = stop_words(filtered, new_raw_words_list, language)
 	else:
-		return render_template("words/words.html", frequencies = None, songs=None, word=word_to_find, errors=errors, count = 0, song_count=0, graph_data=None)
+		return render_template("words/words.html", frequencies = None, word=word_to_find, errors=errors)
 
-	# store to database
-	page_results = None
-	page_songs = None
-
+	#-------------------------------------------------------
+	# create results: frequencies, songs, graph_data, (counts)
+	# 
+	# -> proc.create_results()
+	#
+	#-------------------------------------------------------
+	frequencies = None
+	songs = None
 	if tot_count > 0:
-		page_results, page_songs, result_values = store_db(raw_word_count, no_stop_words_list, results_list, new_songlist, graph_list, word_to_find, tot_count)
+		frequencies, songs, graph_data, counts = create_results(raw_word_count, words_list, results_list, new_songlist, graph_list, word_to_find, tot_count)
 
-	return render_template("words/words.html", frequencies = page_results, songs=page_songs, word=word_to_find, errors=errors, count = tot_count, song_count=len(new_songlist), graph_data=result_values)
+	#-------------------------------------------------------
+	# store to database
+	# 
+	# -> proc.store_db()
+	#
+	#-------------------------------------------------------
+	if save == True and tot_count > 0:
+		store_db(raw_word_count, words_list, word_to_find, counts)
+
+	return render_template("words/words.html", frequencies = frequencies, songs=songs, word=word_to_find, errors=errors, count = tot_count, song_count=len(new_songlist), graph_data=graph_data, language=language, filtered=filtered, save=save)
 
 
 def replace_chars(text):

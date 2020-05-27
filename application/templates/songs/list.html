@@ -2,45 +2,61 @@
 
 {% block body %}
 
-
+    <h3>Songs</h3><br>
+	<b style="margin-right:10px;"> Sort by:</b>
 	<div class="form-group">
 	<form action= "{{ url_for('songs_list') }}" method="POST">
 	<table>
+      <tr>
+		<th style="padding-left: 125px;">title</th>
+		<th style="padding-left: 95px;">lang:title</th>
+	  </tr>
+	</table>
+	
+	<table>
 	<tr>
 	<td>
-	<b style="margin-right:10px;"> Sort by:</b>
+	<button class="btn btn-sm btn-secondary" type="submit" name="sort" style="width:60px; height:30px;" value="id"/>id</button>
 	</td>
 	<td>
-	<select class="form-control" id="sort" name="sort" style="width: 270px; margin-right:10px;" >
-	  <option name="sort" type="submit" value="id"></option>
-	  <option name="sort" type="submit" value="langasc">language ascending</option>
-      <option name="sort" type="submit" value="langdesc">language descending</option>
-      <option name="sort" type="submit" value="alphasc">alphabetic. ascending</option>
-      <option name="sort" type="submit" value="alphdesc">alphabetic. descending</option>
-      <option name="sort" type="submit" value="langalphasc">language alphabetic. ascending</option>
-      <option name="sort" type="submit" value="langalphdesc">language alphabetic. descending</option>
-	</select>
+	<button class="btn btn-sm btn-secondary" type="submit" name="sort" style="margin-left: 20px; width:60px; height:30px;" value="titasc"/>A->Z</button>
 	</td>
 	<td>
-	<button class="btn btn-secondary btn-sm" type="submit" value="Submit">Submit</button>
+	<button class="btn btn-sm btn-secondary" type="submit" name="sort" style="width:60px; height:30px;" value="titdesc"/>Z->A</button>
 	</td>
+	<td>
+	<button class="btn btn-sm btn-secondary" type="submit" name="sort" style="margin-left: 20px; width:60px; height:30px;" value="langtitasc"/>A->Z</button>
+	</td>
+	<td>
+	<button class="btn btn-sm btn-secondary" type="submit" name="sort" style="width:60px; height:30px;" value="langtitdesc"/>Z->A</button>
+	</td>
+	
 	</tr>
 	</table>
+
+      <!-- <option name="sort" type="submit" value="langalphasc">language alphabetic. ascending</option> -->
+      <!-- <option name="sort" type="submit" value="langalphdesc">language alphabetic. descending</option> -->
 	</form>
 	</div>
 
     <table>
       <tr>
-        <th style="text-align: left;">Songs</th>
-      </tr>
+		<th>id</th>
+		<th>title</th>
+		<th>lang</th>
+		<th style="padding-left: 20px;">lyrics</th>
+		<th style="padding-left: 20px;">edit</th>
+		<th style="padding-left: 10px;">delete</th>
+	  </tr>
     {% for song in songs %}
       <tr>
         <td style="text-align: right; padding-right: 10px;">{{ song.id }}.</td>
 		<td>{{ song.title }}</td>
+		<td style="padding-left: 10px;">{{ song.language[:2] }}</td>
 	    <td>
 		  <form method="POST" action="{{ url_for('songs_show', song_id=song.id) }}">
 		    <div class="col-auto">
-		      <button class="btn btn-sm btn-primary" type="submit" name="Show" style="width:75px;" value="Show"/>Lyrics</button>
+		      <button class="btn btn-sm btn-primary" type="submit" name="Show" style="margin-left: 5px; width:40px; height:20px;" value="Show"/></button>
 		    </div>
 		  </form>
         </td>
@@ -48,7 +64,7 @@
 	      <form method="POST" action="{{ url_for('songs_editing', song_id=song.id) }}">
 		    <input type="hidden" name="song_id" value="{{ song.id }}">
 		    <div class="col-auto">
-		      <button class="btn btn-sm btn-warning" type="submit" name="Edit" style="width:75px;" value="Edit"/>Edit</button>
+		      <button class="btn btn-sm btn-warning" type="submit" name="Edit" style="width:40px; height:20px;" value="Edit"/></button>
 		    </div>
 		  </form>
         </td>
@@ -56,7 +72,7 @@
 	      <form method="POST" action="{{ url_for('songs_delete', song_id=song.id) }}">
 		    <input type="hidden" name="song_id" value="{{ song.id }}">
 		    <div class="col-auto">
-		      <button class="btn btn-sm btn-danger" type="submit" name="Delete" style="width:75px;" value="Delete"/> Delete</button>
+		      <button class="btn btn-sm btn-danger" type="submit" name="Delete" style="width:40px; height:20px;" value="Delete"/> </button>
 		    </div>
 		  </form>
         </td>
