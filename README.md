@@ -10,15 +10,15 @@ Sovellukseen on asetettu kuusi oletuslaulua kustakin kolmesta kielestä valmiiks
 
 ### Sovellus
 
-Löydät sovelluksen [täältä](https://lyrfreq.herokuapp.com/).
-
 Sovelluksessa voi tehdä tällä hetkellä pikahakuja yksittäisistä sanoista erikseen kullakin kolmella kielellä. Ohjelma tulostaa etsityn sanan kokonaislukumäärän kyseisen kielen lauluista sekä erikseen lukumäärät kullekin laululle.
 
 Ohjelma näyttää myös pylväskuvaajan kyseisen kielen laulujen kymmenestä yleisimmästä sanasta. Lisäksi käyttäjä voi nappia painamalla tarkastella kunkin laulun (joista sana löytyi) kohdalla kymmentä yleisintä sanaa taulukkomuodossa tai kyseisiä laulutekstejä, joissa hakusana on merkattu.
 
-Admin-rooli voi oletuslaulujen alkuinsertin lisäksi tarkastella rekisteröityneitä käyttäjiä ja poistaa niitä. Admin voi myös asettaa haluamalleen käyttäjälle admin-roolin tai palauttaa sen takaisin peruskäyttäjäksi.
+Admin-rooli voi oletuslaulujen alkuinsertin lisäksi tarkastella rekisteröityneitä käyttäjiä ja poistaa niitä. Admin voi myös asettaa haluamalleen käyttäjälle admin-roolin tai palauttaa sen takaisin peruskäyttäjäksi. Tällä hetkellä oletustunnukset salasanoineen on kovakoodattu, koska on kyse kurssityöstä eikä *oikeasta* ohjelmasta, ja koska se helpottaa asioita esim. katselmuksen suhteen.
 
-Ohjelmaan voi siis rekisteröityä luomalla omat tunnukset, mutta helpoin tapa kokeilla sovellusta on kirjautua yhdellä napilla vieras-tilille (guest) jolla on peruskäyttäjän oikeudet.
+Ohjelmaan voi siis rekisteröityä luomalla omat tunnukset, mutta helpoin tapa kokeilla sovellusta on kirjautua yhtä nappia painamalla vieras-tilille (guest) jolla on peruskäyttäjän oikeudet.
+
+Löydät sovelluksen [täältä](https://lyrfreq.herokuapp.com/).
 
 ## Suunnitellut toiminnot
 
@@ -66,5 +66,6 @@ Linkissä [*User stories*](https://github.com/gitjms/Lyriikka-analysaattori/tree
 
 * kaikkien 57 maan data mukana
 * muitakin kuin vain kristillisiä lyriikoita, eli laulugenret mukaan
- * sanafrekvenssit genreittäin
+* sanafrekvenssit genreittäin
 * sanafrekvenssit lauluntekijöiden mukaan
+* laulujen *tunnetilojen* analyysit
