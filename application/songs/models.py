@@ -23,19 +23,19 @@ class Song(db.Model):
 	@staticmethod
 	def find_songs_authors_languages_matches():
 		stmt = text("SELECT"
-					"	COUNT(Song.id),"
-                    "	COUNT(Author.id),"
-                    "	COUNT(Song.language),"
-                    "	results.matches "
+					"	DISTINCT Song.language,"
+                    "	COUNT(DISTINCT Song.title),"
+                    "	COUNT(DISTINCT Author.name) "
 					"FROM Song "
-					"JOIN author_song ON Song.id = author_song.song_id "
-					"JOIN Author ON author_song.author_id = Author.id "
-					"JOIN results ON results.song_id = Song.id;"
+					"LEFT JOIN author_song ON Song.id = author_song.song_id "
+					"LEFT JOIN Author ON author_song.author_id = Author.id "
+					"GROUP BY Song.language "
+					"ORDER BY Song.language ASC;"
 					)
 		res = db.engine.execute(stmt)
 
 		response = []
 		for row in res:
-			response.append({'songs':row[0], 'authors':row[1], 'languages':row[2], 'matches':row[3]})
+			response.append({'languages':row[0], 'songs':row[1], 'authors':row[2]})
 
 		return response

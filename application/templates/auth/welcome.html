@@ -7,7 +7,29 @@
       <h4>{{ err }}</h4>
     {% endfor %}
 	
-	<h1>Welcome!</h1>
+	<h1>Welcome!</h1><br>
+
+	{% if db_index is defined %}
+	  <h3>Database index</h3>
+      <div id="index">
+        <table class="table table-striped" style="max-width: 700px;">
+          <thead>
+            <tr>
+              <th>Languages</th>
+              <th>Songs</th>
+              <th>Authors</th>
+            </tr>
+          </thead>
+	      {% for res in db_index %}
+            <tr>
+              <td>{{ res.languages }}</td>
+              <td>{{ res.songs }}</td>
+              <td>{{ res.authors }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div><br><br>
+	{% endif %}
 
 	{% if abv_average is defined %}
 	  <h3>Search history: matches above average</h3>

@@ -69,7 +69,7 @@ def auth_login():
 		
 	db.session.permanent = remember_me
 
-	return render_template("auth/welcome.html", abv_average=Words.find_songs_authors_with_matches_geq_avg())
+	return render_template("auth/welcome.html", abv_average=Words.find_songs_authors_with_matches_geq_avg(), db_index=Song.find_songs_authors_languages_matches())
 
 
 #-----------------------------------------
