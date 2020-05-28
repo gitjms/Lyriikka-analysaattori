@@ -103,13 +103,6 @@ def words_find():
 	if save == True and tot_count > 0:
 		store_db(raw_word_count, words_list, word_to_find, counts)
 
-	for itm in Words.find_songs_authors_with_matches_geq_avg():
-		print('                 ')
-		print('                 ')
-		print(itm)
-		print('                 ')
-		print('                 ')
-
 	return render_template("words/words.html", frequencies = frequencies, songs=songs, word=word_to_find, errors=errors, count = tot_count, song_count=len(new_songlist), graph_data=graph_data, language=language, filtered=filtered, save=save, abv_average=Words.find_songs_authors_with_matches_geq_avg())
 
 
