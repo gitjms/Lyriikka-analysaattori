@@ -25,25 +25,25 @@ class Words(db.Model):
 	@staticmethod
 	def find_songs_authors_with_matches_geq_avg():
 		stmt = text("SELECT"
-					"	DISTINCT results.word,"
+					"	results.word,"
                     "	Author.name,"
                     "	Song.title,"
                     "	results.matches,"
-                    "	AVG(results.matches) AS 'matches avg' "
+                    "	SUM(results.matches) AS sum, "
+                    "	AVG(results.matches) AS avg "
 					"FROM account "
 					"JOIN Song ON account.id = Song.account_id "
 					"JOIN results ON Song.id = results.song_id "
 					"JOIN author_song ON Song.id = author_song.song_id "
 					"JOIN Author ON author_song.author_id = Author.id "
-					"GROUP BY Song.title "
-					"HAVING results.matches >= AVG(results.matches) "
+					"GROUP BY results.word "
 					"ORDER BY results.matches DESC;"
 					)
 		res = db.engine.execute(stmt)
 
 		response = []
 		for row in res:
-			response.append({'word':row[0], 'author':row[1], 'title':row[2], 'matches':row[3], 'average':row[4]})
+			response.append({'word':row[0], 'author':row[1], 'title':row[2], 'matches':row[3], 'sum':row[4], 'average':row[5]})
 
 		return response
 
