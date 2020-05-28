@@ -69,7 +69,7 @@ def auth_login():
 		
 	db.session.permanent = remember_me
 
-	return render_template("auth/welcome.html", abv_average=Words.find_songs_authors_with_matches_geq_avg(), db_index=Song.find_songs_authors_languages_matches())
+	return render_template("auth/welcome.html", abv_average=Words.find_songs_authors_with_matches_geq_avg())
 
 
 #-----------------------------------------
@@ -83,7 +83,7 @@ def auth_create():
 		return render_template("auth/newuser.html", form = form)
 
 	if request.form.get("Back") == "Back":
-		return redirect(url_for("index"))
+		return render_template("index.html")
 
 	remember_me = False
 	if 'remember_me' in request.form:
@@ -102,13 +102,12 @@ def auth_create():
 		db.session().commit()
 		login_user(user, remember = remember_me)
 		db.session.permanent = remember_me
-		count_users()
 	except IntegrityError:
 		db.session.rollback()
 		flash("Failed.", "danger")
 		return render_template("auth/newuser.html", form = form, error = "User already exists. Consider changing username.")
 
-	return redirect(request.args.get('next') or url_for("index"))
+	return redirect(url_for("index"))
 
 
 #-----------------------------------------
@@ -118,11 +117,3 @@ def auth_create():
 def auth_logout():
 	logout_user()
 	return redirect(url_for("index"))
-
-
-#-----------------------------------------
-#		COUNT USERS: count_users()
-#-----------------------------------------
-@app.route("/auth/count")
-def count_users():
-	return db.session().query(User).count()

@@ -1,5 +1,8 @@
 from application import db
 from application import views
+from application import app
+from flask import g
+from flask_login import current_user
 from sqlalchemy.sql import text
 
 
@@ -20,8 +23,18 @@ class Song(db.Model):
 		self.lyrics = lyrics
 		self.language = language
 
+
+	@app.before_request
+	def before_request():
+		g.user = current_user
+
+
 	@staticmethod
 	def find_songs_authors_languages_matches():
+
+		user_1 = 1
+		user_2 = g.user.id
+		
 		stmt = text("SELECT"
 					"	DISTINCT Song.language,"
                     "	COUNT(DISTINCT Song.title),"
@@ -29,9 +42,12 @@ class Song(db.Model):
 					"FROM Song "
 					"LEFT JOIN author_song ON Song.id = author_song.song_id "
 					"LEFT JOIN Author ON author_song.author_id = Author.id "
+					"LEFT JOIN account ON Song.account_id = account.id "
+					"WHERE account.id IN (:user_1, :user_2) "
 					"GROUP BY Song.language "
 					"ORDER BY Song.language ASC;"
-					)
+					).params(user1=user_1,user2=user_2)
+
 		res = db.engine.execute(stmt)
 
 		response = []

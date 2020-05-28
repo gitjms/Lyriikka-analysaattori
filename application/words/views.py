@@ -29,7 +29,10 @@ def words_find():
 	user_list = [g.user.id,1]
 
 	if request.method == "GET":
-		return redirect(url_for("index"))
+		if g.user.is_authenticated:
+			render_template("auth/welcome.html", db_index=Song.find_songs_authors_languages_matches())
+		else:
+			return render_template("index.html")
 
 	if request.method == "POST":
 		if request.form.get('filter') is None:

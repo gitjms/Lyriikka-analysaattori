@@ -32,8 +32,7 @@ def before_request():
 def admin_dashboard():
 
 	if request.method == "GET":
-		return redirect(url_for("index"), stats=Song.find_songs_authors_languages_matches())
-		# may add a dashboard main page later
+		render_template("auth/welcome.html", db_index=Song.find_songs_authors_languages_matches())
 
 	if request.method == "POST":
 		return render_template("admin/dashboard.html", users = User.query.all())
@@ -259,7 +258,7 @@ def clear():
 			db.session.rollback()
 			flash("Default songs not added to database.", "danger")
 	else:
-		return redirect(url_for("index"), stats=Song.find_songs_authors_languages_matches())
+		render_template("auth/welcome.html", db_index=Song.find_songs_authors_languages_matches())
 		
 	
 	

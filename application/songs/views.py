@@ -24,7 +24,10 @@ def before_request():
 #-----------------------------------------
 @app.route("/")
 def songs_index():
-	return render_template("index.html")
+	if g.user.is_authenticated:
+		render_template("auth/welcome.html", db_index=Song.find_songs_authors_languages_matches())
+	else:
+		return render_template("index.html")
 
 
 #-----------------------------------------
