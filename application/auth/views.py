@@ -9,6 +9,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from application import app, db
 from application.auth.models import User
 from application.songs.models import Song
+from application.words.models import Words
 from application.auth.forms import LoginForm
 from application.auth.forms import CreateForm
 
@@ -64,11 +65,11 @@ def auth_login():
 		login_user(user, remember = remember_me)
 	except IntegrityError:
 		flash("Problems with login.", "danger")
-		return redirect(url_for("index"))
+		return render_template("auth/loginform.html", form = form)
 		
-	db.session.permanent = True
+	db.session.permanent = remember_me
 
-	return redirect(request.args.get('next') or url_for("index"))
+	return render_template("auth/welcome.html", abv_average=Words.find_songs_authors_with_matches_geq_avg())
 
 
 #-----------------------------------------

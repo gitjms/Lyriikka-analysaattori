@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{{ error }}
+{% block body %}
+
+	{% for err in error %}
+      <h4>{{ err }}</h4>
+    {% endfor %}
+	
+	<h1>Welcome!</h1>
+
+	{% if abv_average is defined %}
+	  <h3>Search history: matches above average</h3>
+        <div id="averages">
+          <table class="table table-striped" style="max-width: 700px;">
+            <thead>
+              <tr>
+                <th>Word</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Matches</th>
+                <th>Sum</th>
+                <th>Avg</th>
+              </tr>
+            </thead>
+			{% for res in abv_average %}
+              <tr>
+                <td>{{ res.word }}</td>
+                <td>{{ res.author }}</td>
+                <td>{{ res.title }}</td>
+                <td>{{ res.matches }}</td>
+                <td>{{ res.sum }}</td>
+                <td>{{ '%0.1f'| format(res.average|float) }}</td>
+              </tr>
+            {% endfor %}
+          </table><br>
+        </div>
+	  {% endif %}
+
+{% endblock %}
