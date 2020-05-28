@@ -2,11 +2,14 @@ from flask import url_for, render_template, request, flash, g
 from flask_login import login_required, current_user
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from sqlalchemy.sql import func, text
 
 from application import app, db
 from application.auth.models import User
 from application.songs.models import Song
 from application.authors.models import Author
+from application.authors.models import author_song
+from application.words.models import Words
 from application.authors import authors
 from application.admin.forms import CreateForm
 
@@ -21,24 +24,24 @@ def before_request():
 	g.user = current_user
 
 
-#-----------------------------------------
+#----------------------------------------------------
 #		LIST: users_list()
-#-----------------------------------------
+#----------------------------------------------------
 @app.route("/admin", methods=["GET", "POST"])
 @login_required
 def admin_dashboard():
 
 	if request.method == "GET":
-		return redirect(url_for("index"))
+		return redirect(url_for("index"), stats=Song.find_songs_authors_languages_matches())
 		# may add a dashboard main page later
 
 	if request.method == "POST":
 		return render_template("admin/dashboard.html", users = User.query.all())
 
 
-#-----------------------------------------
+#----------------------------------------------------
 #		DELETE: user_delete()
-#-----------------------------------------
+#----------------------------------------------------
 @app.route("/admin/delete/<user_id>", methods=["POST"])
 @login_required
 def user_delete(user_id):
@@ -56,9 +59,9 @@ def user_delete(user_id):
 	return render_template("admin/dashboard.html", users = User.query.all())
 
 
-#-----------------------------------------
+#----------------------------------------------------
 #		CHANGE ADMIN STATUS user_adminate()
-#-----------------------------------------
+#----------------------------------------------------
 @app.route("/admin/status/<user_id>", methods=["POST"])
 @login_required
 def user_adminate(user_id):
@@ -80,29 +83,62 @@ def user_adminate(user_id):
 	return render_template("admin/dashboard.html", users = User.query.all())
 
 
-#-----------------------------------------
-#		Add default authors and songs: admin()
-#-----------------------------------------
+#----------------------------------------------------
+# Table operations: add/clear default songs & authors
+#----------------------------------------------------
 @app.route("/defaults", methods = ["POST"])
-def defaults():
+def clear():
+
+	#----------------------------------------------------
+	# Clear default authors and songs
+	#----------------------------------------------------
+	if request.form.get('clear') == "clear":
+
+		try:
+			stmt = text("DELETE FROM author_song;")
+			db.engine.execute(stmt)
+			flash("Author_song cleared.", "success")
+		except:
+			flash("Table author_song not cleared.", "danger")
+			db.session.rollback()
+
+		try:
+			db.session.query(Author).delete()
+			db.session.commit()
+			flash("Author cleared.", "success")
+		except:
+			flash("Table Author not cleared.", "danger")
+			db.session.rollback()
+
+		try:
+			db.session.query(Song).delete()
+			db.session.commit()
+			flash("Song cleared.", "success")
+		except:
+			flash("Table Song not cleared.", "danger")
+			db.session.rollback()
 
 
-	if request.form["defaults"] == "remove":
-		pass
+		return render_template("admin/dashboard.html")
 
-	elif request.form["defaults"] == "add":
 
-		#----------------------------------------------
+	#----------------------------------------------------
+	# Add default authors and songs
+	#----------------------------------------------------
+
+	elif request.form.get('add') == "add":
+
+		#------------------------------------------------
 		# check if tables are empty
-		#----------------------------------------------
+		#------------------------------------------------
 
 		if db.session.query(Author).first() is not None:
 			flash("Default authors and songs already exist.", "warning")
 			return render_template("admin/dashboard.html")
 
-		#----------------------------------------------
+		#------------------------------------------------
 		# add default authors
-		#----------------------------------------------
+		#------------------------------------------------
 
 		for item in authors.authors_fi:
 			song = item[1]
@@ -122,9 +158,9 @@ def defaults():
 				db.session.add(Author(name=auth))
 				db.session.commit()
 
-		#----------------------------------------------
+		#------------------------------------------------
 		# add default songs
-		#----------------------------------------------
+		#------------------------------------------------
 
 		# finnish songs
 		for i in range(1,7):
@@ -222,5 +258,9 @@ def defaults():
 		except IntegrityError:
 			db.session.rollback()
 			flash("Default songs not added to database.", "danger")
+	else:
+		return redirect(url_for("index"), stats=Song.find_songs_authors_languages_matches())
+		
+	
 	
 	return render_template("admin/dashboard.html")

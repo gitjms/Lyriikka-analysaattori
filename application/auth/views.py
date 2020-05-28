@@ -8,6 +8,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from application import app, db
 from application.auth.models import User
+from application.songs.models import Song
 from application.auth.forms import LoginForm
 from application.auth.forms import CreateForm
 

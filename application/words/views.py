@@ -1,8 +1,9 @@
-from flask import render_template, redirect, flash, url_for, request, g
+from flask import render_template, redirect, flash, url_for, request, g, Markup
 from flask_login import login_required, current_user
 
 from application import app, db
 from application.songs.models import Song
+from application.words.models import Words
 # from application.words.forms import WordForm
 from application.words.proc import proc_text, stop_words, create_results, store_db
 
@@ -53,7 +54,10 @@ def words_find():
 				filtered = False
 			save = True
 	
+	#-------------------------------------------------------
 	# get data from database
+	#
+	#-------------------------------------------------------
 	qry_list = db.session().query(Song.id,Song.lyrics,Song.title,Song.language).filter(Song.account_id.in_((user_list))).filter(Song.language==language).all()
 
 	song_list = []
@@ -99,11 +103,21 @@ def words_find():
 	if save == True and tot_count > 0:
 		store_db(raw_word_count, words_list, word_to_find, counts)
 
-	return render_template("words/words.html", frequencies = frequencies, songs=songs, word=word_to_find, errors=errors, count = tot_count, song_count=len(new_songlist), graph_data=graph_data, language=language, filtered=filtered, save=save)
+	for itm in Words.find_songs_authors_with_matches_geq_avg():
+		print('                 ')
+		print('                 ')
+		print(itm)
+		print('                 ')
+		print('                 ')
+
+	return render_template("words/words.html", frequencies = frequencies, songs=songs, word=word_to_find, errors=errors, count = tot_count, song_count=len(new_songlist), graph_data=graph_data, language=language, filtered=filtered, save=save, abv_average=Words.find_songs_authors_with_matches_geq_avg())
 
 
+# own stopwords
 def replace_chars(text):
-	for ch in ['\\n','BRIDGE','POST-CHORUS','CHORUS','VERSE','V1','V2','V3','V4','V5','V6','V7','V8','V9','V10','B1','B2','B3','B4','B5','B6','B7','B8','B9','B10','C1','C2','C3','C4','C5','C6','C7','C8','C9','C10','\'n','\n','\'n\'n','\'r','\'r\'n']:
-		if ch in text:
+	for ch in ['\\n','BRIDGE','POST-CHORUS','CHORUS','VERSE','V1','V2','V3','V4','V5','V6','V7','V8','V9','V10','B1','B2','B3','B4','B5','B6','B7','B8','B9','B10','C1','C2','C3','C4','C5','C6','C7','C8','C9','C10','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','\'n','\n','\'n\'n','\'r','\'r\'n',"'ll","'s","\'"]:
+		if ch == "\'" and ch in text:
+			text = text.replace(ch,"\´")
+		elif ch in text:
 			text = text.replace(ch,"")
 	return text

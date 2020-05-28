@@ -90,8 +90,7 @@ def stop_words(filtered, new_raw_words_list, language):
 			graph_list.append(raw_words)
 
 		db_words_list.append([song_id, words_count])
-
-
+		
 		# save the results
 		results = sorted(
 			words_count.items(),

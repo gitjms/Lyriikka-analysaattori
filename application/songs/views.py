@@ -39,6 +39,7 @@ def songs_list():
 		songs = Song.query.filter(Song.account_id.in_((song_list))).all()
 
 	if request.method == "POST":
+		# sorting
 		if request.form['sort'] == "titasc":
 			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.title.asc()).all()
 		elif request.form['sort'] == "titdesc":
