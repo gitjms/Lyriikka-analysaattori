@@ -33,6 +33,8 @@ Löydät sovelluksen [täältä](https://lyrfreq.herokuapp.com/).
 ### Yhteenvetokyselyt
 - [x] kaikkien sanojen frekvenssit top 10(+)
 - [x] tietyn sanan esiintymät (laululista frekvensseineen)
+- [x] sanahakuhistorian summia ja keskiarvoja (SUM, AVG)
+- [x] tietokannan laulu, lauluntekijä ja kielitilanne (COUNT)
 - [ ] sanan esiintymisfrekvenssien vertailu kielittäin
 - [ ] lyhyiden sanayhdistelmien esiintymät ja frekvenssit
 
