@@ -6,10 +6,14 @@ from wtforms.validators import DataRequired
 from flask_login import login_required, current_user
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from sqlalchemy.sql import text
+from sqlalchemy import func, distinct, asc
 
 from application import app, db
 from application.songs.models import Song
-from application.authors.models import Author
+from application.auth.models import User
+from application.words.models import Words
+from application.authors.models import Author, author_song
 from application.songs.forms import SongForm
 
 # Lomakkeen näyttämisen ja lähetyksen vastaanottava toiminnallisuus.
@@ -24,14 +28,36 @@ def before_request():
 #-----------------------------------------
 @app.route("/")
 def songs_index():
-	if g.user.is_authenticated:
-		render_template("auth/welcome.html", db_index=Song.find_songs_authors_languages_matches())
-	else:
-		return render_template("index.html")
+	return render_template("index.html")
 
 
 #-----------------------------------------
-#		LIST: songs_list()
+#		MAIN: songs_main()
+#-----------------------------------------
+@app.route("/main")
+@login_required
+def songs_main():
+	return render_template("auth/welcome.html", db_index=find_songs_authors_languages_matches(), abv_average=Words.find_songs_authors_with_matches_geq_avg())
+
+
+#-----------------------------------------
+#		@staticmethod: find_songs_authors_languages_matches()
+#-----------------------------------------
+def find_songs_authors_languages_matches():
+
+	user_list = [g.user.id,1]
+
+	result = db.session.query(distinct(Song.language),func.count(distinct(Song.id)),func.count(distinct(Author.id))).filter(User.id.in_(user_list)).group_by(Song.language).order_by(asc(Song.language))
+
+	response = []
+	for row in result:
+		response.append({'languages':row[0], 'songs':row[1], 'authors':row[2]})
+
+	return response
+	
+
+#-----------------------------------------
+#		SONGS: songs_list()
 #-----------------------------------------
 @app.route("/songs", methods=["GET", "POST"])
 @login_required
@@ -58,7 +84,7 @@ def songs_list():
 
 
 #-----------------------------------------
-#		SHOW: songs_show()
+#		SONGS/SHOW: songs_show()
 #-----------------------------------------
 @app.route("/songs/show/<song_id>/", methods=["GET", "POST"])
 @login_required
@@ -69,11 +95,11 @@ def songs_show(song_id):
 
 
 #-----------------------------------------
-#		EDIT: songs_edit()
+#		SONGS/EDIT: songs_edit()
 #-----------------------------------------
 @app.route("/songs/edit/<song_id>/", methods=["GET", "POST"])
 @login_required
-def songs_editing(song_id):
+def songs_edit(song_id):
 	form = SongForm(request.form)
 
 	if request.form.get("Back") == "Back":
@@ -111,7 +137,7 @@ def songs_editing(song_id):
 
 
 #-----------------------------------------
-#		DELETE: songs_delete()
+#		SONGS/DELETE: songs_delete()
 #-----------------------------------------
 @app.route("/songs/delete/<song_id>", methods=["POST"])
 @login_required
@@ -129,7 +155,7 @@ def songs_delete(song_id):
 
 
 #-----------------------------------------
-#		CREATE: song_create()
+#		SONGS/NEW: song_create()
 #-----------------------------------------
 @app.route("/songs/new/", methods=["GET", "POST"])
 @login_required

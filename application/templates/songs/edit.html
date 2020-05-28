@@ -2,7 +2,7 @@
 
 {% block body %}
 
-	  <form method="POST" action="{{ url_for('songs_editing', song_id=song.id) }}">
+	  <form method="POST" action="{{ url_for('songs_edit', song_id=song.id) }}">
 
 	    <div class="col-auto">
 		  <button class="btn btn-sm btn-secondary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>

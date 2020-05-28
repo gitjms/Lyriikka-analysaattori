@@ -29,10 +29,7 @@ def words_find():
 	user_list = [g.user.id,1]
 
 	if request.method == "GET":
-		if g.user.is_authenticated:
-			render_template("auth/welcome.html", db_index=Song.find_songs_authors_languages_matches())
-		else:
-			return render_template("index.html")
+		return redirect(url_for("index.html"))
 
 	if request.method == "POST":
 		if request.form.get('filter') is None:
@@ -61,7 +58,7 @@ def words_find():
 	# get data from database
 	#
 	#-------------------------------------------------------
-	qry_list = db.session().query(Song.id,Song.lyrics,Song.title,Song.language).filter(Song.account_id.in_((user_list))).filter(Song.language==language).all()
+	qry_list = db.session().query(Song.id,Song.lyrics,Song.title,Song.language).filter(Song.account_id.in_(user_list)).filter(Song.language==language).all()
 
 	song_list = []
 	for i in qry_list:

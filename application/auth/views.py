@@ -69,7 +69,7 @@ def auth_login():
 		
 	db.session.permanent = remember_me
 
-	return render_template("auth/welcome.html", abv_average=Words.find_songs_authors_with_matches_geq_avg())
+	return redirect(url_for("songs_main"))
 
 
 #-----------------------------------------
@@ -83,7 +83,7 @@ def auth_create():
 		return render_template("auth/newuser.html", form = form)
 
 	if request.form.get("Back") == "Back":
-		return render_template("index.html")
+		return redirect(url_for("index.html"))
 
 	remember_me = False
 	if 'remember_me' in request.form:
