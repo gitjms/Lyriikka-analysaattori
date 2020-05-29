@@ -62,7 +62,6 @@ def find_database_status():
 
 	response = []
 	for row in result:
-		print('\n\n\n',row,'\n\n\n')
 		response.append({'languages':row[0], 'songs':row[1], 'authors':row[2]})
 
 	return response
