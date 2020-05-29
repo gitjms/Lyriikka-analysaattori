@@ -36,7 +36,7 @@ class Words(db.Model):
 					"JOIN results ON Song.id = results.song_id "
 					"JOIN author_song ON Song.id = author_song.song_id "
 					"JOIN Author ON author_song.author_id = Author.id "
-					"GROUP BY results.word, Song.title, Author.name "
+					"GROUP BY results.word, Song.title, results.matches, Author.name "
 					"ORDER BY results.matches DESC;"
 					)
 		res = db.engine.execute(stmt)
