@@ -6,13 +6,15 @@ Sovellus on selainpohjainen tietokantasovellus, jolla voi tarkastella tällä he
 
 Lyriikkatietokanta on haettu sivustolta [Worship Leader App](https://worshipleaderapp.com/en/download-song-database-opensong-openlp-and-quelea), sisältäen 57 kielen lyriikoita yhteensä 72098 kappaletta. Kyseessä on kristillisten laulujen tietokanta, joiden katsotaan olevan copyright-vapaita lähteitä.
 
-Sovellukseen on asetettu kuusi oletuslaulua kustakin kolmesta kielestä valmiiksi. Kun sovelluksen käynnistää ensimmäisen kerran ja tietokantataulut syntyvät, tulee laulut syöttää tauluihin. Tämä onnistuu kirjautumalla admin-tunnuksilla sisään, jolloin sivun alalaidassa näkyy kaksi nappia: *List users* ja *Add default songs*. Jälkimmäistä nappia painamalla laulut ja niiden tekijät syötetään automaattisesti omiin tauluihinsa sekä liitostiedot liitostauluun.
+Sovellus hyödyntää *Natural Language Toolkit* -nimistä palvelua ([NLTK](https://www.nltk.org/)), jonka materiaalin avulla voidaan tutkia lingvististä dataa. Sieltä on otettu tähän työhön toiminnot, joilla pilkut, pisteet ym. lisämerkit saa poistettua analysoitavasta datasta. Myös *Stopwordsit* kullekin kielelle on ladattu NLTK:sta. Ne ovat ns. turhia sanoja, kuten suomen *ja, jos, koska, kuin, mutta, niin, sekä, ...*, ja ne poistetaan datasta.
+
+Sovellukseen on asetettu kuusi oletuslaulua kustakin kolmesta kielestä valmiiksi. Kun sovelluksen käynnistää ensimmäisen kerran ja tietokantataulut syntyvät, tulee laulut syöttää tauluihin. Tämä onnistuu kirjautumalla admin-tunnuksilla sisään, jolloin sivun alalaidassa näkyy kolme nappia: *List users*, *Remove default songs* ja *Add default songs*. Viimeistä nappia painamalla laulut ja niiden tekijät syötetään automaattisesti omiin tauluihinsa sekä liitostiedot liitostauluun. Samoin ne saa tarvittaessa poistettua keskimmäisestä napista.
 
 ### Sovellus
 
 Sovelluksessa voi tehdä tällä hetkellä pikahakuja yksittäisistä sanoista erikseen kullakin kolmella kielellä. Ohjelma tulostaa etsityn sanan kokonaislukumäärän kyseisen kielen lauluista sekä erikseen lukumäärät kullekin laululle.
 
-Ohjelma näyttää myös pylväskuvaajan kyseisen kielen laulujen kymmenestä yleisimmästä sanasta. Lisäksi käyttäjä voi nappia painamalla tarkastella kunkin laulun (joista sana löytyi) kohdalla kymmentä yleisintä sanaa taulukkomuodossa tai kyseisiä laulutekstejä, joissa hakusana on merkattu.
+Ohjelma näyttää myös pylväskuvaajan kyseisen kielen laulujen kymmenestä yleisimmästä sanasta. Lisäksi käyttäjä voi nappia painamalla tarkastella kunkin laulun (joista sana löytyi) kohdalla kymmentä yleisintä sanaa taulukkomuodossa tai kyseisiä laulutekstejä, joissa hakusana on merkattu. Tulos esitetään ensin suodattamattomana, eli stopwordsit ovat mukana. Käyttäjä voi tällöin suodattaa tuloksen itse nappia painamalla. Kunkin haun tulokset voi erikseen tallentaa tietokantaan.
 
 Admin-rooli voi oletuslaulujen alkuinsertin lisäksi tarkastella rekisteröityneitä käyttäjiä ja poistaa niitä. Admin voi myös asettaa haluamalleen käyttäjälle admin-roolin tai palauttaa sen takaisin peruskäyttäjäksi. Tällä hetkellä oletustunnukset salasanoineen on kovakoodattu, koska on kyse kurssityöstä eikä *oikeasta* ohjelmasta, ja koska se helpottaa asioita esim. katselmuksen suhteen.
 
@@ -31,10 +33,9 @@ Löydät sovelluksen [täältä](https://lyrfreq.herokuapp.com/).
 - [x] sanahaun tulosten tarkastelu taulukkomuodossa, pylväskuvaajana, kohostettuna tekstinä ja lukumääränä
 
 ### Yhteenvetokyselyt
-- [x] kaikkien sanojen frekvenssit top 10(+)
-- [x] tietyn sanan esiintymät (laululista frekvensseineen)
+- [x] tietyn sanan esiintymät (laululista frekvensseineen) sekä ko. haun laulujen sanojen frekvenssit top 10(+)
 - [x] sanahakuhistorian summia ja keskiarvoja (SUM, AVG)
-- [x] tietokannan laulu, lauluntekijä ja kielitilanne (COUNT)
+- [x] tietokannan laulu-, lauluntekijä- ja kielitilanne (COUNT)
 - [ ] sanan esiintymisfrekvenssien vertailu kielittäin
 - [ ] lyhyiden sanayhdistelmien esiintymät ja frekvenssit
 
@@ -62,7 +63,7 @@ Linkissä [*User stories*](https://github.com/gitjms/Lyriikka-analysaattori/tree
 
 ## Tietokantakaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/82905018-f7724680-9f6b-11ea-803a-96fcd9aeb6b1.png" alt="release" width="466" height="578" >
+<img src="https://user-images.githubusercontent.com/46410240/83227690-74c8d180-a18d-11ea-982f-d094c282417c.png" alt="release" width="466" height="578" >
 
 ## Myöhemmin mahdollisia lisäominaisuuksia
 
