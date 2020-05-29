@@ -6,10 +6,10 @@ from application.models import Base
 # join table AUTHOR_SONG
 author_song = db.Table('author_song', Base.metadata,
 	db.Column(	'author_id',						# left
-				db.ForeignKey('author.id', ondelete='cascade'),
+				db.ForeignKey('author.id'),
 				primary_key=True),
 	db.Column(	'song_id',							# right
-				db.ForeignKey('song.id', ondelete='cascade'),
+				db.ForeignKey('song.id'),
 				primary_key=True)
 )
 
@@ -20,11 +20,8 @@ class Author(Base):
 	name = db.Column(db.String(80), nullable=False)
 
 	songs = db.relationship("Song",
-		cascade='all, delete',
 		secondary=author_song,
-		passive_deletes=True,
-		backref=db.backref('authors', lazy=True),
-		lazy='subquery'
+		backref=db.backref('authors', lazy=True)
 	)
 
 
