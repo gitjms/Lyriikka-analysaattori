@@ -8,7 +8,7 @@ Lyriikkatietokanta on haettu sivustolta [Worship Leader App](https://worshiplead
 
 Sovellus hyödyntää *Natural Language Toolkit* -nimistä palvelua ([NLTK](https://www.nltk.org/)), jonka materiaalin avulla voidaan tutkia lingvististä dataa. Sieltä on otettu tähän työhön toiminnot, joilla pilkut, pisteet ym. lisämerkit saa poistettua analysoitavasta datasta. Myös *Stopwordsit* kullekin kielelle on ladattu NLTK:sta. Ne ovat ns. turhia sanoja, kuten suomen *ja, jos, koska, kuin, mutta, niin, sekä, ...*, ja ne poistetaan datasta.
 
-Sovellukseen on asetettu kuusi oletuslaulua kustakin kolmesta kielestä valmiiksi. Kun sovelluksen käynnistää ensimmäisen kerran ja tietokantataulut syntyvät, tulee laulut syöttää tauluihin. Tämä onnistuu kirjautumalla admin-tunnuksilla sisään, jolloin sivun alalaidassa näkyy kolme nappia: *List users*, *Remove default songs* ja *Add default songs*. Viimeistä nappia painamalla laulut ja niiden tekijät syötetään automaattisesti omiin tauluihinsa sekä liitostiedot liitostauluun. Samoin ne saa tarvittaessa poistettua keskimmäisestä napista.
+Sovellukseen on asetettu kuusi oletuslaulua kustakin kolmesta kielestä valmiiksi. Kun sovelluksen käynnistää ensimmäisen kerran ja tietokantataulut syntyvät, tulee laulut syöttää tauluihin. Tämä onnistuu kirjautumalla admin-tunnuksilla sisään, jolloin sivun alalaidassa näkyy kolme nappia: *List users*, ~~*Remove default songs*~~ ja *Add default songs*. Viimeistä nappia painamalla laulut ja niiden tekijät syötetään automaattisesti omiin tauluihinsa sekä liitostiedot liitostauluun. ~~Samoin ne saa tarvittaessa poistettua keskimmäisestä napista.~~
 
 ### Sovellus
 
