@@ -93,30 +93,38 @@ def clear():
 	#----------------------------------------------------
 	if request.form.get('clear') == "clear":
 
-		try:
-			stmt = text("DELETE FROM author_song;")
-			db.engine.execute(stmt)
-			flash("Author_song cleared.", "success")
-		except:
-			flash("Table author_song not cleared.", "danger")
-			db.session.rollback()
-
-		try:
-			db.session.query(Author).delete()
-			db.session.commit()
-			flash("Author cleared.", "success")
-		except:
-			flash("Table Author not cleared.", "danger")
-			db.session.rollback()
-
-		try:
-			db.session.query(Song).delete()
-			db.session.commit()
-			flash("Song cleared.", "success")
-		except:
-			flash("Table Song not cleared.", "danger")
-			db.session.rollback()
-
+		if db.session.query(author_song).first() is None:
+			flash("Join table author_song already empty.", "warning")
+		else:
+			try:
+				stmt = text("DELETE FROM author_song;")
+				db.engine.execute(stmt)
+				flash("Join table author_song cleared.", "success")
+			except:
+				flash("Join table author_song not cleared.", "danger")
+				db.session.rollback()
+		
+		if db.session.query(Author).first() is None:
+			flash("Table Author already empty.", "warning")
+		else:
+			try:
+				db.session.query(Author).delete()
+				db.session.commit()
+				flash("Table Author cleared.", "success")
+			except:
+				flash("Table Author not cleared.", "danger")
+				db.session.rollback()
+		
+		if db.session.query(Song).first() is None:
+			flash("Table Song already empty.", "warning")
+		else:
+			try:
+				db.session.query(Song).delete()
+				db.session.commit()
+				flash("Table Song cleared.", "success")
+			except:
+				flash("Table Song not cleared.", "danger")
+				db.session.rollback()
 
 		return render_template("admin/dashboard.html")
 
@@ -161,6 +169,8 @@ def clear():
 		# add default songs
 		#------------------------------------------------
 
+		fi_added = False
+
 		# finnish songs
 		for i in range(1,7):
 			document_path = os.getcwd()+'/application/static/default_songs/fi/song'+str(i)+'.txt'
@@ -189,9 +199,15 @@ def clear():
 			elif i == 6:
 				song.authors.extend([Author.query.get(8),Author.query.get(11)])
 
-			db.session.add(song)
-			db.session.commit()
+			try:
+				db.session.add(song)
+				db.session.commit()
+				fi_added = True
+			except:
+				db.session.rollback()
 
+		en_added = False
+		
 		# english songs
 		for i in range(7,13):
 			document_path = os.getcwd()+'/application/static/default_songs/en/song'+str(i)+'.txt'
@@ -220,9 +236,15 @@ def clear():
 			elif i == 12:
 				song.authors.extend([Author.query.get(19)])
 
-			db.session.add(song)
-			db.session.commit()
+			try:
+				db.session.add(song)
+				db.session.commit()
+				en_added = True
+			except:
+				db.session.rollback()
 
+		fr_added = False
+		
 		# french songs
 		for i in range(13,19):
 			document_path = os.getcwd()+'/application/static/default_songs/fr/song'+str(i)+'.txt'
@@ -250,13 +272,26 @@ def clear():
 				song.authors.extend([Author.query.get(26)])
 			elif i == 18:
 				song.authors.extend([Author.query.get(27)])
-		try:
-			db.session.add(song)
-			db.session.commit()
-			flash("Default songs added to database.", "success")
-		except IntegrityError:
-			db.session.rollback()
-			flash("Default songs not added to database.", "danger")
+			try:
+				db.session.add(song)
+				db.session.commit()
+				fr_added = True
+			except IntegrityError:
+				db.session.rollback()
+
+		if fi_added:
+			flash("Finnish songs added.", "success")
+		else:
+			flash("Finnish songs not added.", "danger")
+		if en_added:
+			flash("English songs added.", "success")
+		else:
+			flash("English songs not added.", "danger")
+		if fr_added:
+			flash("French songs added.", "success")
+		else:
+			flash("French songs not added.", "danger")
+
 	else:
 		return redirect(url_for("index.html"))
 		
