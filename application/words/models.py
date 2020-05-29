@@ -35,7 +35,7 @@ class Words(db.Model):
 					"JOIN Song ON account.id = Song.account_id "
 					"JOIN results ON Song.id = results.song_id "
 					"JOIN author_song ON Song.id = author_song.song_id "
-					"JOIN Author ON author_song.author_id = Author.id "
+					"JOIN Author ON author_song.author_id = Author.name "
 					"GROUP BY results.word "
 					"ORDER BY results.matches DESC;"
 					)
