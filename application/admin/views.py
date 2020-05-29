@@ -186,18 +186,18 @@ def clear():
 			song = Song(title,lyrics,language)
 			song.account_id = 1
 		
-			if i == 1:
-				song.authors.extend([Author.query.get(1),Author.query.get(2)])
-			elif i == 2:
-				song.authors.extend([Author.query.get(3),Author.query.get(4)])
-			elif i == 3:
-				song.authors.extend([Author.query.get(5),Author.query.get(6)])
-			elif i == 4:
-				song.authors.extend([Author.query.get(7),Author.query.get(8)])
-			elif i == 5:
-				song.authors.extend([Author.query.get(9),Author.query.get(10)])
-			elif i == 6:
-				song.authors.extend([Author.query.get(8),Author.query.get(11)])
+			# if i == 1:
+				# song.authors.extend([Author.query.get(1),Author.query.get(2)])
+			# elif i == 2:
+				# song.authors.extend([Author.query.get(3),Author.query.get(4)])
+			# elif i == 3:
+				# song.authors.extend([Author.query.get(5),Author.query.get(6)])
+			# elif i == 4:
+				# song.authors.extend([Author.query.get(7),Author.query.get(8)])
+			# elif i == 5:
+				# song.authors.extend([Author.query.get(9),Author.query.get(10)])
+			# elif i == 6:
+				# song.authors.extend([Author.query.get(8),Author.query.get(11)])
 
 			try:
 				db.session.add(song)
@@ -223,18 +223,18 @@ def clear():
 			song = Song(title,lyrics,language)
 			song.account_id = 1
 			
-			if i == 7:
-				song.authors.extend([Author.query.get(12)])
-			elif i == 8:
-				song.authors.extend([Author.query.get(9),Author.query.get(13)])
-			elif i == 9:
-				song.authors.extend([Author.query.get(14)])
-			elif i == 10:
-				song.authors.extend([Author.query.get(15),Author.query.get(16),Author.query.get(17)])
-			elif i == 11:
-				song.authors.extend([Author.query.get(18)])
-			elif i == 12:
-				song.authors.extend([Author.query.get(19)])
+			# if i == 7:
+				# song.authors.extend([Author.query.get(12)])
+			# elif i == 8:
+				# song.authors.extend([Author.query.get(9),Author.query.get(13)])
+			# elif i == 9:
+				# song.authors.extend([Author.query.get(14)])
+			# elif i == 10:
+				# song.authors.extend([Author.query.get(15),Author.query.get(16),Author.query.get(17)])
+			# elif i == 11:
+				# song.authors.extend([Author.query.get(18)])
+			# elif i == 12:
+				# song.authors.extend([Author.query.get(19)])
 
 			try:
 				db.session.add(song)
@@ -260,25 +260,25 @@ def clear():
 			song = Song(title,lyrics,language)
 			song.account_id = 1
 			
-			if i == 13:
-				song.authors.extend([Author.query.get(20)])
-			elif i == 14:
-				song.authors.extend([Author.query.get(21),Author.query.get(22)])
-			elif i == 15:
-				song.authors.extend([Author.query.get(23),Author.query.get(24)])
-			elif i == 16:
-				song.authors.extend([Author.query.get(21),Author.query.get(25)])
-			elif i == 17:
-				song.authors.extend([Author.query.get(26)])
-			elif i == 18:
-				song.authors.extend([Author.query.get(27)])
+			# if i == 13:
+				# song.authors.extend([Author.query.get(20)])
+			# elif i == 14:
+				# song.authors.extend([Author.query.get(21),Author.query.get(22)])
+			# elif i == 15:
+				# song.authors.extend([Author.query.get(23),Author.query.get(24)])
+			# elif i == 16:
+				# song.authors.extend([Author.query.get(21),Author.query.get(25)])
+			# elif i == 17:
+				# song.authors.extend([Author.query.get(26)])
+			# elif i == 18:
+				# song.authors.extend([Author.query.get(27)])
 
-			# try:
-				# db.session.add(song)
-				# db.session.commit()
-				# fr_added = True
-			# except:
-				# db.session.rollback()
+			try:
+				db.session.add(song)
+				db.session.commit()
+				fr_added = True
+			except:
+				db.session.rollback()
 
 		if fi_added:
 			flash("Finnish songs added.", "success")
