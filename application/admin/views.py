@@ -92,13 +92,13 @@ def clear():
 	# Clear default authors and songs
 	#----------------------------------------------------
 	if request.form.get('clear') == "clear":
-
+		
 		try:
-			stmt = text("DELETE FROM author_song;")
-			db.engine.execute(stmt)
-			flash("Join table author_song cleared.", "success")
+			db.session.query(Song).delete()
+			db.session.commit()
+			flash("Table Song cleared.", "success")
 		except:
-			flash("Join table author_song not cleared.", "danger")
+			flash("Table Song not cleared.", "danger")
 			db.session.rollback()
 		
 		try:
@@ -108,13 +108,13 @@ def clear():
 		except:
 			flash("Table Author not cleared.", "danger")
 			db.session.rollback()
-		
+
 		try:
-			db.session.query(Song).delete()
-			db.session.commit()
-			flash("Table Song cleared.", "success")
+			stmt = text("DELETE FROM author_song;")
+			db.engine.execute(stmt)
+			flash("Join table author_song cleared.", "success")
 		except:
-			flash("Table Song not cleared.", "danger")
+			flash("Join table author_song not cleared.", "danger")
 			db.session.rollback()
 
 		return render_template("admin/dashboard.html")
