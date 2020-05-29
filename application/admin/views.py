@@ -276,7 +276,7 @@ def clear():
 				db.session.add(song)
 				db.session.commit()
 				fr_added = True
-			except IntegrityError:
+			except:
 				db.session.rollback()
 
 		if fi_added:
