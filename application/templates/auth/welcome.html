@@ -29,7 +29,7 @@
       </div><br><br>
 	{% endif %}
 
-	{% if abv_average is defined %}
+	{% if abv_average is defined and not g.user.admin %}
 	  <h3>Search history: matches above average</h3>
         <div id="averages">
           <table class="table table-striped" style="max-width: 900px;">

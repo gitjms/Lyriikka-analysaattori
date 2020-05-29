@@ -78,16 +78,17 @@ def stop_words(filtered, new_raw_words_list, language):
 		count = words_list[0]
 		song_id = words_list[1][0]
 		raw_words = words_list[1][1]
-		no_stop_words = [w for w in raw_words if w.lower() not in stops]
+		raw_words_graph = [w.lower() for w in words_list[1][1] if w.lower() not in stops]
+		no_stop_words = [w.lower() for w in raw_words if w.lower() not in stops]
 		if filtered:
 			words_count = Counter(no_stop_words)
 		else:
-			words_count = Counter(raw_words)
+			words_count = Counter(raw_words_graph)
 
 		if filtered:
 			graph_list.append(no_stop_words)
 		else:
-			graph_list.append(raw_words)
+			graph_list.append(raw_words_graph)
 
 		db_words_list.append([song_id, words_count])
 		

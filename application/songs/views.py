@@ -37,13 +37,13 @@ def songs_index():
 @app.route("/main")
 @login_required
 def songs_main():
-	return render_template("auth/welcome.html", db_index=find_songs_authors_languages_matches(), abv_average=Words.find_songs_authors_with_matches_geq_avg())
+	return render_template("auth/welcome.html", db_index=find_database_status(), abv_average=Words.find_songs_authors_with_matches_geq_avg())
 
 
 #-----------------------------------------
-#		@staticmethod: find_songs_authors_languages_matches()
+#		find_database_status()
 #-----------------------------------------
-def find_songs_authors_languages_matches():
+def find_database_status():
 
 	user_list = [g.user.id,1]
 
