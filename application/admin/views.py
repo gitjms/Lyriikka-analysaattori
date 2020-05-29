@@ -93,42 +93,12 @@ def clear():
 	#----------------------------------------------------
 	if request.form.get('clear') == "clear":
 		
-# from sqlalchemy.event import listen
-# from sqlalchemy import event, DDL
-
-# @event.listens_for(User.__table__, 'after_create')
-# def insert_initial_accounts(*args, **kwargs):
-	# db.session.add(User(name='admin',username='admin',password='admin', admin=True))
-	# db.session.commit()
-	# db.session.add(User(name='guest',username='guest',password='guest', admin=False))
-	# db.session.commit()
-		db.drop_all(bind=None)
-		db.create_all()
-		return render_template("admin/dashboard.html")
-		
 		try:
-			db.session.query(Song).delete()
-			db.session.commit()
-			flash("Table Song cleared.", "success")
+			db.drop_all(bind=None)
+			db.create_all()
+			flash("Tables cleared.", "success")
 		except:
-			flash("Table Song not cleared.", "danger")
-			db.session.rollback()
-		
-		try:
-			db.session.query(Author).delete()
-			db.session.commit()
-			flash("Table Author cleared.", "success")
-		except:
-			flash("Table Author not cleared.", "danger")
-			db.session.rollback()
-
-		try:
-			stmt = text("DELETE FROM author_song;")
-			db.engine.execute(stmt)
-			flash("Join table author_song cleared.", "success")
-		except:
-			flash("Join table author_song not cleared.", "danger")
-			db.session.rollback()
+			flash("Tables not cleared.", "danger")
 
 		return render_template("admin/dashboard.html")
 
