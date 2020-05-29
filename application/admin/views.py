@@ -272,12 +272,13 @@ def clear():
 				song.authors.extend([Author.query.get(26)])
 			elif i == 18:
 				song.authors.extend([Author.query.get(27)])
-			try:
-				db.session.add(song)
-				db.session.commit()
-				fr_added = True
-			except:
-				db.session.rollback()
+
+			# try:
+				# db.session.add(song)
+				# db.session.commit()
+				# fr_added = True
+			# except:
+				# db.session.rollback()
 
 		if fi_added:
 			flash("Finnish songs added.", "success")
