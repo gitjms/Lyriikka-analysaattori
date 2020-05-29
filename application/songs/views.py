@@ -41,16 +41,28 @@ def songs_main():
 
 
 #-----------------------------------------
-#		find_database_status()
+#		DB-STATUS: find_database_status()
 #-----------------------------------------
 def find_database_status():
 
 	user_list = [g.user.id,1]
 
-	result = db.session.query(distinct(Song.language),func.count(distinct(Song.id)),func.count(distinct(Author.id))).filter(User.id.in_(user_list)).group_by(Song.language).order_by(asc(Song.language))
+	stmt = text("SELECT DISTINCT Song.language, "
+				"COUNT(DISTINCT Song.title), "
+				"COUNT(DISTINCT Author.name) "
+				"FROM Song "
+				"LEFT JOIN author_song ON Song.id = author_song.song_id "
+				"LEFT JOIN Author ON author_song.author_id = Author.id "
+				"LEFT JOIN account ON account.id = Song.account_id "
+				"WHERE account.id IN (:user1,:user2) "
+				"GROUP BY Song.language "
+				"ORDER BY Song.language ASC").params(user1=user_list[0],user2=user_list[1])
+
+	result = db.engine.execute(stmt)
 
 	response = []
 	for row in result:
+		print('\n\n\n',row,'\n\n\n')
 		response.append({'languages':row[0], 'songs':row[1], 'authors':row[2]})
 
 	return response
