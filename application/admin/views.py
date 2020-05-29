@@ -91,34 +91,33 @@ def clear():
 	#----------------------------------------------------
 	# Clear default authors and songs
 	#----------------------------------------------------
-	# if request.form.get('clear') == "clear":
+	if request.form.get('clear') == "clear":
 		
-
-		# try:
-			# db.session.query(Song).delete()
-			# db.session.commit()
-			# flash("Table Song cleared.", "success")
-		# except:
-			# flash("Table Song not cleared.", "danger")
-			# db.session.rollback()
+		try:
+			db.session.query(Song).delete()
+			db.session.commit()
+			flash("Table Song cleared.", "success")
+		except:
+			flash("Table Song not cleared.", "danger")
+			db.session.rollback()
 		
-		# try:
-			# db.session.query(Author).delete()
-			# db.session.commit()
-			# flash("Table Author cleared.", "success")
-		# except:
-			# flash("Table Author not cleared.", "danger")
-			# db.session.rollback()
+		try:
+			db.session.query(Author).delete()
+			db.session.commit()
+			flash("Table Author cleared.", "success")
+		except:
+			flash("Table Author not cleared.", "danger")
+			db.session.rollback()
 
-		# try:
-			# stmt = text("DELETE FROM author_song;")
-			# db.engine.execute(stmt)
-			# flash("Join table author_song cleared.", "success")
-		# except:
-			# flash("Join table author_song not cleared.", "danger")
-			# db.session.rollback()
+		try:
+			stmt = text("DELETE FROM author_song;")
+			db.engine.execute(stmt)
+			flash("Join table author_song cleared.", "success")
+		except:
+			flash("Join table author_song not cleared.", "danger")
+			db.session.rollback()
 
-		# return render_template("admin/dashboard.html")
+		return render_template("admin/dashboard.html")
 
 
 	#----------------------------------------------------
@@ -182,17 +181,17 @@ def clear():
 				song.account_id = 1
 		
 				if i == 1:
-					song.authors.extend([Author.query.get(1),Author.query.get(2)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='Jens Nicolai Ludvig Schjörring').first(),db.session.query(Author).filter(Author.name=='H. S. Thompson').first()])
 				elif i == 2:
-					song.authors.extend([Author.query.get(3),Author.query.get(4)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='Abraham Achrenius').first(),db.session.query(Author).filter(Author.name=='Toisinto Ylistarosta').first()])
 				elif i == 3:
-					song.authors.extend([Author.query.get(5),Author.query.get(6)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='Lina Sandell-Berg').first(),db.session.query(Author).filter(Author.name=='Gunr Wennerberg').first()])
 				elif i == 4:
-					song.authors.extend([Author.query.get(7),Author.query.get(8)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='Georgiana M. Taylor').first(),db.session.query(Author).filter(Author.name=='Tuntematon').first()])
 				elif i == 5:
-					song.authors.extend([Author.query.get(9),Author.query.get(10)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='Johnson Jr. Oatman').first(),db.session.query(Author).filter(Author.name=='Edwin O. Excell').first()])
 				elif i == 6:
-					song.authors.extend([Author.query.get(8),Author.query.get(11)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='Tuntematon').first(),db.session.query(Author).filter(Author.name=='Lewis Hartsoug').first()])
 
 				try:
 					db.session.add(song)
@@ -217,17 +216,17 @@ def clear():
 				song.account_id = 1
 			
 				if i == 7:
-					song.authors.extend([Author.query.get(12)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='Chris Tomlin').first()])
 				elif i == 8:
-					song.authors.extend([Author.query.get(9),Author.query.get(13)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='George Crawford Hugg').first(),db.session.query(Author).filter(Author.name=='Johnson Jr. Oatman').first()])
 				elif i == 9:
-					song.authors.extend([Author.query.get(14)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='Philip Paul Bliss').first()])
 				elif i == 10:
-					song.authors.extend([Author.query.get(15),Author.query.get(16),Author.query.get(17)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='Chris Tomlin').first(),db.session.query(Author).filter(Author.name=='Ed Cash').first(),db.session.query(Author).filter(Author.name=='Stephan Conley Sharp').first()])
 				elif i == 11:
-					song.authors.extend([Author.query.get(18)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='Matt Maher').first()])
 				elif i == 12:
-					song.authors.extend([Author.query.get(19)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='Hillsong United').first()])
 
 				try:
 					db.session.add(song)
@@ -252,17 +251,17 @@ def clear():
 				song.account_id = 1
 			
 				if i == 13:
-					song.authors.extend([Author.query.get(20)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='John van den Hogen').first()])
 				elif i == 14:
-					song.authors.extend([Author.query.get(21),Author.query.get(22)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='Mlle Amélie Humbert').first(),db.session.query(Author).filter(Author.name=='George Coles Stebbins').first()])
 				elif i == 15:
-					song.authors.extend([Author.query.get(23),Author.query.get(24)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='Charles Rochedieu').first(),db.session.query(Author).filter(Author.name=='William Herbert Jude').first()])
 				elif i == 16:
-					song.authors.extend([Author.query.get(21),Author.query.get(25)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='Mlle Amélie Humbert').first(),db.session.query(Author).filter(Author.name=='C.-C. Williams').first()])
 				elif i == 17:
-					song.authors.extend([Author.query.get(26)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='Horatio Richmond Palmer').first()])
 				elif i == 18:
-					song.authors.extend([Author.query.get(27)])
+					song.authors.extend([db.session.query(Author).filter(Author.name=='Jean-François Bussy').first()])
 
 				try:
 					db.session.add(song)
