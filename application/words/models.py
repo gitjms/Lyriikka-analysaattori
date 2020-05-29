@@ -27,7 +27,7 @@ class Words(db.Model):
 		stmt = text("SELECT"
 					"	results.word,"
                     "	Author.name,"
-                    "	Song.title,"
+                    "	Song.name,"
                     "	results.matches,"
                     "	SUM(results.matches) AS sum, "
                     "	AVG(results.matches) AS avg "
@@ -36,14 +36,14 @@ class Words(db.Model):
 					"JOIN results ON Song.id = results.song_id "
 					"JOIN author_song ON Song.id = author_song.song_id "
 					"JOIN Author ON author_song.author_id = Author.id "
-					"GROUP BY results.word, Song.title, results.matches, Author.name "
+					"GROUP BY results.word, Song.name, results.matches, Author.name "
 					"ORDER BY results.matches DESC;"
 					)
 		res = db.engine.execute(stmt)
 
 		response = []
 		for row in res:
-			response.append({'word':row[0], 'author':row[1], 'title':row[2], 'matches':row[3], 'sum':row[4], 'average':row[5]})
+			response.append({'word':row[0], 'author':row[1], 'name':row[2], 'matches':row[3], 'sum':row[4], 'average':row[5]})
 
 		return response
 

@@ -10,7 +10,7 @@ class User(Base):
 
 	__tablename__ = "account"
 
-	name = db.Column(db.String(80), nullable=False)
+	# name = db.Column(db.String(80), nullable=False)
 	username = db.Column(db.String(80), nullable=False, unique=True)
 	password = db.Column(db.String(80), nullable=False)
 	admin = db.Column(db.Boolean, default=False, nullable=False)

@@ -48,7 +48,7 @@ def find_database_status():
 	user_list = [g.user.id,1]
 
 	stmt = text("SELECT DISTINCT Song.language, "
-				"COUNT(DISTINCT Song.title), "
+				"COUNT(DISTINCT Song.name), "
 				"COUNT(DISTINCT Author.name) "
 				"FROM Song "
 				"LEFT JOIN author_song ON Song.id = author_song.song_id "
@@ -81,13 +81,13 @@ def songs_list():
 	if request.method == "POST":
 		# sorting
 		if request.form['sort'] == "titasc":
-			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.title.asc()).all()
+			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.name.asc()).all()
 		elif request.form['sort'] == "titdesc":
-			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.title.desc()).all()
+			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.name.desc()).all()
 		elif request.form['sort'] == "langtitasc":
-			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.language).order_by(Song.title.asc()).all()
+			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.language).order_by(Song.name.asc()).all()
 		elif request.form['sort'] == "langtitdesc":
-			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.language).order_by(Song.title.desc()).all()
+			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.language).order_by(Song.name.desc()).all()
 		else:
 			songs = Song.query.filter(Song.account_id.in_((song_list))).all()
 
@@ -125,16 +125,16 @@ def songs_edit(song_id):
 				return render_template("songs/edit.html", song = Song.query.get(song_id), form = form, error = "Fields must not be empty.")
 
 			song = Song.query.get(song_id)
-			song_title = request.form.get("title")
+			song_name = request.form.get("name")
 			song_lyrics = request.form.get("lyrics")
 			song_language = request.form.get("language")
 			song_author = request.form.get("author")
-			if (song_title == song.title and song_author == song.author and song_lyrics == song.lyrics and song_language == song.language):
+			if (song_name == song.name and song_author == song.author and song_lyrics == song.lyrics and song_language == song.language):
 				flash("No changes made.", "warning")
 			else:
 				try:
 					song = Song.query.filter_by(id=song_id).first()
-					song.title = song_title
+					song.name = song_name
 					song.lyrics = song_lyrics
 					song.language = song_language
 					song.author = song_author
@@ -185,7 +185,7 @@ def songs_create():
 	if not form.validate():
 		return render_template("songs/new.html", form = form, error = "Fields must not be empty.")
 
-	song = Song(form.title.data,form.lyrics.data,form.language.data)
+	song = Song(form.name.data,form.lyrics.data,form.language.data)
 	song.account_id = g.user.id
 	
 	authors = form.author.data.split(',')
@@ -206,7 +206,7 @@ def songs_create():
 		db.session().commit()
 	except IntegrityError:
 		db.session.rollback()
-		flash("Song already exists. Consider changing title.", "warning")
+		flash("Song already exists. Consider changing name.", "warning")
 		return render_template("songs/new.html", form = form)
 	except SQLAlchemyError:
 		db.session.rollback()

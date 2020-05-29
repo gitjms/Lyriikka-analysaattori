@@ -13,12 +13,12 @@ author_song = db.Table('author_song', Base.metadata,
 				primary_key=True)
 )
 
-class Author(db.Model):
+class Author(Base):
 
 	__tablename__ = 'author'
 
-	id = db.Column(db.Integer, primary_key=True)
-	name = db.Column(db.String(80), nullable=False)
+	# id = db.Column(db.Integer, primary_key=True)
+	# name = db.Column(db.String(80), nullable=False)
 
 	songs = db.relationship("Song",
 		secondary=author_song,

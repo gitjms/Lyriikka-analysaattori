@@ -169,7 +169,7 @@ def clear():
 			for i in range(1,7):
 				document_path = os.getcwd()+'/application/static/default_songs/fi/song'+str(i)+'.txt'
 				file = open(document_path, 'r', encoding='utf-8')
-				title = file.readline().rstrip()
+				name = file.readline().rstrip()
 				file.close()
 				lyrics = ""
 				with open(document_path, encoding='utf-8') as f:
@@ -177,7 +177,7 @@ def clear():
 						lyrics += line
 				language = 'finnish'
 
-				song = Song(title,lyrics,language)
+				song = Song(name,lyrics,language)
 				song.account_id = 1
 		
 				if i == 1:
@@ -204,7 +204,7 @@ def clear():
 			for i in range(7,13):
 				document_path = os.getcwd()+'/application/static/default_songs/en/song'+str(i)+'.txt'
 				file = open(document_path, 'r', encoding='utf-8')
-				title = file.readline().rstrip()
+				name = file.readline().rstrip()
 				file.close()
 				lyrics = ""
 				with open(document_path, encoding='utf-8') as f:
@@ -212,7 +212,7 @@ def clear():
 						lyrics += line
 				language = 'english'
 
-				song = Song(title,lyrics,language)
+				song = Song(name,lyrics,language)
 				song.account_id = 1
 			
 				if i == 7:
@@ -239,7 +239,7 @@ def clear():
 			for i in range(13,19):
 				document_path = os.getcwd()+'/application/static/default_songs/fr/song'+str(i)+'.txt'
 				file = open(document_path, 'r', encoding='utf-8')
-				title = file.readline().rstrip()
+				name = file.readline().rstrip()
 				file.close()
 				lyrics = ""
 				with open(document_path, encoding='utf-8') as f:
@@ -247,7 +247,7 @@ def clear():
 						lyrics += line
 				language = 'french'
 
-				song = Song(title,lyrics,language)
+				song = Song(name,lyrics,language)
 				song.account_id = 1
 			
 				if i == 13:
