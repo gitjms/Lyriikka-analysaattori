@@ -1,219 +1,217 @@
 <!DOCTYPE html>
-  <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fi" lang="fi">
-    <head>
-	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" charset="utf-8">
-      <title>LyrFreq</title>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fi" lang="fi">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" charset="utf-8">
+    <title>LyrFreq</title>
 	  
-	  <!-- Bootstrap CSS -->
-	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 	  
-	  <!-- Bootstrap Toggle -->
-	  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <!-- Bootstrap Toggle -->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 	  
-	  <!-- CSS -->
-	  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 	
-	  <script type="text/javascript" src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
 	
-	  <script type="text/javascript" src="{{ url_for('static', filename='js/tables.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/tables.js') }}"></script>
 
-    </head>
+  </head>
 
-    <body>
-	  <div class="container-fluid" >
+  <body>
+    <div class="container-fluid" >
 
-	  <!-- NAVBAR -->
-
-	  <div class="container-fluid">
+      <!-- NAVBAR -->
+	  
+      <div class="container-fluid">
         <nav class="navbar navbar-expand-md navbar-dark nav-justified" style="background-color: #7d1c09;">
+	  
+          <table>
+	        <tbody>
+              <td rowspan="2">
+                <!-- LYRFREQ HOME LOGO -->
+                {% if g.user.is_authenticated %}
+                  <a class="navbar-brand" href="{{ url_for('songs_main') }}">
+                {% else %}
+                  <a class="navbar-brand" href="{{ url_for('songs_index') }}">
+                {% endif %}
+                <img src="{{url_for('static', filename='images/brandlogo.png')}}" width="100" height="45" class="d-inline-flex align-top image-responsive myLogo"></img>
+                </a>
+              </td>
+            </tbody>
+          </table>
 
-		  <table>
-		  <tbody>
-		    <td rowspan="2">
-              <!-- LYRFREQ HOME LOGO -->
-		      {% if g.user.is_authenticated %}
-                <a class="navbar-brand" href="{{ url_for('songs_main') }}">
-		      {% else %}
-                <a class="navbar-brand" href="{{ url_for('songs_index') }}">
-		      {% endif %}
-		      <img src="{{url_for('static', filename='images/brandlogo.png')}}" width="100" height="45" class="d-inline-flex align-top image-responsive myLogo" alt="LyrFreq app icon"></img>
-		      </a>
-		    </td>
-		  </tbody>
-		  </table>
-
-		  <div class="container-fluid" style="float: left;">
-		  <div class="navbar navbar-dark justify-content-between">
-		    <nav class="navbar-nav"">
-		    <table>
-		    <tbody>
-		      <tr>
-                <!-- LOGIN / LOGOUT / CREATE ACCOUNT -->
-		        {% if g.user.is_authenticated %}
-		        <td style="min-width: 120px;">
-		          <a style="color:#b0746a; font-size:18px; text-align: left;">
-			      Hello {{ g.user.username }}
-		          </a>
-		        </td>
-		        <td style="min-width: 120px;">
-		          <a style="color:white; font-size:18px; text-align: left;" href="{{ url_for('auth_logout') }}">Logout</a>
-		        </td>
-		        {% else %}
-		        <td style="min-width: 120px;">
-		          <a style="color:white; font-size:18px; text-align: left;" href="{{ url_for('auth_login') }}">Login</a>
-		        </td>
-		        <td style="min-width: 120px;">
-		          <a style="color:white; font-size:18px; text-align: left;" href="{{ url_for('auth_create') }}">Create account</a>
-		        </td>
-		        {% endif %}
-			  </tr>
-
-		      <tr>
-		        <!-- LIST SONGS / ADD SONGS -->
-		        {% if g.user.is_authenticated %}
-		        <td style="min-width: 120px;">
-			      <style type="text/css">
-			        a:link {color: #000000; text-decoration: underline; }
-			        a:active {color: #0000ff; text-decoration: underline; }
-			        a:visited {color: #008000; text-decoration: underline; }
-			        a:hover {color: #ff0000; text-decoration: none; }
-			      </style>
-			        <a class="nav-item nav-link active" href="{{ url_for('songs_list') }}" style="color: white; text-align: left;" >List songs</a>
-		        </td>
-		        <td style="min-width: 120px;">
-                    <a class="nav-item nav-link active" href="{{ url_for('songs_create') }}" style="color: white; text-align: left;">Add song</a>
-		        </td style="min-width: 120px;">
-		        {% else %}
-		        <td>
-			        <a class="nav-item nav-link disabled" href="{{ url_for('songs_list') }}" style="text-align: left;">List songs</a>
-		        </td>
-		        <td style="min-width: 120px;">
-                    <a class="nav-item nav-link disabled" href="{{ url_for('songs_create') }}" style="text-align: left;">Add song</a>
-		        </td>
-		        {% endif %}
-		      </tr>
-		    </tbody>
-		    </table>
-			</nav>
+          <div class="container-fluid" style="float: left;">
+            <div class="navbar navbar-dark justify-content-between">
+              <nav class="navbar-nav">
+                <table>
+                  <tbody>
+                    <tr>
+                      <!-- LOGIN / LOGOUT / CREATE ACCOUNT -->
+                      {% if g.user.is_authenticated %}
+                      <td style="min-width: 120px;">
+                        <a style="color:#b0746a; font-size:18px; text-align: left;">
+                        Hello {{ g.user.username }}
+                        </a>
+                      </td>
+                      <td style="min-width: 120px;">
+                        <a style="color:white; font-size:18px; text-align: left;" href="{{ url_for('auth_logout') }}">Logout</a>
+                      </td>
+                      {% else %}
+                      <td style="min-width: 120px;">
+                        <a style="color:white; font-size:18px; text-align: left;" href="{{ url_for('auth_login') }}">Login</a>
+                      </td>
+                      <td style="min-width: 120px;">
+                        <a style="color:white; font-size:18px; text-align: left;" href="{{ url_for('auth_create') }}">Create account</a>
+                      </td>
+                      {% endif %}
+                    </tr>
+        
+                    <tr>
+                      <!-- LIST SONGS / ADD SONGS -->
+                      {% if g.user.is_authenticated %}
+                      <td style="min-width: 120px;">
+                        <style type="text/css">
+                          a:link {color: #000000; text-decoration: underline; }
+                          a:active {color: #0000ff; text-decoration: underline; }
+                          a:visited {color: #008000; text-decoration: underline; }
+                          a:hover {color: #ff0000; text-decoration: none; }
+                        </style>
+                          <a class="nav-item nav-link active" href="{{ url_for('songs_list') }}" style="color: white; text-align: left;" >List songs</a>
+                      </td>
+                      <td style="min-width: 120px;">
+                          <a class="nav-item nav-link active" href="{{ url_for('songs_create') }}" style="color: white; text-align: left;">Add song</a>
+                      </td style="min-width: 120px;">
+                      {% else %}
+                      <td>
+                          <a class="nav-item nav-link disabled" href="{{ url_for('songs_list') }}" style="text-align: left;">List songs</a>
+                      </td>
+                      <td style="min-width: 120px;">
+                          <a class="nav-item nav-link disabled" href="{{ url_for('songs_create') }}" style="text-align: left;">Add song</a>
+                      </td>
+                      {% endif %}
+                    </tr>
+                  </tbody>
+                </table>
+              </nav>
+            </div>
           </div>
-          </div>
-
-		  {% if g.user.is_authenticated %}
-		  <div class="container-fluid">
-		  <div class="navbar navbar-dark justify-content-between">
-		  <!-- SEARCH WORD -->
-	      <div class="form-group" style="float: right;">
-		    <nav class="navbar-nav">
-			  <form class="form-inline my-0 my-lg-0" action="/words/find/" method="POST" name="wordform">
-		        <table>
-		        <tbody>
-			      <tr colspan="3">
-				    <input class="form-control mr-sm-2" type="text" style="width: 160px" placeholder="Quick Word Search" aria-label="Search" name="wordsearch" id="wordsearch" required></input>
-			      </tr>
-			      <tr>
-		            <td>
-                      <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px;" name="langchoice" id="langchoice" value="finnish">Fi</button>
-				    </td>
-		            <td>
-			          <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px; margin-left: 3px;" name="langchoice" id="langchoice" value="english">En</button>
-				    </td>
-		            <td>
-			          <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px; margin-left: 3px;" name="langchoice" id="langchoice" value="french">Fr</button>
-				    </td>
-			      </tr>
-		        </tbody>
-		        </table>
-              </form>
-		    </nav>
-          </div>
-		  </div>
-		  </div>
-		  {% endif %}
-
-		</nav>
-	  </div>
-
-		<!-- FLASH MESSAGES -->
-
-		{% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            {% for category, message in messages %}
-		      <div class="alert alert-{{ category }} alert-dismissible" role="alert" id="alert">
-			    <span>{{ message }}</span>
-		      </div>
-            {% endfor %}
+        
+          {% if g.user.is_authenticated %}
+            <div class="container-fluid">
+              <div class="navbar navbar-dark justify-content-between">
+                <!-- SEARCH WORD -->
+                <div class="form-group" style="float: right;">
+                  <nav class="navbar-nav">
+                    <form class="form-inline my-0 my-lg-0" action="/words/find/" method="POST" name="wordform">
+                      <table>
+                        <tbody>
+                          <tr colspan="3">
+                            <input class="form-control mr-sm-2" type="text" style="width: 160px" placeholder="Quick Word Search" aria-label="Search" name="wordsearch" id="wordsearch" required></input>
+                          </tr>
+                          <tr>
+                            <td>
+                              <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px;" name="langchoice" id="langchoice" value="finnish">Fi</button>
+                            </td>
+                            <td>
+                              <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px; margin-left: 3px;" name="langchoice" id="langchoice" value="english">En</button>
+                            </td>
+                            <td>
+                              <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px; margin-left: 3px;" name="langchoice" id="langchoice" value="french">Fr</button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </form>
+                  </nav>
+                </div>
+              </div>
+            </div>
           {% endif %}
-	    {% endwith %}
-	  </div>
+          
+        </nav>
+      </div>
 
-	  <!-- GRAY TEXT AREA -->
-
-	  <div class="jumbotron jumbotron-fluid">
-		<div class="container">
-		  {% block body %}{% endblock %}
-		</div>
-	  </div>
-
-
-	  <!-- FOR ADMIN ONLY -->
-
-	  {% if g.user.admin %}
-
-	  <div class="container-fluid">
-		<form action="/defaults" method="POST">
-
-          <!-- ADD DEFAULT AUTHORS AND SONGS -->
-
-		  <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px" name="add" id="add" value="add">Add default songs</button>
-
-          <!-- CLEAR DEFAULT AUTHORS AND SONGS -->
-
-		  <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px" name="clear" id="clear" value="clear">Remove default songs</button>
-		</form>
-	  </div>
-
-      <!-- LIST USERS -->
-
-	  <div class="container-fluid" >
-		<form action="/admin" method="POST">
-		    <button class="btn btn-sm btn-primary" type="submit" style="float: right;" name="listusers" id="listusers" value="listusers">List users</button>
-		</form>
-	  </div><br><br>
-
-      {% endif %}
-
-	<!-- Bootstrap 4.5.0 -->
-    <!-- jQuery, Popper.js, and JS -->
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-	<!-- Bootstrap Toggle -->
-	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-
-	<!--  -->
-	<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
-	
-	<!-- message timeout -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-	<script>
-	$(document).ready(function(){
-		$(".alert").delay(4000).slideUp(300);
-	});
-	</script><script type=text/javascript>
-			$(function() {
-			  $('a#process_input').bind('click', function() {
-				$.getJSON('/words/find/', {
-				  proglang: $('input[name="wordsearch"]').val(),
-				}, function(data) {
-				  $("#result").text(data.result);
-				});
-				return false;
-			  });
-			});
-		</script>
-
-    </body>
+      <!-- FLASH MESSAGES -->
+      
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible" role="alert" id="alert">
+              <span>{{ message }}</span>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
     
-  </html>
+    <!-- GRAY TEXT AREA -->
+      
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        {% block body %}{% endblock %}
+      </div>
+    </div>
+
+
+    <!-- FOR ADMIN ONLY -->
+
+    {% if g.user.admin %}
+      <div class="container-fluid">
+        <form action="/defaults" method="POST">
+      
+          <!-- ADD DEFAULT AUTHORS AND SONGS -->
+      
+          <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px" name="add" id="add" value="add">Add default songs</button>
+      
+          <!-- CLEAR DEFAULT AUTHORS AND SONGS -->
+      
+          <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px" name="clear" id="clear" value="clear">Remove default songs</button>
+        </form>
+      </div>
+	  
+      <!-- LIST USERS -->
+      
+      <div class="container-fluid" >
+        <form action="/admin" method="POST">
+          <button class="btn btn-sm btn-primary" type="submit" style="float: right;" name="listusers" id="listusers" value="listusers">List users</button>
+        </form>
+      </div><br><br>
+    {% endif %}
+
+    <!-- Bootstrap 4.5.0 -->
+    <!-- jQuery, Popper.js, and JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <!-- Bootstrap Toggle -->
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+      
+    <!--  -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+      
+    <!-- message timeout -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <script>
+      $(document).ready(function(){
+	    $(".alert").delay(4000).slideUp(300);
+      });
+      </script><script type=text/javascript>
+        $(function() {
+          $('a#process_input').bind('click', function() {
+            $.getJSON('/words/find/', {
+              proglang: $('input[name="wordsearch"]').val(),
+            }, function(data) {
+              $("#result").text(data.result);
+            });
+            return false;
+          });
+        });
+    </script>
+    
+  </body>
+    
+</html>

@@ -2,53 +2,53 @@
 
 {% block body %}
 
-	  <form method="POST" action="{{ url_for('songs_edit', song_id=song.id) }}">
+<form method="POST" action="{{ url_for('songs_edit', song_id=song.id) }}">
 
-	    <div class="col-auto">
-		  <button class="btn btn-sm btn-secondary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>
+  <div class="col-auto">
+    <button class="btn btn-sm btn-secondary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>
 
-		  <button class="btn btn-sm btn-primary myFloat_Right" type="submit" name="Submit" style="width:75px;" value="Submit"/>Submit</button>
+    <button class="btn btn-sm btn-primary myFloat_Right" type="submit" name="Submit" style="width:75px;" value="Submit"/>Submit</button>
 
-		  <div style="clear: both;"></div>
-		</div>
+    <div style="clear: both;"></div>
+  </div>
 
-	    <div class="col-auto">
-		  <label for="title" class="col-sm-2 col-form-label">Title:</label>
-	      <input class="form-control" id="title" name="title" type="text" value="{{ song.title }}"></input >
-		</div>
-		<td>
-		  <ul>
-			{% for error in form.title.errors %}
-			<li>{{ error }}</li>
-			{% endfor %}
-		  </ul>
-		</td>
+  <div class="col-auto">
+    <label for="title" class="col-sm-2 col-form-label">Title:</label>
+    <input class="form-control" id="title" name="title" type="text" value="{{ song.title }}"></input >
+  </div>
+  <td>
+    <ul>
+      {% for error in form.title.errors %}
+      <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  </td>
 
-	    <div class="col-auto">
-		  <label for="author" class="col-sm-2 col-form-label">Author(s):</label>
-		  <input class="form-control" id="author" name="author" type="text" value="{% for auth in song.authors %}{{ auth.name }}{{ ", " if not loop.last }}{% endfor %}"></input >
-		</div>
-		<td>
-		  <ul>
-			{% for error in form.author.errors %}
-			<li>{{ error }}</li>
-			{% endfor %}
-		  </ul>
-		</td>
+  <div class="col-auto">
+    <label for="author" class="col-sm-2 col-form-label">Author(s):</label>
+    <input class="form-control" id="author" name="author" type="text" value="{% for auth in song.authors %}{{ auth.name }}{{ ", " if not loop.last }}{% endfor %}"></input >
+  </div>
+  <td>
+    <ul>
+      {% for error in form.author.errors %}
+      <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  </td>
 
-	    <div class="col-auto">
-		  <label for="lyrics" class="col-sm-2 col-form-label">Lyrics:</label>
-		  <textarea class="form-control" id="lyrics" name="lyrics" type="text" rows="10" style="overflow:auto;">{{ song.lyrics }}</textarea>
-		</div>
-		<td>
-		  <ul>
-			{% for error in form.lyrics.errors %}
-			<li>{{ error }}</li>
-			{% endfor %}
-		  </ul>
-		</td>
+  <div class="col-auto">
+    <label for="lyrics" class="col-sm-2 col-form-label">Lyrics:</label>
+    <textarea class="form-control" id="lyrics" name="lyrics" type="text" rows="10" style="overflow:auto;">{{ song.lyrics }}</textarea>
+  </div>
+  <td>
+    <ul>
+      {% for error in form.lyrics.errors %}
+      <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  </td>
 
-	  </form>
+</form>
 
 {% endblock %}
 

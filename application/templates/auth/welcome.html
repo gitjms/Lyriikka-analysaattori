@@ -3,12 +3,12 @@
 {{ error }}
 {% block body %}
 
-	{% for err in error %}
+    {% for err in error %}
       <h4>{{ err }}</h4>
     {% endfor %}
-
-	{% if db_index is defined %}
-	  <h3>Database index</h3>
+    
+    {% if db_index is defined %}
+      <h3>Database index</h3>
       <div id="index">
         <table class="table table-striped" style="max-width: 900px;">
           <thead>
@@ -18,7 +18,7 @@
               <th>Authors</th>
             </tr>
           </thead>
-	      {% for res in db_index %}
+          {% for res in db_index %}
             <tr>
               <td>{{ res.languages }}</td>
               <td>{{ res.songs }}</td>
@@ -27,10 +27,10 @@
           {% endfor %}
         </table>
       </div><br><br>
-	{% endif %}
-
-	{% if abv_average is defined and not g.user.admin %}
-	  <h3>Search history: matches above average</h3>
+    {% endif %}
+    
+    {% if abv_average is defined and not g.user.admin %}
+      <h3>Search history: matches above average</h3>
         <div id="averages">
           <table class="table table-striped" style="max-width: 900px;">
             <thead>
@@ -43,7 +43,7 @@
                 <th>Avg</th>
               </tr>
             </thead>
-			{% for res in abv_average %}
+            {% for res in abv_average %}
               <tr>
                 <td>{{ res.word }}</td>
                 <td>{{ res.author }}</td>
@@ -55,6 +55,6 @@
             {% endfor %}
           </table><br>
         </div>
-	  {% endif %}
+      {% endif %}
 
 {% endblock %}

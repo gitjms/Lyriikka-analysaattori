@@ -2,59 +2,57 @@
   
 {% block body %}
 
-	  <form method="POST" action="{{ url_for('songs_create') }}">
+<form method="POST" action="{{ url_for('songs_create') }}">
 
-		<table>
-		  <tr >
-		  <div class="col-auto">
-			{{ form.language() }}
-
-		    <button class="btn btn-sm btn-primary myFloat_Right" type="submit" name="Submit" style="width:75px;" value="Add a new song"/>Submit</button>
-
-		  </div>
-	    </tr>
-		</table><br>
+  <table>
+    <tr >
+      <div class="col-auto">
+        {{ form.language() }}
+        <button class="btn btn-sm btn-primary myFloat_Right" type="submit" name="Submit" style="width:75px;" value="Add a new song"/>Submit</button>
+      </div>
+    </tr>
+  </table><br>
 
 
-	    <div class="col-auto">
-		  <label for="title" class="col-sm-2 col-form-label">Title:</label>
-		  <textarea class="form-control text-left" id="title" name="title" type="text" rows="1" style="overflow:auto;">{{ form.title().split(">",1)[1] }}
-		  </textarea>
-		</div>
-		<td>
-		  <ul>
-			{% for error in form.title.errors %}
-			<li>{{ error }}</li>
-			{% endfor %}
-		  </ul>
-		</td>
+  <div class="col-auto">
+    <label for="title" class="col-sm-2 col-form-label">Title:</label>
+    <textarea class="form-control text-left" id="title" name="title" type="text" rows="1" style="overflow:auto;">{{ form.title().split(">",1)[1] }}
+    </textarea>
+  </div>
+  <td>
+    <ul>
+      {% for error in form.title.errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  </td>
 
-	    <div class="col-auto">
-		  <label for="author" class="col-lg-2 col-form-label">Author(s): <small style="float: right;">separate authors with comma</small></label>
-		  <textarea class="form-control text-left" id="author" name="author" type="text" rows="1" style="overflow:auto;" placeholder="Firstname Lastname, Firstname Lastname, ...">{{ form.author().split(">",1)[1] }}
-		  </textarea>
-		</div>
-		<td>
-		  <ul>
-			{% for error in form.author.errors %}
-			<li>{{ error }}</li>
-			{% endfor %}
-		  </ul>
-		</td>
+  <div class="col-auto">
+    <label for="author" class="col-lg-2 col-form-label">Author(s): <small style="float: right;">separate authors with comma</small></label>
+    <textarea class="form-control text-left" id="author" name="author" type="text" rows="1" style="overflow:auto;" placeholder="Firstname Lastname, Firstname Lastname, ...">{{ form.author().split(">",1)[1] }}
+    </textarea>
+  </div>
+  <td>
+    <ul>
+      {% for error in form.author.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+  </td>
 
-	    <div class="col-auto">
-		  <label for="lyrics" class="col-sm-2 col-form-label">Lyrics:</label>
-		  <textarea class="form-control text-left" id="lyrics" name="lyrics" type="text" rows="10" style="overflow:auto;">{{ form.lyrics().split(">",1)[1] }}
-		  </textarea>
-		</div>
-		<td>
-		  <ul>
-			{% for error in form.lyrics.errors %}
-			<li>{{ error }}</li>
-			{% endfor %}
-		  </ul>
-		</td>
+  <div class="col-auto">
+    <label for="lyrics" class="col-sm-2 col-form-label">Lyrics:</label>
+    <textarea class="form-control text-left" id="lyrics" name="lyrics" type="text" rows="10" style="overflow:auto;">{{ form.lyrics().split(">",1)[1] }}
+    </textarea>
+  </div>
+  <td>
+    <ul>
+      {% for error in form.lyrics.errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  </td>
 
-	  </form>
+</form>
 
 {% endblock %}

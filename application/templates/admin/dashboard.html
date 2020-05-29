@@ -4,68 +4,68 @@
 {{ error }}
     <h4>Users</h4>
     <table>
-	  <tr>
+      <tr>
         <td colspan="6">
           <b style="margin-right:10px;">id</b>
         </td>
-	    <td>
+        <td>
           <b style="margin-right:20px;">Full Name</b>
         </td>
-	    <td>
+        <td>
           <b style="margin-right:10px;">Username</b>
         </td>
-	    <td>
+        <td>
           <b style="margin-right:10px;">Created</b>
         </td>
-	    <td>
+        <td>
           <b style="margin-left:5px;">Delete</b>
-		</td>
-	    <td>
+    	</td>
+        <td>
           <b style="margin-left:18px;">Toggle</b>
         </td>
       </tr>
     {% for user in users %}
       <tr>
-	    <td colspan="6">
-		  <b style="float: left; margin-right:10px;">{{ user.id }}.</b>
-		</td>
-	    {% if user.admin %}
-		<td><a style="color: red;margin-right:20px;">{{ user.name }}</a></td>
-		<td><a style="color: red;margin-right:10px;">{{ user.username }}</a></td>
-		<td><a style="color: red;margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
-        {% elif user.username == 'guest'%}
-		<td><a style="color: green;margin-right:20px;">{{ user.name }}</a></td>
-		<td><a style="color: green;margin-right:10px;">{{ user.username }}</a></td>
-		<td><a style="color: green;margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
-        {% else %}
-		<td><a style="margin-right:20px;">{{ user.name }}</a></td>
-		<td><a style="margin-right:10px;">{{ user.username }}</a></td>
-		<td><a style="margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
-        {% endif %}
-
-		<!-- DELETE BUTTON -->
-
-	    <td>
-	      <form method="POST" action="{{ url_for('user_delete', user_id=user.id) }}">
-		    <input type="hidden" name="user_id" value="{{ user.id }}">
-		    <div class="col-auto">
-		      <button class="btn btn-sm btn-secondary" type="submit" name="Delete" style="width:30px; height:30px;" value="Delete"/></button>
-		    </div>
-		  </form>
+        <td colspan="6">
+          <b style="float: left; margin-right:10px;">{{ user.id }}.</b>
         </td>
-
-		<!-- ADMINATE BUTTON -->
-	    <td>
-	      <form method="POST" action="{{ url_for('user_adminate', user_id=user.id) }}">
-		    <input type="hidden" name="user_id" value="{{ user.id }}">
-		    <div class="col-auto">
-			  {% if user.admin %}
-		      <button class="btn btn-sm btn-secondary" type="submit" name="userate" style="background-color: red; width:60px;" value="userate"/>Admin</button>
-			  {% else %}
-		      <button class="btn btn-sm btn-secondary" type="submit" name="adminate" style="width:60px;" value="adminate"/>User</button>
-			  {% endif %}
-		    </div>
-		  </form>
+        {% if user.admin %}
+        <td><a style="color: red;margin-right:20px;">{{ user.name }}</a></td>
+        <td><a style="color: red;margin-right:10px;">{{ user.username }}</a></td>
+        <td><a style="color: red;margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
+        {% elif user.username == 'guest'%}
+        <td><a style="color: green;margin-right:20px;">{{ user.name }}</a></td>
+        <td><a style="color: green;margin-right:10px;">{{ user.username }}</a></td>
+        <td><a style="color: green;margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
+        {% else %}
+        <td><a style="margin-right:20px;">{{ user.name }}</a></td>
+        <td><a style="margin-right:10px;">{{ user.username }}</a></td>
+        <td><a style="margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
+        {% endif %}
+        
+        <!-- DELETE BUTTON -->
+        
+        <td>
+          <form method="POST" action="{{ url_for('user_delete', user_id=user.id) }}">
+            <input type="hidden" name="user_id" value="{{ user.id }}">
+            <div class="col-auto">
+              <button class="btn btn-sm btn-secondary" type="submit" name="Delete" style="width:30px; height:30px;" value="Delete"/></button>
+            </div>
+          </form>
+        </td>
+        
+        <!-- ADMINATE BUTTON -->
+        <td>
+          <form method="POST" action="{{ url_for('user_adminate', user_id=user.id) }}">
+            <input type="hidden" name="user_id" value="{{ user.id }}">
+            <div class="col-auto">
+              {% if user.admin %}
+              <button class="btn btn-sm btn-secondary" type="submit" name="userate" style="background-color: red; width:60px;" value="userate"/>Admin</button>
+              {% else %}
+              <button class="btn btn-sm btn-secondary" type="submit" name="adminate" style="width:60px;" value="adminate"/>User</button>
+              {% endif %}
+            </div>
+          </form>
         </td>
       </tr>
       {% endfor %}

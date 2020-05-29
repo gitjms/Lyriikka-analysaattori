@@ -5,50 +5,50 @@
   <form method="POST" action="{{ url_for('auth_login') }}">
     <h4>Login</h4>
     <table>
-    <thead>
-      <div class="control-group">
-        <div class="controls">
-
-		  <tr>
-            <th>
-	          <button class="btn btn-sm btn-secondary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Cancel</button>
-            </th>
-	      </tr>
-
-	      <tr>
-            <td>
-			  {{ form.username(autofocus=true, placeholder="Enter Username") }}
-            </td>
-
-	        <td rowspan="2"><a style="margin-left: 10px;">or</a>
-			<input type='hidden' required></input>
-	          <button tabindex="1" class="btn btn-sm btn-success" type="submit" name="Guest" style="width:100px; height: 60px; margin-left: 10px;" value="Guest"/>Login as guest</button>
-	        </td>
-          </tr>
-
-          <tr>
-            <td>
-			  {{ form.password(placeholder="Enter Password") }}
-	        </td>
-          </tr>
-
-          <tr>
-            <td>
-	          <label for="Remember">Remember this session?</label>
-	          <input type="checkbox" id="Remember" name="remember_me"></input >
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-	          <button class="btn btn-sm btn-success myFloat_Left" type="submit" name="Login" style="width:75px;" value="Login"/>Login</button>
-            </td>
-	      </tr>
-
+      <thead>
+        <div class="control-group">
+          <div class="controls">
+	  
+            <tr>
+              <th>
+                <button class="btn btn-sm btn-secondary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Cancel</button>
+              </th>
+            </tr>
+          
+            <tr>
+              <td>
+                {{ form.username(autofocus=true, placeholder="Enter Username") }}
+              </td>
+          
+              <td rowspan="2"><a style="margin-left: 10px;">or</a>
+              <input type='hidden' required></input>
+                <button tabindex="1" class="btn btn-sm btn-success" type="submit" name="Guest" style="width:100px; height: 60px; margin-left: 10px;" value="Guest"/>Login as guest</button>
+              </td>
+            </tr>
+        
+            <tr>
+              <td>
+                {{ form.password(placeholder="Enter Password") }}
+              </td>
+            </tr>
+          
+            <tr>
+              <td>
+                <label for="Remember">Remember this session?</label>
+                <input type="checkbox" id="Remember" name="remember_me"></input >
+              </td>
+            </tr>
+          
+            <tr>
+              <td>
+                <button class="btn btn-sm btn-success myFloat_Left" type="submit" name="Login" style="width:75px;" value="Login"/>Login</button>
+              </td>
+            </tr>
+          
+          </div>
         </div>
-      </div>
-
-    </thead>
+	  
+      </thead>
     </table>
   </form>
 {% endblock %}

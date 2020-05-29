@@ -3,44 +3,44 @@
 {% block body %}
 
   <h1>
-	Lyrics Frequency Analysator
+    Lyrics Frequency Analysator
   </h1>
 
   <p class="lead">
-	Analyze songs' word frequencies.
+    Analyze songs' word frequencies.
 	
-	<hr />
+    <hr />
 	
-	Default user roles are 'admin' and 'guest'.<br>
+    Default user roles are 'admin' and 'guest'.<br>
 	
-	You may play with admin and guest accounts and 	see what they are able to do.<br><br>
+    You may play with admin and guest accounts and 	see what they are able to do.<br><br>
 	
-	<li>username: admin, password: admin</li>
-	<li>username: guest, password: guest</li><br>
+    <li>username: admin, password: admin</li>
+    <li>username: guest, password: guest</li><br>
 	
 	
-	If you start the app for the first time, there are no songs
-	in the database.
-	At that point you can add your own songs or
-	a small bunch of default songs.<br>
+    If you start the app for the first time, there are no songs
+    in the database.
+    At that point you can add your own songs or
+    a small bunch of default songs.<br>
 
-	Default songs can be added when you login as admin.
-	Then you will see a button in the lower right side of the window
-	(<em>Add default songs</em>) with which the songs and authors will be filled into the database.<br>
+    Default songs can be added when you login as admin.
+    Then you will see a button in the lower right side of the window
+    (<em>Add default songs</em>) with which the songs and authors will be filled into the database.<br>
 
-	You may also create your own account via registration (create account).<br>
+    You may also create your own account via registration (create account).<br>
 	
-	At the moment you are able to create, edit, and delete songs, sort them, and make quick word searches, which
-	give you basic frequency analyses.
+    At the moment you are able to create, edit, and delete songs, sort them, and make quick word searches, which
+    give you basic frequency analyses.
   </p>
 
   {% if stats is defined %}
-	<div class="col-sm-10 col-sm-offset-1">
+    <div class="col-sm-10 col-sm-offset-1">
       <div id="averages">
         <h1>
-	      Database status
+          Database status
         </h1>
-	    {% for stat in stats %}
+        {% for stat in stats %}
           <table class="table table-striped" style="max-width: 300px;">
             <thead>
               <tr>

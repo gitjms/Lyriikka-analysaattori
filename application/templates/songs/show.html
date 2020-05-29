@@ -2,39 +2,37 @@
 
 {{ error }}
 {% block body %}
-	  <form method="GET" action="{{ url_for('songs_list') }}">
-		<div class="col-auto">
-		  <button class="btn btn-sm btn-secondary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>
-		</div>
+  <form method="GET" action="{{ url_for('songs_list') }}">
+    <div class="col-auto">
+      <button class="btn btn-sm btn-secondary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>
+    </div>
 
-		<div style="clear: both;"></div>
-	  </form><br><br>
+    <div style="clear: both;"></div>
+  </form><br><br>
 
-	  <div class="col-auto">
-	    <h4>
-		  <small class="text-muted">Title:</small>
-			{{ song.title }}
-	    </h4>
-	  </div>
+  <div class="col-auto">
+    <h4>
+      <small class="text-muted">Title:</small>
+      {{ song.title }}
+    </h4>
+  </div>
 
-	  <div class="col-auto">
-	    <h5>
-		  <small class="text-muted">Author(s):</small>
-			{% for auth in song.authors %}{{ auth.name }}{{ ", " if not loop.last }}{% endfor %}
-	    </h5>
-	  </div><br>
-<center>
-	  <!-- <div class="col-auto" style="overflow: hidden;"> -->
-	    <pre class="lead" style="width: 100%; margin-left:auto; margin-right:auto; font-family: Arial Unicode MS, Lucida Sans Unicode, DejaVu Sans, Quivira, Symbola, Code2000;">
+  <div class="col-auto">
+    <h5>
+      <small class="text-muted">Author(s):</small>
+      {% for auth in song.authors %}{{ auth.name }}{{ ", " if not loop.last }}{% endfor %}
+    </h5>
+  </div><br>
+  <center>
+    <pre class="lead" style="width: 100%; margin-left:auto; margin-right:auto; font-family: Arial Unicode MS, Lucida Sans Unicode, DejaVu Sans, Quivira, Symbola, Code2000;">
 {{ song.lyrics }}
-        </pre>
-	  <!-- </div> -->
-</center>
-	  <form method="GET" action="{{ url_for('songs_list') }}">
-		<div class="col-auto">
-		  <button class="btn btn-sm btn-secondary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>
-		</div>
+    </pre>
+  </center>
+  <form method="GET" action="{{ url_for('songs_list') }}">
+    <div class="col-auto">
+      <button class="btn btn-sm btn-secondary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>
+    </div>
 
-		<div style="clear: both;"></div>
-	  </form>
+    <div style="clear: both;"></div>
+  </form>
 {% endblock %}

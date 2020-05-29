@@ -5,55 +5,55 @@
   <h4>Create account </h4>
 
   <form method=POST class="form-horizontal">
-	<table>
-	<thead>
+    <table>
+    <thead>
       <div class="control-group">
         <div class="controls">
-	
-		  <tr>
-	        <button class="btn btn-sm btn-secondary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Cancel</button>
-		  </tr><br><br>
-
-		  <tr>
+        
+          <tr>
+            <button class="btn btn-sm btn-secondary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Cancel</button>
+          </tr><br><br>
+        
+          <tr>
             <td>
-			  {{ form.name(autofocus=true,placeholder="Enter Full Name") }}
+              {{ form.name(autofocus=true,placeholder="Enter Full Name") }}
             </td>
-		  </tr>
-
-		  <tr>
+          </tr>
+        
+          <tr>
             <td>
-			  {{ form.username(placeholder="Enter Username") }}
+              {{ form.username(placeholder="Enter Username") }}
             </td>
-		  </tr>
-
-		  <tr>
+          </tr>
+        
+          <tr>
             <td>
-			  {{ form.password(placeholder="Enter Password") }}
+              {{ form.password(placeholder="Enter Password") }}
             </td>
-		    <td>
-		      <label style="margin-left: 5px" class="lead col-form-label">min 4 characters</label>
-		    </td>
-		  </tr>
-
-		  <tr>
-		    <td style="float: left;">
-	          <label for="Remember">Remember this session?</label>
-		    </td>
-		    <td>
-		      <input type="checkbox" id="Remember" name="remember_me"></input >
-		    </td>
-		  </tr>
-
-		  <tr>
-		    <td style="float: left;">
+            <td>
+              <label style="margin-left: 5px" class="lead col-form-label">min 4 characters</label>
+            </td>
+          </tr>
+        
+          <tr>
+            <td style="float: left;">
+              <label for="Remember">Remember this session?</label>
+            </td>
+            <td>
+              <input type="checkbox" id="Remember" name="remember_me"></input >
+            </td>
+          </tr>
+        
+          <tr>
+            <td style="float: left;">
               <button type="submit" class="btn btn-sm btn-success myFloat_Left" style="width:75px;">Create</button>
-		    </td>
-		  </tr>
-
+            </td>
+          </tr>
+        
         </div>
       </div>
-
-	</thead>
-	</table>
+    
+    </thead>
+    </table>
   </form>
 {% endblock %}
