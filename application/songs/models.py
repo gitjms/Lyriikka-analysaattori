@@ -11,8 +11,6 @@ class Song(Base):
 
 	__tablename__ = 'song'
 
-	# id = db.Column(db.Integer, primary_key=True)
-	# name = db.Column(db.String(80), nullable=False, unique=True)
 	lyrics = db.Column(db.String(2000), nullable=False)
 	language = db.Column(db.String(80), nullable=False)
 

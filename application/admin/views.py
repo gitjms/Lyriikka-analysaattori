@@ -91,40 +91,41 @@ def clear():
 	#----------------------------------------------------
 	# Clear default authors and songs
 	#----------------------------------------------------
-	if request.form.get('clear') == "clear":
+	# if request.form.get('clear') == "clear":
 		
-		try:
-			db.session.query(Song).delete()
-			db.session.commit()
-			flash("Table Song cleared.", "success")
-		except:
-			flash("Table Song not cleared.", "danger")
-			db.session.rollback()
+
+		# try:
+			# db.session.query(Song).delete()
+			# db.session.commit()
+			# flash("Table Song cleared.", "success")
+		# except:
+			# flash("Table Song not cleared.", "danger")
+			# db.session.rollback()
 		
-		try:
-			db.session.query(Author).delete()
-			db.session.commit()
-			flash("Table Author cleared.", "success")
-		except:
-			flash("Table Author not cleared.", "danger")
-			db.session.rollback()
+		# try:
+			# db.session.query(Author).delete()
+			# db.session.commit()
+			# flash("Table Author cleared.", "success")
+		# except:
+			# flash("Table Author not cleared.", "danger")
+			# db.session.rollback()
 
-		try:
-			stmt = text("DELETE FROM author_song;")
-			db.engine.execute(stmt)
-			flash("Join table author_song cleared.", "success")
-		except:
-			flash("Join table author_song not cleared.", "danger")
-			db.session.rollback()
+		# try:
+			# stmt = text("DELETE FROM author_song;")
+			# db.engine.execute(stmt)
+			# flash("Join table author_song cleared.", "success")
+		# except:
+			# flash("Join table author_song not cleared.", "danger")
+			# db.session.rollback()
 
-		return render_template("admin/dashboard.html")
+		# return render_template("admin/dashboard.html")
 
 
 	#----------------------------------------------------
 	# Add default authors and songs
 	#----------------------------------------------------
 
-	elif request.form.get('add') == "add":
+	if request.form.get('add') == "add":
 
 		#------------------------------------------------
 		# add default authors
