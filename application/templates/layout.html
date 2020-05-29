@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fi" lang="fi">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" charset="utf-8">
-    <title>LyrFreq</title>
+    <title>LyrFreq - Lyrics Frequency Analysator: Analyze songs' word frequencies</title>
 	  
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -29,6 +29,7 @@
 	  
           <table>
 	        <tbody>
+			  <tr><th></th></tr>
               <td rowspan="2">
                 <!-- LYRFREQ HOME LOGO -->
                 {% if g.user.is_authenticated %}
@@ -36,7 +37,7 @@
                 {% else %}
                   <a class="navbar-brand" href="{{ url_for('songs_index') }}">
                 {% endif %}
-                <img src="{{url_for('static', filename='images/brandlogo.png')}}" width="100" height="45" class="d-inline-flex align-top image-responsive myLogo" alt="Clickable icon for Lyrfreq application"></img>
+                <img src="{{url_for('static', filename='images/brandlogo.png')}}" width="100" height="45" class="d-inline-flex align-top image-responsive myLogo" alt=""></img>
                 </a>
               </td>
             </tbody>
@@ -47,6 +48,7 @@
               <nav class="navbar-nav">
                 <table>
                   <tbody>
+			        <tr><th></th></tr>
                     <tr>
                       <!-- LOGIN / LOGOUT / CREATE ACCOUNT -->
                       {% if g.user.is_authenticated %}
