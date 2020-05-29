@@ -21,7 +21,8 @@ class Author(Base):
 
 	songs = db.relationship("Song",
 		secondary=author_song,
-		backref=db.backref('authors', lazy=True)
+		backref=db.backref('authors'),
+		lazy=True
 	)
 
 
