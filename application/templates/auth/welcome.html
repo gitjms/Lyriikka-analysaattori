@@ -30,7 +30,9 @@
     {% endif %}
     
     {% if abv_average is defined and not g.user.admin %}
-      <h3>Search matches above average (TOP 5)</h3>
+      <h3>Search matches above average
+	    <small class="text-muted">(TOP 5)</small>
+	  </h3>
         <div id="averages">
           <table class="table table-striped" style="max-width: 1000px;">
             <thead>
