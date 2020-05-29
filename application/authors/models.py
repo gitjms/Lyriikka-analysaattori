@@ -1,5 +1,6 @@
 from application import db
 from application import views
+from application.models import Base
 
 
 # join table AUTHOR_SONG
