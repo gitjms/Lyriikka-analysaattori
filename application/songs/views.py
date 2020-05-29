@@ -14,7 +14,7 @@ from application.songs.models import Song
 from application.auth.models import User
 from application.words.models import Words
 from application.authors.models import Author, author_song
-from application.songs.forms import SongForm
+from application.songs.forms import NewSongForm, EditSongForm
 
 # Lomakkeen näyttämisen ja lähetyksen vastaanottava toiminnallisuus.
 
@@ -111,7 +111,7 @@ def songs_show(song_id):
 @app.route("/songs/edit/<song_id>/", methods=["GET", "POST"])
 @login_required
 def songs_edit(song_id):
-	form = SongForm(request.form)
+	form = EditSongForm(request.form)
 
 	if request.form.get("Back") == "Back":
 		return redirect(url_for("songs_list"))
@@ -125,11 +125,11 @@ def songs_edit(song_id):
 				return render_template("songs/edit.html", song = Song.query.get(song_id), form = form, error = "Fields must not be empty.")
 
 			song = Song.query.get(song_id)
-			song_name = request.form.get("name")
+			song_name = request.form.get("title")
 			song_lyrics = request.form.get("lyrics")
-			song_language = request.form.get("language")
+			song_language = song.language
 			song_author = request.form.get("author")
-			if (song_name == song.name and song_author == song.author and song_lyrics == song.lyrics and song_language == song.language):
+			if (song_name == song.name and song_author == song.authors and song_lyrics == song.lyrics and song_language == song.language):
 				flash("No changes made.", "warning")
 			else:
 				try:
@@ -140,6 +140,7 @@ def songs_edit(song_id):
 					song.author = song_author
 					db.session().add(song)
 					db.session().commit()
+					return render_template("songs/show.html", song = song)
 				except IntegrityError:
 					db.session.rollback()
 					flash("Song exists already.", "danger")
@@ -171,7 +172,7 @@ def songs_delete(song_id):
 @app.route("/songs/new/", methods=["GET", "POST"])
 @login_required
 def songs_create():
-	form = SongForm(request.form)
+	form = NewSongForm(request.form)
 
 	if request.method == "GET":
 		return render_template("songs/new.html", form = form)
@@ -185,7 +186,7 @@ def songs_create():
 	if not form.validate():
 		return render_template("songs/new.html", form = form, error = "Fields must not be empty.")
 
-	song = Song(form.name.data,form.lyrics.data,form.language.data)
+	song = Song(form.title.data,form.lyrics.data,form.language.data)
 	song.account_id = g.user.id
 	
 	authors = form.author.data.split(',')

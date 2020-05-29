@@ -8,7 +8,7 @@
   <form action= "{{ url_for('songs_list') }}" method="POST">
     <table>
       <tr>
-        <th style="padding-left: 125px;">title</th>
+        <th style="padding-left: 45px;">title</th>
         <th style="padding-left: 95px;">lang:title</th>
       </tr>
     </table>
@@ -16,10 +16,7 @@
     <table>
       <tr>
         <td>
-          <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="width:60px; height:30px;" value="id"/>id</button>
-        </td>
-        <td>
-          <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="margin-left: 20px; width:60px; height:30px;" value="titasc"/>A->Z</button>
+          <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="width:60px; height:30px;" value="titasc"/>A->Z</button>
         </td>
         <td>
           <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="width:60px; height:30px;" value="titdesc"/>Z->A</button>
@@ -38,7 +35,6 @@
 
 <table>
   <tr>
-    <th>id</th>
     <th>title</th>
     <th>lang</th>
     <th style="padding-left: 20px;">lyrics</th>
@@ -47,7 +43,6 @@
   </tr>
 {% for song in songs %}
   <tr>
-    <td style="text-align: right; padding-right: 10px;">{{ song.id }}.</td>
     <td>{{ song.name }}</td>
     <td style="padding-left: 10px;">{{ song.language[:2] }}</td>
     <td>

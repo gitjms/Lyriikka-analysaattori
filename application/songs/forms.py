@@ -4,10 +4,18 @@ from wtforms.validators import DataRequired
 
 # Lomaketta kuvaava luokka.
 
-class SongForm(FlaskForm):
+class NewSongForm(FlaskForm):
 	title = TextAreaField("title", [validators.Length(min=1)])
 	lyrics = TextAreaField("lyrics", [validators.Length(min=1)])
 	language = SelectField('language', [validators.DataRequired()],choices=[('',''), ('finnish','finnish'), ('english','english'), ('french','french')])
+	author = TextAreaField("author", [validators.Length(min=1)])
+ 
+	class Meta:
+		csrf = False
+
+class EditSongForm(FlaskForm):
+	title = TextAreaField("title", [validators.Length(min=1)])
+	lyrics = TextAreaField("lyrics", [validators.Length(min=1)])
 	author = TextAreaField("author", [validators.Length(min=1)])
  
 	class Meta:
