@@ -93,16 +93,20 @@ def clear():
 	#----------------------------------------------------
 	if request.form.get('clear') == "clear":
 
-		if db.session.query(author_song).first() is None:
-			flash("Join table author_song already empty.", "warning")
-		else:
-			try:
-				stmt = text("DELETE FROM author_song;")
-				db.engine.execute(stmt)
-				flash("Join table author_song cleared.", "success")
-			except:
-				flash("Join table author_song not cleared.", "danger")
-				db.session.rollback()
+		# if db.session.query(author_song).first() is None:
+			# flash("Join table author_song already empty.", "warning")
+		# else:
+			# try:
+				# stmt = text("DELETE FROM author_song "
+							# "USING Song "
+							# "WHERE author_song.song_id = Song.id "
+							# "USING Author "
+							# "WHERE author_song.author_id = Author.id;")
+				# db.engine.execute(stmt)
+				# flash("Join table author_song cleared.", "success")
+			# except:
+				# flash("Join table author_song not cleared.", "danger")
+				# db.session.rollback()
 		
 		if db.session.query(Author).first() is None:
 			flash("Table Author already empty.", "warning")
