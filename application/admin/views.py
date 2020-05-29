@@ -141,6 +141,7 @@ def clear():
 
 		if db.session.query(Author).first() is not None:
 			flash("Default authors already exist.", "warning")
+			return render_template("admin/dashboard.html")
 		else:
 			for item in authors.authors_fi:
 				song = item[1]
@@ -170,6 +171,7 @@ def clear():
 
 		if db.session.query(Song).first() is not None:
 			flash("Default songs already exist.", "warning")
+			return render_template("admin/dashboard.html")
 		else:
 
 			# finnish songs
@@ -289,10 +291,6 @@ def clear():
 			flash("French songs added.", "success")
 		else:
 			flash("French songs not added.", "danger")
-
-	else:
-		return redirect(url_for("index.html"))
-		
 	
 	
 	return render_template("admin/dashboard.html")
