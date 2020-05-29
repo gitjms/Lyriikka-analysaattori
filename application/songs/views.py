@@ -125,7 +125,7 @@ def songs_edit(song_id):
 				return render_template("songs/edit.html", song = Song.query.get(song_id), form = form, error = "Fields must not be empty.")
 
 			song = Song.query.get(song_id)
-			song_name = request.form.get("title")
+			song_name = request.form.get("name")
 			song_lyrics = request.form.get("lyrics")
 			song_language = song.language
 			song_author = request.form.get("author")

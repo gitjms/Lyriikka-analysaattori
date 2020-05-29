@@ -16,7 +16,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 # raw words count
 def proc_text(song_list, word_to_find):
 
-	text_list = [] # [ song_id, lyrics, song_title ]
+	text_list = [] # [ song_id, lyrics, song_name ]
 	nltk.data.path.append(os.getcwd()+'/application/nltk_data/')
 
 	for song in song_list:
@@ -26,12 +26,12 @@ def proc_text(song_list, word_to_find):
 	# remove punctuation, count raw words
 	raw_word_count = [] # [ Counter(raw_words) ]
 	raw_words_list = [] # [ song_id, raw_words ]
-	for txt in text_list: # [ song_id, lyrics, song_title ]
+	for txt in text_list: # [ song_id, lyrics, song_name ]
 		count = 0
 		raw_words = []
 		song_id = txt[0]
 		lyrics = txt[1]
-		song_title = txt[2]
+		song_name = txt[2]
 		nonPunct = re.compile('.*[A-Za-z].*')
 		for i in lyrics:
 			if nonPunct.match(i):
@@ -39,19 +39,19 @@ def proc_text(song_list, word_to_find):
 			if i.lower() == word_to_find.lower():
 				count += 1
 		if count > 0:
-			raw_words_list.append([song_id, raw_words, song_title])
+			raw_words_list.append([song_id, raw_words, song_name])
 			raw_word_count.append(Counter(raw_words))
 
 	# count matches and store source text without newlines
 	new_songlist = [] # [ song_id, new_string ]
 	new_raw_words_list = []
 	tot_count = 0
-	for item in raw_words_list: # [ song_id, raw_words, song_title ]
+	for item in raw_words_list: # [ song_id, raw_words, song_name ]
 		w_list = []
 		count = 0
 		song_id = item[0]
 		raw_words = item[1]
-		song_title = item[2]
+		song_name = item[2]
 		for w in raw_words:
 			if w.lower() == word_to_find.lower():
 				count += 1
@@ -59,7 +59,7 @@ def proc_text(song_list, word_to_find):
 			w_list.append(w)
 		if count > 0:
 			new_string = ' '.join(w_list)
-			new_songlist.append([song_id,new_string,song_title])
+			new_songlist.append([song_id,new_string,song_name])
 			new_raw_words_list.append([count, [song_id, w_list]])
 
 	return raw_word_count, new_songlist, new_raw_words_list, tot_count
@@ -116,14 +116,14 @@ def create_results(raw_word_count, db_words_list, frequencies, new_songlist, gra
 		counts.append(item[2])
 
 	#----------------------------------------
-	# songs = [ song_id, Markup(new_string), song_title ]
+	# songs = [ song_id, Markup(new_string), song_name ]
 	#----------------------------------------
 	# Markup song list
 	songs = []
 	for item in new_songlist:
 		song_id = item[0]
 		new_string = item[1]
-		song_title = item[2]
+		song_name = item[2]
 		words = item[1].split(' ')
 		w_list = []
 		for word in words:

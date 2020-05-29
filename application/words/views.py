@@ -58,7 +58,7 @@ def words_find():
 	# get data from database
 	#
 	#-------------------------------------------------------
-	qry_list = db.session().query(Song.id,Song.lyrics,Song.title,Song.language).filter(Song.account_id.in_(user_list)).filter(Song.language==language).all()
+	qry_list = db.session().query(Song.id,Song.lyrics,Song.name,Song.language).filter(Song.account_id.in_(user_list)).filter(Song.language==language).all()
 
 	song_list = []
 	for i in qry_list:
