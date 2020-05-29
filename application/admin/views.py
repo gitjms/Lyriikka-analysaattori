@@ -92,39 +92,30 @@ def clear():
 	# Clear default authors and songs
 	#----------------------------------------------------
 	if request.form.get('clear') == "clear":
-		
-		if db.session.query(Author).first() is None:
-			flash("Table Author already empty.", "warning")
-		else:
-			try:
-				db.session.query(Author).delete()
-				db.session.commit()
-				flash("Table Author cleared.", "success")
-			except:
-				flash("Table Author not cleared.", "danger")
-				db.session.rollback()
-		
-		if db.session.query(Song).first() is None:
-			flash("Table Song already empty.", "warning")
-		else:
-			try:
-				db.session.query(Song).delete()
-				db.session.commit()
-				flash("Table Song cleared.", "success")
-			except:
-				flash("Table Song not cleared.", "danger")
-				db.session.rollback()
 
-		if db.session.query(author_song).first() is None:
-			flash("Join table author_song already empty.", "warning")
-		else:
-			try:
-				stmt = text("DELETE FROM author_song;")
-				db.engine.execute(stmt)
-				flash("Join table author_song cleared.", "success")
-			except:
-				flash("Join table author_song not cleared.", "danger")
-				db.session.rollback()
+		try:
+			stmt = text("DELETE FROM author_song;")
+			db.engine.execute(stmt)
+			flash("Join table author_song cleared.", "success")
+		except:
+			flash("Join table author_song not cleared.", "danger")
+			db.session.rollback()
+		
+		try:
+			db.session.query(Author).delete()
+			db.session.commit()
+			flash("Table Author cleared.", "success")
+		except:
+			flash("Table Author not cleared.", "danger")
+			db.session.rollback()
+		
+		try:
+			db.session.query(Song).delete()
+			db.session.commit()
+			flash("Table Song cleared.", "success")
+		except:
+			flash("Table Song not cleared.", "danger")
+			db.session.rollback()
 
 		return render_template("admin/dashboard.html")
 

@@ -6,23 +6,25 @@ from application.models import Base
 # join table AUTHOR_SONG
 author_song = db.Table('author_song', Base.metadata,
 	db.Column(	'author_id',						# left
-				db.ForeignKey('author.id'),
+				db.ForeignKey('author.id', ondelete='cascade'),
 				primary_key=True),
 	db.Column(	'song_id',							# right
-				db.ForeignKey('song.id'),
+				db.ForeignKey('song.id', ondelete='cascade'),
 				primary_key=True)
 )
 
-class Author(Base):
+class Author(db.Model):
 
 	__tablename__ = 'author'
 
+	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(80), nullable=False)
 
 	songs = db.relationship("Song",
 		secondary=author_song,
-		backref=db.backref('authors'),
-		lazy=True
+ 		cascade='all, delete',
+ 		passive_deletes=True,
+		backref=db.backref('authors', lazy=True)
 	)
 
 
