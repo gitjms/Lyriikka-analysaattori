@@ -11,17 +11,17 @@
   </form><br><br>
 
   <div class="col-auto">
-    <h4>
+    <strong>
       <small class="text-muted">Title:</small>
       {{ song.name }}
-    </h4>
+    </strong>
   </div>
 
   <div class="col-auto">
-    <h5>
+    <strong>
       <small class="text-muted">Author(s):</small>
       {% for auth in song.authors %}{{ auth.name }}{{ ", " if not loop.last }}{% endfor %}
-    </h5>
+    </strong>
   </div><br>
   <center>
     <pre class="lead" style="width: 100%; margin-left:auto; margin-right:auto; font-family: Arial Unicode MS, Lucida Sans Unicode, DejaVu Sans, Quivira, Symbola, Code2000;">

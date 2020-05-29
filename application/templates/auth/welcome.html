@@ -4,11 +4,11 @@
 {% block body %}
 
     {% for err in error %}
-      <h4>{{ err }}</h4>
+      <strong>{{ err }}</strong>
     {% endfor %}
     
-    {% if db_index is defined %}
-      <h3>Database index</h3>
+    {% if db_status is defined %}
+      <h2>Database status</h2>
       <div id="index">
         <table class="table table-striped" style="max-width: 900px;">
           <thead>
@@ -18,7 +18,7 @@
               <th>Authors</th>
             </tr>
           </thead>
-          {% for res in db_index %}
+          {% for res in db_status %}
             <tr>
               <td>{{ res.languages }}</td>
               <td>{{ res.songs }}</td>
@@ -30,9 +30,9 @@
     {% endif %}
     
     {% if abv_average is defined and not g.user.admin %}
-      <h3>Search matches above average
+      <h2>Search matches above average
 	    <small class="text-muted">(TOP 5)</small>
-	  </h3>
+	  </h2>
         <div id="averages">
           <table class="table table-striped" style="max-width: 1000px;">
             <thead>
