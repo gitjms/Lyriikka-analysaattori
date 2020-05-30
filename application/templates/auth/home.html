@@ -29,29 +29,24 @@
       </div><br><br>
     {% endif %}
     
-    {% if abv_average is defined and not g.user.admin %}
-      <strong style="font-size: 25px;">Search matches above average
-	    <small class="text-muted">(TOP 5)</small>
+    {% if abv_average is defined and  abv_average is not none and not g.user.admin %}
+      <strong style="font-size: 25px;">TOP 5 search words
 	  </strong>
         <div id="averages">
           <table class="table table-striped" style="max-width: 1000px;">
             <thead>
               <tr>
                 <th>Word</th>
-                <th>Author</th>
-                <th>Title</th>
                 <th>Matches</th>
-                <th>Sum</th>
+                <th>#Songs</th>
                 <th>Avg</th>
               </tr>
             </thead>
             {% for res in abv_average %}
               <tr>
                 <td>{{ res.word }}</td>
-                <td>{{ res.author }}</td>
-                <td>{{ res.title }}</td>
-                <td>{{ res.matches }}</td>
-                <td>{{ res.sum }}</td>
+                <td>{{ res.totcount }}</td>
+                <td>{{ res.numsongs }}</td>
                 <td>{{ '%0.1f'| format(res.average|float) }}</td>
               </tr>
             {% endfor %}
