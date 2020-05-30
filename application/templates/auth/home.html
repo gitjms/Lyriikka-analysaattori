@@ -8,7 +8,7 @@
     {% endfor %}
     
     {% if db_status is defined %}
-      <h2>Database status</h2>
+      <strong style="font-size: 25px;">Database status</strong>
       <div id="index">
         <table class="table table-striped" style="max-width: 900px;">
           <thead>
@@ -30,9 +30,9 @@
     {% endif %}
     
     {% if abv_average is defined and not g.user.admin %}
-      <h2>Search matches above average
+      <strong style="font-size: 25px;">Search matches above average
 	    <small class="text-muted">(TOP 5)</small>
-	  </h2>
+	  </strong>
         <div id="averages">
           <table class="table table-striped" style="max-width: 1000px;">
             <thead>

@@ -32,12 +32,12 @@ def songs_index():
 
 
 #-----------------------------------------
-#		MAIN: songs_main()
+#		MAIN: songs_home()
 #-----------------------------------------
 @app.route("/main")
 @login_required
-def songs_main():
-	return render_template("auth/welcome.html", db_index=find_database_status(), abv_average=Words.find_songs_authors_with_matches_geq_avg())
+def songs_home():
+	return render_template("auth/home.html", db_status=find_database_status(), abv_average=Words.find_songs_authors_with_matches_geq_avg())
 
 
 #-----------------------------------------

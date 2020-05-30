@@ -69,7 +69,7 @@ def auth_login():
 		
 	db.session.permanent = remember_me
 
-	return redirect(url_for("songs_main"))
+	return redirect(url_for("songs_home"))
 
 
 #-----------------------------------------

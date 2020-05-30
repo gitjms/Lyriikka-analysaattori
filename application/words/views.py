@@ -4,7 +4,6 @@ from flask_login import login_required, current_user
 from application import app, db
 from application.songs.models import Song
 from application.words.models import Words
-# from application.words.forms import WordForm
 from application.words.proc import proc_text, stop_words, create_results, store_db
 
 # Lomakkeen näyttämisen ja lähetyksen vastaanottava toiminnallisuus.
@@ -23,8 +22,6 @@ def words_find():
 	errors = []
 	filtered = False
 	save = False
-
-	# form = wordform(request.form)
 
 	user_list = [g.user.id,1]
 
@@ -103,7 +100,7 @@ def words_find():
 	if save == True and tot_count > 0:
 		store_db(raw_word_count, words_list, word_to_find, counts)
 
-	return render_template("words/words.html", frequencies = frequencies, songs=songs, word=word_to_find, errors=errors, count = tot_count, song_count=len(new_songlist), graph_data=graph_data, language=language, filtered=filtered, save=save)
+	return render_template("words/words.html", frequencies = frequencies, songs=replace_accent(songs), word=word_to_find, errors=errors, count = tot_count, song_count=len(new_songlist), graph_data=graph_data, language=language, filtered=filtered, save=save)
 
 
 # own stopwords
@@ -111,6 +108,14 @@ def replace_chars(text):
 	for ch in ['\\n','BRIDGE','POST-CHORUS','CHORUS','VERSE','V1','V2','V3','V4','V5','V6','V7','V8','V9','V10','B1','B2','B3','B4','B5','B6','B7','B8','B9','B10','C1','C2','C3','C4','C5','C6','C7','C8','C9','C10','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','\'n','\n','\'n\'n','\'r','\'r\'n',"'ll","'s","\'"]:
 		if ch == "\'" and ch in text:
 			text = text.replace(ch,"\´")
-		elif ch in text:
+		if ch in text:
 			text = text.replace(ch,"")
+	return text
+
+
+# difficult accent for Source(s) lyrics html in Results page
+def replace_accent(text):
+	for item in text:
+		if "\´" in item[1]:
+			item[1] = item[1].replace("\´","\'")
 	return text

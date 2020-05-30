@@ -32,7 +32,7 @@ def before_request():
 def admin_dashboard():
 
 	if request.method == "GET":
-		return render_template("auth/welcome.html", db_status=find_database_status())
+		return render_template("auth/home.html", db_status=find_database_status())
 
 	if request.method == "POST":
 		return render_template("admin/dashboard.html", users = User.query.all())
@@ -86,6 +86,7 @@ def user_adminate(user_id):
 # Table operations: add/clear default songs & authors
 #----------------------------------------------------
 @app.route("/defaults", methods = ["POST"])
+@login_required
 def clear():
 
 	#----------------------------------------------------
