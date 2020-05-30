@@ -1,4 +1,4 @@
-# Lyriikan sanojen frekvenssianalyysisovellus *LyrFreq*
+# Lyriikan sanojen frekvenssianalyysisovellus *LyrFreq*.
 
 ## Aihekuvaus
 
@@ -8,7 +8,11 @@ Lyriikkatietokanta on haettu sivustolta [Worship Leader App](https://worshiplead
 
 Sovellus hyödyntää *Natural Language Toolkit* -nimistä palvelua ([NLTK](https://www.nltk.org/)), jonka materiaalin avulla voidaan tutkia lingvististä dataa. Sieltä on otettu tähän työhön toiminnot, joilla pilkut, pisteet ym. lisämerkit saa poistettua analysoitavasta datasta. Myös *Stopwordsit* kullekin kielelle on ladattu NLTK:sta. Ne ovat ns. turhia sanoja, kuten suomen *ja, jos, koska, kuin, mutta, niin, sekä, ...*, ja ne poistetaan datasta.
 
+NLTK:n soveltamiseen on otettu mallia sivuston [*Real Python*](https://realpython.com/flask-by-example-part-1-project-setup/) Flask-esimerkkiprojektista.
+
 Sovellukseen on asetettu kuusi oletuslaulua kustakin kolmesta kielestä valmiiksi. Kun sovelluksen käynnistää ensimmäisen kerran ja tietokantataulut syntyvät, tulee laulut syöttää tauluihin. Tämä onnistuu kirjautumalla admin-tunnuksilla sisään, jolloin sivun alalaidassa näkyy kolme nappia: *List users*, *Remove default songs* ja *Add default songs*. Viimeistä nappia painamalla laulut ja niiden tekijät syötetään automaattisesti omiin tauluihinsa sekä liitostiedot liitostauluun. Samoin ne saa tarvittaessa poistettua keskimmäisestä napista.
+
+Löydät sovelluksen osoitteesta [lyrfreq.herokuapp.com](https://lyrfreq.herokuapp.com/).
 
 ### Käyttöohje
 
@@ -46,13 +50,11 @@ Näkymään ilmestyy useampi uusi nappi, joiden toiminnot lukevat napeissa. Ylh�
 
 Ohjelma näyttää myös pylväskuvaajan kyseisen kielen laulujen kymmenestä yleisimmästä sanasta. Lisäksi käyttäjä voi nappia painamalla tarkastella kunkin laulun (joista sana löytyi) kohdalla kymmentä yleisintä sanaa taulukkomuodossa tai kyseisiä laulutekstejä, joissa hakusana on merkattu. Tulos esitetään ensin suodattamattomana, eli stopwordsit ovat mukana. Käyttäjä voi tällöin suodattaa tuloksen itse nappia painamalla. Kunkin haun tulokset voi erikseen tallentaa tietokantaan.
 
-#### admin
+#### Pääkäyttäjä (admin)
 
 Pääkäyttäjän kotinäkymässä on vain laulutietokannan sisältö sekä alhaalla kolme nappia, joista voi listata käyttäjät tai lisätä/poistaa laulut.
 
 Käyttäjien listausnäkymässä näkyvät käyttäjien koko nimet, käyttäjänimet sekä rekisteröitymispäivä. Rivien perässä on myös napit käyttäjän poistamiseen ja käyttäjäroolin vaihtamiseen peruskäyttäjästä pääkäyttäjäksi ja päin vastoin.
-
-Löydät sovelluksen [**täältä**](https://lyrfreq.herokuapp.com/).
 
 ## Sovelluksen toiminnot
 
@@ -93,6 +95,6 @@ Linkissä [*Käyttötapaukset / User stories*](https://github.com/gitjms/Lyriikk
 * muitakin kuin vain kristillisiä lyriikoita, eli laulugenret mukaan
 * sanafrekvenssit genreittäin
 * sanafrekvenssit lauluntekijöiden mukaan
-* laulujen *tunnetilojen* analyysit
+* laulujen tunnetilojen analyysit
 * sanan esiintymisfrekvenssien vertailu kielittäin (yhteenvetokyselyt)
 * lyhyiden sanayhdistelmien esiintymät ja frekvenssit (yhteenvetokyselyt)
