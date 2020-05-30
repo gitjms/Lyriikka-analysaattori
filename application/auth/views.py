@@ -83,7 +83,7 @@ def auth_create():
 		return render_template("auth/newuser.html", form = form)
 
 	if request.form.get("Back") == "Back":
-		return redirect(url_for("index.html"))
+		return redirect(url_for("index"))
 
 	remember_me = False
 	if 'remember_me' in request.form:
@@ -107,7 +107,7 @@ def auth_create():
 		flash("Failed.", "danger")
 		return render_template("auth/newuser.html", form = form, error = "User already exists. Consider changing username.")
 
-	return redirect(url_for("index"))
+	return redirect(url_for("songs_home"))
 
 
 #-----------------------------------------

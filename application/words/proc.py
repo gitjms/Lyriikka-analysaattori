@@ -78,7 +78,7 @@ def stop_words(filtered, new_raw_words_list, language):
 		count = words_list[0]
 		song_id = words_list[1][0]
 		raw_words = words_list[1][1]
-		raw_words_graph = [w.lower() for w in words_list[1][1] if w.lower() not in stops]
+		raw_words_graph = [w.lower() for w in raw_words if w.lower()]
 		no_stop_words = [w.lower() for w in raw_words if w.lower() not in stops]
 		if filtered:
 			words_count = Counter(no_stop_words)
