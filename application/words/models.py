@@ -34,7 +34,7 @@ class Words(db.Model):
                     "	COUNT(song.sum), "
                     "	results.matches/COUNT(song.sum) "
 					"FROM results "
-					"JOIN "
+					"INNER JOIN "
 					"( "
 					"	SELECT "
 					"		DISTINCT Song.account_id, "
