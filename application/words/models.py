@@ -40,14 +40,14 @@ class Words(db.Model):
 					"	SELECT"
 					"		DISTINCT Song.account_id,"
 					"		results.matches AS matches,"
-					"		SUM(results.matches) AS sum,"
-					"		AVG(results.matches) AS avg"
+					"		SUM(results.matches) AS sum"
 					"	FROM song"
 					"	JOIN account ON account.id = Song.account_id"
 					"	JOIN results ON results.song_id = Song.id"
 					"	WHERE account.id IN (:user1,:user2) "
+					"	GROUP BY Song.account_id "
 					") AS song "
-					"GROUP BY results.matches, results.word "
+					"GROUP BY results.word ,results.matches "
 					"ORDER BY results.matches DESC "
 					"LIMIT :limit").params(user1=user_list[0],user2=user_list[1],limit=5)
 		res = db.engine.execute(stmt)
