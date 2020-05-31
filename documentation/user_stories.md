@@ -19,9 +19,9 @@
 | *admin* | poistaa käyttäjiä | lopettaneet käyttäjät saadaan pois | :heavy_check_mark: |
 | *admin* | muuttaa käyttäjien roolin | peruskäyttäjän voi asettaa väliaikaisesti pääkäyttäjäksi | :heavy_check_mark: |
 
-# Käyttötapaukset
+# Käyttötapauksia
 
-### Käyttötapaus: LyrFre-sivulle rekisteröityminen
+### Käyttötapaus: LyrFreq-sivulle rekisteröityminen
 
 ### Käyttötapauksen tyypillinen kulku:
   - Käyttäjä luo tunnuksen antamalla nimensä ja luomalla käyttäjänimen sekä salasanan.
