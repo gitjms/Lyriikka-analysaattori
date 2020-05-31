@@ -19,21 +19,23 @@
 | *admin* | poistaa käyttäjiä | lopettaneet käyttäjät saadaan pois | :heavy_check_mark: |
 | *admin* | muuttaa käyttäjien roolin | peruskäyttäjän voi asettaa väliaikaisesti pääkäyttäjäksi | :heavy_check_mark: |
 
-# Käyttötapauksia (Use cases)
+# Käyttötapaukset (Use cases)
 
-## Esimerkki käyttötapauksen ilmentymästä
+Esimerkki käyttötapauksen ilmentymästä
 
-### Käyttötapaus: LyrFreq-sivulle rekisteröityminen
+* Käyttötapaus: LyrFreq-sivulle rekisteröityminen
 
-### Käyttötapauksen tyypillinen kulku:
+* Käyttötapauksen tyypillinen kulku:
   - Käyttäjä luo tunnuksen antamalla nimensä ja luomalla käyttäjänimen sekä salasanan.
 
-### Sääntöjä:
+* Sääntöjä:
   - Käyttäjänimen tulee olla uniikki. Ohjelma ilmoittaa mikäli samanlainen käyttäjänimi on jo olemassa ja kehottaa luomaan erilaisen käyttäjänimen.
   - Salasanan tulee olla vähintään 4 merkkiä pitkä.
   - Mikään tekstikenttä ei saa olla tyhjä, eli vähimmäispituus on muissa kuin salasanassa 1 merkki. Ohjelma ilmoittaa mikäli jokin kenttä on tyhjä tai salasana on liian lyhyt.
 
-## Tekstiesimerkkejä käyttötapauksesta *rekisteröityminen*
+---
+
+Tekstiesimerkkejä käyttötapauksesta *rekisteröityminen*
 
 ### Onnistunut rekisteröityminen
 
