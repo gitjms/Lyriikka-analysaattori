@@ -7,7 +7,7 @@
       <strong>{{ err }}</strong>
     {% endfor %}
     
-    {% if db_status is defined %}
+    {% if db_status is defined and db_status is not none %}
       <strong style="font-size: 25px;">Database status</strong>
       <div id="index">
         <table class="table table-striped" style="max-width: 900px;">
@@ -29,7 +29,7 @@
       </div><br><br>
     {% endif %}
     
-    {% if abv_average is defined and  abv_average is not none and not g.user.admin %}
+    {% if abv_average is defined and abv_average is not none and not g.user.admin %}
       <strong style="font-size: 25px;">TOP 5 search words
 	  </strong>
         <div id="averages">
