@@ -68,7 +68,7 @@ Käyttäjien listausnäkymässä näkyvät käyttäjien koko nimet, käyttäjän
 
 ### Yhteenvetokyselyt
 - tietyn sanan esiintymät (laululista frekvensseineen) sekä ko. haun laulujen sanojen frekvenssit top 10(+)
-- sanahakuhistorian summia ja keskiarvoja (SUM, AVG) [4 taulua + liitostaulu]
+- sanahakuhistorian summia ja keskiarvoja (COUNT, SUM, AVG) [3 taulua]
 - tietokannan laulu-, lauluntekijä- ja kielitilanne (COUNT) [3 taulua + liitostaulu]
 
 ## Tietokannat ja tiedonhaku
