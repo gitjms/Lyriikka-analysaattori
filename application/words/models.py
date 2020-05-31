@@ -32,6 +32,7 @@ class Words(db.Model):
 					"	DISTINCT results.word, "
                     "	results.matches, "
                     "	COUNT(results.matches), "
+                    "	SUM(results.matches), "
                     "	AVG(results.matches) "
 					"FROM results "
 					"JOIN Song ON results.song_id = Song.id "
@@ -43,6 +44,6 @@ class Words(db.Model):
 		res = db.engine.execute(stmt)
 		response = []
 		for row in res:
-			response.append({'word':row[0], 'totcount':row[1], 'numsongs':row[2], 'average':row[3]})
+			response.append({'word':row[0], 'totcount':row[1], 'count':row[2], 'sum':row[3], 'average':row[4]})
 
 		return response

@@ -44,35 +44,7 @@
           </div>
         </center><br><br>
   
-        {% if abv_average is defined %}
-          <strong style="font-size: 15px;">Search history: matches above average</strong>
-            <div id="averages">
-               <table class="table table-striped" style="max-width: 700px;">
-                <thead>
-                  <tr>
-                    <th>Word</th>
-                    <th>Author</th>
-                    <th>Title</th>
-                    <th>Matches</th>
-                    <th>Sum</th>
-                    <th>Avg</th>
-                  </tr>
-                </thead>
-                  {% for res in abv_average %}
-                    <tr>
-                      <td>{{ res.word }}</td>
-                      <td>{{ res.author }}</td>
-                      <td>{{ res.name }}</td>
-                      <td>{{ res.matches }}</td>
-                      <td>{{ res.sum }}</td>
-                      <td>{{ '%0.1f'| format(res.average|float) }}</td>
-                    </tr>
-                  {% endfor %}
-              </table><br>
-          </div>
-        {% endif %}
-  
-        
+
         <!-- HIDDEN FREQUENCY TABLES AND BUTTON -->
   
         <div id="freqtables" style="display: none">

@@ -35,7 +35,7 @@ def proc_text(song_list, word_to_find):
 		nonPunct = re.compile('.*[A-Za-z].*')
 		for i in lyrics:
 			if nonPunct.match(i):
-				raw_words.append(i)
+				raw_words.append(i.lower())
 			if i.lower() == word_to_find.lower():
 				count += 1
 		if count > 0:
@@ -157,7 +157,7 @@ def store_db(raw_word_count, db_words_list, word_to_find, counts):
 	for i in range(len(raw_word_count)):
 		try:
 			result = Words(
-				word = word_to_find,
+				word = word_to_find.lower(),
 				matches = counts[i],
 				result_all = raw_word_count[i],
 				result_no_stop_words = db_words_list[i][1]
