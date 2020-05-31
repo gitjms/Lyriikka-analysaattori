@@ -21,6 +21,8 @@
 
 # Käyttötapauksia (Use cases)
 
+## Esimerkki käyttötapauksen ilmentymästä
+
 ### Käyttötapaus: LyrFreq-sivulle rekisteröityminen
 
 ### Käyttötapauksen tyypillinen kulku:
@@ -31,7 +33,7 @@
   - Salasanan tulee olla vähintään 4 merkkiä pitkä.
   - Mikään tekstikenttä ei saa olla tyhjä, eli vähimmäispituus on muissa kuin salasanassa 1 merkki. Ohjelma ilmoittaa mikäli jokin kenttä on tyhjä tai salasana on liian lyhyt.
 
-## Esimerkkejä käyttötapauksen ilmentymästä
+## Tekstiesimerkkejä käyttötapauksesta *rekisteröityminen*
 
 ### Onnistunut rekisteröityminen
 
