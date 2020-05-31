@@ -26,7 +26,7 @@ def words_find():
 	user_list = [g.user.id,1]
 
 	if request.method == "GET":
-		return redirect(url_for("index.html"))
+		return redirect(url_for("index"))
 
 	if request.method == "POST":
 		if request.form.get('filter') is None:
