@@ -1,4 +1,4 @@
-# User stories
+# Käyttäjätarinat (User stories)
 
 | Roolissa... | haluan... | jotta... | |
 | :--- | :--- | :--- | :--- |
@@ -19,7 +19,7 @@
 | *admin* | poistaa käyttäjiä | lopettaneet käyttäjät saadaan pois | :heavy_check_mark: |
 | *admin* | muuttaa käyttäjien roolin | peruskäyttäjän voi asettaa väliaikaisesti pääkäyttäjäksi | :heavy_check_mark: |
 
-# Käyttötapauksia
+# Käyttötapauksia (Use cases)
 
 ### Käyttötapaus: LyrFreq-sivulle rekisteröityminen
 
@@ -59,4 +59,7 @@
   Tällä kertaa sivulle on ilmestynyt erilainen teksti, kuin edelliskerralla: *User already exists. Consider changing username.*
   Sanni vaihtaa käyttäjänimeksi *sanasanna*, jolloin vihreän napin klikkaus ohjaa hänet onnistuneesti pääsivulle rekisteröityneenä ja sisään kirjautuneena.
 
+## Koko sovelluksen käyttötapauskaavio
+
+<img src="https://user-images.githubusercontent.com/46410240/83354534-ff622a00-a361-11ea-9610-ce09d557dd63.png" alt="use case" width="466" height="607" >
 

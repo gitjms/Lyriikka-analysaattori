@@ -81,13 +81,13 @@ Käyttäjien listausnäkymässä näkyvät käyttäjien koko nimet, käyttäjän
 - **Words** sanahakujen tulostaulu (taulunimi *results*) sisältäen hakusanan, löytöjen määrän, tiedot sanafrekvensseistä sekä laulujen id:t
 - **Author_song** liitostaulu laulujen ja niiden tekijöiden välillä
 
-## Käyttötapaukset / User stories
+## Käyttötapaukset (Use cases) / Käyttäjätarinat (User stories)
 
 Linkissä [*Käyttötapaukset / User stories*](https://github.com/gitjms/Lyriikka-analysaattori/tree/master/documentation/user_stories.md)
 
 ## Tietokantakaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/83352363-8065f500-a353-11ea-982c-11a814f43056.png" alt="release" width="466" height="578" >
+<img src="https://user-images.githubusercontent.com/46410240/83352363-8065f500-a353-11ea-982c-11a814f43056.png" alt="database diagram" width="466" height="578" >
 
 ## Myöhemmin tulevia mahdollisia lisäominaisuuksia
 
