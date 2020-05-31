@@ -16,8 +16,6 @@ class Words(db.Model):
 	result_all = db.Column(JSON, nullable=False)
 	result_no_stop_words = db.Column(JSON, nullable=False)
 
-	song_id = db.Column(db.Integer, db.ForeignKey('song.id'), nullable=False)
-
 	def __init__(self, word, matches, result_all, result_no_stop_words):
 		self.word = word
 		self.matches = matches
@@ -35,7 +33,8 @@ class Words(db.Model):
                     "	SUM(results.matches), "
                     "	AVG(results.matches) "
 					"FROM results "
-					"JOIN Song ON results.song_id = Song.id "
+					"JOIN song_result ON song_result.results_id = results.id "
+					"JOIN Song ON Song.id = song_result.song_id "
 					"JOIN account ON account.id = Song.account_id "
 					"WHERE account.id IN (:user1,:user2) "
 					"GROUP BY results.word, results.matches "

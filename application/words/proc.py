@@ -9,6 +9,7 @@ from collections import Counter
 
 from application import db
 from application.words.models import Words
+from application.songs.models import Song
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
@@ -162,7 +163,8 @@ def store_db(raw_word_count, db_words_list, word_to_find, counts):
 				result_all = raw_word_count[i],
 				result_no_stop_words = db_words_list[i][1]
 			)
-			result.song_id = db_words_list[i][0]
+			id = Song.query.filter_by(id=db_words_list[i][0]).first().id
+			result.songs.extend(Song.query.filter_by(id=id))
 
 			db.session.add(result)
 			db.session.commit()

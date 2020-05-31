@@ -87,7 +87,7 @@ Linkissä [*Käyttötapaukset / User stories*](https://github.com/gitjms/Lyriikk
 
 ## Tietokantakaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/83227690-74c8d180-a18d-11ea-982f-d094c282417c.png" alt="release" width="466" height="578" >
+<img src="https://user-images.githubusercontent.com/46410240/83352363-8065f500-a353-11ea-982c-11a814f43056.png" alt="release" width="466" height="578" >
 
 ## Myöhemmin tulevia mahdollisia lisäominaisuuksia
 
