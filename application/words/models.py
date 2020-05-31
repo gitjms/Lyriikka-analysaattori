@@ -37,7 +37,7 @@ class Words(db.Model):
 					"JOIN Song ON results.song_id = Song.id "
 					"JOIN account ON account.id = Song.account_id "
 					"WHERE account.id IN (:user1,:user2) "
-					"GROUP BY results.word "
+					"GROUP BY results.word, results.matches "
 					"ORDER BY results.matches DESC "
 					"LIMIT :limit").params(user1=user_list[0],user2=user_list[1],limit=5)
 		res = db.engine.execute(stmt)
