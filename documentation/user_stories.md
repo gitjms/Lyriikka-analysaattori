@@ -1,13 +1,13 @@
 # User stories
 
-| Roolissa ... | haluan ... | jotta ... | |
+| Roolissa... | haluan... | jotta... | |
 | :--- | :--- | :--- | :--- |
 | *user* | kirjautua sisään | voin tehdä frekvenssianalyysejä | :heavy_check_mark: |
 | *user* | kirjautua sisään | näen tietokannan sisällön | :heavy_check_mark: |
 | *user* | tehdä frekvenssianalyysinä <br/> top 10 sanat | näen eniten käytety sanat lauluittain | :heavy_check_mark: |
 | *user* | tehdä frekvenssianalyysin <br/> tietyn sanan esiintymistiheydestä | näen missä lauluissa <br/> esiintymisiä on eniten/vähiten | :heavy_check_mark: |
 
-| Roolissa ... | haluan ... | jotta ... | |
+| Roolissa... | haluan... | jotta... | |
 | :--- | :--- | :--- | :--- |
 | *admin* | kirjautua sisään | voin huoltaa lyriikoita tai käyttäjiä | :heavy_check_mark: |
 | *admin* | kirjautua sisään | näen tietokannan sisällön | :heavy_check_mark: |
@@ -21,16 +21,17 @@
 
 # Käyttötapaukset
 
-* Käyttötapaus: LyrFreq sivulle kirjautuminen
+### Käyttötapaus: LyrFre-sivulle rekisteröityminen
 
-* Käyttötapauksen tyypillinen kulku:
+### Käyttötapauksen tyypillinen kulku:
   - Käyttäjä luo tunnuksen antamalla nimensä ja luomalla käyttäjänimen sekä salasanan.
 
-* Sääntöjä:
+### Sääntöjä:
   - Käyttäjänimen tulee olla uniikki. Ohjelma ilmoittaa mikäli samanlainen käyttäjänimi on jo olemassa ja kehottaa luomaan erilaisen käyttäjänimen.
   - Salasanan tulee olla vähintään 4 merkkiä pitkä.
+  - Mikään tekstikenttä ei saa olla tyhjä, eli vähimmäispituus on muissa kuin salasanassa 1 merkki. Ohjelma ilmoittaa mikäli jokin kenttä on tyhjä tai salasana on liian lyhyt.
 
-## Esimerkkejä käyttötapausten ilmentymistä
+## Esimerkkejä käyttötapauksen ilmentymästä
 
 ### Onnistunut rekisteröityminen
 
