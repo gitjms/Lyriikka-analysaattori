@@ -61,5 +61,5 @@
 
 ## Koko sovelluksen käyttötapauskaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/83354534-ff622a00-a361-11ea-9610-ce09d557dd63.png" alt="use case" width="466" height="607" >
+<img src="https://user-images.githubusercontent.com/46410240/83354534-ff622a00-a361-11ea-9610-ce09d557dd63.png" alt="use case" >
 
