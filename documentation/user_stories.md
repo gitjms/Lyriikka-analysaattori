@@ -30,15 +30,32 @@
   - Käyttäjänimen tulee olla uniikki. Ohjelma ilmoittaa mikäli samanlainen käyttäjänimi on jo olemassa ja kehottaa luomaan erilaisen käyttäjänimen.
   - Salasanan tulee olla vähintään 4 merkkiä pitkä.
 
-## Esimerkki käyttötapauksen ilmentymästä
+## Esimerkkejä käyttötapausten ilmentymistä
 
-> Sepeteus Sananikkari tulee LyrFreqin pääsivulle, jossa hän huomaa vain kahden toiminnon olevan mahdollisia: *Login* ja *Create account*.
-  Sepeteus haluaa kirjautua sivustolle, joten hän painaa *Create account* -linkkiä.
+### Onnistunut rekisteröityminen
+
+> Sepeteus Sananikkari tulee LyrFreqin pääsivulle, jossa vain kaksi toimintoa on mahdollisia: *Login* ja *Create account*.
+  Sepeteus haluaa rekisteröityä sivustolle, joten hän painaa *Create account* -linkkiä.
   Linkki avaa uuden näkymän, jossa on kaksi nappia ja kolme tekstinsyöttökenttää.
-  Sepeteus havaitsee ylimmän napin *Cancel* vievän hänet takaisin pääsivulle.
+  Sepeteus havaitsee ylimmän napin *Cancel* vievän hänet takaisin pääsivulle, joten hän klikka uudestaa *Create account* -linkkiä.
   Seuraavaksi Sepeteus huomaa ylimmässä tekstinsyöttölaatikossa lukevan *Enter Full Name*, ja niinpä hän kirjoittaa laatikkoon *Sepeteus Sananikkari*.
   Tämän jälkeen Sepeteus ohjaa kursorin alempaan tekstinsyöttölaatikkoon, jossa lukee *Enter Username*. Sepeteus keksii nimen: *sanaseppo*, jonka hän kirjoittaa laatikkoon.
   Vielä on jäljellä yksi tekstinsyöttölaatikko *Enter Password*, jonka perässä lukee vielä lisäohjeena *min 4 characters*. Sepeteus päätyy salasanaan *1234*.
   Sepeteus huomaa vielä tekstinsyöttölaatikoden ja vihreän *Create*-napin välissä olevan tekstin ja rastilaatikon: *Remember this session?*.
   Sepeteus ei ole varma, haluaako hän ohjelman muistavan istuntoa, joten hän jättää rastin ruksimatta.
-  Sepeteus on vihdoin valmis ja klikkaa tyynesti vihreää *Create*-nappia, joka vie hänet pääsivulle kirjautuneena.
+  Sepeteus on vihdoin valmis ja klikkaa vihreää *Create*-nappia, joka vie hänet pääsivulle kirjautuneena.
+  Rekisteröitymisen ja kirjautumisen onnistumisesta kertoo yläpalkissa näkyvä teksti: *Hello Sanaseppo* sekä se, että kaksi uutta linkkiä on aktiivisia: *List songs* ja *Add song*.
+
+### Epäonnistunut rekisteröityminen ja sen korjaukset
+
+> Sanelma Sananikkari seuraa Sepeteuksen toimia vierestä ja päättää myös rekisteröityä sivustolle.
+  Sanelma toimii samoin kuin Sepeteus, kirjoittaen nimensä *Sanelma Sanaseppo*, käyttäjänimen *sanaseppo* ja salasanan.
+  Salasanan hän päättää olevan *4321*, mutta kirjoittaa sen huolimattomasti *432*, eli viimeinen numero jää pois.
+  Lopulta Sanelma klikkaa vihreää nappia, mutta sivulle ilmestyy keltainen laatikko muutamaksi sekunniksi, jossa lukee *Create account failed*.
+  Sivulle ilmestyi myös teksti: *Fields must not be empty. Check password length.*
+  Sanelma tutkii kirjoittamansa tekstit huomaten salasanan olevan yhtä numeroa vajaa ja täydentää sen.
+  Klikattuaan vihreää nappia sivulle ilmestyy punainen laatikko muutamaksi sekunniksi, jossa lukee taas *Create account failed*.
+  Tällä kertaa sivulle on ilmestynyt erilainen teksti, kuin edelliskerralla: *User already exists. Consider changing username.*
+  Sanni vaihtaa käyttäjänimeksi *sanasanna*, jolloin vihreän napin klikkaus ohjaa hänet onnistuneesti pääsivulle rekisteröityneenä ja sisään kirjautuneena.
+
+

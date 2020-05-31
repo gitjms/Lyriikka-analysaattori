@@ -104,7 +104,7 @@ def auth_create():
 		db.session.permanent = remember_me
 	except IntegrityError:
 		db.session.rollback()
-		flash("Failed.", "danger")
+		flash("Create account failed.", "danger")
 		return render_template("auth/newuser.html", form = form, error = "User already exists. Consider changing username.")
 
 	return redirect(url_for("songs_home"))
