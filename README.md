@@ -14,11 +14,11 @@ Sovellukseen on asetettu kuusi oletuslaulua kustakin kolmesta kielestä valmiiks
 
 Löydät sovelluksen osoitteesta [lyrfreq.herokuapp.com](https://lyrfreq.herokuapp.com/).
 
-### Käyttöohje
+## Käyttöohje
 
 Kun käyttäjä on kirjautunut sisään avautuu kotinäkymä, jossa näkyvät tilastot laulutietokannasta (kielet, laulut, lauluntekijät) ja sanahakutuloksista (top 5). Näkymään pääsee aina takaisin yläpalkin vasemmassa reunassa olevasta kotinappulasta (*LyrFreq HOME*).
 
-#### Käyttäjäroolit
+### Käyttäjäroolit
 
 Sovelluksessa on pysyvä yläpalkki, josta löytyvät sisään- ja uloskirjautumislinkki sekä rekisteröitymislinkki. Valmiita oletuskäyttäjiä ovat *admin* täysillä oikeuksilla (toisten käyttäjien poisto ja roolin vaihdot) sekä *guest* rajoitetuilla (user) oikeuksilla.
 
@@ -30,7 +30,7 @@ Admin-rooli voi oletuslaulujen lisäämisen ja poistamisen lisäksi tarkastella 
 
 Ohjelmaan voi siis rekisteröityä luomalla omat tunnukset, mutta helpoin tapa kokeilla sovellusta on kirjautua yhtä nappia painamalla vieras-tilille (guest) jolla on peruskäyttäjän oikeudet.
 
-#### Laulut
+### Laulut
 
 Yläpalkissa on aluksi estetyt linkit laulujen listaamiseen ja uuden laulun lisäämiseen. Kirjautumisen jälkeen nämä linkit avautuvat toiminnallisiksi.
 
@@ -40,7 +40,7 @@ Kunkin laulun rivin perässä on kolme värillistä nappia, joista sininen näyt
 
 Punaisesta napista laulu poistetaan tietokannasta.
 
-#### Sanafrekvenssit
+### Sanafrekvenssit
 
 Sovelluksessa voi tehdä tällä hetkellä pikahakuja yksittäisistä sanoista erikseen kullakin kolmella kielellä.
 
@@ -50,7 +50,7 @@ Näkymään ilmestyy useampi uusi nappi, joiden toiminnot lukevat napeissa. Ylh�
 
 Ohjelma näyttää myös pylväskuvaajan kyseisen kielen laulujen kymmenestä yleisimmästä sanasta. Lisäksi käyttäjä voi nappia painamalla tarkastella kunkin laulun (joista sana löytyi) kohdalla kymmentä yleisintä sanaa taulukkomuodossa tai kyseisiä laulutekstejä, joissa hakusana on merkattu. Tulos esitetään ensin suodattamattomana, eli stopwordsit ovat mukana. Käyttäjä voi tällöin suodattaa tuloksen itse nappia painamalla. Kunkin haun tulokset voi erikseen tallentaa tietokantaan.
 
-#### Pääkäyttäjä (admin)
+### Pääkäyttäjä (admin)
 
 Pääkäyttäjän kotinäkymässä on vain laulutietokannan sisältö sekä alhaalla kolme nappia, joista voi listata käyttäjät tai lisätä/poistaa laulut.
 
