@@ -1,4 +1,6 @@
-# Käyttäjätarinat (User stories)
+# käyttäjätarinat (User stories) ja Käyttötapaukset (Use cases)
+
+## Käyttäjätarinat (User stories)
 
 | Roolissa... | haluan... | jotta... | |
 | :--- | :--- | :--- | :--- |
@@ -19,7 +21,7 @@
 | *admin* | poistaa käyttäjiä | lopettaneet käyttäjät saadaan pois | :heavy_check_mark: |
 | *admin* | muuttaa käyttäjien roolin | peruskäyttäjän voi asettaa väliaikaisesti pääkäyttäjäksi | :heavy_check_mark: |
 
-# Käyttötapaukset (Use cases)
+## Käyttötapaukset (Use cases)
 
 Esimerkki käyttötapauksen ilmentymästä
 

@@ -124,7 +124,8 @@ def songs_edit(song_id):
 			if not form.validate():
 				return render_template("songs/edit.html", song = Song.query.get(song_id), form = form, error = "Fields must not be empty.")
 
-			song = Song.query.get(song_id)
+			# song = Song.query.get(song_id)
+			song = db.session.query(Song).filter(Song.id==song_id).first()
 			song_name = request.form.get("name")
 			song_lyrics = request.form.get("lyrics")
 			song_language = song.language

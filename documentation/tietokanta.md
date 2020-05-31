@@ -1,0 +1,212 @@
+# Tietokanta
+
+## Tietokantataulut
+
+- **User** käyttäjät (taulunimi *account*), sisältäen koko nimen, käyttäjätunnuksen, salasanan, rekisteröintiajan sekä käyttäjäroolin
+  ```
+  CREATE TABLE account (
+        id INTEGER NOT NULL,
+        name VARCHAR NOT NULL,
+        username VARCHAR(80) NOT NULL,
+        password VARCHAR(80) NOT NULL,
+        admin BOOLEAN NOT NULL,
+        date_created DATETIME,
+        PRIMARY KEY (id),
+        UNIQUE (username),
+        CHECK (admin IN (0, 1))
+  );
+  ```
+- **Song** laulut sisältäen laulun nimen, lyriikan, kielen sekä sen käyttäjän id:n, joka on laulun lisännyt
+  ```
+  CREATE TABLE song (
+        id INTEGER NOT NULL,
+        name VARCHAR NOT NULL,
+        lyrics VARCHAR(2000) NOT NULL,
+        language VARCHAR(80) NOT NULL,
+        account_id INTEGER NOT NULL,
+        PRIMARY KEY (id),
+        FOREIGN KEY(account_id) REFERENCES account (id)
+  );
+  ```
+- **Author** laulujen tekijä/tekijät sisältäen nimen
+  ```
+  CREATE TABLE author (
+        id INTEGER NOT NULL,
+        name VARCHAR NOT NULL,
+        PRIMARY KEY (id)
+  );
+  ```
+- **Words** sanahakujen tulostaulu (taulunimi *results*) sisältäen hakusanan, löytöjen määrän, tiedot sanafrekvensseistä sekä laulujen id:t
+  ```
+  CREATE TABLE results (
+        id INTEGER NOT NULL,
+        word VARCHAR NOT NULL,
+        matches INTEGER NOT NULL,
+        result_all JSON NOT NULL,
+        result_no_stop_words JSON NOT NULL,
+        PRIMARY KEY (id)
+  );
+  ```
+- **Author_song** liitostaulu laulujen ja niiden tekijöiden välillä
+  ```
+  CREATE TABLE author_song (
+        author_id INTEGER NOT NULL,
+        song_id INTEGER NOT NULL,
+        PRIMARY KEY (author_id, song_id),
+        FOREIGN KEY(author_id) REFERENCES author (id) ON DELETE cascade,
+        FOREIGN KEY(song_id) REFERENCES song (id) ON DELETE cascade
+  );
+  ```
+- **Song_result** liitostaulu laulujen ja sanahakutulosten välillä
+  ```
+  CREATE TABLE song_result (
+        song_id INTEGER NOT NULL,
+        results_id INTEGER NOT NULL,
+        PRIMARY KEY (song_id, results_id),
+        FOREIGN KEY(song_id) REFERENCES song (id) ON DELETE cascade,
+        FOREIGN KEY(results_id) REFERENCES results (id) ON DELETE cascade
+  );
+  ```
+
+## Tietokantakaavio
+
+<img src="https://user-images.githubusercontent.com/46410240/83352363-8065f500-a353-11ea-982c-11a814f43056.png" alt="database diagram">
+
+## Tietokantakyselyjä
+
+Sovelluksessa on kaksi automaattista kyselyä, jotka suoritetaan sisäänkirjautuessa. Näiden kyselyjen tulokset tulostetaan kotisivulle, eli ensimmäiselle sivulle sisäänkirjauduttua.
+
+Ensimmäinen kysely on tiedostossa *application/songs/views.py* sijaitsevassa funktiossa *find_database_status()*. Sen tulos on katsaus tietokannan kulloiseenkin sisältöön. Kysely on seuraavanlainen:
+```
+SELECT DISTINCT Song.language,
+       COUNT(DISTINCT Song.name),
+       COUNT(DISTINCT Author.name)
+FROM Song
+LEFT JOIN author_song ON Song.id = author_song.song_id
+LEFT JOIN Author ON author_song.author_id = Author.id
+LEFT JOIN account ON account.id = Song.account_id
+WHERE account.id IN (?,?)
+GROUP BY Song.language
+ORDER BY Song.language ASC;
+```
+missä vierastilin arvot ovat ```(2, 1)```. Näistä ensimmäinen numero on käyttäjän id, toinen numero pääkäyttäjän id.
+
+Toinen kyselyistä on *Words*-luokan (eli *results*-taulun) staattinen metodi tiedostossa *application/words/models.py*. Se tulostaa kotisivulle hakusanojen *top 5* -tilanteen (vain peruskäyttäjille). Kysely kuuluu seuraavasti:
+```
+SELECT DISTINCT results.word,
+       results.matches,
+       COUNT(results.matches),
+       SUM(results.matches),
+       AVG(results.matches)
+FROM results
+JOIN song_result ON song_result.results_id = results.id
+JOIN Song ON Song.id = song_result.song_id
+JOIN account ON account.id = Song.account_id
+WHERE account.id IN (?,?)
+GROUP BY results.word, results.matches
+ORDER BY results.matches DESC
+LIMIT 5
+```
+Arvot tulevat tässä samalla periaatteella kuin edellisessä kyselyesimerkissäkin.
+
+Sanahaun kysely esimerkiksi englanninkielisellä termillä tehdään seuraavan kyselyn avulla:
+```
+SELECT song.id AS song_id,
+       song.lyrics AS song_lyrics,
+       song.name AS song_name,
+       song.language AS song_language
+FROM song
+WHERE song.account_id IN (?, ?) AND song.language = ?
+```
+Kaksi ensimmäistä rvoa ovat jälleen edellisten esimerkkien mukaiset, mutta kolmas arvo on tässä esimerkissä ```'english'```, viitaten haetun sanan kielivalintaan.
+
+Hakutuloksen tallennus tietokantaan tapahtuu seuraavasti:
+```
+INSERT INTO results (word, matches, result_all, result_no_stop_words)
+VALUES (?, ?, ?, ?)
+```
+Myös liitostauluun tehdään kysely:
+```
+INSERT INTO song_result (song_id, results_id) VALUES (?, ?)
+```
+
+Laulujen listaus tapahtuu kyselyllä:
+```
+SELECT song.id AS song_id,
+       song.name AS song_name,
+       song.lyrics AS song_lyrics,
+       song.language AS song_language,
+       song.account_id AS song_account_id
+FROM song
+WHERE song.account_id IN (?, ?)
+```
+
+Listan järjestäminen aakkosten mukaan nousevasti tapahtuu kyselyllä:
+```
+SELECT song.id AS song_id,
+       song.name AS song_name,
+       song.lyrics AS song_lyrics,
+       song.language AS song_language,
+       song.account_id AS song_account_id
+FROM song
+WHERE song.account_id IN (?, ?)
+ORDER BY song.name ASC
+```
+Sama laskevassa aakkosjärjestyksessä:
+```
+SELECT song.id AS song_id,
+       song.name AS song_name,
+       song.lyrics AS song_lyrics,
+       song.language AS song_language,
+       song.account_id AS song_account_id
+FROM song
+WHERE song.account_id IN (?, ?)
+ORDER BY song.name DESC
+```
+Järjestäminen kielittäin aakkosjärjestykseen nousevasti:
+```
+SELECT song.id AS song_id,
+       song.name AS song_name,
+       song.lyrics AS song_lyrics,
+       song.language AS song_language,
+       song.account_id AS song_account_id
+FROM song
+WHERE song.account_id IN (?, ?)
+ORDER BY song.language, song.name ASC
+```
+```
+Sama laskevassa aakkosjärjestyksessä:
+```
+SELECT song.id AS song_id,
+       song.name AS song_name,
+       song.lyrics AS song_lyrics,
+       song.language AS song_language,
+       song.account_id AS song_account_id
+FROM song
+WHERE song.account_id IN (?, ?)
+ORDER BY song.language, song.name DESC
+```
+
+Uuden laulun lisääminen tietokantaan tapahtuu kyselyllä:
+```
+INSERT INTO song (name, lyrics, language, account_id)
+VALUES (?, ?, ?, ?)
+```
+
+Laulun avaaminen lukutilaan:
+```
+SELECT song.id AS song_id,
+       song.name AS song_name,
+       song.lyrics AS song_lyrics,
+       song.language AS song_language,
+       song.account_id AS song_account_id
+FROM song
+WHERE song.id = ?
+```
+
+Muokatun laulun tallennus tapahtuu seuraavasti:
+```
+UPDATE song SET name=?, lyrics=? WHERE song.id = ?
+```
+
+
