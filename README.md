@@ -16,7 +16,7 @@ Löydät sovelluksen osoitteesta [lyrfreq.herokuapp.com](https://lyrfreq.herokua
 
 ## Käyttöohje
 
-Kun käyttäjä on kirjautunut sisään avautuu kotinäkymä, jossa näkyvät tilastot laulutietokannasta (kielet, laulut, lauluntekijät) ja sanahakutuloksista (top 5). Näkymään pääsee aina takaisin yläpalkin vasemmassa reunassa olevasta kotinappulasta (*LyrFreq HOME*).
+Kun käyttäjä on kirjautunut sisään avautuu kotinäkymä, jossa näkyvät tilastot laulutietokannasta (kielet, laulut, lauluntekijät) ja sanahakutuloksista (top 5). Jälkimmäinen ei näy pääkäyttäjälle. Näkymään pääsee aina takaisin yläpalkin vasemmassa reunassa olevasta kotinappulasta (*LyrFreq HOME*).
 
 ### Käyttäjäroolit
 
@@ -68,7 +68,7 @@ Käyttäjien listausnäkymässä näkyvät käyttäjien koko nimet, käyttäjän
 
 ### Yhteenvetokyselyt
 - tietyn sanan esiintymät (laululista frekvensseineen) sekä ko. haun laulujen sanojen frekvenssit top 10(+)
-- sanahakuhistorian summia ja keskiarvoja (COUNT, SUM, AVG) [3 taulua]
+- sanahakuhistorian top 5 summia ja keskiarvoja (COUNT, SUM, AVG) [3 taulua + liitostaulu]
 - tietokannan laulu-, lauluntekijä- ja kielitilanne (COUNT) [3 taulua + liitostaulu]
 
 ## Tietokannat ja tiedonhaku
@@ -80,14 +80,15 @@ Käyttäjien listausnäkymässä näkyvät käyttäjien koko nimet, käyttäjän
 - **Author** laulujen tekijä/tekijät sisältäen nimen
 - **Words** sanahakujen tulostaulu (taulunimi *results*) sisältäen hakusanan, löytöjen määrän, tiedot sanafrekvensseistä sekä laulujen id:t
 - **Author_song** liitostaulu laulujen ja niiden tekijöiden välillä
+- **Song_result** liitostaulu laulujen ja sanahakutulosten välillä
 
 ## Käyttötapaukset (Use cases) / Käyttäjätarinat (User stories)
 
-Linkissä [*Käyttötapaukset / User stories*](https://github.com/gitjms/Lyriikka-analysaattori/tree/master/documentation/user_stories.md)
+Tässä linkissä [*Käyttötapaukset / Käyttäjätarinat*](https://github.com/gitjms/Lyriikka-analysaattori/tree/master/documentation/user_stories.md)
 
 ## Tietokantakaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/83352363-8065f500-a353-11ea-982c-11a814f43056.png" alt="database diagram" width="466" height="578" >
+<img src="https://user-images.githubusercontent.com/46410240/83352363-8065f500-a353-11ea-982c-11a814f43056.png" alt="database diagram">
 
 ## Myöhemmin tulevia mahdollisia lisäominaisuuksia
 
