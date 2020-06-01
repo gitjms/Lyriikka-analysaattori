@@ -29,7 +29,7 @@ class Words(db.Model):
 		stmt1 = text("SELECT "
 					"	DISTINCT results.word, "
                     "	COUNT(Song.id) AS w_count, "
-					"	results.matches "
+					"	SUM(results.matches) "
 					"FROM results "
 					"JOIN song_result ON song_result.results_id = results.id "
 					"JOIN Song ON Song.id = song_result.song_id "
