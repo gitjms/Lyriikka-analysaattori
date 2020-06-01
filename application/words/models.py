@@ -23,26 +23,58 @@ class Words(db.Model):
 		self.result_no_stop_words = result_no_stop_words
 
 	@staticmethod
-	def find_songs_authors_with_matches_geq_avg():
+	def find_words():
 		user_list = [g.user.id,1]
 
-		stmt = text("SELECT "
+		stmt1 = text("SELECT "
 					"	DISTINCT results.word, "
-                    "	results.matches, "
-                    "	COUNT(results.matches), "
-                    "	SUM(results.matches), "
-                    "	AVG(results.matches) "
+                    "	COUNT(Song.id) AS w_count, "
+					"	results.matches "
 					"FROM results "
 					"JOIN song_result ON song_result.results_id = results.id "
 					"JOIN Song ON Song.id = song_result.song_id "
 					"JOIN account ON account.id = Song.account_id "
 					"WHERE account.id IN (:user1,:user2) "
-					"GROUP BY results.word, results.matches "
-					"ORDER BY results.matches DESC "
-					"LIMIT :limit").params(user1=user_list[0],user2=user_list[1],limit=5)
-		res = db.engine.execute(stmt)
-		response = []
-		for row in res:
-			response.append({'word':row[0], 'totcount':row[1], 'count':row[2], 'sum':row[3], 'average':row[4]})
+					"GROUP BY results.word "
+					"ORDER BY SUM(results.matches) DESC "
+					"LIMIT :limit").params(user1=user_list[0],user2=user_list[1], limit=5)
+		res1 = db.engine.execute(stmt1)
+		response1 = []
+		for row in res1:
+			response1.append({'word':row[0],'count':row[1]})
 
-		return response
+		return response1
+
+	@staticmethod
+	def find_stats():
+
+		user_list = [g.user.id,1]
+
+		stmt2 = text("SELECT "
+                    "	co.matches, "
+                    "	co.average "
+					"FROM results "
+					"JOIN ( "
+					"	SELECT "
+					"		DISTINCT results.word AS words, "
+					"		SUM(results.matches) AS matches, "
+					"		AVG(results.matches) AS average "
+					"	FROM results "
+					"	JOIN song_result ON song_result.results_id = results.id "
+					"	JOIN Song ON Song.id = song_result.song_id "
+					"	GROUP BY words "
+					"	ORDER BY matches DESC "
+					") as co "
+					"JOIN song_result ON song_result.results_id = results.id "
+					"JOIN Song ON Song.id = song_result.song_id "
+					"JOIN account ON account.id = Song.account_id "
+					"WHERE account.id IN (:user1,:user2) "
+					"GROUP BY co.matches, co.words "
+					"ORDER BY co.matches DESC "
+					"LIMIT :limit").params(user1=user_list[0],user2=user_list[1], limit=5)
+		res2 = db.engine.execute(stmt2)
+		response2 = []
+		for row in res2:
+			response2.append({'matches':row[0], 'average':row[1]})
+
+		return response2

@@ -2,15 +2,18 @@
 
 {% block body %}
 
+<h3>Edit song</h3><br>
 <form method="POST" action="{{ url_for('songs_edit', song_id=song.id) }}">
 
   <div class="col-auto">
-    <button class="btn btn-sm btn-secondary myFloat_Left" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>
+    <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px; float: left; margin-right: 50px;" value="Back">Back</button>
 
-    <button class="btn btn-sm btn-primary myFloat_Right" type="submit" name="Submit" style="width:75px;" value="Submit"/>Submit</button>
+    {{ form.language() }}
+
+    <button class="btn btn-sm btn-primary" type="submit" name="Submit" style="width:75px; float: right;" value="Submit">Submit</button>
 
     <div style="clear: both;"></div>
-  </div>
+  </div><br>
 
   <div class="col-auto">
     <label for="title" class="col-sm-2 col-form-label">Title:</label>
@@ -25,7 +28,7 @@
   </td>
 
   <div class="col-auto">
-    <label for="author" class="col-sm-2 col-form-label">Author(s):</label>
+    <label for="author" class="col-sm-12 col-form-label">Author(s):<small class="text-muted" style="float: right;">you may only add, not remove, authors</small></label>
     <input class="form-control" id="author" name="author" type="text" value="{% for auth in song.authors %}{{ auth.name }}{{ ", " if not loop.last }}{% endfor %}"></input >
   </div>
   <td>

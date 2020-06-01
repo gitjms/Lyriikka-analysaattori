@@ -69,6 +69,7 @@ def proc_text(song_list, word_to_find):
 # stop words
 def stop_words(filtered, new_raw_words_list, language):
 
+	nltk.download('stopwords')
 	stops = stopwords.words(language)
 
 	db_words_list = []

@@ -14,22 +14,22 @@
           <thead>
             <tr>
               <th>Languages</th>
-              <th>Songs</th>
-              <th>Authors</th>
+              <th style="text-align: center;">Songs</th>
+              <th style="text-align: center;">Authors</th>
             </tr>
           </thead>
           {% for res in db_status %}
             <tr>
               <td>{{ res.languages }}</td>
-              <td>{{ res.songs }}</td>
-              <td>{{ res.authors }}</td>
+              <td style="text-align: center;">{{ res.songs }}</td>
+              <td style="text-align: center;">{{ res.authors }}</td>
             </tr>
           {% endfor %}
         </table>
       </div><br><br>
     {% endif %}
     
-    {% if abv_average is defined and abv_average is not none and not g.user.admin %}
+    {% if top_words is defined and top_words is not none and not g.user.admin %}
       <strong style="font-size: 25px;">TOP 5 search words
 	  </strong>
         <div id="averages">
@@ -37,19 +37,17 @@
             <thead>
               <tr>
                 <th>Word</th>
-                <th>Matches</th>
-                <th>Count</th>
-                <th>Sum</th>
-                <th>Avg</th>
+                <th style="text-align: center;">Matches</th>
+                <th style="text-align: center;">Songs</th>
+                <th style="text-align: center;">Avg</th>
               </tr>
             </thead>
-            {% for res in abv_average %}
+            {% for res in top_words %}
               <tr>
-                <td>{{ res.word }}</td>
-                <td>{{ res.totcount }}</td>
-                <td>{{ res.count }}</td>
-                <td>{{ res.sum }}</td>
-                <td>{{ '%0.1f'| format(res.average|float) }}</td>
+                <td>{{ res[0] }}</td>
+                <td style="text-align: center;">{{ res[2] }}</td>
+                <td style="text-align: center;">{{ res[1] }}</td>
+                <td style="text-align: center;">{{ '%0.1f'| format(res[3]|float) }}</td>
               </tr>
             {% endfor %}
           </table><br>

@@ -47,9 +47,9 @@
         
         <td>
           <form method="POST" action="{{ url_for('user_delete', user_id=user.id) }}">
-            <input type="hidden" name="user_id" value="{{ user.id }}">
+            <input type="hidden" name="user_id" value="{{ user.id }}"></input>
             <div class="col-auto">
-              <button class="btn btn-sm btn-secondary" type="submit" name="Delete" style="width:30px; height:30px;" value="Delete"/></button>
+              <button class="btn btn-sm btn-secondary" type="submit" name="Delete" style="width:30px; height:30px;" value="Delete"></button>
             </div>
           </form>
         </td>
@@ -57,12 +57,12 @@
         <!-- ADMINATE BUTTON -->
         <td>
           <form method="POST" action="{{ url_for('user_adminate', user_id=user.id) }}">
-            <input type="hidden" name="user_id" value="{{ user.id }}">
+            <input type="hidden" name="user_id" value="{{ user.id }}"></input>
             <div class="col-auto">
               {% if user.admin %}
-              <button class="btn btn-sm btn-secondary" type="submit" name="userate" style="background-color: red; width:60px;" value="userate"/>Admin</button>
+              <button class="btn btn-sm btn-secondary" type="submit" name="userate" style="background-color: red; width:60px;" value="userate">Admin</button>
               {% else %}
-              <button class="btn btn-sm btn-secondary" type="submit" name="adminate" style="width:60px;" value="adminate"/>User</button>
+              <button class="btn btn-sm btn-secondary" type="submit" name="adminate" style="width:60px;" value="adminate">User</button>
               {% endif %}
             </div>
           </form>

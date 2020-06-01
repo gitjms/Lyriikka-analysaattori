@@ -5,6 +5,7 @@ import bcrypt as hash_bcrypt
 from flask_bcrypt import Bcrypt
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from sqlalchemy.sql import text
 
 from application import app, db
 from application.auth.models import User
@@ -20,6 +21,56 @@ bcrypt = Bcrypt()
 @app.before_request
 def before_request():
 	g.user = current_user
+
+
+#-----------------------------------------
+#		MAIN: songs_home()
+#-----------------------------------------
+@app.route("/main")
+@login_required
+def songs_home():
+
+	# TOP 5 search words
+	words = Words.find_words()
+	stats = Words.find_stats()
+	result_list = []
+
+	for i in range(len(words)):
+		new_list = []
+		new_list.append(words[i]['word'])
+		new_list.append(words[i]['count'])
+		new_list.append(stats[i]['matches'])
+		new_list.append(stats[i]['average'])
+		result_list.append(new_list)
+
+	return render_template("auth/home.html", db_status=find_database_status(), top_words=result_list)
+
+
+#-----------------------------------------
+#		DB-STATUS: find_database_status()
+#-----------------------------------------
+def find_database_status():
+
+	user_list = [g.user.id,1]
+
+	stmt = text("SELECT DISTINCT Song.language, "
+				"COUNT(DISTINCT Song.name), "
+				"COUNT(DISTINCT Author.name) "
+				"FROM Song "
+				"LEFT JOIN author_song ON Song.id = author_song.song_id "
+				"LEFT JOIN Author ON author_song.author_id = Author.id "
+				"LEFT JOIN account ON account.id = Song.account_id "
+				"WHERE account.id IN (:user1,:user2) "
+				"GROUP BY Song.language "
+				"ORDER BY Song.language ASC").params(user1=user_list[0],user2=user_list[1])
+
+	result = db.engine.execute(stmt)
+
+	response = []
+	for row in result:
+		response.append({'languages':row[0], 'songs':row[1], 'authors':row[2]})
+
+	return response
 
 
 #-----------------------------------------
@@ -57,7 +108,7 @@ def auth_login():
 	true_password = hash_bcrypt.hashpw(user.password.encode('utf-8'), hash_bcrypt.gensalt())
 
 	# Compare Password with hashed password
-	if hash_bcrypt.checkpw(password,true_password) == False:
+	if not hash_bcrypt.checkpw(password,true_password):
 		flash("No such password.", "warning")
 		return render_template("auth/loginform.html", form = form)
 

@@ -83,27 +83,34 @@ def user_adminate(user_id):
 
 
 #----------------------------------------------------
-# Table operations: add/clear default songs & authors
+# Table operations: remove default songs & authors
 #----------------------------------------------------
-@app.route("/defaults", methods = ["POST"])
+@app.route("/defaults/remove", methods = ["POST"])
 @login_required
-def clear():
+def remove_songs():
 
 	#----------------------------------------------------
-	# Clear default authors and songs
+	# Remove default authors and songs
 	#----------------------------------------------------
-	if request.form.get('clear') == "clear":
+	if request.form.get('remove') == "remove":
 		
 		try:
 			db.drop_all(bind=None)
 			db.create_all()
-			flash("Tables cleared.", "success")
+			flash("Tables removed.", "success")
 		except:
-			flash("Tables not cleared.", "danger")
+			flash("Tables not removed.", "danger")
 
-		return render_template("admin/dashboard.html")
+	return render_template("admin/dashboard.html")
 
 
+
+#----------------------------------------------------
+# Table operations: add default songs & authors
+#----------------------------------------------------
+@app.route("/defaults/add", methods = ["POST"])
+@login_required
+def add_songs():
 	#----------------------------------------------------
 	# Add default authors and songs
 	#----------------------------------------------------

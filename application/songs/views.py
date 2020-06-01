@@ -29,42 +29,6 @@ def before_request():
 @app.route("/")
 def songs_index():
 	return render_template("index.html")
-
-
-#-----------------------------------------
-#		MAIN: songs_home()
-#-----------------------------------------
-@app.route("/main")
-@login_required
-def songs_home():
-	return render_template("auth/home.html", db_status=find_database_status(), abv_average=Words.find_songs_authors_with_matches_geq_avg())
-
-
-#-----------------------------------------
-#		DB-STATUS: find_database_status()
-#-----------------------------------------
-def find_database_status():
-
-	user_list = [g.user.id,1]
-
-	stmt = text("SELECT DISTINCT Song.language, "
-				"COUNT(DISTINCT Song.name), "
-				"COUNT(DISTINCT Author.name) "
-				"FROM Song "
-				"LEFT JOIN author_song ON Song.id = author_song.song_id "
-				"LEFT JOIN Author ON author_song.author_id = Author.id "
-				"LEFT JOIN account ON account.id = Song.account_id "
-				"WHERE account.id IN (:user1,:user2) "
-				"GROUP BY Song.language "
-				"ORDER BY Song.language ASC").params(user1=user_list[0],user2=user_list[1])
-
-	result = db.engine.execute(stmt)
-
-	response = []
-	for row in result:
-		response.append({'languages':row[0], 'songs':row[1], 'authors':row[2]})
-
-	return response
 	
 
 #-----------------------------------------
@@ -112,40 +76,68 @@ def songs_show(song_id):
 @login_required
 def songs_edit(song_id):
 	form = EditSongForm(request.form)
+	
+	song = Song.query.get(song_id)
+	form.language.default = song.language
+	form.process()
 
 	if request.form.get("Back") == "Back":
 		return redirect(url_for("songs_list"))
 
-	if request.method == "GET":
-		return render_template("songs/edit.html", song = Song.query.get(song_id), form = form)
+	if request.form.get("Edit") == "Edit":
+		return render_template("songs/edit.html", song = song, form = form)
+
 	elif request.method == "POST":
+
 		if request.form.get("Submit") == "Submit":
-
+			form = EditSongForm(request.form)
+			
 			if not form.validate():
-				return render_template("songs/edit.html", song = Song.query.get(song_id), form = form, error = "Fields must not be empty.")
+				return render_template("songs/edit.html", song = song, form = form, error = "Fields must not be empty.")
 
-			# song = Song.query.get(song_id)
-			song = db.session.query(Song).filter(Song.id==song_id).first()
-			song_name = request.form.get("name")
-			song_lyrics = request.form.get("lyrics")
-			song_language = song.language
-			song_author = request.form.get("author")
-			if (song_name == song.name and song_author == song.authors and song_lyrics == song.lyrics and song_language == song.language):
+			new_name = form.title.data
+			new_lyrics = form.lyrics.data
+			new_authors = form.author.data.split(',')
+			new_language = form.language.data
+
+			old_name = song.name
+			old_lyrics = song.lyrics
+			old_authors = [w.name for w in song.authors]
+			old_language = song.language
+
+			if (new_name == old_name and new_lyrics == old_lyrics and new_authors == old_authors):
 				flash("No changes made.", "warning")
-			else:
-				try:
-					song = Song.query.filter_by(id=song_id).first()
-					song.name = song_name
-					song.lyrics = song_lyrics
-					song.language = song_language
-					song.author = song_author
-					db.session().add(song)
-					db.session().commit()
-					return render_template("songs/show.html", song = song)
-				except IntegrityError:
-					db.session.rollback()
-					flash("Song exists already.", "danger")
-		return render_template("songs/edit.html", song = Song.query.get(song_id), form = form)
+				return render_template("songs/edit.html", song = song, form = form)
+
+			if new_authors != old_authors:
+				for auth in new_authors:
+					if Author.query.filter_by(name=auth.strip()).first() is None:
+						author = Author(auth.strip())
+						try:
+							db.session().add(author)
+							db.session().commit()
+						except SQLAlchemyError:
+							db.session.rollback()
+							flash("Author(s) not added to database.", "danger")
+			try:
+				if new_name != old_name:
+					song.name = new_name
+				if new_lyrics != old_lyrics:
+					song.lyrics = new_lyrics
+				for auth in new_authors:
+					if auth.strip() not in old_authors:
+						song.authors.extend(Author.query.filter_by(name=auth.strip()))
+				if new_language != old_language:
+					song.language = new_language
+
+				db.session().commit()
+				return render_template("songs/show.html", song = song)
+			except SQLAlchemyError:
+				db.session.rollback()
+				flash("Song exists already.", "danger")
+
+			return render_template("songs/edit.html", song = song, form = form)
+
 	return render_template("songs/list.html", song = Song.query.all())
 
 
@@ -190,18 +182,20 @@ def songs_create():
 	song = Song(form.title.data,form.lyrics.data,form.language.data)
 	song.account_id = g.user.id
 	
-	authors = form.author.data.split(',')
+	authors = request.form["author"].split(',')
 	for auth in authors:
-		author = Author(auth)
-	try:
-		db.session().add(author)
-		db.session().commit()
-	except SQLAlchemyError:
-		db.session.rollback()
-		flash("Author(s) not added to database.", "danger")
-		return render_template("songs/new.html", form = form)
+		if Author.query.filter_by(name=auth.strip()).first() is None:
+			author = Author(auth.strip())
+			try:
+				db.session().add(author)
+				db.session().commit()
+			except SQLAlchemyError:
+				db.session.rollback()
+				flash("Author(s) not added to database.", "danger")
+				return render_template("songs/new.html", form = form)
 
-	song.authors.extend([w for w in Author.query.filter_by(name=auth)])
+	for auth in authors:
+		song.authors.extend(Author.query.filter_by(name=auth.strip()))
 
 	try:
 		db.session().add(song)

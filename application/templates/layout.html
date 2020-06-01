@@ -10,9 +10,7 @@
     <!-- Bootstrap Toggle -->
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 	  
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
-	
+    <!-- JAVASCRIPT -->
     <script type="text/javascript" src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
 	
     <script type="text/javascript" src="{{ url_for('static', filename='js/tables.js') }}"></script>
@@ -160,17 +158,22 @@
     <!-- FOR ADMIN ONLY -->
 
     {% if g.user.admin %}
-      <div class="container-fluid">
-        <form action="/defaults" method="POST">
       
-          <!-- ADD DEFAULT AUTHORS AND SONGS -->
+      <!-- ADD DEFAULT AUTHORS AND SONGS -->
+      <div class="container-fluid">
+        <form action="/defaults/add" method="POST">
 	      <div>
             <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px" name="add" id="add" value="add">Add default songs</button>
           </div>
-          <!-- CLEAR DEFAULT AUTHORS AND SONGS -->
+        </form>
+      </div>
+		  
+      <!-- REMOVE DEFAULT AUTHORS AND SONGS -->
+      <div class="container-fluid">
+        <form action="/defaults/remove" method="POST">
       
 	      <div>
-            <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px" name="clear" id="clear" value="clear">Remove default songs</button>
+            <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px" name="remove" id="remove" value="remove">Remove default songs</button>
           </div>
         </form>
       </div>
