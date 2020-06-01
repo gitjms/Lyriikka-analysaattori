@@ -37,7 +37,7 @@ class Words(db.Model):
 					"WHERE account.id IN (:user1,:user2) "
 					"GROUP BY results.word "
 					"ORDER BY SUM(results.matches) DESC "
-					"LIMIT :limit").params(user1=user_list[0],user2=user_list[1], limit=5)
+					"LIMIT 5").params(user1=user_list[0],user2=user_list[1])
 		res1 = db.engine.execute(stmt1)
 		response1 = []
 		for row in res1:
@@ -71,7 +71,7 @@ class Words(db.Model):
 					"WHERE account.id IN (:user1,:user2) "
 					"GROUP BY co.matches, co.words "
 					"ORDER BY co.matches DESC "
-					"LIMIT :limit").params(user1=user_list[0],user2=user_list[1], limit=5)
+					"LIMIT 5").params(user1=user_list[0],user2=user_list[1])
 		res2 = db.engine.execute(stmt2)
 		response2 = []
 		for row in res2:
