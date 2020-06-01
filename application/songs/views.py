@@ -53,7 +53,7 @@ def songs_list():
 		elif request.form['sort'] == "langtitdesc":
 			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.language).order_by(Song.name.desc()).all()
 		else:
-			songs = Song.query.filter(Song.account_id.in_((song_list))).all()
+			songs = Song.query.filter(Song.account_id.in_((song_list))).order_by(Song.id.asc()).all()
 
 	return render_template("songs/list.html", songs=songs)
 
