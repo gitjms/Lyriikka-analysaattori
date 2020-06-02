@@ -93,36 +93,47 @@ def remove_songs():
 	#----------------------------------------------------
 	if request.form.get('remove') == "remove":
 	
+		# db.drop_all(bind=None)
+		# db.create_all()
+		# return render_template("admin/dashboard.html")
+		
 		try:
-			db.drop_all()
-			# if os.environ.get("HEROKU"):
-				# db.engine.execute(text("DROP TABLE IF EXISTS Song CASCADE;"))
-				# db.session.commit()
-				# db.engine.execute(text("DROP TABLE IF EXISTS Author CASCADE;"))
-				# db.session.commit()
-				# db.engine.execute(text("DROP TABLE IF EXISTS results;"))
-				# db.session.commit()
-				# db.engine.execute(text("DROP TABLE IF EXISTS author_song;"))
-				# db.session.commit()
-				# db.engine.execute(text("DROP TABLE IF EXISTS song_result;"))
-				# db.session.commit()
-				# flash("Tables cleared.", "success")
-			# else:
-				# db.engine.execute(text("DROP TABLE IF EXISTS Song;"))
-				# db.session.commit()
-				# db.engine.execute(text("DROP TABLE IF EXISTS Author;"))
-				# db.session.commit()
-				# db.engine.execute(text("DROP TABLE IF EXISTS results;"))
-				# db.session.commit()
-				# db.engine.execute(text("DROP TABLE IF EXISTS author_song;"))
-				# db.session.commit()
-				# db.engine.execute(text("DROP TABLE IF EXISTS song_result;"))
-				# db.session.commit()
-				# flash("Tables cleared.", "success")
+			db.session.query(Song).delete()
+			db.session.commit()
+			flash("Table Song cleared.", "success")
 		except:
-			flash("Tables not cleared.", "warning")
-		finally:
-			db.create_all()
+			flash("Table Song not cleared.", "danger")
+			db.session.rollback()
+		
+		try:
+			db.session.query(Author).delete()
+			db.session.commit()
+			flash("Table Author cleared.", "success")
+		except:
+			flash("Table Author not cleared.", "danger")
+			db.session.rollback()
+
+		try:
+			stmt = text("DELETE FROM author_song;")
+			db.engine.execute(stmt)
+			flash("Join table author_song cleared.", "success")
+		except:
+			flash("Join table author_song not cleared.", "danger")
+			db.session.rollback()
+			flash("Tables not cleared.", "danger")
+
+		try:
+			stmt = text("DELETE FROM song_result;")
+			db.engine.execute(stmt)
+			flash("Join table song_result cleared.", "success")
+		except:
+			flash("Join table song_result not cleared.", "danger")
+			db.session.rollback()
+			flash("Tables not cleared.", "danger")
+		
+		db.drop_all(bind=None)
+		db.create_all()
+		flash("Tables cleared.", "success")
 
 	# db_status=find_database_status()
 	# if db_status:
