@@ -5,6 +5,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.sql import func, text
 
 from application import app, db
+from application.auth.views import find_database_status
 from application.auth.models import User
 from application.songs.models import Song
 from application.authors.models import Author
@@ -127,9 +128,10 @@ def add_songs():
 		# add default authors
 		#------------------------------------------------
 
-		if db.session.query(Author).first() is not None:
+		db_status=find_database_status
+		if not db_status:
 			flash("Default authors already exist.", "warning")
-			return render_template("auth/home.html", db_status=find_database_status())
+			return render_template("auth/home.html", db_status=None, top_words=None)
 		else:
 			for item in authors.authors_fi:
 				song = item[1]
