@@ -94,20 +94,21 @@ def remove_songs():
 	#----------------------------------------------------
 	if request.form.get('remove') == "remove":
 	
-		try:
-			db.engine.execute(text("DROP TABLE IF EXISTS Song, Author, Words, author_song, song_result CASCADE;"))
+		# try:
+		db.engine.execute(text("DROP TABLE IF EXISTS Song, Author, Words, author_song, song_result CASCADE;"))
 			# db.engine.execute(text("DROP TABLE IF EXISTS results;"))
 			# db.engine.execute(text("DROP TABLE IF EXISTS author_song;"))
 			# db.engine.execute(text("DROP TABLE IF EXISTS song_result;"))
-			flash("Tables cleared.", "success")
-		except:
-			db.engine.execute(text("DROP TABLE IF EXISTS Song;"))
-			db.engine.execute(text("DROP TABLE IF EXISTS Author;"))
-			db.engine.execute(text("DROP TABLE IF EXISTS results;"))
-			db.engine.execute(text("DROP TABLE IF EXISTS author_song;"))
-			db.engine.execute(text("DROP TABLE IF EXISTS song_result;"))
-		finally:
-			db.create_all()
+		flash("Tables cleared.", "success")
+		# except:
+		# db.engine.execute(text("DROP TABLE IF EXISTS Song;"))
+		# db.engine.execute(text("DROP TABLE IF EXISTS Author;"))
+		# db.engine.execute(text("DROP TABLE IF EXISTS results;"))
+		# db.engine.execute(text("DROP TABLE IF EXISTS author_song;"))
+		# db.engine.execute(text("DROP TABLE IF EXISTS song_result;"))
+		# flash("Tables cleared.", "success")
+		# finally:
+		db.create_all()
 
 	return render_template("auth/home.html", db_status=None)
 
