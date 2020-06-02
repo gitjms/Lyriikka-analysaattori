@@ -169,11 +169,11 @@ def add_songs():
 		en_added = False
 		fr_added = False
 
-		if db.session.query(Song).first() is not None:
-			flash("Default songs already exist.", "warning")
-			return render_template("auth/home.html", db_status=find_database_status())
+		db_status=find_database_status
+		if not db_status:
+			flash("Default Songs already exist.", "warning")
+			return render_template("auth/home.html", db_status=None, top_words=None)
 		else:
-
 			# finnish songs
 			for i in range(1,7):
 				document_path = os.getcwd()+'/application/static/default_songs/fi/song'+str(i)+'.txt'
