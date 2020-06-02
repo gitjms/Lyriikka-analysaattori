@@ -41,6 +41,9 @@ def songs_list():
 	
 	if request.method == "GET":
 		songs = Song.query.filter(Song.account_id.in_((song_list))).all()
+		
+		if not songs:
+			return render_template("auth/home.html", songs=None, top_words=None)
 
 	if request.method == "POST":
 		# sorting

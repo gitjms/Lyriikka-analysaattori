@@ -30,11 +30,11 @@ def words_find():
 
 	if request.method == "POST":
 		if request.form.get('filter') is None:
-			word_to_find = request.form.get('wordsearch')
+			word_to_find = request.form.get('wordsearch').strip()
 			language = request.form.get('langchoice')
 		elif request.form.get('filter') is not None:
 			data = request.form.get('filter').split(',')
-			word_to_find = data[0]
+			word_to_find = data[0].strip()
 			language = data[1]
 			if data[2] == "True":
 				filtered = False
@@ -43,7 +43,7 @@ def words_find():
 		
 		if request.form.get('save') is not None:
 			data = request.form.get('save').split(',')
-			word_to_find = data[0]
+			word_to_find = data[0].strip()
 			language = data[1]
 			if data[2] == "True":
 				filtered = True

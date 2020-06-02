@@ -1,6 +1,7 @@
 from flask import flash, g, Markup
 
 import os
+from unidecode import unidecode
 import operator
 import re
 import nltk
@@ -37,7 +38,7 @@ def proc_text(song_list, word_to_find):
 		for i in lyrics:
 			if nonPunct.match(i):
 				raw_words.append(i.lower())
-			if i.lower() == word_to_find.lower():
+			if unidecode(i.lower()) == unidecode(word_to_find.lower()):
 				count += 1
 		if count > 0:
 			raw_words_list.append([song_id, raw_words, song_name])
@@ -54,7 +55,7 @@ def proc_text(song_list, word_to_find):
 		raw_words = item[1]
 		song_name = item[2]
 		for w in raw_words:
-			if w.lower() == word_to_find.lower():
+			if unidecode(w.lower()) == unidecode(word_to_find.lower()):
 				count += 1
 				tot_count += 1
 			w_list.append(w)
@@ -129,7 +130,7 @@ def create_results(raw_word_count, db_words_list, frequencies, new_songlist, gra
 		words = item[1].split(' ')
 		w_list = []
 		for word in words:
-			if word.lower() == word_to_find.lower():
+			if unidecode(word.lower()) == unidecode(word_to_find.lower()):
 				word = r"<mark><strong>"+word+"</strong></mark>"
 			w_list.append(word)
 		new_string = ' '.join(w_list)

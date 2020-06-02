@@ -92,10 +92,6 @@ def remove_songs():
 	# Remove default authors and songs
 	#----------------------------------------------------
 	if request.form.get('remove') == "remove":
-	
-		# db.drop_all(bind=None)
-		# db.create_all()
-		# return render_template("admin/dashboard.html")
 		
 		try:
 			db.session.query(Song).delete()
@@ -135,10 +131,6 @@ def remove_songs():
 		db.create_all()
 		flash("Tables cleared.", "success")
 
-	# db_status=find_database_status()
-	# if db_status:
-		# return render_template("auth/home.html", db_status=None, top_words=None)
-	# else:
 	return render_template("auth/home.html", db_status=None, top_words=None)
 
 
