@@ -1,4 +1,4 @@
-from flask import url_for, render_template, request, flash, g
+from flask import url_for, redirect, render_template, request, flash, g
 from flask_login import login_required, current_user
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
@@ -50,7 +50,6 @@ def user_delete(user_id):
 		try:
 			db.session().delete(user_qry.first())
 			db.session().commit()
-			sumSessionCounter(False)
 		except SQLAlchemyError:
 			db.session.rollback()
 			flash("User not deleted.", "danger")
@@ -101,7 +100,7 @@ def remove_songs():
 		except:
 			flash("Tables not removed.", "danger")
 
-	return render_template("admin/dashboard.html")
+	return render_template("auth/home.html", db_status=None)
 
 
 
@@ -123,7 +122,7 @@ def add_songs():
 
 		if db.session.query(Author).first() is not None:
 			flash("Default authors already exist.", "warning")
-			return render_template("admin/dashboard.html")
+			return render_template("auth/home.html", db_status=find_database_status())
 		else:
 			for item in authors.authors_fi:
 				song = item[1]
@@ -153,7 +152,7 @@ def add_songs():
 
 		if db.session.query(Song).first() is not None:
 			flash("Default songs already exist.", "warning")
-			return render_template("admin/dashboard.html")
+			return render_template("auth/home.html", db_status=find_database_status())
 		else:
 
 			# finnish songs
@@ -275,4 +274,4 @@ def add_songs():
 			flash("French songs not added.", "danger")
 	
 	
-	return render_template("admin/dashboard.html")
+	return redirect(url_for("songs_home"))

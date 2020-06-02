@@ -113,23 +113,22 @@ LIMIT ?
 
 ```
 SELECT co.matches,
-       co.average
+       co.average,
+       results.word
 FROM results
-JOIN (
-       SELECT DISTINCT results.word AS words,
-              SUM(results.matches) AS matches,
-              AVG(results.matches) AS average
-       FROM results
-       JOIN song_result ON song_result.results_id = results.id
-       JOIN Song ON Song.id = song_result.song_id
-       GROUP BY words
-       ORDER BY matches DESC
-) as co
-JOIN song_result ON song_result.results_id = results.id
-JOIN Song ON Song.id = song_result.song_id
-JOIN account ON account.id = Song.account_id
-WHERE account.id IN (?,?)
-GROUP BY co.matches, co.words
+INNER JOIN (select DISTINCT results.word AS words,
+                   SUM(results.matches) AS matches,
+                   AVG(results.matches) AS average
+            FROM results
+            JOIN song_result ON song_result.results_id = results.id
+            JOIN Song ON Song.id = song_result.song_id
+            JOIN account ON account.id = Song.account_id
+            WHERE account.id IN (?,?)
+            GROUP BY results.word
+            ORDER BY matches DESC
+) AS co
+ON co.words = results.word
+GROUP BY co.matches, co.words, results.word, co.average
 ORDER BY co.matches DESC
 LIMIT ?
 ```

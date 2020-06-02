@@ -27,6 +27,8 @@
           {% endfor %}
         </table>
       </div><br><br>
+	{% else %}
+	  <strong style="font-size: 25px;">Song database is empty</strong>
     {% endif %}
     
     {% if top_words is defined and top_words is not none and not g.user.admin %}
