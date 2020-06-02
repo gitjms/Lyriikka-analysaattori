@@ -92,16 +92,23 @@ def remove_songs():
 	# Remove default authors and songs
 	#----------------------------------------------------
 	if request.form.get('remove') == "remove":
-		
+	
 		try:
-			stmt = text("DROP TABLE IF EXISTS Song")
-			result = db.engine.execute(stmt)
-			stmt = text("DROP TABLE IF EXISTS Author")
-			result = db.engine.execute(stmt)
+			db.engine.execute(text("DROP TABLE IF EXISTS Song;"))
+			db.engine.execute(text("DROP TABLE IF EXISTS Author;"))
+			db.engine.execute(text("DROP TABLE IF EXISTS results;"))
+			db.engine.execute(text("DROP TABLE IF EXISTS author_song;"))
+			db.engine.execute(text("DROP TABLE IF EXISTS song_result;"))
 			db.create_all()
-			flash("Tables Song and Author cleared.", "success")
 		except:
-			flash("Tables Song and Author are already empty.", "warning")
+			db.engine.execute(text("DROP TABLE IF EXISTS Song CASCADE;"))
+			db.engine.execute(text("DROP TABLE IF EXISTS Author CASCADE;"))
+			db.engine.execute(text("DROP TABLE IF EXISTS results;"))
+			db.engine.execute(text("DROP TABLE IF EXISTS author_song;"))
+			db.engine.execute(text("DROP TABLE IF EXISTS song_result;"))
+			flash("Tables cleared.", "success")
+		finally:
+			db.create_all()
 
 	return render_template("auth/home.html", db_status=None)
 
