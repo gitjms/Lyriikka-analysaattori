@@ -3,10 +3,6 @@ from flask_login import login_required, current_user
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.sql import func, text
-from sqlalchemy import Table, create_engine, MetaData
-from sqlalchemy.engine import reflection
-from sqlalchemy.ext.declarative import declarative_base
-from flask_migrate import Migrate
 
 from application import app, db
 from application.auth.views import find_database_status
@@ -17,7 +13,6 @@ from application.authors.models import author_song
 from application.words.models import Words
 from application.authors import authors
 from application.admin.forms import CreateForm
-from alembic import op
 import itertools
 import os
 
@@ -98,10 +93,10 @@ def remove_songs():
 	#----------------------------------------------------
 	if request.form.get('remove') == "remove":
 	
-		migrate = Migrate(app, db)
 		try:
 			if os.environ.get("HEROKU"):
-				db.engine.execute(text("DROP TABLE IF EXISTS Song, Author, Words, author_song, song_result CASCADE;"))
+				db.engine.execute(text("DROP TABLE IF EXISTS Song CASCADE;"))
+				db.engine.execute(text("DROP TABLE IF EXISTS Author CASCADE;"))
 				# db.engine.execute(text("DROP TABLE IF EXISTS results;"))
 				# db.engine.execute(text("DROP TABLE IF EXISTS author_song;"))
 				# db.engine.execute(text("DROP TABLE IF EXISTS song_result;"))
@@ -116,10 +111,9 @@ def remove_songs():
 				db.session.commit()
 				flash("Tables cleared.", "success")
 		except:
-			flash("Tables notcleared.", "warning")
+			flash("Tables not cleared.", "warning")
 		finally:
 			db.create_all()
-		migrate.init_app(app)
 
 	db_status=find_database_status()
 	if db_status:
