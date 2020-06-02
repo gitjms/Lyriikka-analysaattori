@@ -26,7 +26,7 @@ def before_request():
 #-----------------------------------------
 #		MAIN: songs_home()
 #-----------------------------------------
-@app.route("/main")
+@app.route("/home")
 @login_required
 def songs_home():
 

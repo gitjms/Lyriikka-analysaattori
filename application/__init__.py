@@ -17,7 +17,6 @@ else:
 	app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 	app.config["ENV"] = 'development'
 
-
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 

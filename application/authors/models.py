@@ -17,6 +17,7 @@ class Author(Base):
 
 	__tablename__ = 'author'
 
+
 	songs = db.relationship("Song",
 		secondary=author_song,
  		cascade='all, delete',

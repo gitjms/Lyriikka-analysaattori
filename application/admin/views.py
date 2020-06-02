@@ -94,14 +94,16 @@ def remove_songs():
 	if request.form.get('remove') == "remove":
 		
 		try:
-			db.drop_all(bind=None)
+			stmt = text("DROP TABLE IF EXISTS Song")
+			result = db.engine.execute(stmt)
+			stmt = text("DROP TABLE IF EXISTS Author")
+			result = db.engine.execute(stmt)
 			db.create_all()
-			flash("Tables removed.", "success")
+			flash("Tables Song and Author cleared.", "success")
 		except:
-			flash("Tables not removed.", "danger")
+			flash("Tables Song and Author are already empty.", "warning")
 
 	return render_template("auth/home.html", db_status=None)
-
 
 
 #----------------------------------------------------

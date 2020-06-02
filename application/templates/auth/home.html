@@ -7,7 +7,9 @@
       <strong>{{ err }}</strong>
     {% endfor %}
     
-    {% if db_status is defined and db_status is not none %}
+	{% if not db_status or db_status is not defined %}
+	  <strong style="font-size: 25px;">Song database is empty</strong>
+	{% else %}
       <strong style="font-size: 25px;">Database status</strong>
       <div id="index">
         <table class="table table-striped" style="max-width: 900px;">
@@ -27,11 +29,9 @@
           {% endfor %}
         </table>
       </div><br><br>
-	{% else %}
-	  <strong style="font-size: 25px;">Song database is empty</strong>
     {% endif %}
-    
-    {% if top_words is defined and top_words is not none and not g.user.admin %}
+	
+	{% if top_words or top_words is not defined and not g.user.admin %}
       <strong style="font-size: 25px;">TOP 5 search words
 	  </strong>
         <div id="averages">
