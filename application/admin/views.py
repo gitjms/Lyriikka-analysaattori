@@ -94,19 +94,18 @@ def remove_songs():
 	if request.form.get('remove') == "remove":
 	
 		try:
-			db.engine.execute(text("DROP TABLE IF EXISTS Song;"))
-			db.engine.execute(text("DROP TABLE IF EXISTS Author;"))
-			db.engine.execute(text("DROP TABLE IF EXISTS results;"))
-			db.engine.execute(text("DROP TABLE IF EXISTS author_song;"))
-			db.engine.execute(text("DROP TABLE IF EXISTS song_result;"))
-			db.create_all()
-		except:
 			db.engine.execute(text("DROP TABLE IF EXISTS Song CASCADE;"))
 			db.engine.execute(text("DROP TABLE IF EXISTS Author CASCADE;"))
 			db.engine.execute(text("DROP TABLE IF EXISTS results;"))
 			db.engine.execute(text("DROP TABLE IF EXISTS author_song;"))
 			db.engine.execute(text("DROP TABLE IF EXISTS song_result;"))
 			flash("Tables cleared.", "success")
+		except:
+			db.engine.execute(text("DROP TABLE IF EXISTS Song;"))
+			db.engine.execute(text("DROP TABLE IF EXISTS Author;"))
+			db.engine.execute(text("DROP TABLE IF EXISTS results;"))
+			db.engine.execute(text("DROP TABLE IF EXISTS author_song;"))
+			db.engine.execute(text("DROP TABLE IF EXISTS song_result;"))
 		finally:
 			db.create_all()
 
