@@ -115,9 +115,9 @@ def remove_songs():
 		finally:
 			db.create_all()
 
-	db_status=find_database_status()
+	# db_status=find_database_status()
 	if db_status:
-		return render_template("auth/home.html", db_status=db_status, top_words=None)
+		return render_template("auth/home.html", db_status=None, top_words=None)
 	else:
 		return render_template("auth/home.html", db_status=None, top_words=None)
 
