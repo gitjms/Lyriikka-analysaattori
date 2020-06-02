@@ -43,7 +43,11 @@ def songs_home():
 		new_list.append(stats[i]['average'])
 		result_list.append(new_list)
 
-	return render_template("auth/home.html", db_status=find_database_status(), top_words=result_list)
+	db_status=find_database_status()
+	if db_status:
+		return render_template("auth/home.html", db_status=db_status, top_words=result_list)
+	else:
+		return render_template("auth/home.html", db_status=None, top_words=result_list)
 
 
 #-----------------------------------------
