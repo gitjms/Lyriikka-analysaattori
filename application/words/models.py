@@ -69,7 +69,7 @@ class Words(db.Model):
 					"	ORDER BY matches DESC "
 					") as co "
 					"ON co.words = results.word "
-					"GROUP BY co.matches, co.words, co.average "
+					"GROUP BY co.matches, co.words, results.word, co.average "
 					"ORDER BY co.matches DESC "
 					"LIMIT 5").params(user1=user_list[0],user2=user_list[1])
 		res2 = db.engine.execute(stmt2)
