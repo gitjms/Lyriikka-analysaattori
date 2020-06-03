@@ -61,7 +61,7 @@ Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa sisäkkäiset kansiot *Ly
      102	password = u"guest".encode('utf-8')
      ```
      - ylempään riviin *guest* tilalle tulee kirjoittaa haluttu käyttäjänimi, ja alempaan riviin *guest* tilalle haluttu salasana.
-     - Tällöin myös *INSERT INTO* -koodi tulee olla muokkauksen mukainen.
+     - Tällöin myös *INSERT INTO* -komennon tulee olla muokkauksen mukainen.
      - Esimerkki: halutaan vierastili nimellä *vierailija*, käyttäjänimellä *vieras* ja salasanalla *12345*. Muokataan *views.py*-tiedoston rivit:
      ```python
      101	username = "vieras"
@@ -71,13 +71,14 @@ Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa sisäkkäiset kansiot *Ly
      ```
      INSERT INTO account (name, username, password, role, date_created) VALUES ('vierailija', 'vieras', '12345', 'GUEST', CURRENT_TIMESTAMP);
      ```
-   - Voit nyt sulkea
-     A. PostGres-yhteyden komennolla
+   - Voit nyt sulkea tietokantayhteydet
+
+     A. PostGres-yhteys komennolla
         ```\q```
         ja vastaamalla ```N``` kysymykseen *Terminate batch job (Y/N)*.
-     B. SQLite-yhteyden painamalla yhtaikaa ```ctrl+c```
+     B. SQLite-yhteys painamalla yhtaikaa ```ctrl+c```
 
-Nyt sovelluksen pitäisi olla käyttökunnossa ja voit kirjautua sisään äsken luoduilla tunnuksilla tai luoda uuden tunnuksen. Huomaa, että sovellukseen on liitetty 18 kappaletta oletuslauluja, jotka vain pääkäyttäjä voi asentaa tietokantaan.
+Nyt sovelluksen pitäisi olla käyttökunnossa ja voit kirjautua sisään äsken luoduilla tunnuksilla tai luoda uuden tunnuksen. Huomaa, että sovelluksen resursseihin on liitetty 18 kappaletta oletuslauluja, jotka vain pääkäyttäjä voi asentaa tietokantaan.
 
 Mikäli muokkaat sovelluskoodia ja haluat debuggauksen päälle, avaa työkansiossa tiedosto *app.py* jollain teksti- tai koodieditorilla. Tiedostossa on neljä riviä, joista alin on
 ```python
@@ -89,7 +90,7 @@ app.run(debug=True)
 ```
 ja tallenna muutokset.
 
-Sovelluksen ajamisen voi pysäyttää terminaalissa painamalla yhtaikaa ```ctrl+c```.
+Sovelluksen ajamisen voi pysäyttää (*Git Bash*) terminaalissa painamalla yhtaikaa ```ctrl+c```.
 
 Kun lopetat työskentelyn, sulje Pythonin virtuaaliympäristö *Git Bashissa* komennolla
 ```
