@@ -8,9 +8,12 @@ from application import app
 def before_request():
 	g.user = current_user
 
-@app.route("/", methods=["GET"])
+@app.route("/", methods=["GET","POST"])
 def index():
 	
 	if request.method == "GET":
 		return render_template("index.html")
+	
+	if request.method == "POST":
+		return render_template("info.html")
 

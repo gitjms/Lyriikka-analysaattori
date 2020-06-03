@@ -17,11 +17,10 @@ class User(Base):
 
 	date_created = db.Column(db.DateTime(), default=db.func.current_timestamp())
 
-	def __init__(self, name, username, password, admin):
+	def __init__(self, name, username, password):
 		self.name = name
 		self.username = username
 		self.password = password
-		self.admin = admin
 
 	def get_id(self):
 		return self.id

@@ -9,11 +9,20 @@
         name VARCHAR NOT NULL,
         username VARCHAR(80) NOT NULL,
         password VARCHAR(80) NOT NULL,
-        admin BOOLEAN NOT NULL,
+        role VARCHAR(80) NOT NULL,
         date_created DATETIME,
         PRIMARY KEY (id),
         UNIQUE (username),
-        CHECK (admin IN (0, 1))
+        FOREIGN KEY(role) REFERENCES roles (role)
+  );
+  ```
+- **Role** Taulu käyttäjärooleille
+  ```
+  CREATE TABLE roles (
+        id INTEGER NOT NULL,
+        role VARCHAR(80) NOT NULL,
+        PRIMARY KEY (id),
+        UNIQUE (role)
   );
   ```
 - **Song** laulut sisältäen laulun nimen, lyriikan, kielen sekä sen käyttäjän id:n, joka on laulun lisännyt
@@ -70,7 +79,7 @@
 
 ## Tietokantakaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/83409470-2598d000-a41d-11ea-9a20-3d7c4d507912.png" alt="database diagram">
+<img src="https://user-images.githubusercontent.com/46410240/83597715-aa483300-a570-11ea-81d0-4480b521c5b3.png" alt="database diagram">
 
 ## Tietokantakyselyjä
 
@@ -91,7 +100,7 @@ GROUP BY Song.language
 ORDER BY Song.language ASC;
 ```
 
-missä vierastilin parametrien arvot ovat ```(2, 1)```. Näistä ensimmäinen numero on käyttäjän id, toinen numero pääkäyttäjän id.
+missä vierastiliä käyttäen parametrien arvot ovat ```(1, 2)```. Näistä ensimmäinen numero on pääkäyttäjän id, toinen numero vierastilin id.
 
 ---
 

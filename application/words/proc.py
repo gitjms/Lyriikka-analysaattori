@@ -4,8 +4,9 @@ import os
 from unidecode import unidecode
 import operator
 import re
-import nltk
+import nltk.data
 from nltk.corpus import stopwords
+import nltk
 from collections import Counter
 
 from application import db, login_manager

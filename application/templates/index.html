@@ -2,9 +2,7 @@
 
 {% block body %}
 
-  <h1>
-    Lyrics Frequency Analysator
-  </h1>
+  <h1>Lyrics Frequency Analysator</h1>
 
   <p class="lead">
     Analyze songs' word frequencies.
@@ -15,8 +13,9 @@
 	
     You may play with admin and guest accounts and 	see what they are able to do.<br><br>
 	
-    <li>username: admin, password: admin</li>
-    <li>username: guest, password: guest</li><br>
+    <li>username: admin, password: admin (full access, except users' own songs)</li>
+    <li>username: guest, password: guest (restricted access to viewing songs and make word searches)</li>
+    <li>user via registration (restricted access to viewing, creating, and editing songs, making word searches and storing them to database)</li><br>
 	
 	
     If you start the app for the first time, there are no songs
@@ -28,37 +27,11 @@
     Then you will see a button in the lower right side of the window
     (<em>Add default songs</em>) with which the songs and authors will be filled into the database.<br>
 
-    You may also create your own account via registration (create account).<br>
-	
-    At the moment you are able to create, edit, and delete songs, sort them, and make quick word searches, which
-    give you basic frequency analyses.
+    You may also create your own account via registration (create account).<br><br>
+
+	At the moment this application only holds copyright free religious
+	lyrics, because this a university study lab project.
+    
   </p>
 
-  {% if stats is defined %}
-    <div class="col-sm-10 col-sm-offset-1">
-      <div id="averages">
-        <strong>
-          Database status
-        </strong>
-        {% for stat in stats %}
-          <table class="table table-striped" style="max-width: 300px;">
-            <thead>
-              <tr>
-                <th>Songs</th>
-                <th>Authors</th>
-                <th>Languages</th>
-                <th>Matches</th>
-              </tr>
-            </thead>
-            <tr>
-              <td>{{ stat[0] }}</td>
-              <td>{{ stat[1] }}</td>
-              <td>{{ stat[2] }}</td>
-              <td>{{ stat[3] }}</td>
-            </tr>
-          </table><br>
-        {% endfor %}
-      </div>
-  {% endif %}
-
-{% endblock %}Hakutulokset
+{% endblock %}
