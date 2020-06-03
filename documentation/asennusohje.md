@@ -14,7 +14,7 @@ Sovellus ladataan GitHub-sivustolta vihreästä napista sivun yläoikealla: [**C
 Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa sisäkkäiset kansiot *Lyriikka-analysaattori-master/Lyriikka-analysaattori-master* joiden sisältä löytyvät kaikki tarpeelliset komponentit.
 Sanotaan tätä tästedes *työkansioksi*.
 
-Mikäli käytät eri Python-versiota, kuin 3.7.7, avaa työkansiossa tiedosto *runtime.txt* jollain tekstieditorilla ja muuta siellä oleva ainoa rivi ```python-3.7.7``` vastaamaan omaa Python-versiotasi.
+Mikäli käytät eri Python-versiota kuin 3.7.7, avaa työkansiossa tiedosto *runtime.txt* jollain tekstieditorilla ja muuta siellä oleva ainoa rivi ```python-3.7.7``` vastaamaan omaa Python-versiotasi.
 
 1. Avaa työkansiossa *Git Bash* -terminaali
 2. Asenna riippuvuudet työkansiosta löytyvän tiedoston *requirements.txt* avulla komennolla

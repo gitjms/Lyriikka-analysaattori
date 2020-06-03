@@ -76,6 +76,7 @@
         FOREIGN KEY(results_id) REFERENCES results (id) ON DELETE cascade
   );
   ```
+- Lisäksi tietokannassa on abstrakti luokka **Base**, jonka kolumnit *id* ja *name* luokat **Song**, **User** ja **Author** perivät.
 
 ## Tietokantakaavio
 
