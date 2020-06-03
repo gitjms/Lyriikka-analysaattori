@@ -27,7 +27,7 @@ Löydät sovelluksen osoitteesta [lyrfreq.herokuapp.com](https://lyrfreq.herokua
 - sanahakuhistorian top 5 summia ja keskiarvoja (COUNT, SUM, AVG) [3 taulua + liitostaulu]
 - tietokannan laulu-, lauluntekijä- ja kielitilanne (COUNT) [3 taulua + liitostaulu]
 
----
+## Dokumentteja
 
 [**Käyttöohjeet**](documentation/kayttoohje.md)
 
@@ -46,3 +46,4 @@ Löydät sovelluksen osoitteesta [lyrfreq.herokuapp.com](https://lyrfreq.herokua
 * laulujen tunnetilojen analyysit
 * sanan esiintymisfrekvenssien vertailu kielittäin (yhteenvetokyselyt)
 * lyhyiden sanayhdistelmien esiintymät ja frekvenssit (yhteenvetokyselyt)
+* sivutus (pagination)
