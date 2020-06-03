@@ -33,11 +33,19 @@ Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa sisäkkäiset kansiot *Ly
    Nyt sovelluksen pitäisi näkyä selaimen sivulla ja työkansiossa *application*-kansioon on ilmestynyt tyhjä tietokanta *songs.db*.
 6. **TÄRKEÄÄ:**
    Ennen kuin voit kirjautua sovellukseen, tulee tietokantaan asettaa oletuskäyttäjät: pääkäyttäjä *admin* ja vierastili *guest*.
-   - Avaa Windowsin komentoikkuna (*Git Bash* ei välttämättä toimi tässä)
-   - Siirry työkansiossa sijaitsevaan *application*-kansioon ja avaa *Heroku-Postgres -yhteys* komennolla
-     ```
-     heroku pg:psql
-     ```
+   - Avaa Windowsin komentoikkuna (*Git Bash* ei välttämättä toimi tässä). Seuraavat vaiheet riippuvat siitä, julkaistaanko sovellus Herokussa (vaihtoehto A) vai käytetäänkö sitä lokaalisti (vaihtoehto B). Heroku-alustalla käyttö vaatii seuraavaksi PostGres-tietokanta-alustan käyttöä, kun taas lokaali käyttö edellyttää SQLite-alustaa.
+   - Siirry työkansiossa sijaitsevaan *application*-kansioon ja avaa
+     A. *Heroku-Postgres -yhteys* komennolla
+        ```
+        heroku pg:psql
+        ```
+     B. *SQLite*-yhteys ja tietokanta komennoilla
+        ```
+        sqlite3
+        ```
+        ```
+        .open songs.db
+        ```
    - Luo **ensin** pääkäyttäjä. Pääkayttäjän tunnukset (name='admin', username='admin', password='admin') voi vapaasti vaihtaa haluamikseen. Salasanan tulee olla vähintään 4 merkkiä pitkä. Kirjoita komentoikkunaan komento
        ```
        INSERT INTO account (name, username, password, role, date_created) VALUES ('admin', 'admin', 'admin', 'ADMIN', CURRENT_TIMESTAMP);
@@ -62,7 +70,11 @@ Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa sisäkkäiset kansiot *Ly
      ```
      INSERT INTO account (name, username, password, role, date_created) VALUES ('vierailija', 'vieras', '12345', 'GUEST', CURRENT_TIMESTAMP);
      ```
-   - Voit nyt sulkea PostGres-yhteyden komennolla ```\q``` ja vastaamalla ```N``` kysymykseen *Terminate batch job (Y/N)*.
+   - Voit nyt sulkea
+     A. PostGres-yhteyden komennolla
+        ```\q```
+        ja vastaamalla ```N``` kysymykseen *Terminate batch job (Y/N)*.
+     B. SQLite-yhteyden painamalla yhtaikaa ```ctrl+c```
 
 Nyt sovelluksen pitäisi olla käyttökunnossa ja voit kirjautua sisään äsken luoduilla tunnuksilla tai luoda uuden tunnuksen. Huomaa, että sovellukseen on liitetty 18 kappaletta oletuslauluja, jotka vain pääkäyttäjä voi asentaa tietokantaan.
 

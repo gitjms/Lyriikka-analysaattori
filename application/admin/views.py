@@ -78,9 +78,11 @@ def user_adminate(user_id):
 
 	form = CreateForm(request.form)
 	if request.form.get("userate") == "userate":
-		user_qry.first().role = "USER"
+		if user_qry.first().role not in ["ADMIN","GUEST"]:
+			user_qry.first().role = "USER"
 	elif request.form.get("adminate") == "adminate":
-		user_qry.first().role = "ADMIN"
+		if user_qry.first().role not in ["ADMIN","GUEST"]:
+			user_qry.first().role = "ADMIN"
 
 	if request.method == "POST":
 		try:

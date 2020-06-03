@@ -79,7 +79,7 @@
 
 ## Tietokantakaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/83597715-aa483300-a570-11ea-81d0-4480b521c5b3.png" alt="database diagram">
+<img src="https://user-images.githubusercontent.com/46410240/83637572-8573b000-a5b0-11ea-9f0a-27fa783a5769.png" alt="database diagram">
 
 ## Tietokantakyselyjä
 
