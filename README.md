@@ -47,3 +47,4 @@ Löydät sovelluksen osoitteesta [lyrfreq.herokuapp.com](https://lyrfreq.herokua
 * sanan esiintymisfrekvenssien vertailu kielittäin (yhteenvetokyselyt)
 * lyhyiden sanayhdistelmien esiintymät ja frekvenssit (yhteenvetokyselyt)
 * sivutus (pagination)
+* Dokumenttien kääntäminen englanniksi
