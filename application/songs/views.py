@@ -28,12 +28,30 @@ def before_request():
 @app.route("/")
 def songs_index():
 	return render_template("index.html")
+
+
+#-----------------------------------------
+#		SONGS: songs_home()
+#-----------------------------------------
+@app.route("/songs", methods=["GET", "POST"])
+@login_required
+def songs_home():
+	if request.form.get("Back") == "Back":
+		return render_template("songs/home.html")
+	if request.method == "GET":
+		return render_template("songs/home.html")
+
+	if request.method == "POST":
+		if request.form.get("ListSongs") == "ListSongs":
+			return redirect('/songs/list')
+		elif request.form.get("ListAuthors") == "ListAuthors":
+			return render_template("songs/home.html",)
 	
 
 #-----------------------------------------
 #		SONGS: songs_list()
 #-----------------------------------------
-@app.route("/songs", methods=["GET", "POST"])
+@app.route("/songs/list", methods=["GET", "POST"])
 @login_required
 def songs_list():
 
@@ -46,20 +64,22 @@ def songs_list():
 		songs = Song.query.filter(Song.account_id.in_(user_list)).all()
 		
 		if not songs:
-			return render_template("auth/home.html", songs=None, top_words=None)
+			return render_template("songs/home.html", songs=None, top_words=None)
 
 	if request.method == "POST":
 		# sorting
-		if request.form['sort'] == "titasc":
+		if request.form.get("sort") == "titasc":
 			songs = Song.query.filter(Song.account_id.in_(user_list)).order_by(Song.name.asc()).all()
-		elif request.form['sort'] == "titdesc":
+		elif request.form.get("sort") == "titdesc":
 			songs = Song.query.filter(Song.account_id.in_(user_list)).order_by(Song.name.desc()).all()
-		elif request.form['sort'] == "langtitasc":
+		elif request.form.get("sort") == "langtitasc":
 			songs = Song.query.filter(Song.account_id.in_(user_list)).order_by(Song.language).order_by(Song.name.asc()).all()
-		elif request.form['sort'] == "langtitdesc":
+		elif request.form.get("sort") == "langtitdesc":
 			songs = Song.query.filter(Song.account_id.in_(user_list)).order_by(Song.language).order_by(Song.name.desc()).all()
-		else:
+		elif request.form.get("sort") == "id":
 			songs = Song.query.filter(Song.account_id.in_(user_list)).order_by(Song.id.asc()).all()
+		else:
+			return redirect(url_for("songs_home"))
 
 	return render_template("songs/list.html", songs=songs)
 

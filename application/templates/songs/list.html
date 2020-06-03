@@ -8,6 +8,7 @@
 <b style="margin-right:10px;"> Sort by:</b>
 <div class="form-group">
   <form action= "{{ url_for('songs_list') }}" method="POST">
+
     <table>
       <tr>
         <th style="padding-left: 125px;">title</th>
@@ -32,8 +33,14 @@
         <td>
           <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="width:60px; height:30px;" value="langtitdesc">Z->A</button>
         </td>
+
+        <td>
+          <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px; float: right; margin-left: 60px;" value="Back">Back</button>
+        </td>
       </tr>
     </table>
+
+
     
   </form>
 </div>
@@ -75,6 +82,7 @@
         </div>
       </form>
     </td>
+    <td></td>
   </tr>
   {% endfor %}
 </table>

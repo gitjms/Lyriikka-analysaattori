@@ -14,7 +14,6 @@ from application.words.models import Words
 from application.auth.forms import LoginForm
 from application.auth.forms import CreateUserForm
 
-# Lomakkeen näyttämisen ja lähetyksen vastaanottava toiminnallisuus.
 
 bcrypt = Bcrypt()
 
@@ -24,11 +23,11 @@ def before_request():
 
 
 #-----------------------------------------
-#		MAIN: songs_home()
+#		MAIN: auth_home()
 #-----------------------------------------
-@app.route("/home")
+@app.route("/auth")
 @login_required
-def songs_home():
+def auth_home():
 
 	# TOP 5 search words
 	words = Words.find_words()
@@ -127,7 +126,7 @@ def auth_login():
 		
 	db.session.permanent = remember_me
 
-	return redirect(url_for("songs_home"))
+	return redirect(url_for("auth_home"))
 
 
 #-----------------------------------------
