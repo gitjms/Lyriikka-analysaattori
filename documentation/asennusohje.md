@@ -11,7 +11,10 @@ Esivaatimukset:
 
 Sovellus ladataan GitHub-sivustolta vihreästä napista sivun yläoikealla: [**Clone or download**](https://github.com/gitjms/Lyriikka-analysaattori).
 
-Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa sisäkkäiset kansiot *Lyriikka-analysaattori-master/Lyriikka-analysaattori-master* joiden sisältä löytyvät kaikki tarpeelliset komponentit. Sanotaan tätä tästedes *työkansioksi*.
+Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa sisäkkäiset kansiot *Lyriikka-analysaattori-master/Lyriikka-analysaattori-master* joiden sisältä löytyvät kaikki tarpeelliset komponentit.
+Sanotaan tätä tästedes *työkansioksi*.
+
+Mikäli käytät eri Python-versiota, kuin 3.7.7, avaa työkansiossa tiedosto *runtime.txt* jollain tekstieditorilla ja muuta siellä oleva ainoa rivi ```python-3.7.7``` vastaamaan omaa Python-versiotasi.
 
 1. Avaa työkansiossa *Git Bash* -terminaali
 2. Asenna riippuvuudet työkansiosta löytyvän tiedoston *requirements.txt* avulla komennolla
@@ -30,7 +33,7 @@ Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa sisäkkäiset kansiot *Ly
    ```
    http://127.0.0.1:5000/
    ```
-   Nyt sovelluksen pitäisi näkyä selaimen sivulla ja työkansiossa *application*-kansioon on ilmestynyt tyhjä tietokanta *songs.db*.
+Nyt sovelluksen pitäisi näkyä selaimen sivulla ja työkansiossa *application*-kansioon on ilmestynyt tyhjä tietokanta *songs.db*.
 
 **TÄRKEÄÄ:**
 
@@ -73,7 +76,7 @@ Ennen kuin voit kirjautua sovellukseen, tulee tietokantaan asettaa oletuskäytt�
    ```
 ---
 
-Jos haluat sovelluksen Herokuun, luo sovellukselle paikka Herokuun syöttämällä terminaaliin seuraava komento:
+Jos haluat sovelluksen Herokuun, luo sovellukselle ensin paikka syöttämällä terminaaliin seuraava komento:
 ```
 heroku create [toivottu-sovelluksen-nimi, eri kuin lyrfreq] --buildpack heroku/python
 ```
