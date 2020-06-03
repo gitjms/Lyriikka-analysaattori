@@ -62,7 +62,7 @@ Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa sisäkkäiset kansiot *Ly
      ```
      INSERT INTO account (name, username, password, role, date_created) VALUES ('vierailija', 'vieras', '12345', 'GUEST', CURRENT_TIMESTAMP);
      ```
-
+   - Voit nyt sulkea PostGres-yhteyden komennolla ```\q``` ja vastaamalla ```N``` kysymykseen *Terminate batch job (Y/N)*.
 
 Nyt sovelluksen pitäisi olla käyttökunnossa ja voit kirjautua sisään äsken luoduilla tunnuksilla tai luoda uuden tunnuksen. Huomaa, että sovellukseen on liitetty 18 kappaletta oletuslauluja, jotka vain pääkäyttäjä voi asentaa tietokantaan.
 
@@ -78,7 +78,7 @@ ja tallenna muutokset.
 
 Sovelluksen ajamisen voi pysäyttää terminaalissa painamalla yhtaikaa ```ctrl+c```.
 
-Kun lopetat työskentelyn, sulje Pythonin virtuaaliympäristö komennolla
+Kun lopetat työskentelyn, sulje Pythonin virtuaaliympäristö *Git Bashissa* komennolla
 ```
 deactivate
 ```
