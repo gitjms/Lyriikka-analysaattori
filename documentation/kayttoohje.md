@@ -68,7 +68,7 @@ Lisäksi käyttäjä voi nappia painamalla tarkastella kunkin laulun (joista san
 
 <img src="https://user-images.githubusercontent.com/46410240/83648301-8d3a5100-a5be-11ea-81c2-d14dc1b92877.png" alt="match songs">
 
-Tulos esitetään ensin suodattamattomana, eli stopwordsit ovat mukana. Käyttäjä voi tällöin suodattaa tuloksen itse nappia painamalla. Kunkin haun tulokset voi erikseen tallentaa tietokantaan.
+Frekvenssitulokset esitetään ensin suodattamattomina, eli stopwordsit ovat mukana. Käyttäjä voi tällöin suodattaa tuloksen itse nappia painamalla. Kunkin haun tulokset voi erikseen tallentaa tietokantaan.
 
 ## Pääkäyttäjä (admin)
 

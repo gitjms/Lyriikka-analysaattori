@@ -35,7 +35,8 @@ Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa sisäkkäiset kansiot *Ly
    Ennen kuin voit kirjautua sovellukseen, tulee tietokantaan asettaa oletuskäyttäjät: pääkäyttäjä *admin* ja vierastili *guest*.
    - Avaa Windowsin komentoikkuna (*Git Bash* ei välttämättä toimi tässä). Seuraavat vaiheet riippuvat siitä, julkaistaanko sovellus Herokussa (vaihtoehto A) vai käytetäänkö sitä lokaalisti (vaihtoehto B). Heroku-alustalla käyttö vaatii seuraavaksi PostGres-tietokanta-alustan käyttöä, kun taas lokaali käyttö edellyttää SQLite-alustaa.
    - Siirry työkansiossa sijaitsevaan *application*-kansioon ja avaa
-     A. *Heroku-Postgres -yhteys* komennolla
+
+     A. *Heroku-Postgres* -yhteys komennolla
         ```
         heroku pg:psql
         ```
