@@ -55,17 +55,17 @@ Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa sisäkkäiset kansiot *Ly
        INSERT INTO account (name, username, password, role, date_created) VALUES ('guest', 'guest', 'guest', 'GUEST', CURRENT_TIMESTAMP);
        ```
    - Huomaa, että pääkäyttäjän *role*-arvo on **ADMIN**, kun taas vierastilin vastaava arvo on **GUEST**.
-   - Vierastilin arvo *name* on vapaasti valittavissa. Mikäli halutaan vaihtaa vierastilin tunnukset *username* ja *password*, täytyy muokata tiedostossa *application/auth/views.py* rivejä 43 ja 44:
+   - Vierastilin arvo *name* on vapaasti valittavissa. Mikäli halutaan vaihtaa vierastilin tunnukset *username* ja *password*, täytyy muokata tiedostossa *application/auth/views.py* rivejä 101 ja 102:
      ```python
-     43	username = "guest"
-     44	password = u"guest".encode('utf-8')
+     101	username = "guest"
+     102	password = u"guest".encode('utf-8')
      ```
      - ylempään riviin *guest* tilalle tulee kirjoittaa haluttu käyttäjänimi, ja alempaan riviin *guest* tilalle haluttu salasana.
      - Tällöin myös *INSERT INTO* -koodi tulee olla muokkauksen mukainen.
      - Esimerkki: halutaan vierastili nimellä *vierailija*, käyttäjänimellä *vieras* ja salasanalla *12345*. Muokataan *views.py*-tiedoston rivit:
      ```python
-     43	username = "vieras"
-     44	password = u"12345".encode('utf-8')
+     101	username = "vieras"
+     102	password = u"12345".encode('utf-8')
      ```
      ja nyt vasta lisätään käyttäjä tietokantaan:
      ```
