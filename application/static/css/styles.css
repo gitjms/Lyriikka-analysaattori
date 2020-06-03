@@ -1,0 +1,24 @@
+#nav-column {
+	min-width: 140px;
+}
+
+#nav-a {
+	font-size: 18px;
+	color: white;
+}
+
+#nav-a-dis {
+	font-size: 18px;
+}
+
+#nav-b {
+	font-size: 18px;
+}
+
+#home-col #home-col-title {
+	text-align: center;
+}
+
+#big-strong {
+	font-size: 25px;
+}

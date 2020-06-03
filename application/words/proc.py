@@ -4,9 +4,9 @@ import os
 from unidecode import unidecode
 import operator
 import re
-import nltk.data
-from nltk.corpus import stopwords
 import nltk
+nltk.download('stopwords')
+from nltk.corpus import stopwords
 from collections import Counter
 
 from application import db, login_manager
@@ -71,7 +71,6 @@ def proc_text(song_list, word_to_find):
 # stop words
 def stop_words(filtered, new_raw_words_list, language):
 
-	nltk.download('stopwords')
 	stops = stopwords.words(language)
 
 	db_words_list = []

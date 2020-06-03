@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 
+<title>LyrFreq - Home Page (visible to those logged in)</title>
+
 {{ error }}
 {% block body %}
 
@@ -8,23 +10,23 @@
     {% endfor %}
     
 	{% if not db_status or db_status is not defined %}
-	  <strong style="font-size: 25px;">Song database is empty</strong>
+	  <strong id="big-strong">Song database is empty</strong>
 	{% else %}
-      <strong style="font-size: 25px;">Database status</strong>
+      <strong id="big-strong">Database status</strong>
       <div id="index">
         <table class="table table-striped" style="max-width: 900px;">
           <thead>
             <tr>
               <th>Languages</th>
-              <th style="text-align: center;">Songs</th>
-              <th style="text-align: center;">Authors</th>
+              <th id="home-col">Songs</th>
+              <th id="home-col-title">Authors</th>
             </tr>
           </thead>
           {% for res in db_status %}
             <tr>
               <td>{{ res.languages }}</td>
-              <td style="text-align: center;">{{ res.songs }}</td>
-              <td style="text-align: center;">{{ res.authors }}</td>
+              <td id="home-col">{{ res.songs }}</td>
+              <td id="home-col">{{ res.authors }}</td>
             </tr>
           {% endfor %}
         </table>
@@ -32,24 +34,23 @@
     {% endif %}
 	
 	{% if top_words or top_words is not defined and not g.user.admin %}
-      <strong style="font-size: 25px;">TOP 5 search words
-	  </strong>
+      <strong id="big-strong">TOP 5 search words</strong>
         <div id="averages">
           <table class="table table-striped" style="max-width: 1000px;">
             <thead>
               <tr>
                 <th>Word</th>
-                <th style="text-align: center;">Matches</th>
-                <th style="text-align: center;">Songs</th>
-                <th style="text-align: center;">Avg</th>
+                <th id="home-col-title">Matches</th>
+                <th id="home-col-title">Songs</th>
+                <th id="home-col-title">Avg</th>
               </tr>
             </thead>
             {% for res in top_words %}
               <tr>
                 <td>{{ res[0] }}</td>
-                <td style="text-align: center;">{{ res[2] }}</td>
-                <td style="text-align: center;">{{ res[1] }}</td>
-                <td style="text-align: center;">{{ '%0.1f'| format(res[3]|float) }}</td>
+                <td id="home-col">{{ res[2] }}</td>
+                <td id="home-col">{{ res[1] }}</td>
+                <td id="home-col">{{ '%0.1f'| format(res[3]|float) }}</td>
               </tr>
             {% endfor %}
           </table><br>

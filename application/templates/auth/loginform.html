@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 
+<title>LyrFreq - Login Page (visible to all)</title>
+
 {% block body %}
 {{ error }}
   <form method="POST" action="{{ url_for('auth_login') }}">

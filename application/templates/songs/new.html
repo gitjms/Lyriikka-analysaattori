@@ -1,4 +1,6 @@
 {% extends "layout.html" %}
+
+<title>LyrFreq - Adding Song Page (visible to users)</title>
   
 {% block body %}
 
@@ -29,7 +31,7 @@
   </td>
 
   <div class="col-auto">
-    <label for="author" class="col-lg-2 col-form-label">Author(s): <small style="float: right;">separate authors with comma</small></label>
+    <label for="author" class="col-lg-12 col-form-label">Author(s): <small style="float: right;">separate authors with comma</small></label>
     <textarea class="form-control text-left" id="author" name="author" type="text" rows="1" style="overflow:auto;" placeholder="Firstname Lastname, Firstname Lastname, ...">{{ form.author().split(">",1)[1] }}
     </textarea>
   </div>

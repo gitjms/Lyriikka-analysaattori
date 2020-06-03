@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 
+<title>LyrFreq - Show Song Page (visible to those logged in)</title>
+
 {{ error }}
 {% block body %}
   <form method="GET" action="{{ url_for('songs_list') }}">
