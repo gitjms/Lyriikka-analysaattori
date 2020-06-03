@@ -1,7 +1,7 @@
 from flask import render_template, redirect, flash, url_for, request, g, Markup
-from flask_login import login_required, current_user
+from flask_login import current_user
 
-from application import app, db
+from application import app, db, login_manager, login_required
 from application.songs.models import Song
 from application.words.models import Words
 from application.words.proc import proc_text, stop_words, create_results, store_db
@@ -23,15 +23,20 @@ def words_find():
 	filtered = False
 	save = False
 
-	user_list = [g.user.id,1]
+	if g.user.role == "GUEST" or g.user.role == "ADMIN":
+		user_list = [1,2]
+	else:
+		user_list = [1,g.user.id]
 
 	if request.method == "GET":
 		return redirect(url_for("index"))
 
 	if request.method == "POST":
 		if request.form.get('filter') is None:
-			word_to_find = request.form.get('wordsearch').strip()
-			language = request.form.get('langchoice')
+			if request.form.get('wordsearch') is not None:
+				word_to_find = request.form.get('wordsearch').strip()
+			if request.form.get('langchoice') is not None:
+				language = request.form.get('langchoice')
 		elif request.form.get('filter') is not None:
 			data = request.form.get('filter').split(',')
 			word_to_find = data[0].strip()

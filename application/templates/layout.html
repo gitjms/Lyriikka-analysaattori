@@ -118,7 +118,7 @@
                               <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px; margin-left: 3px;" name="langchoice" id="langchoice" value="english">En</button>
                             </td>
                             <td>
-                              <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px; margin-left: 3px;" name="langchoice" id="langchoice" value="french">Fr</button>
+                              <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px; margin-left: 3px;" name="langchoice" id="langchoice" value="french" >Fr</button>
                             </td>
                           </tr>
                         </tbody>
@@ -157,7 +157,7 @@
 
     <!-- FOR ADMIN ONLY -->
 
-    {% if g.user.admin %}
+    {% if g.user.role == "ADMIN" %}
       
       <!-- ADD DEFAULT AUTHORS AND SONGS -->
       <div class="container-fluid">
@@ -195,30 +195,31 @@
     <!-- Bootstrap Toggle -->
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
       
-    <!--  -->
+    <!-- script below is for Chart.min.js graph -->
     <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
       
-    <!-- message timeout -->
+    <!-- three scripts below are for flash message timeout -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    
     <script>
       $(document).ready(function(){
 	    $(".alert").delay(4000).slideUp(300);
       });
-      </script><script type=text/javascript>
-        $(function() {
-          $('a#process_input').bind('click', function() {
-            $.getJSON('/words/find/', {
-              proglang: $('input[name="wordsearch"]').val(),
-            }, function(data) {
-              $("#result").text(data.result);
-            });
-            return false;
-          });
-        });
     </script>
     
+	<!-- <script type="text/javascript"> -->
+        <!-- $(function() { -->
+          <!-- $('a#process_input').bind('click', function() { -->
+            <!-- $.getJSON('/words/find/', { -->
+              <!-- proglang: $('input[name="wordsearch"]').val(), -->
+            <!-- }, function(data) { -->
+              <!-- $("#result").text(data.result); -->
+            <!-- }); -->
+            <!-- return false; -->
+          <!-- }); -->
+        <!-- }); -->
+    <!-- </script> -->
+
   </body>
     
 </html>

@@ -8,7 +8,7 @@ import nltk
 from nltk.corpus import stopwords
 from collections import Counter
 
-from application import db
+from application import db, login_manager
 from application.words.models import Words
 from application.songs.models import Song
 
@@ -19,7 +19,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 def proc_text(song_list, word_to_find):
 
 	text_list = [] # [ song_id, lyrics, song_name ]
-	nltk.data.path.append(os.getcwd()+'/application/nltk_data/')
+	# nltk.data.path.append(os.getcwd()+'/application/nltk_data/')
 
 	for song in song_list:
 		tokens = nltk.word_tokenize(song[1])
@@ -155,6 +155,9 @@ def create_results(raw_word_count, db_words_list, frequencies, new_songlist, gra
 
 # database storing
 def store_db(raw_word_count, db_words_list, word_to_find, counts):
+
+	if g.user.role == "GUEST":
+		return login_manager.unauthorized()
 
 	# database
 	for i in range(len(raw_word_count)):

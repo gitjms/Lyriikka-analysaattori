@@ -20,8 +20,51 @@ else:
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+
+#----------------------------------------------
+# login
+#----------------------------------------------
+from os import urandom
+app.config["SECRET_KEY"] = urandom(32)
+
+app.static_folder = 'static'
+
+from flask_login import LoginManager
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+login_manager.login_view = "auth_login"
+login_manager.login_message = "Guest account not authorized."
+
+
+#----------------------------------------------
+# roles in login_required
+#----------------------------------------------
+from functools import wraps
+from flask_login import current_user
+
+def login_required(_func=None, *, role="ANY"):
+    def wrapper(func):
+        @wraps(func)
+        def decorated_view(*args, **kwargs):
+            if not (current_user and current_user.is_authenticated):
+                return login_manager.unauthorized()
+
+            acceptable_roles = set(("ANY", *current_user.roles()))
+
+            if role not in acceptable_roles:
+                return login_manager.unauthorized()
+
+            return func(*args, **kwargs)
+        return decorated_view
+    return wrapper if _func is None else wrapper(_func)
+
+
+# load application content
 from application import views
 from application import models
+
+from application.roles import models
 
 from application.admin import views
  
@@ -38,37 +81,30 @@ from application.words import views
 
 
 #----------------------------------------------
-# login
+# create admin and guest accounts
 #----------------------------------------------
+from application.roles.models import Role
+from sqlalchemy.event import listen
+from sqlalchemy import event, DDL
+
+@event.listens_for(Role.__table__, 'after_create')
+def insert_initial_roles(*args, **kwargs):
+	db.session.add(Role(role='ADMIN'))
+	db.session.commit()
+	db.session.add(Role(role='GUEST'))
+	db.session.commit()
+	db.session.add(Role(role='USER'))
+	db.session.commit()
+
+
 from application.auth.models import User
-from os import urandom
-app.config["SECRET_KEY"] = urandom(32)
-
-app.static_folder = 'static'
-
-from flask_login import LoginManager
-login_manager = LoginManager()
-login_manager.init_app(app)
-
-login_manager.login_view = "auth_login"
-login_manager.login_message = "Please login."
-
 @login_manager.user_loader
 def load_user(user_id):
 	return User.query.get(user_id)
 
-#----------------------------------------------
-# create admin and guest accounts
-#----------------------------------------------
-from sqlalchemy.event import listen
-from sqlalchemy import event, DDL
 
-@event.listens_for(User.__table__, 'after_create')
-def insert_initial_accounts(*args, **kwargs):
-	db.session.add(User(name='admin',username='admin',password='admin', admin=True))
-	db.session.commit()
-	db.session.add(User(name='guest',username='guest',password='guest', admin=False))
-	db.session.commit()
-
-
-db.create_all()
+# database creation
+try: 
+    db.create_all()
+except:
+    pass

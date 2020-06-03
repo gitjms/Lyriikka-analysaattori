@@ -29,18 +29,18 @@
         <td colspan="6">
           <b style="float: left; margin-right:10px;">{{ user.id }}.</b>
         </td>
-        {% if user.admin %}
-        <td><a style="color: red;margin-right:20px;">{{ user.name }}</a></td>
-        <td><a style="color: red;margin-right:10px;">{{ user.username }}</a></td>
-        <td><a style="color: red;margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
-        {% elif user.username == 'guest'%}
-        <td><a style="color: green;margin-right:20px;">{{ user.name }}</a></td>
-        <td><a style="color: green;margin-right:10px;">{{ user.username }}</a></td>
-        <td><a style="color: green;margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
+        {% if user.role == "ADMIN" %}
+          <td><a style="color: red;margin-right:20px;">{{ user.name }}</a></td>
+          <td><a style="color: red;margin-right:10px;">{{ user.username }}</a></td>
+          <td><a style="color: red;margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
+        {% elif user.role == "GUEST"%}
+          <td><a style="color: green;margin-right:20px;">{{ user.name }}</a></td>
+          <td><a style="color: green;margin-right:10px;">{{ user.username }}</a></td>
+          <td><a style="color: green;margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
         {% else %}
-        <td><a style="margin-right:20px;">{{ user.name }}</a></td>
-        <td><a style="margin-right:10px;">{{ user.username }}</a></td>
-        <td><a style="margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
+          <td><a style="margin-right:20px;">{{ user.name }}</a></td>
+          <td><a style="margin-right:10px;">{{ user.username }}</a></td>
+          <td><a style="margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
         {% endif %}
         
         <!-- DELETE BUTTON -->
@@ -59,7 +59,7 @@
           <form method="POST" action="{{ url_for('user_adminate', user_id=user.id) }}">
             <input type="hidden" name="user_id" value="{{ user.id }}"></input>
             <div class="col-auto">
-              {% if user.admin %}
+              {% if user.role == "ADMIN" %}
               <button class="btn btn-sm btn-secondary" type="submit" name="userate" style="background-color: red; width:60px;" value="userate">Admin</button>
               {% else %}
               <button class="btn btn-sm btn-secondary" type="submit" name="adminate" style="width:60px;" value="adminate">User</button>

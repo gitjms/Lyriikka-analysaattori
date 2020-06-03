@@ -12,7 +12,8 @@ class User(Base):
 
 	username = db.Column(db.String(80), nullable=False, unique=True)
 	password = db.Column(db.String(80), nullable=False)
-	admin = db.Column(db.Boolean, default=False, nullable=False)
+
+	role = db.Column(db.String(80), db.ForeignKey('roles.role'), nullable=False)
 
 	date_created = db.Column(db.DateTime(), default=db.func.current_timestamp())
 
@@ -35,6 +36,6 @@ class User(Base):
 		return True
 
 	def roles(self):
-		return ["ADMIN"]
+		return self.role
 
 

@@ -100,14 +100,14 @@ Toinen kyselyistä on jaettu kahteen osaan *Words*-luokassa (*results*-taulu). K
 ```
 SELECT DISTINCT results.word,
        COUNT(Song.id) AS w_count,
-       results.matches
+       SUM(results.matches)
 FROM results
 JOIN song_result ON song_result.results_id = results.id
 JOIN Song ON Song.id = song_result.song_id
 JOIN account ON account.id = Song.account_id
 WHERE account.id IN (?,?)
 GROUP BY results.word
-ORDER BY results.matches DESC
+ORDER BY SUM(results.matches) DESC
 LIMIT ?
 ```
 

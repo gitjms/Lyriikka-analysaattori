@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, url_for, flash, g, session
-from flask_login import login_user, logout_user, current_user, login_required
+from flask_login import login_user, logout_user, current_user
 
 import bcrypt as hash_bcrypt
 from flask_bcrypt import Bcrypt
@@ -7,7 +7,7 @@ from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.sql import text
 
-from application import app, db
+from application import app, db, login_required
 from application.auth.models import User
 from application.songs.models import Song
 from application.words.models import Words
@@ -55,7 +55,10 @@ def songs_home():
 #-----------------------------------------
 def find_database_status():
 
-	user_list = [g.user.id,1]
+	if g.user.role == "GUEST" or g.user.role == "ADMIN":
+		user_list = [1,2]
+	else:
+		user_list = [1,g.user.id]
 
 	stmt = text("SELECT DISTINCT Song.language, "
 				"COUNT(DISTINCT Song.name), "
@@ -150,7 +153,8 @@ def auth_create():
 
 	pw_hash = bcrypt.generate_password_hash(form.password.data)
 	
-	user = User(form.name.data,form.username.data,form.password.data,False)
+	user = User(form.name.data,form.username.data,form.password.data)
+	user.role = "USER"
 
 	try:
 		db.session().add(user)

@@ -1,10 +1,15 @@
-from application import db
+from application import app, db
 from application import views
 
 from flask import g
+from flask_login import current_user
 
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.sql import text
+
+@app.before_request
+def before_request():
+	g.user = current_user
 
 class Words(db.Model):
 
@@ -24,7 +29,11 @@ class Words(db.Model):
 
 	@staticmethod
 	def find_words():
-		user_list = [g.user.id,1]
+
+		if g.user.role == "GUEST" or g.user.role == "ADMIN":
+			user_list = [1,2]
+		else:
+			user_list = [1,g.user.id]
 
 		stmt1 = text("SELECT "
 					"	DISTINCT results.word, "
@@ -48,7 +57,10 @@ class Words(db.Model):
 	@staticmethod
 	def find_stats():
 
-		user_list = [g.user.id,1]
+		if g.user.role == "GUEST" or g.user.role == "ADMIN":
+			user_list = [1,2]
+		else:
+			user_list = [1,g.user.id]
 
 		stmt2 = text("SELECT "
                     "	co.matches, "

@@ -1,10 +1,10 @@
 from flask import url_for, redirect, render_template, request, flash, g
-from flask_login import login_required, current_user
+from flask_login import current_user
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.sql import func, text
 
-from application import app, db
+from application import app, db, login_manager, login_required
 from application.auth.views import find_database_status
 from application.auth.models import User
 from application.songs.models import Song
@@ -31,6 +31,9 @@ def before_request():
 @login_required
 def admin_dashboard():
 
+	if g.user.role != "ADMIN":
+		return login_manager.unauthorized()
+
 	if request.method == "GET":
 		return render_template("auth/home.html", db_status=find_database_status())
 
@@ -44,6 +47,10 @@ def admin_dashboard():
 @app.route("/admin/delete/<user_id>", methods=["POST"])
 @login_required
 def user_delete(user_id):
+
+	if g.user.role != "ADMIN":
+		return login_manager.unauthorized()
+
 	user_qry = db.session().query(User).filter(User.id==user_id)
 
 	if request.method == "POST":
@@ -63,13 +70,17 @@ def user_delete(user_id):
 @app.route("/admin/status/<user_id>", methods=["POST"])
 @login_required
 def user_adminate(user_id):
+
+	if g.user.role != "ADMIN":
+		return login_manager.unauthorized()
+
 	user_qry = db.session().query(User).filter(User.id==user_id)
 
 	form = CreateForm(request.form)
 	if request.form.get("userate") == "userate":
-		user_qry.first().admin = False
+		user_qry.first().role = "USER"
 	elif request.form.get("adminate") == "adminate":
-		user_qry.first().admin = True
+		user_qry.first().role = "ADMIN"
 
 	if request.method == "POST":
 		try:
@@ -87,6 +98,9 @@ def user_adminate(user_id):
 @app.route("/defaults/remove", methods = ["POST"])
 @login_required
 def remove_songs():
+
+	if g.user.role != "ADMIN":
+		return login_manager.unauthorized()
 
 	#----------------------------------------------------
 	# Remove default authors and songs
@@ -140,6 +154,10 @@ def remove_songs():
 @app.route("/defaults/add", methods = ["POST"])
 @login_required
 def add_songs():
+
+	if g.user.role != "ADMIN":
+		return login_manager.unauthorized()
+
 	#----------------------------------------------------
 	# Add default authors and songs
 	#----------------------------------------------------

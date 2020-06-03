@@ -23,7 +23,7 @@ Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa sisäkkäiset kansiot *Ly
    source venv/Scripts/activate
    ```
 4. Käynnistä sovellus komennolla
-   ````
+   ```
    python app.py
    ```
 5. Avaa internetselaimessa (esim. Chrome) osoite
@@ -42,12 +42,12 @@ Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa sisäkkäiset kansiot *Ly
       ```
    - Luo **ensin** pääkäyttäjä. Pääkayttäjän tunnukset (name='admin', username='admin', password='admin') voi vapaasti vaihtaa haluamikseen. Salasanan tulee olla vähintään 4 merkkiä pitkä. Kirjoita komentoikkunaan komento
        ```
-       INSERT INTO account (name, username, password, admin, date_created) VALUES ('admin', 'admin', 'admin', True, CURRENT_TIMESTAMP);
+       INSERT INTO account (name, username, password, role, date_created) VALUES ('admin', 'admin', 'admin', 'ADMIN', CURRENT_TIMESTAMP);
    - Luo seuraavaksi vierastili komennolla
        ```
-       INSERT INTO account (name, username, password, admin, date_created) VALUES ('guest', 'guest', 'guest', False, CURRENT_TIMESTAMP);
+       INSERT INTO account (name, username, password, role, date_created) VALUES ('guest', 'guest', 'guest', 'GUEST', CURRENT_TIMESTAMP);
        ```
-   - Huomaa, että pääkäyttäjän *admin*-arvo on **True**, kun taas vierastilin arvon on **False**.
+   - Huomaa, että pääkäyttäjän *role*-arvo on **ADMIN**, kun taas vierastilin vastaava arvo on **GUEST**.
    - Vierastilin arvo *name* on vapaasti valittavissa. Mikäli halutaan vaihtaa vierastilin tunnukset *username* ja *password*, täytyy muokata tiedostossa *application/auth/views.py* rivejä 43 ja 44:
      ```python
      43	username = "guest"
@@ -62,7 +62,7 @@ Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa sisäkkäiset kansiot *Ly
      ```
      ja nyt vasta lisätään käyttäjä tietokantaan:
      ```
-     INSERT INTO account (name, username, password, admin, date_created) VALUES ('vierailija', 'vieras', '12345', False, CURRENT_TIMESTAMP);
+     INSERT INTO account (name, username, password, role, date_created) VALUES ('vierailija', 'vieras', '12345', 'GUEST', CURRENT_TIMESTAMP);
      ```
 
 Nyt sovelluksen pitäisi olla käyttökunnossa ja voit kirjautua sisään äsken luoduilla tunnuksilla tai luoda uuden tunnuksen. Huomaa, että sovellukseen on liitetty 18 kappaletta oletuslauluja, jotka vain pääkäyttäjä voi asentaa tietokantaan.
