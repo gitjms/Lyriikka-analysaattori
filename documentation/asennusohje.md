@@ -75,7 +75,8 @@ Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa sisäkkäiset kansiot *Ly
 
      A. PostGres-yhteys komennolla
         ```\q```
-        ja vastaamalla ```N``` kysymykseen *Terminate batch job (Y/N)*.
+        ja vastaamalla ```N``` kysymykseen *Terminate batch job (Y/N)*
+
      B. SQLite-yhteys painamalla yhtaikaa ```ctrl+c```
 
 Nyt sovelluksen pitäisi olla käyttökunnossa ja voit kirjautua sisään äsken luoduilla tunnuksilla tai luoda uuden tunnuksen. Huomaa, että sovelluksen resursseihin on liitetty 18 kappaletta oletuslauluja, jotka vain pääkäyttäjä voi asentaa tietokantaan.
