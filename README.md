@@ -15,7 +15,7 @@ Löydät sovelluksen osoitteesta [lyrfreq.herokuapp.com](https://lyrfreq.herokua
 ## Sovelluksen toiminnot
 
 ### Sivuston toiminnot
-- kirjautuminen, roolit: user ja admin
+- kirjautuminen, roolit: peruskäyttäjä *user* ja pääkäyttäjä *admin* sekä vierastili *guest*
 - uusien lyriikoiden lisääminen, vanhojen poistaminen, muokkaus ja tarkastelu, sort
 - käyttäjätilien poistaminen (admin)
 - käyttäjätilien asettaminen admin-rooliin tai peruskäyttäjä-rooliin (admin)
