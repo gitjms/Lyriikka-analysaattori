@@ -16,17 +16,26 @@
         
           <tr>
             <td>
+              <label style="margin-right: 10px;">Full Name:</label>
+            </td>
+            <td>
               {{ form.name(autofocus=true,placeholder="Enter Full Name") }}
             </td>
           </tr>
         
           <tr>
             <td>
+              <label style="margin-right: 10px;">Username:</label>
+            </td>
+            <td>
               {{ form.username(placeholder="Enter Username") }}
             </td>
           </tr>
         
           <tr>
+            <td>
+              <label style="margin-right: 10px;">Password:</label>
+            </td>
             <td>
               {{ form.password(placeholder="Enter Password") }}
             </td>
@@ -36,10 +45,8 @@
           </tr>
         
           <tr>
-            <td style="float: left;">
+            <td colspan="3">
               <label for="Remember">Remember this session?</label>
-            </td>
-            <td>
               <input type="checkbox" id="Remember" name="remember_me"></input >
             </td>
           </tr>

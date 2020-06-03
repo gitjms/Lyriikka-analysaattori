@@ -12,7 +12,7 @@ from application.auth.models import User
 from application.songs.models import Song
 from application.words.models import Words
 from application.auth.forms import LoginForm
-from application.auth.forms import CreateForm
+from application.auth.forms import CreateUserForm
 
 # Lomakkeen näyttämisen ja lähetyksen vastaanottava toiminnallisuus.
 
@@ -135,7 +135,7 @@ def auth_login():
 #-----------------------------------------
 @app.route("/auth/newuser/", methods=["GET", "POST"])
 def auth_create():
-	form = CreateForm(request.form)
+	form = CreateUserForm(request.form)
 
 	if request.method == "GET":
 		return render_template("auth/newuser.html", form = form)

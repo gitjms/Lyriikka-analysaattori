@@ -6,15 +6,15 @@ Kun käyttäjä on kirjautunut sisään avautuu kotinäkymä, jossa näkyvät ti
 
 Jälkimmäinen ei näy pääkäyttäjälle. Näkymään pääsee aina takaisin yläpalkin vasemmassa reunassa olevasta kotinappulasta (*LyrFreq HOME*). Yläpalkin oikeassa reunassa on valkoinen kysymysmerkki, jota klikkaamalla aukeaa info-sivu. Infosta löytyy taustaa ja perustelua sana-analyysiprojektille.
 
-Muuten sovelluksen pitäisi olla melko intuitiivinen. Seuraamalla harvojen nappien tekstejä tai otsikoita tietää mitä voi tehdä.
+Muuten sovelluksen pitäisi olla melko intuitiivinen. Seuraamalla harvojen nappien tai linkkien tekstejä tai otsikoita tietää mitä voi tehdä.
 
 <img src="https://user-images.githubusercontent.com/46410240/83639232-1186d700-a5b3-11ea-904e-2cf30970b7ad.png" alt="banner">
 
 ## Käyttäjäroolit
 
-Sovelluksessa on pysyvä yläpalkki, josta löytyvät sisään- ja uloskirjautumislinkki sekä rekisteröitymislinkki. Käyttäjärooleja on kolme: *ADMIN*, *USER* ja *GUEST*. Valmiita oletuskäyttäjiä ovat *admin* täysillä *ADMIN*-oikeuksilla (toisten käyttäjien poisto ja roolin vaihdot) sekä *guest* rajoitetuilla *GUEST*-oikeuksilla.
+Sovelluksessa on pysyvä yläpalkki, josta löytyvät sisään- ja uloskirjautumislinkki sekä rekisteröitymislinkki. Käyttäjärooleja on kolme: **ADMIN**, **USER** ja **GUEST**. Valmiita oletuskäyttäjiä ovat *admin* täysillä *ADMIN*-oikeuksilla (toisten käyttäjien poisto ja roolin vaihdot) sekä *guest* rajoitetuilla **GUEST**-oikeuksilla.
 
-Käyttäjä voivat myös luoda oman (user) tilinsä salasanoineen.
+Käyttäjä voivat myös luoda oman (**USER**) tilinsä salasanoineen.
 
 Kukin käyttäjä näkee kaikki oletuslaulut sekä itse lisäämänsä laulut. Muiden lisäämiä lauluja ei nähdä. Vain admin voi lisätä yleisesti saatavilla olevia lauluja.
 
@@ -22,7 +22,7 @@ Admin-rooli voi oletuslaulujen lisäämisen ja poistamisen lisäksi tarkastella 
 
 Ohjelmaan voi siis rekisteröityä luomalla omat tunnukset, mutta helpoin tapa kokeilla sovellusta on kirjautua yhtä nappia painamalla vieras-tilille (guest) jolla on rajoitetut peruskäyttäjän oikeudet.
 
-<img src="https://user-images.githubusercontent.com/46410240/83640295-9d4d3300-a5b4-11ea-8822-0ec25e4e008a.png" alt="login and create account">
+<img src="https://user-images.githubusercontent.com/46410240/83654590-ff626400-a5c5-11ea-8e57-85491c8c0b3c.png" alt="login and create account">
 
 ## Laulut
 
