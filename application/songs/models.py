@@ -1,10 +1,18 @@
-from application import db
+from application import app, db
 from application import views
-from application import app
+from application.models import Base
+
+import os
+
 from flask import g
 from flask_login import current_user
+
 from sqlalchemy.sql import text
-from application.models import Base
+
+
+@app.before_request
+def before_request():
+	g.user = current_user
 
 
 # join table SONG_RESULTS
@@ -39,4 +47,32 @@ class Song(Base):
 		self.name = name
 		self.lyrics = lyrics
 		self.language = language
+
+
+	@staticmethod
+	def find_database_status():
+
+		if g.user.role == "GUEST" or g.user.role == "ADMIN":
+			user_list = [1,2]
+		else:
+			user_list = [1,g.user.id]
+
+		stmt = text("SELECT DISTINCT Song.language, "
+					"	COUNT(DISTINCT Song.name), "
+					"	COUNT(DISTINCT Author.name) "
+					"FROM Song "
+					"LEFT JOIN author_song ON Song.id = author_song.song_id "
+					"LEFT JOIN Author ON author_song.author_id = Author.id "
+					"LEFT JOIN account ON account.id = Song.account_id "
+					"WHERE account.id IN (:user1,:user2) "
+					"GROUP BY Song.language "
+					"ORDER BY Song.language ASC").params(user1=user_list[0],user2=user_list[1])
+
+		result = db.engine.execute(stmt)
+
+		response = []
+		for row in result:
+			response.append({'languages':row[0], 'songs':row[1], 'authors':row[2]})
+
+		return response
 

@@ -4,13 +4,16 @@
 
 {{ error }}
 {% block body %}
-  <form method="GET" action="{{ url_for('songs_list') }}">
-    <div class="col-auto">
-      <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px; float: left;" value="Back"/>Back</button>
-    </div>
 
-    <div style="clear: both;"></div>
-  </form><br><br>
+<form method="POST" action="{{ url_for('songs_show', song_id=song_id, author_id=author_id, from_page=from_page) }}">
+
+  <div class="col-auto">
+    <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px; float: left;" value="Back"/>Back</button>
+  </div>
+
+  <div style="clear: both;"></div>
+</form><br>
+
 
   <div class="col-auto">
     <p style="font-size: 20px;">
@@ -33,11 +36,14 @@
 {{ song.lyrics }}
     </pre>
   </center>
-  <form method="GET" action="{{ url_for('songs_list') }}">
-    <div class="col-auto">
-      <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px; float: left;" value="Back"/>Back</button>
-    </div>
 
-    <div style="clear: both;"></div>
-  </form>
+
+<form method="POST" action="{{ url_for('songs_show', song_id=song_id, author_id=author_id, from_page=from_page) }}">
+
+  <div class="col-auto">
+    <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px; float: left;" value="Back"/>Back</button>
+  </div>
+</form><br>
+
+
 {% endblock %}

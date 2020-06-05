@@ -23,11 +23,11 @@ def before_request():
 
 
 #-----------------------------------------
-#		MAIN: auth_home()
+#		STATS: auth_stats()
 #-----------------------------------------
-@app.route("/auth")
+@app.route("/auth/stats")
 @login_required
-def auth_home():
+def auth_stats():
 
 	# TOP 5 search words
 	words = Words.find_words()
@@ -42,41 +42,11 @@ def auth_home():
 		new_list.append(stats[i]['average'])
 		result_list.append(new_list)
 
-	db_status=find_database_status()
+	db_status=Song.find_database_status()
 	if db_status:
-		return render_template("auth/home.html", db_status=db_status, top_words=result_list)
+		return render_template("auth/stats.html", db_status=db_status, top_words=result_list)
 	else:
-		return render_template("auth/home.html", db_status=None, top_words=result_list)
-
-
-#-----------------------------------------
-#		DB-STATUS: find_database_status()
-#-----------------------------------------
-def find_database_status():
-
-	if g.user.role == "GUEST" or g.user.role == "ADMIN":
-		user_list = [1,2]
-	else:
-		user_list = [1,g.user.id]
-
-	stmt = text("SELECT DISTINCT Song.language, "
-				"COUNT(DISTINCT Song.name), "
-				"COUNT(DISTINCT Author.name) "
-				"FROM Song "
-				"LEFT JOIN author_song ON Song.id = author_song.song_id "
-				"LEFT JOIN Author ON author_song.author_id = Author.id "
-				"LEFT JOIN account ON account.id = Song.account_id "
-				"WHERE account.id IN (:user1,:user2) "
-				"GROUP BY Song.language "
-				"ORDER BY Song.language ASC").params(user1=user_list[0],user2=user_list[1])
-
-	result = db.engine.execute(stmt)
-
-	response = []
-	for row in result:
-		response.append({'languages':row[0], 'songs':row[1], 'authors':row[2]})
-
-	return response
+		return render_template("auth/stats.html", db_status=None, top_words=result_list)
 
 
 #-----------------------------------------
@@ -126,7 +96,7 @@ def auth_login():
 		
 	db.session.permanent = remember_me
 
-	return redirect(url_for("auth_home"))
+	return redirect(url_for("auth_stats"))
 
 
 #-----------------------------------------

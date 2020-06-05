@@ -8,12 +8,14 @@ from application import app
 def before_request():
 	g.user = current_user
 
-@app.route("/", methods=["GET","POST"])
+@app.route("/")
 def index():
 	
-	if request.method == "GET":
-		return render_template("index.html")
-	
-	if request.method == "POST":
-		return render_template("info.html")
+	return render_template("index.html")
+
+
+@app.route("/info")
+def songs_info():
+
+	return render_template("info.html")
 

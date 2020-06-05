@@ -1,11 +1,12 @@
 {% extends "layout.html" %}
 
-<title>LyrFreq - Song Listing Page (visible to those logged in)</title>
+<title>LyrFreq - Songs Listing Page (visible to those logged in)</title>
 
 {% block body %}
 
-<h2>Songs</h2><br>
-<b style="margin-right:10px;"> Sort by:</b>
+<h1 aria-label="Songs">Songs</h1><br>
+
+<b>Sort by:</b>
 <div class="form-group">
   <form action= "{{ url_for('songs_list') }}" method="POST">
 
@@ -19,72 +20,65 @@
     <table>
       <tr>
         <td>
-          <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="width:60px; height:30px;" value="id">id</button>
+          <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="width:60px; height:30px;" value="id" aria-label="Sort Songs by id">id</button>
         </td>
         <td>
-           <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="margin-left: 20px; width:60px; height:30px;" value="titasc">A->Z</button>
+           <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="margin-left: 20px; width:60px; height:30px;" value="titasc" aria-label="Sort Songs by Title ascending">A->Z</button>
         </td>
         <td>
-          <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="width:60px; height:30px;" value="titdesc">Z->A</button>
+          <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="width:60px; height:30px;" value="titdesc" aria-label="Sort Songs by Title descending">Z->A</button>
         </td>
         <td>
-          <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="margin-left: 20px; width:60px; height:30px;" value="langtitasc">A->Z</button>
+          <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="margin-left: 20px; width:60px; height:30px;" value="langtitasc" aria-label="Sort Songs by First Language Then Title ascending">A->Z</button>
         </td>
         <td>
-          <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="width:60px; height:30px;" value="langtitdesc">Z->A</button>
-        </td>
-
-        <td>
-          <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px; float: right; margin-left: 60px;" value="Back">Back</button>
+          <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="width:60px; height:30px;" value="langtitdesc" aria-label="Sort Songs by First Language Then Title descending">Z->A</button>
         </td>
       </tr>
     </table>
 
-
-    
   </form>
 </div>
 
-<table>
-  <tr>
-    <th>id</th>
-    <th>title</th>
-    <th>lang</th>
-    <th style="padding-left: 20px;">lyrics</th>
-    <th style="padding-left: 20px;">edit</th>
-    <th style="padding-left: 10px;">delete</th>
-  </tr>
-{% for song in songs %}
-  <tr>
-    <td style="text-align: right; padding-right: 10px;">{{ song.id }}.</td>
-    <td>{{ song.name }}</td>
-    <td style="padding-left: 10px;">{{ song.language[:2]|upper }}</td>
-    <td>
-      <form method="POST" action="{{ url_for('songs_show', song_id=song.id) }}">
-        <div class="col-auto">
-          <button class="btn btn-sm btn-primary" type="submit" name="Show" style="margin-left: 5px; width:40px; height:20px;" value="Show"></button>
-        </div>
-      </form>
-    </td>
-    <td>
-      <form method="POST" action="{{ url_for('songs_edit', song_id=song.id) }}">
-        <input type="hidden" name="song_id" value="{{ song.id }}"></input>
-        <div class="col-auto">
-          <button class="btn btn-sm btn-warning" type="submit" name="Edit" style="width:40px; height:20px;" value="Edit"></button>
-        </div>
-      </form>
-    </td>
-    <td>
-      <form method="POST" action="{{ url_for('songs_delete', song_id=song.id) }}">
-        <input type="hidden" name="song_id" value="{{ song.id }}"></input>
-        <div class="col-auto">
-          <button class="btn btn-sm btn-danger" type="submit" name="Delete" style="width:40px; height:20px;" value="Delete"> </button>
-        </div>
-      </form>
-    </td>
-    <td></td>
-  </tr>
-  {% endfor %}
-</table>
+<div class="col-auto">
+  <table>
+    <tr>
+      <th>id</th>
+      <th>title</th>
+      <th>lang</th>
+      <th style="padding-left: 20px;">edit</th>
+      <th style="padding-left: 10px;">delete</th>
+    </tr>
+    {% for song in songs %}
+      <tr>
+        <td style="text-align: right; padding-right: 10px;" aria-label="Song id {{ song.id }}">{{ song.id }}.</td>
+  	    <!-- SONG NAME LINK -->
+        <td>
+  	      <a href="{{ url_for('songs_show', song_id=song.id, author_id='None', from_page='songs') }}" aria-label="Song Title {{ song.name }}">{{ song.name }}</a>
+  	    </td>
+  	    <!-- SONG LANGUAGE -->
+        <td style="padding-left: 10px;" aria-label="Song Language {{ song.language }}">{{ song.language[:2]|upper }}</td>
+  	    <!-- EDIT BUTTON -->
+        <td>
+          <form method="POST" action="{{ url_for('songs_edit', song_id=song.id) }}">
+            <input type="hidden" name="song_id" value="{{ song.id }}"></input>
+            <div class="col-auto">
+              <button class="btn btn-sm btn-warning" type="submit" name="Edit" style="width:40px; height:20px;" value="Edit" aria-label="Button For Edit Song {{ song.name }}"></button>
+            </div>
+          </form>
+        </td>
+  	    <!-- DELETE BUTTON -->
+        <td>
+          <form method="POST" action="{{ url_for('songs_delete', song_id=song.id) }}">
+            <input type="hidden" name="song_id" value="{{ song.id }}"></input>
+            <div class="col-auto">
+              <button class="btn btn-sm btn-danger" type="submit" name="Delete" style="width:40px; height:20px;" value="Delete" aria-label="Button For Delete Song {{ song.name }}"> </button>
+            </div>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
 
 {% endblock %}

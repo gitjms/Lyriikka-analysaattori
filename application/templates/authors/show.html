@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+<title>LyrFreq - Show Song Page (visible to those logged in)</title>
+
+{{ error }}
+{% block body %}
+
+<form method="POST" action="{{ url_for('authors_show', author_id=author.id) }}">
+  <div class="col-auto">
+    <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>
+  </div>
+</form><br><br>
+
+<div class="col-auto">
+  <p style="font-size: 20px;">
+    <small class="text-muted">Author:</small>
+    {{ author.name }}
+  </p>
+  <small class="text-muted" style="font-size: 18px;">
+    Songs:
+  </small>
+
+  <table>
+    <tr>
+      <th>id</th>
+      <th>title</th>
+    </tr>
+    {% for song in author.songs %}
+      <tr>
+        <td style="text-align: right; padding-right: 20px;">{{ song.id }}.</td>
+        <td>
+  	      <a style="font-size: 18px;" href="{{ url_for('songs_show', song_id=song.id, author_id=author.id, from_page='authors') }}">{{ song.name }}</a>
+  	    </td>
+      </tr><br>
+    {% endfor %}
+  </table>
+</div>
+  
+{% endblock %}

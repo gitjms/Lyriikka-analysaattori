@@ -4,25 +4,21 @@
 
 {% block body %}
 
-    <h1>About this application</h1>
+    <h1>About the application</h1>
 	
     <hr />
   
-    This application is a simple analysis tool for lingvistics, literary studies or literary theory. It helps in characterizing either lyrics or its author. The application is ment
-	to handle poems, stories, and all sorts of textual material that is deemed literature, not excluding scientific, philosophical or historical material.<br><br>
+    This application is a simple analysis tool which could be applied to, for example, lingvistics, sociolingvistics, literary studies, literary theory, and whatnot. It may help with characterizing either lyrics or its author. The application is ment for analyzing poems, stories, and all sorts of textual material that is deemed literature, not excluding scientific, philosophical or historical material.<br><br>
 	
-	With statistical textual analysis one can understand better author's
-	character, intentions, idiolect, mood, and many other factors that may help to construct a fuller view of the area of study. Or it can be used for sosiolingvistical study of social media messages to analyze ethnicity, religion, status, gender, level of education, age, etc. Words that we speak or write down tell one thing about us. But the explicitly written textual content doesn't always reveal everything - sometimes we may infer more from reading between the lines, or from statistical analysis.<br><br>
+	With statistical textual analysis one can better understand author's character, intentions, idiolect, mood, and many other factors that may help to construct a fuller view of the area of study. Or it can be used for sosiolingvistical study of social media messages to analyze ethnicity, religion, status, gender, level of education, age, etc. Words that we speak or write down tell one thing about us. Yet still the explicitly written textual content doesn't always reveal everything - sometimes we may infer more from reading between the lines, or from statistical analysis.<br><br>
 
 	For example, it has long been a mystery whether famous Old English epic poem <em>Beowulf</em> was composed by a single author or if it was stiched together from many textual sources [<a href="https://www.theguardian.com/books/2019/apr/08/beowulf-old-english-poem-work-one-author-research-suggests" data-toggle="tooltip" data-placement="top" title="Beowulf the work of single author, research suggests">Guardian</a>][<a href="https://news.harvard.edu/gazette/story/2019/04/did-beowulf-have-one-author-researchers-find-clues-in-stylometry/" data-toggle="tooltip" data-placement="top" title="Breaking down 'Beowulf'">The Harvard Gazette</a>].
 	
 	Recently an academic research team analyzed Beowulf statistically with a computer program and came to a conclusion that Beowulf was written by one author [<a href="https://doi.org/10.1038/s41562-019-0570-1" data-toggle="tooltip" data-placement="top" title="Large-scale quantitative profiling of the Old English verse tradition">Nature</a>]. The program is written in Python and is freely and publicly available at <a href="https://github.com/qcrit" data-toggle="tooltip" data-placement="top" title="Quantitative Criticism Lab">GitHub</a>.<br><br>
 	
 	For the moment this application only holds copyright free religious
-	lyrics. The final purpose for this application is not set as yet, because this is a study lab project at the <em>University of Helsinki</em> . So, for instance, there is a join table <em>Author</em> which would be better suited if the authors formed a column in the <em>Song</em> table. Maybe in the future this application holds textual material that have many authors. Then it would be better to be as is. Moreover, a plan is to add a word frequency search by author, so the more important it is to have a table for them alone.<br><br>
-	
-	The point is: this is a school project, aimed at learning how to code. This is not a professional or commercial research tool. As to the religious hymns which are cultural loan material, they do have a lot common authors regardless of language. Therefore, a separate table for authors is justified.
+	lyrics. The final purpose for the application is not set as yet, because this is a study project at the <em><a href="https://courses.helsinki.fi/en/tkt20011/135568662" data-toggle="tooltip" data-placement="top" title="Intermediate Studies Project: Database Application">University of Helsinki</a></em>.
     
   </p>
 
-{% endblock %}Hakutulokset
+{% endblock %}

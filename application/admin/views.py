@@ -5,7 +5,6 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.sql import func, text
 
 from application import app, db, login_manager, login_required
-from application.auth.views import find_database_status
 from application.auth.models import User
 from application.songs.models import Song
 from application.authors.models import Author
@@ -35,7 +34,7 @@ def admin_dashboard():
 		return login_manager.unauthorized()
 
 	if request.method == "GET":
-		return render_template("auth/home.html", db_status=find_database_status())
+		return render_template("auth/stats.html", db_status=Song.find_database_status())
 
 	if request.method == "POST":
 		return render_template("admin/dashboard.html", users = User.query.all())
@@ -147,7 +146,7 @@ def remove_songs():
 		db.create_all()
 		flash("Tables cleared.", "success")
 
-	return render_template("auth/home.html", db_status=None, top_words=None)
+	return render_template("auth/stats.html", db_status=None, top_words=None)
 
 
 #----------------------------------------------------
@@ -173,7 +172,7 @@ def add_songs():
 		db_status=find_database_status
 		if not db_status:
 			flash("Default authors already exist.", "warning")
-			return render_template("auth/home.html", db_status=None, top_words=None)
+			return render_template("auth/stats.html", db_status=None, top_words=None)
 		else:
 			for item in authors.authors_fi:
 				song = item[1]
@@ -204,7 +203,7 @@ def add_songs():
 		db_status=find_database_status
 		if not db_status:
 			flash("Default Songs already exist.", "warning")
-			return render_template("auth/home.html", db_status=None, top_words=None)
+			return render_template("auth/stats.html", db_status=None, top_words=None)
 		else:
 			# finnish songs
 			for i in range(1,7):

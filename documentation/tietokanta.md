@@ -76,17 +76,16 @@
         FOREIGN KEY(results_id) REFERENCES results (id) ON DELETE cascade
   );
   ```
-- Lisäksi tietokannassa on abstrakti luokka **Base**, jonka luokat **Song**, **User** ja **Author** perivät sarakkeiden *id* ja *name* osalta.
 
 ## Tietokantakaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/83637572-8573b000-a5b0-11ea-9f0a-27fa783a5769.png" alt="database diagram">
+<img src="https://user-images.githubusercontent.com/46410240/83837605-7d765600-a6ff-11ea-9250-ec9b2a7003be.png" alt="database diagram">
 
 ## Tietokantakyselyjä
 
-Sovelluksessa on kaksi automaattista kyselyä, jotka suoritetaan sisäänkirjautuessa. Näiden kyselyjen tulokset tulostetaan kotisivulle, eli ensimmäiselle sivulle sisäänkirjauduttua.
+Sovelluksessa on neljä automaattista kyselyä, jotka suoritetaan sisäänkirjautuessa. Näiden kyselyjen tulokset tulostetaan kotisivulle, eli ensimmäiselle sivulle sisäänkirjauduttua.
 
-Ensimmäinen kysely on tiedostossa *application/songs/views.py* sijaitsevassa funktiossa *find_database_status()*. Sen tulos on katsaus tietokannan kulloiseenkin sisältöön. Kysely on seuraavanlainen:
+Ensimmäinen kysely on *Song*-luokassa (*application/songs/models.py*) sijaitsevassa staattinen metodi *find_database_status()*. Sen tulos on katsaus tietokannan kulloiseenkin sisältöön. Kysely on seuraavanlainen:
 
 ```
 SELECT DISTINCT Song.language,
@@ -105,7 +104,7 @@ missä vierastiliä käyttäen parametrien arvot ovat ```(1, 2)```. Näistä ens
 
 ---
 
-Toinen kyselyistä on jaettu kahteen osaan *Words*-luokassa (*results*-taulu). Kyse on staattisista metodeista *find_words()* ja *find_stats()* tiedostossa *application/words/models.py*. Kyselyiden tulos tulostaa kotisivulle hakusanojen *top 5* -tilanteen (vain peruskäyttäjille). Kyselyt kuuluvat seuraavasti:
+Seuraavat kaksi kyselyä sijaitsevat *Words*-luokassa (*results*-taulu, *application/words/models.py*). Kyse on jälleen staattisista metodeista *find_words()* ja *find_stats()*. Kyselyiden tulos tulostaa kotisivulle hakusanojen *top 5* -tilanteen (vain peruskäyttäjille). Kyselyt kuuluvat seuraavasti:
 
 ```
 SELECT DISTINCT results.word,
@@ -128,7 +127,7 @@ SELECT co.matches,
 FROM results
 INNER JOIN (select DISTINCT results.word AS words,
                    SUM(results.matches) AS matches,
-                   AVG(results.matches) AS average
+                   ROUND( AVG(results.matches), 1 ) AS average
             FROM results
             JOIN song_result ON song_result.results_id = results.id
             JOIN Song ON Song.id = song_result.song_id
@@ -143,7 +142,27 @@ ORDER BY co.matches DESC
 LIMIT ?
 ```
 
-Parametrien kaksi ensimmäistä rvoa tulevat tässä samalla periaatteella kuin edellisissä kyselyesimerkeissäkin, mutta kolmas arvo termille *LIMIT* on 5.
+Parametrien kaksi ensimmäistä arvoa tulevat tässä samalla periaatteella kuin edellisissä kyselyesimerkeissäkin, mutta kolmas arvo termille *LIMIT* on 5.
+
+---
+
+Viimeinen staattinen kysely sijaitsee *Author*-luokassa (*application/authors/models.py*). Kyseessä on metodi *find_authors()*. Sen tuottaa listan lauluntekijöistä lauluineen, joka esitetään *Authors*-sivulla. Kysely on seuraavanlainen:
+
+```
+SELECT DISTINCT author.name,
+       STRING_AGG (Song.name,'; ') songs,
+       Song.language,
+       author.id
+FROM Song
+INNER JOIN author_song ON author_song.song_id = Song.id
+INNER JOIN author ON author.id = author_song.author_id
+JOIN account ON account.id = Song.account_id
+WHERE account.id IN (?,?)
+GROUP BY author.name, Song.language, author.id
+ORDER BY Song.language, author.name ASC;
+```
+
+Parametrien arvot tulevat jälleen samalla periaatteella kuin edellisissä kyselyesimerkeissä.
 
 ---
 

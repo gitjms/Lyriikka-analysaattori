@@ -71,7 +71,7 @@ class Words(db.Model):
 					"	SELECT "
 					"		DISTINCT results.word AS words, "
 					"		SUM(results.matches) AS matches, "
-					"		AVG(results.matches) AS average "
+					"		ROUND( AVG(results.matches), 1 ) AS average "
 					"	FROM results "
 					"	JOIN song_result ON song_result.results_id = results.id "
 					"	JOIN Song ON Song.id = song_result.song_id "

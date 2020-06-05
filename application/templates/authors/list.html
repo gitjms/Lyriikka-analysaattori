@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+<title>LyrFreq - Author Listing Page (visible to those logged in)</title>
+
+{% block body %}
+
+<h1>Authors</h1><br>
+
+{% if authors is not none %}
+
+<table>
+  <tr>
+    <th>Author</th>
+    <th>songs</th>
+    <th>lang</th>
+  </tr>
+  {% for author in authors %}
+    <tr>
+      <td style="padding-right: 10px;">
+	    <a href="{{ url_for('authors_show', author_id=author.id) }}">{{ author.author }}</a>
+      </td>
+      <td>{{ author.songs }}</td>
+      <td style="padding-left: 10px;">{{ author.language[:2]|upper }}</td>
+    </tr>
+  {% endfor %}
+</table><br>
+
+{% else %}
+  <p>Table Author is empty.</p>
+{% endif %}
+
+{% endblock %}

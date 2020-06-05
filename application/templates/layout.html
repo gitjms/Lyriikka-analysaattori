@@ -13,10 +13,10 @@
 <!-- APPLICATION'S OWN JAVASCRIPTS -->
 <script type="text/javascript" src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
 
-<script type="text/javascript" src="{{ url_for('static', filename='js/tables.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/showhidediv.js') }}"></script>
   
-  <!-- APPLICATION'S OWN STYLES -->
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}"></link>
+<!-- APPLICATION'S OWN STYLES -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}"></link>
   
 <!-- BOOTSTRAP TOOLTIPS -->
   <script>
@@ -36,115 +36,92 @@
 
 
     <!-- LYRFREQ HOME LOGO -->
-    <div>
-      {% if g.user.is_authenticated %}
-        <a class="navbar-brand" href="{{ url_for('auth_home') }}">
-      {% else %}
-        <a class="navbar-brand" href="{{ url_for('songs_index') }}">
-      {% endif %}
-      <img src="{{url_for('static', filename='images/brandlogo.png')}}" width="100" height="45" class="d-inline-flex align-top image-responsive myLogo" alt="LyrFreq - Lyrics Frequency Analysator - Home button image" data-toggle="tooltip" data-placement="top" title="Home page"></img></a>
+    <div class="container-fluid">
+	<nav aria-label="Home button image">
+      <a class="navbar-brand" href="{{ url_for('index') }}">
+        <img src="{{url_for('static', filename='images/brandlogo.png')}}" width="100" height="45" class="d-inline-flex align-top image-responsive myLogo" alt="LyrFreq - Lyrics Frequency Analysator - Home button image" data-toggle="tooltip" data-placement="top" title="Home page" aria-label="Home page"></img>
+      </a>
+    </nav>
     </div>
 
-    <!-- LOGIN / LOGOUT / CREATE ACCOUNT / LIST SONGS / ADD SONGS -->
+    <!-- LOGIN / LOGOUT / CREATE ACCOUNT -->
+	<!-- PAGES: SONGS / AUTHORS / STATS / INFO -->
 
-    <div class="container-fluid" style="float: left; padding-left: 0px;">
-      <div class="navbar navbar-dark justify-content-between">
-        <nav class="navbar-nav">
-          <table>
-            <tbody>
-              <tr><th></th></tr>
-              <!-- LOGIN/LOGOUT/CREATE -->
-              <tr>
-                {% if g.user.is_authenticated %}
-                <td id="nav-column">
-                  <b id="nav-b" style="margin-left: 25px; color:#b0746a; ">
-                  Hello {{ g.user.username }}
-                  </b>
-                </td>
-                <td id="nav-column">
-                  <a style="margin-left: 30px;" id="nav-a" href="{{ url_for('auth_logout') }}">Logout</a>
-                </td>
-                {% else %}
-                <td id="nav-column">
-                  <a style="margin-left: 35px;" id="nav-a" href="{{ url_for('auth_login') }}">Login</a>
-                </td>
-                <td id="nav-column">
-                  <a id="nav-a" href="{{ url_for('auth_create') }}">Create account</a>
-                </td>
-                {% endif %}
-              </tr>
+    <div class="container-fluid" >
+	<nav aria-label="Login, Logout, Create Account">
+      <table>
+      <tbody>
+        <!-- LOGIN / LOGOUT / CREATE ACCOUNT -->
+        {% if g.user.is_authenticated %}
+          <tr><td>
+            <b id="nav-b" style="color:#b0746a;" aria-label="Hello {{ g.user.username }}">
+              Hello {{ g.user.username }}
+            </b>
+          </td></tr>
+          <tr><td>
+            <a id="nav-a" href="{{ url_for('auth_logout') }}"aria-label="Logout">Logout</a>
+          </td></tr>
+          {% else %}
+          <tr><td>
+            <a id="nav-a" href="{{ url_for('auth_login') }}" aria-label="Login">Login</a>
+          </td></tr>
+          <tr><td>
+            <a id="nav-a" href="{{ url_for('auth_create') }}" aria-label="Create account">Create account</a>
+          </td></tr>
+        {% endif %}
+      </tbody>
+      </table>
+    </nav>
+	</div>
     
-              <!-- LIST SONGS / ADD SONGS -->
-              <tr>
-                {% if g.user.is_authenticated %}
-                  <td id="nav-column">
-                    <style type="text/css">
-                      a:link {color: #000000; text-decoration: underline; }
-                      a:active {color: #0000ff; text-decoration: underline; }
-                      a:visited {color: #008000; text-decoration: underline; }
-                      a:hover {color: #ff0000; text-decoration: none; }
-                    </style>
-                    <a class="nav-item nav-link active" href="{{ url_for('songs_home') }}" id="nav-a" >Songs</a>
-                  </td>
-                  <td id="nav-column">
-                    <a class="nav-item nav-link active" href="{{ url_for('songs_create') }}" id="nav-a">Add song</a>
-                  </td >
-                {% else %}
-                  <td id="nav-column">
-                    <a class="nav-item nav-link disabled" href="{{ url_for('songs_home') }}" id="nav-a-dis">Songs</a>
-                  </td>
-                  <td id="nav-column">
-                    <a class="nav-item nav-link disabled" href="{{ url_for('songs_create') }}" id="nav-a-dis">Add song</a>
-                  </td>
-                {% endif %}
-              </tr>
-            </tbody>
-          </table>
-        </nav>
-      </div>
-    </div>
+    <!-- PAGES: SONGS / AUTHORS / STATS / INFO -->
+    {% if g.user.is_authenticated %}
+	  <div id="pagesDiv" class="container-fluid" style="padding-left: 0px;">
+	  <nav aria-label="Page navigation">
+        <ul class="pagination">
+		  <style type="text/css">
+            .page-link:hover {color: #ff0000; background-color: #7d1c09; color: white; }
+          </style>
+          <li style="font-weight: bold;" class="page-item"><a class="page-link" href="{{ url_for('songs_list') }}" aria-label="Songs Page">Songs</a></li>
+          <li style="font-weight: bold;" class="page-item"><a class="page-link" href="{{ url_for('authors_list') }}" aria-label="Authors Page">Authors</a></li>
+          <li style="font-weight: bold;" class="page-item"><a class="page-link" href="{{ url_for('auth_stats') }}" aria-label="Stats Page">Stats</a></li>
+          <li style="font-weight: bold;" class="page-item"><a class="page-link" href="{{ url_for('songs_info') }}" aria-label="Info Page">Info</a></li>
+        </ul>
+      </nav>
+	  </div>
+    {% endif %}
 
 
     <!-- SEARCH WORD -->
 
     {% if g.user.is_authenticated %}
-      <div class="container-fluid" style="padding-left: 0px; padding-right: 0px;">
-        <div class="navbar navbar-dark justify-content-between">
-          <div class="form-group">
-            <nav class="navbar-nav">
-              <form class="form-inline my-0 my-lg-0" action="/words/find/" method="POST" name="wordform">
-                <table>
-                  <tbody>
-                    <tr colspan="3">
-                      <input class="form-control mr-sm-2" type="text" style="width: 160px" placeholder="Quick Word Search" aria-label="Search" name="wordsearch" id="wordsearch" required autofocus></input>
-                    </tr>
-                    <tr>
-                      <td>
-                        <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px;" name="langchoice" id="langchoice" value="finnish" data-toggle="tooltip" data-placement="top" title="Search for finnish word">Fi</button>
-                      </td>
-                      <td>
-                        <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px; margin-left: 3px;" name="langchoice" id="langchoice" value="english" data-toggle="tooltip" data-placement="top" title="Search for english word">En</button>
-                      </td>
-                      <td>
-                        <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px; margin-left: 3px;" name="langchoice" id="langchoice" value="french" data-toggle="tooltip" data-placement="top" title="Search for french word">Fr</button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </form>
-            </nav>
-          </div>
+      <div class="container-fluid" style="padding-left: 0px;">
+	  <nav aria-label="Word Search">
+        <div class="form-group">
+          <form class="form-inline my-0 my-lg-0" action="/words/find/" method="POST" name="wordform">
+            <table>
+            <tbody>
+              <tr colspan="3">
+                <input class="form-control mr-sm-2" type="text" style="width: 160px" placeholder="Quick Word Search" aria-label="Search" name="wordsearch" id="wordsearch" required autofocus aria-label="Search Word Input"></input>
+              </tr>
+              <tr>
+                <td>
+                  <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px;" name="langchoice" id="langchoice" value="finnish" data-toggle="tooltip" data-placement="top" title="Search for finnish word" aria-label="Finnish Language Choice">Fi</button>
+                </td>
+                <td>
+                  <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px; margin-left: 3px;" name="langchoice" id="langchoice" value="english" data-toggle="tooltip" data-placement="top" title="Search for english word" aria-label="English Language Choice">En</button>
+                </td>
+                <td>
+                  <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 50px; margin-left: 3px;" name="langchoice" id="langchoice" value="french" data-toggle="tooltip" data-placement="top" title="Search for french word" aria-label="French Language Choice">Fr</button>
+                </td>
+              </tr>
+            </tbody>
+            </table>
+          </form>
         </div>
+      </nav>
       </div>
 
-
-      <!-- INFO LINK (MARKED AS ?) -->
-
-      <div class="navbar navbar-dark" style="padding-left: 0px;">
-        <form action="/" method="POST" >
-          <button type="button form-control" class="btn" style="color: #ffffff; font-weight: bold; font-size: 18px; width: 20px; height: 25px; float: right; margin-right: 30px; padding-bottom: 30px; padding-right: 35px;" name="info" id="info" data-toggle="tooltip" data-placement="top" title="Info">?</button>
-        </form>
-      </div>
     {% endif %}
   </nav>
 
@@ -165,7 +142,7 @@
 
 <!-- GRAY TEXT AREA -->
   
-<div class="jumbotron jumbotron-fluid">
+<div class="jumbotron jumbotron-fluid bg-light">
   <div class="container">
     {% block body %}{% endblock %}
   </div>
@@ -180,7 +157,7 @@
   <div class="container-fluid">
     <form action="/defaults/add" method="POST">
       <div>
-        <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px; margin-right: 50px; margin-bottom: 30px;" name="add" id="add" value="add">Add default songs</button>
+        <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px; margin-right: 50px; margin-bottom: 30px;" name="add" id="add" value="add" aria-label="Add default songs">Add default songs</button>
       </div>
     </form>
   </div>
@@ -190,7 +167,7 @@
   <div class="container-fluid">
     <form action="/defaults/remove" method="POST">
       <div>
-        <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px; margin-bottom: 30px;" name="remove" id="remove" value="remove">Remove default songs</button>
+        <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px; margin-bottom: 30px;" name="remove" id="remove" value="remove" aria-label="Remove default songs">Remove default songs</button>
       </div>
     </form>
   </div>
@@ -199,7 +176,7 @@
   <!-- LIST USERS -->
   <div class="container-fluid" >
     <form action="/admin" method="POST">
-      <button class="btn btn-sm btn-primary" type="submit" style="float: left; margin-left: 50px; margin-bottom: 30px;" name="listusers" id="listusers" value="listusers">List users</button>
+      <button class="btn btn-sm btn-primary" type="submit" style="float: left; margin-left: 50px; margin-bottom: 30px;" name="listusers" id="listusers" value="listusers" aria-label="List users">List users</button>
     </form>
   </div>
 {% endif %}

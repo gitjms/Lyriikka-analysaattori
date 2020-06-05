@@ -13,8 +13,9 @@
     <form method="POST" action="{{ url_for('words_find') }}">
       <div class="col-auto">
 
-
+        {% if g.user.role != "GUEST" %}
         <button class="btn btn-sm btn-danger" type="submit" style="width: 140px; float: right; margin-left: 20px;" name="save" id="save" value="{{  word  }},{{ language }},{{ filtered }}" action="/words/find/">Save To Database</button>
+        {% endif %}
 
 
         {% if filtered == False %}

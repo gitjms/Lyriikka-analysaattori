@@ -97,6 +97,10 @@ Myös Herokussa tulee tietokantaan asettaa oletuskäyttäjät: pääkäyttäjä 
 3. Jatka sitten yllä olevista kohdista 8 ja 9.
 
 4. Voit lopuksi sulkea PostGres-yhteyden komennolla ```\q``` ja vastaamalla ```N``` kysymykseen *Terminate batch job (Y/N)*
+5. Avaa sovellus selaimessa syöttämällä terminaaliin komento:
+   ```
+   heroku open
+   ```
 
 ---
 

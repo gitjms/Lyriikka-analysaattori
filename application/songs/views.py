@@ -12,41 +12,15 @@ from application import app, db, login_manager, login_required
 from application.songs.models import Song
 from application.auth.models import User
 from application.words.models import Words
+from application.authors.views import authors_list
 from application.authors.models import Author, author_song
 from application.songs.forms import NewSongForm, EditSongForm
 
-# Lomakkeen näyttämisen ja lähetyksen vastaanottava toiminnallisuus.
 
 @app.before_request
 def before_request():
 	g.user = current_user
 
-
-#-----------------------------------------
-#		INDEX: songs_index()
-#-----------------------------------------
-@app.route("/")
-def songs_index():
-	return render_template("index.html")
-
-
-#-----------------------------------------
-#		SONGS: songs_home()
-#-----------------------------------------
-@app.route("/songs", methods=["GET", "POST"])
-@login_required
-def songs_home():
-	if request.form.get("Back") == "Back":
-		return render_template("songs/home.html")
-	if request.method == "GET":
-		return render_template("songs/home.html")
-
-	if request.method == "POST":
-		if request.form.get("ListSongs") == "ListSongs":
-			return redirect('/songs/list')
-		elif request.form.get("ListAuthors") == "ListAuthors":
-			return render_template("songs/home.html",)
-	
 
 #-----------------------------------------
 #		SONGS: songs_list()
@@ -87,13 +61,19 @@ def songs_list():
 #-----------------------------------------
 #		SONGS/SHOW: songs_show()
 #-----------------------------------------
-@app.route("/songs/show/<song_id>/", methods=["GET", "POST"])
+@app.route("/songs/show/<song_id>/<author_id>/<from_page>", methods=["GET", "POST"])
 @login_required
-def songs_show(song_id):
+def songs_show(song_id,author_id,from_page):
 
-	if request.method == "GET" and request.form.get("Back") == "Back":
-		return render_template("songs/list.html", song = Song.query.filter_by(id=song.account_id).first())
-	return render_template("songs/show.html", song = Song.query.get(song_id))
+	if request.method == "POST":
+		if request.form.get("Back") == "Back":
+			if from_page == 'songs':
+				return redirect(url_for("songs_list"))
+			elif from_page == 'authors':
+				return redirect(url_for("authors_show", author_id = author_id))
+
+	if request.method == "GET":
+		return render_template("songs/show.html", song = Song.query.get(song_id), song_id=song_id, author_id=author_id, from_page=from_page)
 
 
 #-----------------------------------------
