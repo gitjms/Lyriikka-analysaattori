@@ -38,7 +38,7 @@ def songs_list():
 		songs = Song.query.filter(Song.account_id.in_(user_list)).all()
 		
 		if not songs:
-			return render_template("songs/home.html", songs=None, top_words=None)
+			return render_template("songs/list.html", songs=None, top_words=None)
 
 	if request.method == "POST":
 		# sorting
@@ -52,8 +52,7 @@ def songs_list():
 			songs = Song.query.filter(Song.account_id.in_(user_list)).order_by(Song.language).order_by(Song.name.desc()).all()
 		elif request.form.get("sort") == "id":
 			songs = Song.query.filter(Song.account_id.in_(user_list)).order_by(Song.id.asc()).all()
-		else:
-			return redirect(url_for("songs_home"))
+
 
 	return render_template("songs/list.html", songs=songs)
 
