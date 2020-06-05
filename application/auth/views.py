@@ -96,7 +96,7 @@ def auth_login():
 		
 	db.session.permanent = remember_me
 
-	return redirect(url_for("auth_stats"))
+	return redirect(url_for("index"))
 
 
 #-----------------------------------------
