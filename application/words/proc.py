@@ -6,6 +6,7 @@ import operator
 import re
 import nltk
 nltk.download('stopwords')
+nltk.download('punkt')
 from nltk.corpus import stopwords
 from collections import Counter
 
@@ -20,6 +21,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 def proc_text(song_list, word_to_find):
 
 	text_list = [] # [ song_id, lyrics, song_name ]
+	nltk.data.path.append(os.getcwd()+'/application/nltk_data/')
 
 	for song in song_list:
 		tokens = nltk.word_tokenize(song[1])
