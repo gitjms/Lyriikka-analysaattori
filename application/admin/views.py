@@ -131,7 +131,6 @@ def remove_songs():
 		except:
 			flash("Join table author_song not cleared.", "danger")
 			db.session.rollback()
-			flash("Tables not cleared.", "danger")
 
 		try:
 			stmt = text("DELETE FROM song_result;")
@@ -140,10 +139,7 @@ def remove_songs():
 		except:
 			flash("Join table song_result not cleared.", "danger")
 			db.session.rollback()
-			flash("Tables not cleared.", "danger")
 		
-		# db.drop_all(bind=None)
-		# db.create_all()
 		flash("Tables cleared.", "success")
 
 	return render_template("auth/stats.html", db_status=None, top_words=None)

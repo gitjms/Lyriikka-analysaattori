@@ -60,6 +60,12 @@ def words_find():
 	# get data from database
 	#
 	#-------------------------------------------------------
+
+	songs = Song.query.filter(Song.account_id.in_(user_list)).all()
+
+	if not songs:
+		return render_template("words/words.html", frequencies = None, songs=None)
+
 	qry_list = db.session().query(Song.id,Song.lyrics,Song.name,Song.language).filter(Song.account_id.in_(user_list)).filter(Song.language==language).all()
 
 	song_list = []

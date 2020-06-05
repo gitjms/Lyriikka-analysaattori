@@ -9,7 +9,22 @@
     <strong>{{ err }}</strong>
   {% endfor %}
 
-  {% if frequencies is not none %}
+  {% if frequencies is none and songs is none %}
+
+    <!-- IF DATABASE IS EMPTY -->
+    <strong id="big-strong">Database is empty</strong>
+  
+  {% elif frequencies is none %}
+
+    <!-- IF NOT RESULTS -->
+    <strong style="font-size: 20px;">
+      <small class="text-muted">Word:</small>&nbsp;&nbsp;
+        <font size="+4"><em>[</em></font>&nbsp;&nbsp;<em>{{  word  }}</em>&nbsp;&nbsp;<font size="+4"><em>]</em></font>
+        &nbsp;&nbsp;&#8594;&nbsp;&nbsp;&nbsp;no results
+    </strong>
+
+  {% else %}
+
     <form method="POST" action="{{ url_for('words_find') }}">
       <div class="col-auto">
 
@@ -170,14 +185,6 @@
       </div>
     </form>
 
-
-  <!-- IF NOT RESULTS -->
-  {% else %}
-    <strong style="font-size: 20px;">
-      <small class="text-muted">Word:</small>&nbsp;&nbsp;
-        <font size="+4"><em>[</em></font>&nbsp;&nbsp;<em>{{  word  }}</em>&nbsp;&nbsp;<font size="+4"><em>]</em></font>
-        &nbsp;&nbsp;&#8594;&nbsp;&nbsp;&nbsp;no results
-    </strong>
   {% endif %}
 
 {% endblock %}
