@@ -34,7 +34,7 @@ def admin_dashboard():
 		return login_manager.unauthorized()
 
 	if request.method == "GET":
-		return render_template("auth/stats.html", db_status=Song.find_database_status())
+		return render_template("auth/stats.html", db_status=Song.find_database_status(), top_words=None)
 
 	if request.method == "POST":
 		return render_template("admin/dashboard.html", users = User.query.all())
@@ -142,8 +142,8 @@ def remove_songs():
 			db.session.rollback()
 			flash("Tables not cleared.", "danger")
 		
-		db.drop_all(bind=None)
-		db.create_all()
+		# db.drop_all(bind=None)
+		# db.create_all()
 		flash("Tables cleared.", "success")
 
 	return render_template("auth/stats.html", db_status=None, top_words=None)
@@ -169,7 +169,7 @@ def add_songs():
 		# add default authors
 		#------------------------------------------------
 
-		db_status=find_database_status
+		db_status=Song.find_database_status
 		if not db_status:
 			flash("Default authors already exist.", "warning")
 			return render_template("auth/stats.html", db_status=None, top_words=None)
@@ -200,7 +200,7 @@ def add_songs():
 		en_added = False
 		fr_added = False
 
-		db_status=find_database_status
+		db_status=Song.find_database_status
 		if not db_status:
 			flash("Default Songs already exist.", "warning")
 			return render_template("auth/stats.html", db_status=None, top_words=None)
@@ -324,4 +324,4 @@ def add_songs():
 			flash("French songs not added.", "danger")
 	
 	
-	return redirect(url_for("songs_home"))
+	return render_template("auth/stats.html", db_status=Song.find_database_status(), top_words=None)

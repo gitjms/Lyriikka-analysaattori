@@ -6,8 +6,12 @@
 
 <h1>Authors</h1><br>
 
-{% if authors is not none %}
+{% if not authors or authors is not defined %}
 
+  <!-- IF DATABASE IS EMPTY -->
+  <strong id="big-strong">Database is empty</strong>
+
+{% else %}
 <table>
   <tr>
     <th>Author</th>
@@ -25,8 +29,6 @@
   {% endfor %}
 </table><br>
 
-{% else %}
-  <p>Table Author is empty.</p>
 {% endif %}
 
 {% endblock %}

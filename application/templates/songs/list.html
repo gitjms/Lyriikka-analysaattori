@@ -6,8 +6,12 @@
 
 <h1 aria-label="Songs">Songs</h1><br>
 
-{% if songs is not none %}
+{% if not songs or songs is not defined %}
 
+  <!-- IF DATABASE IS EMPTY -->
+  <strong id="big-strong">Database is empty</strong>
+
+{% else %}
 <b>Sort by:</b>
 <div class="form-group">
   <form action= "{{ url_for('songs_list') }}" method="POST">
@@ -53,19 +57,19 @@
     </tr>
     {% for song in songs %}
       <tr>
-        <td style="text-align: right; padding-right: 10px;" aria-label="Song id {{ song.id }}">{{ song.id }}.</td>
+        <td style="text-align: right; padding-right: 10px;" aria-label="Song id">{{ song.id }}.</td>
   	    <!-- SONG NAME LINK -->
         <td>
-  	      <a href="{{ url_for('songs_show', song_id=song.id, author_id='None', from_page='songs') }}" aria-label="Song Title {{ song.name }}">{{ song.name }}</a>
+  	      <a href="{{ url_for('songs_show', song_id=song.id, author_id='None', from_page='songs') }}" aria-label="Song Title">{{ song.name }}</a>
   	    </td>
   	    <!-- SONG LANGUAGE -->
-        <td style="padding-left: 10px;" aria-label="Song Language {{ song.language }}">{{ song.language[:2]|upper }}</td>
+        <td style="padding-left: 10px;" aria-label="Song Language">{{ song.language[:2]|upper }}</td>
   	    <!-- EDIT BUTTON -->
         <td>
           <form method="POST" action="{{ url_for('songs_edit', song_id=song.id) }}">
             <input type="hidden" name="song_id" value="{{ song.id }}"></input>
             <div class="col-auto">
-              <button class="btn btn-sm btn-warning" type="submit" name="Edit" style="width:40px; height:20px;" value="Edit" aria-label="Button For Edit Song {{ song.name }}"></button>
+              <button class="btn btn-sm btn-warning" type="submit" name="Edit" style="width:40px; height:20px;" value="Edit" aria-label="Button For Edit Song"></button>
             </div>
           </form>
         </td>
@@ -74,7 +78,7 @@
           <form method="POST" action="{{ url_for('songs_delete', song_id=song.id) }}">
             <input type="hidden" name="song_id" value="{{ song.id }}"></input>
             <div class="col-auto">
-              <button class="btn btn-sm btn-danger" type="submit" name="Delete" style="width:40px; height:20px;" value="Delete" aria-label="Button For Delete Song {{ song.name }}"> </button>
+              <button class="btn btn-sm btn-danger" type="submit" name="Delete" style="width:40px; height:20px;" value="Delete" aria-label="Button For Delete Song"> </button>
             </div>
           </form>
         </td>
@@ -83,12 +87,6 @@
   </table>
 </div>
 
-
-<!-- IF NOT RESULTS -->
-{% else %}
-  <strong style="font-size: 20px;">
-    Song Table is empty.
-  </strong>
 {% endif %}
 
 {% endblock %}

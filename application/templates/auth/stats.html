@@ -10,9 +10,12 @@
 {% for err in error %}
   <strong>{{ err }}</strong>
 {% endfor %}
-    
+
 {% if not db_status or db_status is not defined %}
-  <strong id="big-strong">Song database is empty</strong>
+
+  <!-- IF DATABASE IS EMPTY -->
+  <strong id="big-strong">Database is empty</strong>
+
 {% else %}
   <strong id="big-strong">Database status</strong>
   <div id="index">
