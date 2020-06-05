@@ -20,7 +20,6 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 def proc_text(song_list, word_to_find):
 
 	text_list = [] # [ song_id, lyrics, song_name ]
-	# nltk.data.path.append(os.getcwd()+'/application/nltk_data/')
 
 	for song in song_list:
 		tokens = nltk.word_tokenize(song[1])

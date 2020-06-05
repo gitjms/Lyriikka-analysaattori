@@ -6,6 +6,8 @@
 
 <h1 aria-label="Songs">Songs</h1><br>
 
+{% if songs is not none %}
+
 <b>Sort by:</b>
 <div class="form-group">
   <form action= "{{ url_for('songs_list') }}" method="POST">
@@ -80,5 +82,13 @@
     {% endfor %}
   </table>
 </div>
+
+
+<!-- IF NOT RESULTS -->
+{% else %}
+  <strong style="font-size: 20px;">
+    Song Table is empty.
+  </strong>
+{% endif %}
 
 {% endblock %}
