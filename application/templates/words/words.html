@@ -4,8 +4,10 @@
 
 {% block body %}
 
-{% for err in error %}
-  <strong>{{ err }}</strong>
+{% for err in errors %}
+  <div class="col-auto">
+    <strong>{{ err }}</strong>
+  </div>
 {% endfor %}
 
 {% if frequencies is none and songs is none %}

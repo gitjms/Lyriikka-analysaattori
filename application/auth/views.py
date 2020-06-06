@@ -55,6 +55,9 @@ def auth_stats():
 @app.route("/auth/login", methods = ["GET", "POST"])
 def auth_login():
 	form = LoginForm(request.form)
+	
+	if g.user.is_authenticated:
+		return redirect(url_for("index"))
 
 	if request.method == "GET":
 		return render_template("auth/loginform.html", form = form)

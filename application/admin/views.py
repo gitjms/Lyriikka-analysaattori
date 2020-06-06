@@ -171,21 +171,18 @@ def add_songs():
 			return render_template("auth/stats.html", db_status=None, top_words=None)
 		else:
 			for item in authors.authors_fi:
-				song = item[1]
 				for auth in item[0]:
-					db.session.add(Author(name=auth))
+					db.session.add(Author(name=auth,result_all=None,result_no_stop_words=None))
 					db.session.commit()
 
 			for item in authors.authors_en:
-				song = item[1]
 				for auth in item[0]:
-					db.session.add(Author(name=auth))
+					db.session.add(Author(name=auth,result_all=None,result_no_stop_words=None))
 					db.session.commit()
 			
 			for item in authors.authors_fr:
-				song = item[1]
 				for auth in item[0]:
-					db.session.add(Author(name=auth))
+					db.session.add(Author(name=auth,result_all=None,result_no_stop_words=None))
 					db.session.commit()
 
 		#------------------------------------------------

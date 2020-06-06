@@ -123,7 +123,7 @@ def songs_edit(song_id):
 			if new_authors != old_authors:
 				for auth in new_authors:
 					if Author.query.filter_by(name=auth.strip()).first() is None:
-						author = Author(auth.strip())
+						author = Author(name=auth.strip(),result_all=None,result_no_stop_words=None)
 						try:
 							db.session().add(author)
 							db.session().commit()
@@ -204,7 +204,7 @@ def songs_create():
 	authors = request.form["author"].split(',')
 	for auth in authors:
 		if Author.query.filter_by(name=auth.strip()).first() is None:
-			author = Author(auth.strip())
+			author = Author(name=auth.strip(),result_all=None,result_no_stop_words=None)
 			try:
 				db.session().add(author)
 				db.session().commit()

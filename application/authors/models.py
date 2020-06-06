@@ -7,6 +7,7 @@ import os
 from flask import g
 from flask_login import current_user
 
+from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.sql import text
 
 
@@ -29,6 +30,8 @@ class Author(Base):
 
 	__tablename__ = 'author'
 
+	result_all = db.Column(JSON, nullable=True)
+	result_no_stop_words = db.Column(JSON, nullable=True)
 
 	songs = db.relationship("Song",
 		secondary=author_song,
@@ -38,8 +41,10 @@ class Author(Base):
 	)
 
 
-	def __init__(self, name):
+	def __init__(self, name, result_all, result_no_stop_words):
 		self.name = name
+		self.result_all = result_all
+		self.result_no_stop_words = result_no_stop_words
 
 	def get_id(self):
 		return self.id
@@ -73,7 +78,7 @@ class Author(Base):
 		res = db.engine.execute(stmt)
 		response = []
 		for row in res:
-			response.append({'author':row[0],'songs':row[1],'language':row[2],'id':row[3]})
+			response.append({'author':row[0],'songs':row[1],'language':row[2],'language':row[2],'id':row[3]})
 
 		return response
 
@@ -88,18 +93,19 @@ class Author(Base):
 
 		stmt = text("SELECT Song.id, "
 					"		Song.lyrics, "
+					"		Song.name, "
 					"		Song.language "
 					"FROM Song "
 					"LEFT JOIN author_song ON Song.id = author_song.song_id "
 					"LEFT JOIN Author ON author_song.author_id = Author.id "
 					"LEFT JOIN account ON account.id = Song.account_id "
 					"WHERE account.id IN (:user1,:user2) AND author.id = :id "
-					"GROUP BY Song.id, Song.lyrics, Song.language").params(user1=user_list[0],user2=user_list[1],id=author_id)
+					"GROUP BY Song.id, Song.lyrics, Song.name, Song.language").params(user1=user_list[0],user2=user_list[1],id=author_id)
 
 		result = db.engine.execute(stmt)
 
 		response = []
 		for row in result:
-			response.append({'id':row[0],'lyrics':row[1],'language':row[2]})
+			response.append({'id':row[0],'lyrics':row[1],'title':row[2],'language':row[3]})
 
 		return response

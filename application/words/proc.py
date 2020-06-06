@@ -40,9 +40,9 @@ def proc_text(song_list, word_to_find):
 		for i in lyrics:
 			if nonPunct.match(i):
 				raw_words.append(i.lower())
-			if word_to_find and unidecode(i.lower()) == unidecode(word_to_find.lower()):
+			if word_to_find is not None and unidecode(i.lower()) == unidecode(word_to_find.lower()):
 				count += 1
-		if (word_to_find and count > 0) or word_to_find is None:
+		if (word_to_find is not None and count > 0) or (word_to_find is None and count == 0):
 			raw_words_list.append([song_id, raw_words, song_name])
 			raw_word_count.append(Counter(raw_words))
 
@@ -57,16 +57,16 @@ def proc_text(song_list, word_to_find):
 		raw_words = item[1]
 		song_name = item[2]
 		for w in raw_words:
-			if word_to_find and unidecode(w.lower()) == unidecode(word_to_find.lower()):
+			if word_to_find is not None and unidecode(w.lower()) == unidecode(word_to_find.lower()):
 				count += 1
 				tot_count += 1
 			w_list.append(w)
-		if (word_to_find and count > 0) or word_to_find is None:
+		if (word_to_find is not None and count > 0) or (word_to_find is None and count == 0):
 			new_string = ' '.join(w_list)
 			new_songlist.append([song_id,new_string,song_name])
 			new_raw_words_list.append([count, [song_id, w_list]])
 
-	if word_to_find:
+	if word_to_find is not None:
 		return raw_word_count, new_songlist, new_raw_words_list, tot_count
 	else:
 		return raw_word_count, new_songlist, new_raw_words_list
@@ -87,11 +87,7 @@ def stop_words(filtered, new_raw_words_list, language):
 		raw_words = words_list[1][1]
 		raw_words_graph = [w.lower() for w in raw_words if w.lower()]
 		no_stop_words = [w.lower() for w in raw_words if w.lower() not in stops]
-		if filtered:
-			words_count = Counter(no_stop_words)
-		else:
-			words_count = Counter(raw_words_graph)
-
+		words_count = Counter(no_stop_words)
 		if filtered:
 			graph_list.append(no_stop_words)
 		else:
@@ -117,7 +113,7 @@ def stop_words(filtered, new_raw_words_list, language):
 # create results: songs, graph_data
 def create_results(raw_word_count, db_words_list, new_songlist, graph_list, word_to_find, tot_count):
 
-	if word_to_find:
+	if word_to_find is not None:
 		#----------------------------------------
 		# songs = [ song_id, Markup(new_string), song_name ]
 		#----------------------------------------
@@ -150,14 +146,15 @@ def create_results(raw_word_count, db_words_list, new_songlist, graph_list, word
 		reverse=True
 	)[:10]
 
-	if word_to_find:
+	if word_to_find is not None:
 		return songs, graph_data
 	else:
 		return graph_data
 
 
-# database storing
-def store_db(raw_word_count, db_words_list, word_to_find, counts):
+# database storing for search word results
+def store_search_word(raw_word_count, db_words_list, word_to_find, counts):
+	errors = []
 
 	if g.user.role == "GUEST":
 		return login_manager.unauthorized()
@@ -178,8 +175,32 @@ def store_db(raw_word_count, db_words_list, word_to_find, counts):
 			db.session.commit()
 		except SQLAlchemyError:
 			db.session.rollback()
+			errors.append("Unable to add item to database.")
 			flash("Unable to add item to Words database.", "danger")
 			break
 
-	return
+	return errors
+
+
+# database storing for author words results
+def store_author_words(author, raw_word_count, db_words_list, counts):
+	errors = []
+
+	if g.user.role == "GUEST":
+		return login_manager.unauthorized()
+
+	# database
+	for i in range(len(raw_word_count)):
+		try:
+			author.result_all = raw_word_count[i]
+			db.session.commit()
+			author.result_no_stop_words = db_words_list[i][1]
+			db.session.commit()
+		except SQLAlchemyError:
+			db.session.rollback()
+			errors.append("Unable to add item to database.")
+			flash("Unable to add item to Author database.", "danger")
+			break
+
+	return errors
 	

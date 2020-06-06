@@ -4,7 +4,7 @@ from flask_login import current_user
 from application import app, db, login_manager, login_required
 from application.songs.models import Song
 from application.words.models import Words
-from application.words.proc import proc_text, stop_words, create_results, store_db
+from application.words.proc import proc_text, stop_words, create_results, store_search_word
 
 
 @app.before_request
@@ -18,7 +18,6 @@ def before_request():
 @app.route("/words/find/", methods=["GET", "POST"])
 @login_required
 def words_find():
-	errors = []
 	filtered = False
 	save = False
 
@@ -97,7 +96,7 @@ def words_find():
 	if tot_count > 0:
 		graph_list, results_list, db_words_list = stop_words(filtered, new_raw_words_list, language)
 	else:
-		return render_template("words/words.html", frequencies = None, word=word_to_find, errors=errors)
+		return render_template("words/words.html", frequencies = None, word=word_to_find)
 
 	#-------------------------------------------------------
 	# create results: songs, graph_data, (counts)
@@ -114,18 +113,25 @@ def words_find():
 	#-------------------------------------------------------
 	# store to database
 	# 
-	# -> proc.store_db()
+	# -> proc.store_search_word()
 	#
 	#-------------------------------------------------------
-	if save == True and tot_count > 0:
-		# counts per song (for database storing)
+	errors = []
+	is_already = Words.query.filter_by(result_all=word_to_find).first()
+	
+	if save == True and tot_count > 0 and Words.query.filter_by(word=word_to_find).first() is None:
+		# counts per song
 		counts = []
 		for item in results_list:
-			counts.append(item[2])
+				counts.append(item[2])
 
-		store_db(raw_word_count, db_words_list, word_to_find, counts)
+		errors = store_search_word(raw_word_count, db_words_list, word_to_find, counts)
 
-	return render_template("words/words.html", frequencies = results_list, songs=replace_accent(songs), word=word_to_find, errors=errors, count = tot_count, song_count=len(new_songlist), graph_data=graph_data, language=language, filtered=filtered, save=save)
+	elif save == True and tot_count > 0 and Words.query.filter_by(word=word_to_find).first() is not None:
+		errors.append("Results already in the database.")
+		flash("Results not added to results database.", "warning")
+
+	return render_template("words/words.html", frequencies=results_list, songs=replace_accent(songs), word=word_to_find, errors=errors, count = tot_count, song_count=len(new_songlist), graph_data=graph_data, language=language, filtered=filtered)
 
 
 # own stopwords
