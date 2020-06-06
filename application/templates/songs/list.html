@@ -60,13 +60,13 @@
         <td style="text-align: right; padding-right: 10px;" aria-label="Song id">{{ song.id }}.</td>
   	    <!-- SONG NAME LINK -->
         <td>
-  	      <a href="{{ url_for('songs_show', song_id=song.id, author_id='None', from_page='songs') }}" aria-label="Song Title">{{ song.name }}</a>
+  	      <a href="{{ url_for('songs_show', song_id=song.id, author_id='na', from_page='songs') }}" aria-label="Song Title">{{ song.name }}</a>
   	    </td>
   	    <!-- SONG LANGUAGE -->
         <td style="padding-left: 10px;" aria-label="Song Language">{{ song.language[:2]|upper }}</td>
   	    <!-- EDIT BUTTON -->
         <td>
-          <form method="POST" action="{{ url_for('songs_edit', song_id=song.id) }}">
+          <form method="POST" action="{{ url_for('songs_edit', song_id=song.id, author_id='na', from_page='edit') }}">
             <input type="hidden" name="song_id" value="{{ song.id }}"></input>
             <div class="col-auto">
               <button class="btn btn-sm btn-warning" type="submit" name="Edit" style="width:40px; height:20px;" value="Edit" aria-label="Button For Edit Song"></button>

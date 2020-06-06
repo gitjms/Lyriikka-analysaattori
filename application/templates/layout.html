@@ -12,11 +12,11 @@
 
 <!-- APPLICATION'S OWN JAVASCRIPTS -->
 <script type="text/javascript" src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
-
 <script type="text/javascript" src="{{ url_for('static', filename='js/showhidediv.js') }}"></script>
   
 <!-- APPLICATION'S OWN STYLES -->
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}"></link>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dropdown.css') }}"></link>
   
 <!-- BOOTSTRAP TOOLTIPS -->
   <script>
@@ -90,19 +90,21 @@
 </nav>
 
 
-<!-- PAGES: SONGS / AUTHORS / STATS / INFO -->
+<!-- PAGES: SONGS (LIST / ADD) / AUTHORS / STATS / INFO -->
 {% if g.user.is_authenticated %}
   <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-    <div class="btn-group" role="group">
-      <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+    <div class="dropdown" role="group">
+      <button id="dropbtn" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
         Songs
       </button>
-      <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+      <div class="dropdown-content" aria-labelledby="dropbtn">
         <a style="color: black;" class="dropdown-item" href="{{ url_for('songs_list') }}">List Songs</a>
         <a style="color: black;" class="dropdown-item" href="{{ url_for('songs_create') }}">Add Song</a>
       </div>
     </div>
-    <style type="text/css">#pageLink:visited {color: white; font-weight: bold; }</style>
+    <style type="text/css" >
+	#pageLink:visited {color: white; font-weight: bold; }
+	</style>
     <button type="button" class="btn btn-secondary"><a id="pageLink" href="{{ url_for('authors_list') }}" aria-label="Authors Page">Authors</a></button>
     <button id="pageBBtn" type="button" class="btn btn-secondary"><a id="pageLink" href="{{ url_for('auth_stats') }}" aria-label="Authors Page">Stats</a></button>
     <button id="pageBBtn" type="button" class="btn btn-secondary"><a id="pageLink" href="{{ url_for('songs_info') }}" aria-label="Authors Page">Info</a></button>

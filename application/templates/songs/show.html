@@ -5,45 +5,55 @@
 {{ error }}
 {% block body %}
 
-<form method="POST" action="{{ url_for('songs_show', song_id=song_id, author_id=author_id, from_page=from_page) }}">
+<div class="col-auto">
 
-  <div class="col-auto">
+  <form method="POST" action="{{ url_for('songs_show', song_id=song_id, author_id=author_id, from_page=from_page) }}">
+
     <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px; float: left;" value="Back"/>Back</button>
-  </div>
-
-  <div style="clear: both;"></div>
-</form><br>
+  </form>
 
 
-  <div class="col-auto">
-    <p style="font-size: 20px;">
-      <small class="text-muted">Title:</small>
-      {{ song.name }}
-	  <small class="text-muted">
-	    ({{ song.language }})
-	  </small>
-    </p>
-  </div>
+  {% if from_page == 'authors' %}
+    <form method="POST" action="{{ url_for('songs_edit', song_id=song_id, author_id=author_id, from_page=from_page) }}">
 
-  <div class="col-auto">
-    <p style="font-size: 18px;">
-      <small class="text-muted">Author(s):</small>
-      {% for auth in song.authors %}{{ auth.name }}{{ ", " if not loop.last }}{% endfor %}
-    </p>
-  </div><br>
-  <center>
-    <pre class="lead" style="width: 100%; margin-left:auto; margin-right:auto; font-family: Arial Unicode MS, Lucida Sans Unicode, DejaVu Sans, Quivira, Symbola, Code2000; font-size: 16px;">
+      <button class="btn btn-sm btn-warning" type="submit" name="Edit" style="width:75px; float: right;" value="Edit"/>Edit</button>
+    </form>
+  {% endif%}
+
+</div>
+<div style="clear: both;"></div><br>
+
+
+<div class="col-auto">
+  <p style="font-size: 20px;">
+    <small class="text-muted">Title:</small>
+    {{ song.name }}
+ <small class="text-muted">
+   ({{ song.language }})
+ </small>
+  </p>
+</div>
+
+
+<div class="col-auto">
+  <p style="font-size: 18px;">
+    <small class="text-muted">Author(s):</small>
+    {% for auth in song.authors %}{{ auth.name }}{{ ", " if not loop.last }}{% endfor %}
+  </p>
+</div><br>
+
+
+<center>
+  <pre class="lead" style="width: 100%; margin-left:auto; margin-right:auto; font-family: Arial Unicode MS, Lucida Sans Unicode, DejaVu Sans, Quivira, Symbola, Code2000; font-size: 16px;">
 {{ song.lyrics }}
-    </pre>
-  </center>
+  </pre>
+</center>
 
 
 <form method="POST" action="{{ url_for('songs_show', song_id=song_id, author_id=author_id, from_page=from_page) }}">
-
   <div class="col-auto">
     <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px; float: left;" value="Back"/>Back</button>
   </div>
-</form><br>
-
+</form>
 
 {% endblock %}

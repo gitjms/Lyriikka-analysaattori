@@ -70,6 +70,8 @@ def songs_show(song_id,author_id,from_page):
 				return redirect(url_for("songs_list"))
 			elif from_page == 'authors':
 				return redirect(url_for("authors_show", author_id = author_id))
+			elif from_page == 'edit':
+				return redirect(url_for("songs_list"))
 
 	if request.method == "GET":
 		return render_template("songs/show.html", song = Song.query.get(song_id), song_id=song_id, author_id=author_id, from_page=from_page)
@@ -78,11 +80,10 @@ def songs_show(song_id,author_id,from_page):
 #-----------------------------------------
 #		SONGS/EDIT: songs_edit()
 #-----------------------------------------
-@app.route("/songs/edit/<song_id>/", methods=["GET", "POST"])
+@app.route("/songs/edit/<song_id>/<author_id>/<from_page>", methods=["GET", "POST"])
 @login_required
-def songs_edit(song_id):
+def songs_edit(song_id,author_id,from_page):
 
-	print('\n\n\n',g.user.role,'\n\n\n')
 	if g.user.role != "USER" and g.user.role != "ADMIN":
 		return login_manager.unauthorized()
 
@@ -93,10 +94,13 @@ def songs_edit(song_id):
 	form.process()
 
 	if request.form.get("Back") == "Back":
-		return redirect(url_for("songs_list"))
+		if from_page == 'songs':
+			return redirect(url_for("songs_list"))
+		elif from_page == 'authors':
+			return redirect(url_for("authors_show", author_id = author_id))
 
 	if request.form.get("Edit") == "Edit":
-		return render_template("songs/edit.html", song = song, form = form)
+		return render_template("songs/edit.html", song=song, form=form, song_id=song_id, author_id=author_id, from_page=from_page)
 
 	elif request.method == "POST":
 
@@ -104,7 +108,7 @@ def songs_edit(song_id):
 			form = EditSongForm(request.form)
 			
 			if not form.validate():
-				return render_template("songs/edit.html", song = song, form = form, error = "Fields must not be empty.")
+				return render_template("songs/edit.html", song=song, form=form, song_id=song_id, author_id=author_id, from_page=from_page, error="Fields must not be empty.")
 
 			new_name = form.title.data
 			new_lyrics = form.lyrics.data
@@ -118,7 +122,7 @@ def songs_edit(song_id):
 
 			if (new_name == old_name and new_lyrics == old_lyrics and new_authors == old_authors):
 				flash("No changes made.", "warning")
-				return render_template("songs/edit.html", song = song, form = form)
+				return render_template("songs/edit.html", song=song, form=form, song_id=song_id, author_id=author_id, from_page=from_page)
 
 			if new_authors != old_authors:
 				for auth in new_authors:
@@ -142,14 +146,14 @@ def songs_edit(song_id):
 					song.language = new_language
 
 				db.session().commit()
-				return render_template("songs/show.html", song = song)
+				return redirect(url_for("songs_show", song_id=song_id, author_id=author_id, from_page=from_page))
 			except SQLAlchemyError:
 				db.session.rollback()
 				flash("Song exists already.", "danger")
 
-			return render_template("songs/edit.html", song = song, form = form)
+			return render_template("songs/edit.html", song=song, form=form, song_id=song_id, author_id=author_id, from_page=from_page)
 
-	return render_template("songs/list.html", song = Song.query.all())
+	return redirect(url_for("songs_list"))
 
 
 #-----------------------------------------
