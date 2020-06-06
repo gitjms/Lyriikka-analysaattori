@@ -59,9 +59,6 @@ def auth_login():
 	if request.method == "GET":
 		return render_template("auth/loginform.html", form = form)
 
-	if request.form.get("Back") == "Back":
-		return redirect(url_for("index"))
-
 	remember_me = False
 	if 'remember_me' in request.form:
 		remember_me = True
@@ -109,16 +106,8 @@ def auth_create():
 	if request.method == "GET":
 		return render_template("auth/newuser.html", form = form)
 
-	if request.form.get("Back") == "Back":
-		return redirect(url_for("index"))
-
-	remember_me = False
-	if 'remember_me' in request.form:
-		remember_me = True
-
 	if not form.validate_on_submit():
-		flash("Create account failed.", "warning")
-		return render_template("auth/newuser.html", form = form, error = "Fields must not be empty. Check password length.")
+		return render_template("auth/newuser.html", form = form)
 
 	pw_hash = bcrypt.generate_password_hash(form.password.data)
 	
@@ -128,14 +117,13 @@ def auth_create():
 	try:
 		db.session().add(user)
 		db.session().commit()
-		login_user(user, remember = remember_me)
-		db.session.permanent = remember_me
+		login_user(user)
 	except IntegrityError:
 		db.session.rollback()
 		flash("Create account failed.", "danger")
 		return render_template("auth/newuser.html", form = form, error = "User already exists. Consider changing username.")
 
-	return redirect(url_for("songs_home"))
+	return redirect(url_for("index"))
 
 
 #-----------------------------------------

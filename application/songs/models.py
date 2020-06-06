@@ -30,8 +30,8 @@ class Song(Base):
 
 	__tablename__ = 'song'
 
-	lyrics = db.Column(db.String(2000), nullable=False)
-	language = db.Column(db.String(80), nullable=False)
+	lyrics = db.Column(db.Text, nullable=False)
+	language = db.Column(db.String(255), nullable=False)
 
 	account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
 

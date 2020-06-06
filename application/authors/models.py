@@ -44,8 +44,9 @@ class Author(Base):
 	def get_id(self):
 		return self.id
 
+
 	@staticmethod
-	def find_authors():
+	def get_authors():
 
 		if g.user.role == "GUEST" or g.user.role == "ADMIN":
 			user_list = [1,2]
@@ -73,5 +74,32 @@ class Author(Base):
 		response = []
 		for row in res:
 			response.append({'author':row[0],'songs':row[1],'language':row[2],'id':row[3]})
+
+		return response
+
+
+	@staticmethod
+	def get_authorsongs(author_id):
+
+		if g.user.role == "GUEST" or g.user.role == "ADMIN":
+			user_list = [1,2]
+		else:
+			user_list = [1,g.user.id]
+
+		stmt = text("SELECT Song.id, "
+					"		Song.lyrics, "
+					"		Song.language "
+					"FROM Song "
+					"LEFT JOIN author_song ON Song.id = author_song.song_id "
+					"LEFT JOIN Author ON author_song.author_id = Author.id "
+					"LEFT JOIN account ON account.id = Song.account_id "
+					"WHERE account.id IN (:user1,:user2) AND author.id = :id "
+					"GROUP BY Song.id, Song.lyrics, Song.language").params(user1=user_list[0],user2=user_list[1],id=author_id)
+
+		result = db.engine.execute(stmt)
+
+		response = []
+		for row in result:
+			response.append({'id':row[0],'lyrics':row[1],'language':row[2]})
 
 		return response

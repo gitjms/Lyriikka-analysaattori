@@ -40,14 +40,14 @@ def proc_text(song_list, word_to_find):
 		for i in lyrics:
 			if nonPunct.match(i):
 				raw_words.append(i.lower())
-			if unidecode(i.lower()) == unidecode(word_to_find.lower()):
+			if word_to_find and unidecode(i.lower()) == unidecode(word_to_find.lower()):
 				count += 1
-		if count > 0:
+		if (word_to_find and count > 0) or word_to_find is None:
 			raw_words_list.append([song_id, raw_words, song_name])
 			raw_word_count.append(Counter(raw_words))
 
 	# count matches and store source text without newlines
-	new_songlist = [] # [ song_id, new_string ]
+	new_songlist = [] # [ song_id, new_string, song_name ]
 	new_raw_words_list = []
 	tot_count = 0
 	for item in raw_words_list: # [ song_id, raw_words, song_name ]
@@ -57,16 +57,19 @@ def proc_text(song_list, word_to_find):
 		raw_words = item[1]
 		song_name = item[2]
 		for w in raw_words:
-			if unidecode(w.lower()) == unidecode(word_to_find.lower()):
+			if word_to_find and unidecode(w.lower()) == unidecode(word_to_find.lower()):
 				count += 1
 				tot_count += 1
 			w_list.append(w)
-		if count > 0:
+		if (word_to_find and count > 0) or word_to_find is None:
 			new_string = ' '.join(w_list)
 			new_songlist.append([song_id,new_string,song_name])
 			new_raw_words_list.append([count, [song_id, w_list]])
 
-	return raw_word_count, new_songlist, new_raw_words_list, tot_count
+	if word_to_find:
+		return raw_word_count, new_songlist, new_raw_words_list, tot_count
+	else:
+		return raw_word_count, new_songlist, new_raw_words_list
 
 
 # stop words
@@ -75,10 +78,10 @@ def stop_words(filtered, new_raw_words_list, language):
 	stops = stopwords.words(language)
 
 	db_words_list = []
-	frequencies = []
+	results_list = []
 	results = {}
 	graph_list = []
-	for words_list in new_raw_words_list: # [count, [song_id, raw_words] ]
+	for words_list in new_raw_words_list: # [ count, [song_id, raw_words] ]
 		count = words_list[0]
 		song_id = words_list[1][0]
 		raw_words = words_list[1][1]
@@ -104,38 +107,34 @@ def stop_words(filtered, new_raw_words_list, language):
 		)[:10]
 
 		#----------------------------------------
-		# frequencies = [ song_id, Word, Count ]
+		# results_list = [ song_id, Word, Count ]
 		#----------------------------------------
-		frequencies.append([song_id, results, count])
+		results_list.append([song_id, results, count])
 
-	return graph_list, frequencies, db_words_list
+	return graph_list, results_list, db_words_list
 
 
-# create results: frequencies, songs, graph_data, (counts)
-def create_results(raw_word_count, db_words_list, frequencies, new_songlist, graph_list, word_to_find, tot_count):
+# create results: songs, graph_data
+def create_results(raw_word_count, db_words_list, new_songlist, graph_list, word_to_find, tot_count):
 
-	# counts per song
-	counts = []
-	for item in frequencies:
-		counts.append(item[2])
-
-	#----------------------------------------
-	# songs = [ song_id, Markup(new_string), song_name ]
-	#----------------------------------------
-	# Markup song list
-	songs = []
-	for item in new_songlist:
-		song_id = item[0]
-		new_string = item[1]
-		song_name = item[2]
-		words = item[1].split(' ')
-		w_list = []
-		for word in words:
-			if unidecode(word.lower()) == unidecode(word_to_find.lower()):
-				word = r"<mark><strong>"+word+"</strong></mark>"
-			w_list.append(word)
-		new_string = ' '.join(w_list)
-		songs.append([item[0],Markup(new_string),item[2]])
+	if word_to_find:
+		#----------------------------------------
+		# songs = [ song_id, Markup(new_string), song_name ]
+		#----------------------------------------
+		# Markup song list
+		songs = []
+		for item in new_songlist:
+			song_id = item[0]
+			new_string = item[1]
+			song_name = item[2]
+			words = item[1].split(' ')
+			w_list = []
+			for word in words:
+				if unidecode(word.lower()) == unidecode(word_to_find.lower()):
+					word = r"<mark><strong>"+word+"</strong></mark>"
+				w_list.append(word)
+			new_string = ' '.join(w_list)
+			songs.append([item[0],Markup(new_string),item[2]])
 
 	#----------------------------------------
 	# graph_data = {}
@@ -151,7 +150,10 @@ def create_results(raw_word_count, db_words_list, frequencies, new_songlist, gra
 		reverse=True
 	)[:10]
 
-	return frequencies, songs, graph_data, counts
+	if word_to_find:
+		return songs, graph_data
+	else:
+		return graph_data
 
 
 # database storing

@@ -2,189 +2,188 @@
 
 <title>LyrFreq - Word Search Results Page (visible to users)</title>
 
-{{ error }}
 {% block body %}
 
-  {% for err in error %}
-    <strong>{{ err }}</strong>
-  {% endfor %}
+{% for err in error %}
+  <strong>{{ err }}</strong>
+{% endfor %}
 
-  {% if frequencies is none and songs is none %}
+{% if frequencies is none and songs is none %}
 
-    <!-- IF DATABASE IS EMPTY -->
-    <strong id="big-strong">Database is empty</strong>
+  <!-- IF DATABASE IS EMPTY -->
+  <strong id="big-strong">Database is empty</strong>
   
-  {% elif frequencies is none %}
+{% elif frequencies is none %}
 
-    <!-- IF NOT RESULTS -->
-    <strong style="font-size: 20px;">
-      <small class="text-muted">Word:</small>&nbsp;&nbsp;
-        <font size="+4"><em>[</em></font>&nbsp;&nbsp;<em>{{  word  }}</em>&nbsp;&nbsp;<font size="+4"><em>]</em></font>
-        &nbsp;&nbsp;&#8594;&nbsp;&nbsp;&nbsp;no results
-    </strong>
+<!-- IF NOT RESULTS -->
+  <strong style="font-size: 20px;">
+    <small class="text-muted">Word:</small>&nbsp;&nbsp;
+      <font size="+4"><em>[</em></font>&nbsp;&nbsp;<em>{{  word  }}</em>&nbsp;&nbsp;<font size="+4"><em>]</em></font>
+      &nbsp;&nbsp;&#8594;&nbsp;&nbsp;&nbsp;no results
+  </strong>
 
-  {% else %}
+{% else %}
 
-    <form method="POST" action="{{ url_for('words_find') }}">
-      <div class="col-auto">
+  <form method="POST" action="{{ url_for('words_find') }}">
+    <div class="col-auto">
 
-        {% if g.user.role != "GUEST" %}
-        <button class="btn btn-sm btn-danger" type="submit" style="width: 140px; float: right; margin-left: 20px;" name="save" id="save" value="{{  word  }},{{ language }},{{ filtered }}" action="/words/find/">Save To Database</button>
-        {% endif %}
-
-
-        {% if filtered == False %}
-          <button class="btn btn-sm btn-success" type="submit" style="width: 140px; float: right;" name="filter" id="filter" value="{{  word  }},{{ language }},{{ filtered }}" action="/words/find/">Filter Stopwords</button>
-        {% else %}
-          <button class="btn btn-sm btn-warning" type="submit" style="width: 140px; float: right;" name="filter" id="filter" value="{{  word  }},{{ language }},{{ filtered }}" action="/words/find/">Include Stopwords</button>
-        {% endif %}
+      {% if g.user.role != "GUEST" %}
+      <button class="btn btn-sm btn-danger" type="submit" style="width: 140px; float: right; margin-left: 20px;" name="save" id="save" value="{{  word  }},{{ language }},{{ filtered }}" action="/words/find/">Save To Database</button>
+      {% endif %}
 
 
-        <!-- SEARCH WORD AND MATCH COUNTS -->
-
-        <h2 style="font-size: 25px;">Results</h2>
-
-        <strong style="font-size: 20px;">
-          <small class="text-muted">Word:</small>&nbsp;&nbsp;
-          <font size="+4"><em>[</em></font>&nbsp;&nbsp;<em>{{  word  }}</em>&nbsp;&nbsp;<font size="+4"><em>]</em></font>,&nbsp;&nbsp;
-          <small class="text-muted">language:</small>&nbsp;&nbsp;<em>{{  language  }}</em><br>
-          <small class="text-muted">Total match count:&nbsp;</small>
-          <font size="+3"><em>{{  count  }}</em></font>&nbsp;&nbsp;
-          <small class="text-muted">in</small>&nbsp;&nbsp;
-          <font size="+3"><em>{{  song_count  }}</em></font>&nbsp;&nbsp;
-          <small class="text-muted">song(s)</small>
-        </strong>
-        <br><br>
+      {% if filtered == False %}
+        <button class="btn btn-sm btn-success" type="submit" style="width: 140px; float: right;" name="filter" id="filter" value="{{  word  }},{{ language }},{{ filtered }}" action="/words/find/">Filter Stopwords</button>
+      {% else %}
+        <button class="btn btn-sm btn-warning" type="submit" style="width: 140px; float: right;" name="filter" id="filter" value="{{  word  }},{{ language }},{{ filtered }}" action="/words/find/">Include Stopwords</button>
+      {% endif %}
 
 
-        <!-- FREQUENCY BAR CHART -->
+      <!-- SEARCH WORD AND MATCH COUNTS -->
 
-        <center>
-          <div class="wrapper">
-            <canvas id="myChart" width="500" height="300"></canvas>
-          </div>
-        </center><br><br>
-  
+      <h2 style="font-size: 25px;">Results</h2>
 
-        <!-- HIDDEN FREQUENCY TABLES AND BUTTON -->
+      <strong style="font-size: 20px;">
+        <small class="text-muted">Word:</small>&nbsp;&nbsp;
+        <font size="+4"><em>[</em></font>&nbsp;&nbsp;<em>{{  word  }}</em>&nbsp;&nbsp;<font size="+4"><em>]</em></font>,&nbsp;&nbsp;
+        <small class="text-muted">language:</small>&nbsp;&nbsp;<em>{{  language  }}</em><br>
+        <small class="text-muted">Total match count:&nbsp;</small>
+        <font size="+3"><em>{{  count  }}</em></font>&nbsp;&nbsp;
+        <small class="text-muted">in</small>&nbsp;&nbsp;
+        <font size="+3"><em>{{  song_count  }}</em></font>&nbsp;&nbsp;
+        <small class="text-muted">song(s)</small>
+      </strong>
+      <br><br>
 
-        <div id="freqtables" style="display: none">
-  
-          <h3>Frequencies
-            <small class="text-muted">(top 10)</small>
-          </h3><br>
-  
-          <div class="col-sm-10 col-sm-offset-1">
-            <div id="frequencies">
-              {% for freq in frequencies %}
-                <h4>song: {{ freq[0] }},  count: {{ freq[2] }}</h4>
-                <table class="table table-striped" style="max-width: 300px;">
-                  <thead>
-                    <tr>
-                      <th>Word</th>
-                      <th>Count</th>
-                    </tr>
-                  </thead>
-                  {% for res in freq[1] %}
-                    <tr>
-                      <td>{{ res[0] }}</td>
-                      <td>{{ res[1] }}</td>
-                    </tr>
-                  {% endfor %}
-                </table><br>
-              {% endfor %}
-            </div>
-          </div>
+
+      <!-- FREQUENCY BAR CHART -->
+
+      <center>
+        <div class="wrapper">
+          <canvas id="myChart" width="500" height="300"></canvas>
         </div>
-
-        <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Frequency Table(s)" onClick="showHideDiv('freqtables')" style="width: 200px;"></input><br><br>
-
-
-        <!-- HIDDEN SONG SOURCES AND BUTTON -->
+      </center><br><br>
   
-        <div id="songtables" style="display: none">
+
+      <!-- HIDDEN FREQUENCY TABLES AND BUTTON -->
+
+      <div id="freqtables" style="display: none">
   
-          <div id="songs">
-            <h3>Source(s)</h3><br>
-            {% for song in songs %}
-              <b>
-                <small class="text-muted">song:</small>
-                  {{ song[0] }},
-                <small class="text-muted">title:</small>
-                <em>{{ song[2] }}</em>
-              </b><br>
-              <td>{{ song[1] }}</td><br><br>
+        <h3>Frequencies
+          <small class="text-muted">(top 10)</small>
+        </h3><br>
+  
+        <div class="col-sm-10 col-sm-offset-1">
+          <div id="frequencies">
+            {% for freq in frequencies %}
+              <h4>song: {{ freq[0] }},  count: {{ freq[2] }}</h4>
+              <table class="table table-striped" style="max-width: 300px;">
+              <thead>
+                <tr>
+                  <th>Word</th>
+                  <th>Count</th>
+                </tr>
+              </thead>
+              {% for res in freq[1] %}
+                <tr>
+                  <td>{{ res[0] }}</td>
+                  <td>{{ res[1] }}</td>
+                </tr>
+              {% endfor %}
+              </table><br>
             {% endfor %}
           </div>
         </div>
-  
-        <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Song Source(s)" onClick="showHideDiv('songtables')" style="width: 200px;"></input><br><br>
-  
-  
-        <!-- JAVASCRIPT FOR BARCHART -->
-        <script>
-          var ctx = document.getElementById('myChart').getContext('2d');
-          var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-              labels: [{% for lab in graph_data %}
-                        "{{ lab[0] }}",
-                      {% endfor %}],
-              datasets: [{
-                label: '',
-                  data: [{% for freq in graph_data %}
-                        {{ freq[1] }},
-                      {% endfor %}],
-                backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(57, 93, 162, 0.2)',
-                'rgba(102, 189, 55, 0.2)',
-                'rgba(241, 115, 195, 0.2)',
-                'rgba(187, 121, 67, 0.2)'
-                ],
-                borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(57, 93, 162, 1)',
-                'rgba(102, 189, 55, 1)',
-                'rgba(241, 115, 195, 1)',
-                'rgba(187, 121, 67, 1)'
-                ],
-                borderWidth: 1
-              }]
-            },
-            options: {
-            legend: {
-                display: false
-                },
-            title: {
-                display: true,
-                fontSize: 16,
-                text: 'Top 10 Word Frequencies in Match Song(s)'
-                },
-            scales: {
-                yAxes: [{
-                  ticks: {
-                    beginAtZero: true
-                  }
-                }]
-            }
-          }
-          });
-        </script>
-  
       </div>
-    </form>
 
-  {% endif %}
+      <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Frequency Table(s)" onClick="showHideDiv('freqtables')" style="width: 200px;"></input><br><br>
+
+
+      <!-- HIDDEN SONG SOURCES AND BUTTON -->
+
+      <div id="songtables" style="display: none">
+
+        <div id="songs">
+          <h3>Source(s)</h3><br>
+          {% for song in songs %}
+            <b>
+              <small class="text-muted">song:</small>
+                {{ song[0] }},
+              <small class="text-muted">title:</small>
+              <em>{{ song[2] }}</em>
+            </b><br>
+            <td>{{ song[1] }}</td><br><br>
+          {% endfor %}
+        </div>
+      </div>
+
+      <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Song Source(s)" onClick="showHideDiv('songtables')" style="width: 200px;"></input><br><br>
+
+
+      <!-- JAVASCRIPT FOR BARCHART -->
+      <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: [{% for lab in graph_data %}
+                      "{{ lab[0] }}",
+                    {% endfor %}],
+            datasets: [{
+              label: '',
+                data: [{% for freq in graph_data %}
+                      {{ freq[1] }},
+                    {% endfor %}],
+              backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(57, 93, 162, 0.2)',
+              'rgba(102, 189, 55, 0.2)',
+              'rgba(241, 115, 195, 0.2)',
+              'rgba(187, 121, 67, 0.2)'
+              ],
+              borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(57, 93, 162, 1)',
+              'rgba(102, 189, 55, 1)',
+              'rgba(241, 115, 195, 1)',
+              'rgba(187, 121, 67, 1)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+          legend: {
+              display: false
+              },
+          title: {
+              display: true,
+              fontSize: 16,
+              text: 'Top 10 Word Frequencies in Match Song(s)'
+              },
+          scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
+          }
+        }
+        });
+      </script>
+
+    </div>
+  </form>
+
+{% endif %}
 
 {% endblock %}

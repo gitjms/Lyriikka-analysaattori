@@ -6,7 +6,6 @@ from application.songs.models import Song
 from application.words.models import Words
 from application.words.proc import proc_text, stop_words, create_results, store_db
 
-# Lomakkeen näyttämisen ja lähetyksen vastaanottava toiminnallisuus.
 
 @app.before_request
 def before_request():
@@ -60,14 +59,15 @@ def words_find():
 	# get data from database
 	#
 	#-------------------------------------------------------
-
 	songs = Song.query.filter(Song.account_id.in_(user_list)).all()
 
 	if not songs:
 		return render_template("words/words.html", frequencies = None, songs=None)
 
+	# qry_list = [ song_id, lyrics, song_name, language ]
 	qry_list = db.session().query(Song.id,Song.lyrics,Song.name,Song.language).filter(Song.account_id.in_(user_list)).filter(Song.language==language).all()
 
+	# prepare data
 	song_list = []
 	for i in qry_list:
 		song_list.append([i[0], replace_chars(i[1]), i[2]])
@@ -78,6 +78,10 @@ def words_find():
 	# -> proc.proc_text()
 	#
 	#-------------------------------------------------------
+	# raw_word_count = [ Counter(raw_words) ] => word counts
+	# new_songlist = [ song_id, new_string, song_name ] => songs w/o punctuation
+	# new_raw_words_list = [ count, [song_id, raw_words] ] => word lists
+	#-------------------------------------------------------
 	raw_word_count, new_songlist, new_raw_words_list, tot_count = proc_text(song_list, word_to_find)
 	
 	#-------------------------------------------------------
@@ -86,13 +90,17 @@ def words_find():
 	# -> proc.stop_words()
 	#
 	#-------------------------------------------------------
+	# graph_list = [ raw_words ] => with or without stopwords
+	# results_list = [ song_id, Word, Count ] => for frequency tables
+	# words_list = [ song_id, Counter() ] => for database storing
+	#-------------------------------------------------------
 	if tot_count > 0:
-		graph_list, results_list, words_list = stop_words(filtered, new_raw_words_list, language)
+		graph_list, results_list, db_words_list = stop_words(filtered, new_raw_words_list, language)
 	else:
 		return render_template("words/words.html", frequencies = None, word=word_to_find, errors=errors)
 
 	#-------------------------------------------------------
-	# create results: frequencies, songs, graph_data, (counts)
+	# create results: songs, graph_data, (counts)
 	# 
 	# -> proc.create_results()
 	#
@@ -100,7 +108,8 @@ def words_find():
 	frequencies = None
 	songs = None
 	if tot_count > 0:
-		frequencies, songs, graph_data, counts = create_results(raw_word_count, words_list, results_list, new_songlist, graph_list, word_to_find, tot_count)
+		
+		songs, graph_data = create_results(raw_word_count, db_words_list, new_songlist, graph_list, word_to_find, tot_count)
 
 	#-------------------------------------------------------
 	# store to database
@@ -109,9 +118,14 @@ def words_find():
 	#
 	#-------------------------------------------------------
 	if save == True and tot_count > 0:
-		store_db(raw_word_count, words_list, word_to_find, counts)
+		# counts per song (for database storing)
+		counts = []
+		for item in results_list:
+			counts.append(item[2])
 
-	return render_template("words/words.html", frequencies = frequencies, songs=replace_accent(songs), word=word_to_find, errors=errors, count = tot_count, song_count=len(new_songlist), graph_data=graph_data, language=language, filtered=filtered, save=save)
+		store_db(raw_word_count, db_words_list, word_to_find, counts)
+
+	return render_template("words/words.html", frequencies = results_list, songs=replace_accent(songs), word=word_to_find, errors=errors, count = tot_count, song_count=len(new_songlist), graph_data=graph_data, language=language, filtered=filtered, save=save)
 
 
 # own stopwords

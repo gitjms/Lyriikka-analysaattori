@@ -16,7 +16,7 @@ class Words(db.Model):
 	__tablename__ = 'results'
 
 	id = db.Column(db.Integer, primary_key=True)
-	word = db.Column(db.String(), nullable=False)
+	word = db.Column(db.String(255), nullable=False)
 	matches = db.Column(db.Integer, nullable=False)
 	result_all = db.Column(JSON, nullable=False)
 	result_no_stop_words = db.Column(JSON, nullable=False)

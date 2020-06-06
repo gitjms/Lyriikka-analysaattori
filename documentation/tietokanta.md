@@ -162,7 +162,7 @@ GROUP BY author.name, Song.language, author.id
 ORDER BY Song.language, author.name ASC;
 ```
 
-Parametrien arvot tulevat jälleen samalla periaatteella kuin edellisissä kyselyesimerkeissä.
+Parametrien arvot tulevat jälleen samalla periaatteella kuin edellisissä kyselyesimerkeissä. Toisella rivillä oleva *STRING_AGG* toimii vain PostGres-kyselyssä Herokussa. SQLite-kyselyssä tulee käyttää termiä *GROUP_CONCAT*.
 
 ---
 

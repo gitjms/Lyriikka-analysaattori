@@ -1,68 +1,20 @@
 {% extends "layout.html" %}
+{% from "formhelpers.html" import render_field %}
 
 <title>LyrFreq - Create Account Page (visible to all)</title>
   
 {% block body %}
-{{ error }}
+<strong>{{ error }}</strong>
+
   <h2>Create account </h2>
 
   <form method="POST" class="form-horizontal">
-    <table>
-    <thead>
-      <div class="control-group">
-        <div class="controls">
-        
-          <tr>
-            <button class="btn btn-sm btn-secondary" type="submit" name="Back" id="Back" style="width:75px; float: left;" value="Back">Cancel</button>
-          </tr><br><br>
-        
-          <tr>
-            <td>
-              <label style="margin-right: 10px;">Full Name:</label>
-            </td>
-            <td>
-              {{ form.name(autofocus=true,placeholder="Enter Full Name") }}
-            </td>
-          </tr>
-        
-          <tr>
-            <td>
-              <label style="margin-right: 10px;">Username:</label>
-            </td>
-            <td>
-              {{ form.username(placeholder="Enter Username") }}
-            </td>
-          </tr>
-        
-          <tr>
-            <td>
-              <label style="margin-right: 10px;">Password:</label>
-            </td>
-            <td>
-              {{ form.password(placeholder="Enter Password") }}
-            </td>
-            <td>
-              <label style="margin-left: 5px" class="lead col-form-label">min 4 characters</label>
-            </td>
-          </tr>
-        
-          <tr>
-            <td colspan="3">
-              <label for="Remember">Remember this session?</label>
-              <input type="checkbox" id="Remember" name="remember_me"></input >
-            </td>
-          </tr>
-        
-          <tr>
-            <td style="float: left;">
-              <button type="submit" class="btn btn-sm btn-success" style="width:75px; float: left;">Create</button>
-            </td>
-          </tr>
-        
-        </div>
-      </div>
-    
-    </thead>
-    </table>
+  <dl>
+    {{ render_field(form.name,autofocus=true, placeholder="Enter Full Name") }}
+    {{ render_field(form.username, placeholder="Enter Username") }}
+    {{ render_field(form.password, placeholder="Enter Password") }} 
+    {{ render_field(form.confirm, placeholder="Enter Password Again") }}
+  </dl>
+  <p><input type="submit" value="Register">
   </form>
 {% endblock %}

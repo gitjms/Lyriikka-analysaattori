@@ -4,25 +4,21 @@
 
 {% block body %}
 {{ error }}
+
+  <h2>Login</h2>
+
   <form method="POST" action="{{ url_for('auth_login') }}">
-    <h2>Login</h2>
     <table>
       <thead>
         <div class="control-group">
           <div class="controls">
-	  
-            <tr>
-              <th>
-                <button class="btn btn-sm btn-secondary" type="submit" name="Back" id="Back" style="width:75px; float: left;" value="Back">Cancel</button>
-              </th>
-            </tr>
           
             <tr>
               <td>
-                <label style="margin-right: 10px;">Username:</label>
+                <label style="margin-right: 10px;"><b>Username:</b></label>
               </td>
               <td>
-                {{ form.username(autofocus=true, placeholder="Enter Username") }}
+                {{ form.username(size=25, autofocus=true, placeholder="Enter Username") }}
               </td>
           
               <td rowspan="2"><a style="margin-left: 10px;">or</a>
@@ -33,18 +29,20 @@
         
             <tr>
               <td>
-                <label style="margin-right: 10px;">Password:</label>
+                <label style="margin-right: 10px;"><b>Password:</b></label>
               </td>
               <td>
-                {{ form.password(placeholder="Enter Password") }}
+                {{ form.password(size=10, placeholder="Enter Password") }}
               </td>
             </tr>
           
             <tr>
               <td colspan="3">
-                <label for="Remember">Remember this session?</label>
-                <input type="checkbox" id="Remember" name="remember_me"></input >
-              </td>
+			    <div class="form-check mb-2 mr-sm-2">
+			      <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" id="Remember" name="remember_me"></input >Remember this session?</label>
+                </div>
+			  </td>
             </tr>
           
             <tr>

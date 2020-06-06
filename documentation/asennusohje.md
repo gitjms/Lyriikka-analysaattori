@@ -76,7 +76,13 @@ Ennen kuin voit kirjautua sovellukseen, tulee tietokantaan asettaa oletuskäytt�
    ```
 ---
 
-Jos haluat sovelluksen Herokuun, luo sovellukselle ensin paikka syöttämällä terminaaliin seuraava komento:
+Jos haluat sovelluksen Herokuun, tarvitset [*Heroku*](https://signup.heroku.com/)-tunnukset.
+
+Kirjaudu terminaalissa Herokuun komennolla:
+```
+heroku login
+```
+Luo sitten sovellukselle paikka Herokussa syöttämällä terminaaliin seuraava komento:
 ```
 heroku create [toivottu-sovelluksen-nimi, eri kuin lyrfreq] --buildpack heroku/python
 ```

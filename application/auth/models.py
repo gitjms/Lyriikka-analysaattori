@@ -10,10 +10,10 @@ class User(Base):
 
 	__tablename__ = "account"
 
-	username = db.Column(db.String(80), nullable=False, unique=True)
-	password = db.Column(db.String(80), nullable=False)
+	username = db.Column(db.String(255), nullable=False, unique=True)
+	password = db.Column(db.String(255), nullable=False)
 
-	role = db.Column(db.String(80), db.ForeignKey('roles.role'), nullable=False)
+	role = db.Column(db.String(255), db.ForeignKey('roles.role'), nullable=False)
 
 	date_created = db.Column(db.DateTime(), default=db.func.current_timestamp())
 
