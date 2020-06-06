@@ -6,10 +6,10 @@
   ```
   CREATE TABLE account (
         id INTEGER NOT NULL,
-        name VARCHAR NOT NULL,
-        username VARCHAR(80) NOT NULL,
-        password VARCHAR(80) NOT NULL,
-        role VARCHAR(80) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        username VARCHAR(255) NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        role VARCHAR(255) NOT NULL,
         date_created DATETIME,
         PRIMARY KEY (id),
         UNIQUE (username),
@@ -20,7 +20,7 @@
   ```
   CREATE TABLE roles (
         id INTEGER NOT NULL,
-        role VARCHAR(80) NOT NULL,
+        role VARCHAR(255) NOT NULL,
         PRIMARY KEY (id),
         UNIQUE (role)
   );
@@ -29,9 +29,9 @@
   ```
   CREATE TABLE song (
         id INTEGER NOT NULL,
-        name VARCHAR NOT NULL,
-        lyrics VARCHAR(2000) NOT NULL,
-        language VARCHAR(80) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        lyrics TEXT NOT NULL,
+        language VARCHAR(255) NOT NULL,
         account_id INTEGER NOT NULL,
         PRIMARY KEY (id),
         FOREIGN KEY(account_id) REFERENCES account (id)
@@ -41,7 +41,9 @@
   ```
   CREATE TABLE author (
         id INTEGER NOT NULL,
-        name VARCHAR NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        result_all JSON,
+        result_no_stop_words JSON,
         PRIMARY KEY (id)
   );
   ```
@@ -49,7 +51,7 @@
   ```
   CREATE TABLE results (
         id INTEGER NOT NULL,
-        word VARCHAR NOT NULL,
+        word VARCHAR(255) NOT NULL,
         matches INTEGER NOT NULL,
         result_all JSON NOT NULL,
         result_no_stop_words JSON NOT NULL,
@@ -83,7 +85,7 @@
 
 ## Tietokantakyselyjä
 
-Sovelluksessa on neljä automaattista kyselyä, jotka suoritetaan sisäänkirjautuessa. Näiden kyselyjen tulokset tulostetaan kotisivulle, eli ensimmäiselle sivulle sisäänkirjauduttua.
+Sovelluksessa on kiolme automaattista kyselyä, jotka suoritetaan sisäänkirjautuessa. Näiden kyselyjen tulokset tulostetaan kotisivulle, eli ensimmäiselle sivulle sisäänkirjauduttua.
 
 Ensimmäinen kysely on *Song*-luokassa (*application/songs/models.py*) sijaitsevassa staattinen metodi *find_database_status()*. Sen tulos on katsaus tietokannan kulloiseenkin sisältöön. Kysely on seuraavanlainen:
 
@@ -146,7 +148,7 @@ Parametrien kaksi ensimmäistä arvoa tulevat tässä samalla periaatteella kuin
 
 ---
 
-Viimeinen staattinen kysely sijaitsee *Author*-luokassa (*application/authors/models.py*). Kyseessä on metodi *find_authors()*. Sen tuottaa listan lauluntekijöistä lauluineen, joka esitetään *Authors*-sivulla. Kysely on seuraavanlainen:
+Näiden lisäksi on muita staattisia metodeja, joita kutsutaan myöhemmin koodista. Näistä kaksi sijaitsee *Author*-luokassa (*application/authors/models.py*). Kyseessä ovat metodit *get_authors()* ja *get_authorsongs()*. Edellinen tuottaa listan lauluntekijöistä lauluineen, joka esitetään *Authors*-sivulla. Kysely on seuraavanlainen:
 
 ```
 SELECT DISTINCT author.name,
@@ -163,6 +165,21 @@ ORDER BY Song.language, author.name ASC;
 ```
 
 Parametrien arvot tulevat jälleen samalla periaatteella kuin edellisissä kyselyesimerkeissä. Toisella rivillä oleva *STRING_AGG* toimii vain PostGres-kyselyssä Herokussa. SQLite-kyselyssä tulee käyttää termiä *GROUP_CONCAT*.
+Jälkimmäinen tuottaa listan kaikista lauluntekijöistä laluineen. Kysely on seuraavanlainen:
+
+```
+SELECT DISTINCT Song.id
+       Song.lyrics,
+       Song.name,
+       Song.language
+FROM Song
+INNER JOIN author_song ON author_song.song_id = Song.id
+INNER JOIN author ON author.id = author_song.author_id
+JOIN account ON account.id = Song.account_id
+WHERE account.id IN (?,?) AND author.id = :id
+GROUP BY author.name, Song.language, author.id
+ORDER BY Song.id, Song.lyrics, Song.name, Song.language;
+```
 
 ---
 
