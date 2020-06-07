@@ -17,7 +17,7 @@
 <!-- APPLICATION'S OWN STYLES -->
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}"></link>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dropdown.css') }}"></link>
-  
+
 <!-- BOOTSTRAP TOOLTIPS -->
   <script>
     $(function(){
@@ -38,10 +38,10 @@
   <!-- LYRFREQ HOME LOGO -->
   <div class="container-fluid" style="padding-right: 0px;">
 	<nav aria-label="Home button image">
-    <a class="navbar-brand" href="{{ url_for('index') }}">
-      <img src="{{url_for('static', filename='images/brandlogo.png')}}" width="70" height="30" class="d-inline-flex align-top image-responsive myLogo" alt="LyrFreq - Lyrics Frequency Analysator - Home button image" data-toggle="tooltip" data-placement="top" title="Home page" aria-label="Home page"></img>
-    </a>
-  </nav>
+      <a class="navbar-brand" href="{{ url_for('index') }}">
+        <img src="{{url_for('static', filename='images/brandlogo.png')}}" width="70" height="30" class="d-inline-flex align-top image-responsive myLogo" alt="LyrFreq - Lyrics Frequency Analysator - Home button image" data-toggle="tooltip" data-placement="top" title="Home page" aria-label="Home page"></img>
+      </a>
+    </nav>
   </div>
 
 
@@ -70,7 +70,6 @@
 
   {% if g.user.is_authenticated %}
     <div class="container-fluid">
-      <!-- <nav aria-label="Word Search"> -->
       <div class="form-group">
         <form class="form-inline my-0 my-lg-0" action="/words/find/" method="POST" name="wordform">
           <div class="d-inline-flex">
@@ -84,7 +83,6 @@
           </div>
         </form>
       </div>
-    <!-- </nav> -->
     </div>
   {% endif %}
 </nav>
@@ -93,23 +91,32 @@
 <!-- PAGES: SONGS (LIST / ADD) / AUTHORS / STATS / INFO -->
 {% if g.user.is_authenticated %}
   <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+    <style type="text/css" >
+      #dropBtn { border-radius: 0; }
+      #pageLink:visited { color: white; font-weight: bold; }
+    </style>
     <div class="dropdown" role="group">
-      <button id="dropbtn" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+      <button id="dropBtn" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
         Songs
       </button>
       <div class="dropdown-content" aria-labelledby="dropbtn">
-        <a style="color: black;" class="dropdown-item" href="{{ url_for('songs_list') }}">List Songs</a>
-        <a style="color: black;" class="dropdown-item" href="{{ url_for('songs_create') }}">Add Song</a>
+        <a style="color: black;" class="dropdown-item" href="{{ url_for('songs_list') }}" aria-label="List Songs">List Songs</a>
+        <a style="color: black;" class="dropdown-item" href="{{ url_for('songs_create') }}" aria-label="Add Song">Add Song</a>
       </div>
     </div>
-    <style type="text/css" >
-	#pageLink:visited {color: white; font-weight: bold; }
-	</style>
-    <button type="button" class="btn btn-secondary"><a id="pageLink" href="{{ url_for('authors_list') }}" aria-label="Authors Page">Authors</a></button>
-    <button id="pageBBtn" type="button" class="btn btn-secondary"><a id="pageLink" href="{{ url_for('auth_stats') }}" aria-label="Authors Page">Stats</a></button>
-    <button id="pageBBtn" type="button" class="btn btn-secondary"><a id="pageLink" href="{{ url_for('songs_info') }}" aria-label="Authors Page">Info</a></button>
+	<div class="dropdown" role="group">
+      <button id="dropBtn" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+        Authors
+      </button>
+      <div class="dropdown-content" aria-labelledby="dropbtn">
+        <a style="color: black;" class="dropdown-item" href="{{ url_for('authors_list', type='list') }}" aria-label="List Authors">List Authors</a>
+        <a style="color: black;" class="dropdown-item" href="{{ url_for('authors_graph') }}" aria-label="Authors Graph">Authors Graph</a>
+      </div>
+    </div>
+    <button type="button" class="btn btn-secondary"><a id="pageLink" href="{{ url_for('auth_stats') }}" aria-label="Authors Page">Stats</a></button>
+    <button type="button" class="btn btn-secondary"><a id="pageLink" href="{{ url_for('songs_info') }}" aria-label="Authors Page">Info</a></button>
   </div>
-</nav>
+
 {% endif %}
 
 <!-- FLASH MESSAGES -->

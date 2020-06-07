@@ -1,0 +1,157 @@
+{% extends "layout.html" %}
+
+<title>LyrFreq - Authors Aggregate Graph Page (visible to those logged in)</title>
+
+{% block body %}
+
+{% for err in errors %}
+  <div class="col-auto">
+    <strong>{{ err }}</strong>
+  </div>
+{% endfor %}
+
+{% if results is none %}
+
+  <!-- IF DATABASE IS EMPTY -->
+  <strong id="big-strong">Database is empty</strong>
+  
+{% else %}
+
+  <form method="POST" action="{{ url_for('authors_graph') }}">
+    <div class="col-auto">
+
+      {% if g.user.role != "GUEST" %}
+      <button class="btn btn-sm btn-danger" type="submit" style="width: 140px; float: right; margin-left: 20px;" name="save" id="save" value="{{ filtered }},{{ graphs }}" action="/authors/show/<author_id>/">Save To Database</button>
+      {% endif %}
+
+      {% if filtered == False %}
+        <button class="btn btn-sm btn-success" type="submit" style="width: 140px; float: right;" name="filter" id="filter" value="{{ filtered }},{{ graphs }}" action="/authors/graph">Filter Stopwords</button>
+      {% else %}
+        <button class="btn btn-sm btn-warning" type="submit" style="width: 140px; float: right;" name="filter" id="filter" value="{{ filtered }},{{ graphs }}" action="/authors/graph">Include Stopwords</button>
+      {% endif %}
+	  <br><br>
+
+
+      {% if results is not none %}
+
+        <!-- HIDDEN FREQUENCY BAR CHART -->
+        
+        <!-- <center> -->
+          <!-- <div class="wrapper"> -->
+            <!-- <canvas id="myChart" width="500" height="300"></canvas> -->
+          <!-- </div> -->
+        <!-- </center><br><br> -->
+  
+
+        <!-- HIDDEN FREQUENCY TABLES AND BUTTON -->
+      
+        <div id="freqtables" style="display: none">
+        
+          <h3>Frequencies
+            <small class="text-muted">(top 10)</small>
+          </h3><br>
+        
+          <div class="col-sm-3 col-sm-offset-1">
+            <div id="frequencies">
+                <table class="table table-striped">
+                <thead>
+                  <!-- <tr> -->
+                    <!-- <th>Word</th> -->
+                    <!-- <th>Count</th> -->
+                  <!-- </tr> -->
+                </thead>
+                <tr>
+              {% for res in results %}
+
+                  <td>{{ res[0] }}</td>
+                  {% for item in res[1] %}
+                
+                  {% for i in item %}
+                    <td>{{ i[0] }}</td>
+                    <td>{{ i[1] }}</td>
+                    <td>{{ i[2] }}</td>
+                    <td>{{ i[3] }}</td>
+                    <td>{{ i[4] }}</td>
+                  {% endfor %}
+                <tr></tr><td></td>
+                  {% endfor %}
+                </tr>
+
+              {% endfor %}
+                </table><br>
+            </div>
+          </div>
+        </div>
+	  
+        <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Frequency Table(s)" onClick="showHideDiv('freqtables')" style="width: 200px;"></input><br><br>
+
+
+        <!-- JAVASCRIPT FOR BARCHART -->
+        <script>
+          var ctx = document.getElementById('myChart').getContext('2d');
+          var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: [{% for lab in graph_data %}
+                        "{{ lab[0] }}",
+                      {% endfor %}],
+              datasets: [{
+                label: '',
+                  data: [{% for freq in graph_data %}
+                        {{ freq[1] }},
+                      {% endfor %}],
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(57, 93, 162, 0.2)',
+                'rgba(102, 189, 55, 0.2)',
+                'rgba(241, 115, 195, 0.2)',
+                'rgba(187, 121, 67, 0.2)'
+                ],
+                borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(57, 93, 162, 1)',
+                'rgba(102, 189, 55, 1)',
+                'rgba(241, 115, 195, 1)',
+                'rgba(187, 121, 67, 1)'
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+            legend: {
+                display: false
+                },
+            title: {
+                display: true,
+                fontSize: 16,
+                text: 'Top 10 Word Frequencies in Authors\' Song(s)'
+                },
+            scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+            }
+          }
+          });
+        </script>
+
+      {% endif %}
+	    
+    </div>
+  </form>
+
+{% endif %}
+
+{% endblock %}

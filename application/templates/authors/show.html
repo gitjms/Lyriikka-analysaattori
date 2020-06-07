@@ -17,23 +17,23 @@
   
 {% else %}
 
-  <form method="POST" action="{{ url_for('authors_show', author_id=author.id) }}">
+  <form method="POST" action="{{ url_for('authors_show', author_id=author.id, type='list') }}">
     <div class="col-auto">
   
       <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>
 
       {% if g.user.role != "GUEST" %}
-      <button class="btn btn-sm btn-danger" type="submit" style="width: 140px; float: right; margin-left: 20px;" name="save" id="save" value="{{ filtered }},{{ graphs }}" action="/authors/show/<author_id>/">Save To Database</button>
+      <button class="btn btn-sm btn-danger" type="submit" style="width: 140px; float: right; margin-left: 20px;" name="save" id="save" value="{{ filtered }},{{ graphs }}" action="/authors/show/<author_id>/<type>">Save To Database</button>
       {% endif %}
 
 
       {% if graphs == False %}
-	    <button class="btn btn-sm btn-primary" type="submit" style="width: 140px; float: right;" name="graph" id="graph" value="graph" action="/authors/show/<author_id>/">Show Graphs</button>
+	    <button class="btn btn-sm btn-primary" type="submit" style="width: 140px; float: right;" name="graph" id="graph" value="graph" action="/authors/show/<author_id>/<type>">Show Graphs</button>
       {% else %}
         {% if filtered == False %}
-          <button class="btn btn-sm btn-success" type="submit" style="width: 140px; float: right;" name="filter" id="filter" value="{{ filtered }},{{ graphs }}" action="/authors/show/<author_id>/">Filter Stopwords</button>
+          <button class="btn btn-sm btn-success" type="submit" style="width: 140px; float: right;" name="filter" id="filter" value="{{ filtered }},{{ graphs }}" action="/authors/show/<author_id>/<type>">Filter Stopwords</button>
         {% else %}
-          <button class="btn btn-sm btn-warning" type="submit" style="width: 140px; float: right;" name="filter" id="filter" value="{{ filtered }},{{ graphs }}" action="/authors/show/<author_id>/">Include Stopwords</button>
+          <button class="btn btn-sm btn-warning" type="submit" style="width: 140px; float: right;" name="filter" id="filter" value="{{ filtered }},{{ graphs }}" action="/authors/show/<author_id>/<type>">Include Stopwords</button>
         {% endif %}
 	  
       {% endif %}

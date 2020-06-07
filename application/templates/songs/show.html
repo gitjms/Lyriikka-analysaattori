@@ -12,13 +12,10 @@
     <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px; float: left;" value="Back"/>Back</button>
   </form>
 
+  <form method="POST" action="{{ url_for('songs_edit', song_id=song_id, author_id=author_id, from_page=from_page) }}">
 
-  {% if from_page == 'authors' %}
-    <form method="POST" action="{{ url_for('songs_edit', song_id=song_id, author_id=author_id, from_page=from_page) }}">
-
-      <button class="btn btn-sm btn-warning" type="submit" name="Edit" style="width:75px; float: right;" value="Edit"/>Edit</button>
-    </form>
-  {% endif%}
+    <button class="btn btn-sm btn-warning" type="submit" name="Edit" style="width:75px; float: right;" value="Edit"/>Edit</button>
+  </form>
 
 </div>
 <div style="clear: both;"></div><br>

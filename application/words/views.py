@@ -94,7 +94,7 @@ def words_find():
 	# words_list = [ song_id, Counter() ] => for database storing
 	#-------------------------------------------------------
 	if tot_count > 0:
-		graph_list, results_list, db_words_list = stop_words(filtered, new_raw_words_list, language)
+		graph_list, results_list, db_words_list = stop_words(filtered, new_raw_words_list, language, limit=10)
 	else:
 		return render_template("words/words.html", frequencies = None, word=word_to_find)
 

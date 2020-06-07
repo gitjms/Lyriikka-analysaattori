@@ -165,21 +165,22 @@ ORDER BY Song.language, author.name ASC;
 ```
 
 Parametrien arvot tulevat jälleen samalla periaatteella kuin edellisissä kyselyesimerkeissä. Toisella rivillä oleva *STRING_AGG* toimii vain PostGres-kyselyssä Herokussa. SQLite-kyselyssä tulee käyttää termiä *GROUP_CONCAT*.
-Jälkimmäinen tuottaa listan kaikista lauluntekijöistä laluineen. Kysely on seuraavanlainen:
+Jälkimmäinen kysely (*get_authorsongs()*) tuottaa listan tietyn lauluntekijän laluista. Kysely on seuraavanlainen:
 
 ```
-SELECT DISTINCT Song.id
+SELECT Song.id,
        Song.lyrics,
        Song.name,
        Song.language
 FROM Song
-INNER JOIN author_song ON author_song.song_id = Song.id
-INNER JOIN author ON author.id = author_song.author_id
-JOIN account ON account.id = Song.account_id
+LEFT JOIN author_song ON Song.id = author_song.song_id
+LEFT JOIN Author ON author_song.author_id = Author.id
+LEFT JOIN account ON account.id = Song.account_id
 WHERE account.id IN (?,?) AND author.id = :id
-GROUP BY author.name, Song.language, author.id
-ORDER BY Song.id, Song.lyrics, Song.name, Song.language;
+GROUP BY Song.id, Song.lyrics, Song.name, Song.language;
 ```
+
+Parametreinä jälleen käyttäjän sallitut id:t sekä halutun lauluntekijän id.
 
 ---
 

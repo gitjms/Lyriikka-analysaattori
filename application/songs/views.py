@@ -53,7 +53,6 @@ def songs_list():
 		elif request.form.get("sort") == "id":
 			songs = Song.query.filter(Song.account_id.in_(user_list)).order_by(Song.id.asc()).all()
 
-
 	return render_template("songs/list.html", songs=songs)
 
 
@@ -69,7 +68,7 @@ def songs_show(song_id,author_id,from_page):
 			if from_page == 'songs':
 				return redirect(url_for("songs_list"))
 			elif from_page == 'authors':
-				return redirect(url_for("authors_show", author_id = author_id))
+				return redirect(url_for("authors_show", author_id = author_id, type='list'))
 			elif from_page == 'edit':
 				return redirect(url_for("songs_list"))
 
@@ -97,7 +96,7 @@ def songs_edit(song_id,author_id,from_page):
 		if from_page == 'songs':
 			return redirect(url_for("songs_list"))
 		elif from_page == 'authors':
-			return redirect(url_for("authors_show", author_id = author_id))
+			return redirect(url_for('songs_show', song_id=song_id, author_id=author_id, from_page=from_page))
 
 	if request.form.get("Edit") == "Edit":
 		return render_template("songs/edit.html", song=song, form=form, song_id=song_id, author_id=author_id, from_page=from_page)
@@ -112,7 +111,7 @@ def songs_edit(song_id,author_id,from_page):
 
 			new_name = form.title.data
 			new_lyrics = form.lyrics.data
-			new_authors = form.author.data.split(',')
+			new_authors = [w.strip() for w in form.author.data.split(',')]
 			new_language = form.language.data
 
 			old_name = song.name
@@ -120,7 +119,7 @@ def songs_edit(song_id,author_id,from_page):
 			old_authors = [w.name for w in song.authors]
 			old_language = song.language
 
-			if (new_name == old_name and new_lyrics == old_lyrics and new_authors == old_authors):
+			if (new_name == old_name and new_lyrics == old_lyrics and new_authors == old_authors and new_language == old_language):
 				flash("No changes made.", "warning")
 				return render_template("songs/edit.html", song=song, form=form, song_id=song_id, author_id=author_id, from_page=from_page)
 
@@ -159,12 +158,15 @@ def songs_edit(song_id,author_id,from_page):
 #-----------------------------------------
 #		SONGS/DELETE: songs_delete()
 #-----------------------------------------
-@app.route("/songs/delete/<song_id>", methods=["POST"])
+@app.route("/songs/delete/<song_id>", methods=["GET","POST"])
 @login_required
 def songs_delete(song_id):
 
 	if g.user.role != "USER" and g.user.role != "ADMIN":
 		return login_manager.unauthorized()
+
+	if request.method == "GET":
+		return
 
 	qry = db.session().query(Song).filter(Song.id==song_id)
 	if request.method == "POST":
@@ -174,8 +176,8 @@ def songs_delete(song_id):
 		except SQLAlchemyError:
 			db.session.rollback()
 			flash("Song not deleted.", "danger")
-		return redirect('/songs')
-	return render_template("songs/list.html", songs = Song.query.all())
+
+	return redirect(url_for("songs_list"))
 
 
 #-----------------------------------------

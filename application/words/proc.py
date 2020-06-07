@@ -73,7 +73,7 @@ def proc_text(song_list, word_to_find):
 
 
 # stop words
-def stop_words(filtered, new_raw_words_list, language):
+def stop_words(filtered, new_raw_words_list, language, limit):
 
 	stops = stopwords.words(language)
 
@@ -100,7 +100,7 @@ def stop_words(filtered, new_raw_words_list, language):
 			words_count.items(),
 			key=operator.itemgetter(1),
 			reverse=True
-		)[:10]
+		)[:limit]
 
 		#----------------------------------------
 		# results_list = [ song_id, Word, Count ]
