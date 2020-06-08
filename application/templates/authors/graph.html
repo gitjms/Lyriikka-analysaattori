@@ -10,7 +10,7 @@
   </div>
 {% endfor %}
 
-{% if graph_en is none and graph_fi is none and graph_fr is none and table_en is none and table_fi is none and table_fr is none %}
+{% if (not graph_en and not graph_fi and not graph_fr) or (not table_en and not table_fi and not table_fr) %}
 
   <!-- IF DATABASE IS EMPTY -->
   <strong id="big-strong">Database is empty</strong>
@@ -32,7 +32,7 @@
 	  <br><br>
 
 
-      {% if graph_en is not none and graph_fi is not none and graph_fr is not none %}
+      {% if graph_en and graph_fi and graph_fr %}
 
         <!-- FREQUENCY BAR CHART -->
         <center>
@@ -57,7 +57,7 @@
       {% endif %}
 
 
-      {% if table_en is not none and table_fi is not none and table_fr is not none %}
+      {% if table_en and table_fi and table_fr %}
 
         <!-- HIDDEN FREQUENCY TABLES AND BUTTON -->
 		<label for="freqtab">Show/Hide Frequency Tables:</label>
