@@ -51,7 +51,7 @@ class Author(Base):
 
 
 	@staticmethod
-	def get_authors():
+	def get_authors(language):
 
 		if g.user.role == "GUEST" or g.user.role == "ADMIN":
 			user_list = [1,2]
@@ -63,6 +63,11 @@ class Author(Base):
 		else:
 			song_group = "GROUP_CONCAT (Song.name,'; ') songs, "
 
+		if language == "":
+			lang = ""
+		else:
+			lang = "AND Song.language = '" + language + "' "
+
 		stmt = text("SELECT "
 					"	DISTINCT author.name, "
 					+ song_group +
@@ -72,13 +77,13 @@ class Author(Base):
 					"INNER JOIN author_song ON author_song.song_id = Song.id "
 					"INNER JOIN author ON author.id = author_song.author_id "
 					"JOIN account ON account.id = Song.account_id "
-					"WHERE account.id IN (:user1,:user2) "
+					"WHERE account.id IN (:user1,:user2) " + lang +
 					"GROUP BY author.name, Song.language, author.id "
 					"ORDER BY Song.language, author.name ASC").params(user1=user_list[0],user2=user_list[1])
 		res = db.engine.execute(stmt)
 		response = []
 		for row in res:
-			response.append({'author':row[0],'songs':row[1],'language':row[2],'language':row[2],'id':row[3]})
+			response.append({'author':row[0],'songs':row[1],'language':row[2],'id':row[3]})
 
 		return response
 
@@ -109,3 +114,4 @@ class Author(Base):
 			response.append({'id':row[0],'lyrics':row[1],'title':row[2],'language':row[3]})
 
 		return response
+

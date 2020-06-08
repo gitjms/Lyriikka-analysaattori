@@ -7,7 +7,7 @@
 
 <div class="col-auto">
 
-  <form method="POST" action="{{ url_for('songs_show', song_id=song_id, author_id=author_id, from_page=from_page) }}">
+  <form method="POST" action="{{ url_for('songs_show', song_id=song_id, author_id=author_id, from_page=from_page, lang='na') }}">
 
     <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px; float: left;" value="Back"/>Back</button>
   </form>
@@ -47,7 +47,7 @@
 </center>
 
 
-<form method="POST" action="{{ url_for('songs_show', song_id=song_id, author_id=author_id, from_page=from_page) }}">
+<form method="POST" action="{{ url_for('songs_show', song_id=song_id, author_id=author_id, from_page=from_page, lang='na') }}">
   <div class="col-auto">
     <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px; float: left;" value="Back"/>Back</button>
   </div>

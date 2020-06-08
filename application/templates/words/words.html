@@ -69,6 +69,8 @@
 
       <!-- HIDDEN FREQUENCY TABLES AND BUTTON -->
 
+      <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Frequency Table(s)" onClick="showHideDiv('freqtables')" style="width: 200px;"></input><br><br>
+
       <div id="freqtables" style="display: none">
   
         <h3>Frequencies
@@ -97,11 +99,12 @@
           </div>
         </div>
       </div>
-
-      <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Frequency Table(s)" onClick="showHideDiv('freqtables')" style="width: 200px;"></input><br><br>
+      <br><br>
 
 
       <!-- HIDDEN SONG SOURCES AND BUTTON -->
+
+      <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Song Source(s)" onClick="showHideDiv('songtables')" style="width: 200px;"></input><br><br>
 
       <div id="songtables" style="display: none">
 
@@ -118,8 +121,7 @@
           {% endfor %}
         </div>
       </div>
-
-      <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Song Source(s)" onClick="showHideDiv('songtables')" style="width: 200px;"></input><br><br>
+      <br><br>
 
 
       <!-- JAVASCRIPT FOR BARCHART -->

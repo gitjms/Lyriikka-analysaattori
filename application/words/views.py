@@ -108,7 +108,7 @@ def words_find():
 	songs = None
 	if tot_count > 0:
 		
-		songs, graph_data = create_results(raw_word_count, db_words_list, new_songlist, graph_list, word_to_find, tot_count)
+		songs, graph_data = create_results(raw_word_count, db_words_list, new_songlist, graph_list, word_to_find, tot_count, limit=10)
 
 	#-------------------------------------------------------
 	# store to database

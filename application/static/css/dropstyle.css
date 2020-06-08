@@ -1,0 +1,52 @@
+/* Dropdown Button */
+.btn.btn-secondary.dropdown-toggle {
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 0;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  min-width: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  margin: 0px 0;
+  padding: 3px;
+}
+
+/* Links inside the dropdown */
+.dropdown-menu a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-menu a:hover {
+  color: #ffffff;
+  min-width: 100px;
+  background-color: #4069e6;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-menu { display: block; }
+.dropdown:hover #dropbtn { background-color: #27a32a; }
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .btn.btn-secondary.dropdown-toggle {background-color: #3e8e41;}
+
+#custbtn { height: 30px; padding-bottom: 32px; padding-top: 7px; }
+#dropbtn { border-radius: 0; }
+#pageLink:visited { color: white; font-weight: bold; }
+#pageBtn:hover, #pageBtn:focus #pageLink { background-color: #27a32a; }

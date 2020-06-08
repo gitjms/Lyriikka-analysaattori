@@ -159,12 +159,12 @@ FROM Song
 INNER JOIN author_song ON author_song.song_id = Song.id
 INNER JOIN author ON author.id = author_song.author_id
 JOIN account ON account.id = Song.account_id
-WHERE account.id IN (?,?)
+WHERE account.id IN (?,?) [AND Song.language = ?]
 GROUP BY author.name, Song.language, author.id
 ORDER BY Song.language, author.name ASC;
 ```
 
-Parametrien arvot tulevat jälleen samalla periaatteella kuin edellisissä kyselyesimerkeissä. Toisella rivillä oleva *STRING_AGG* toimii vain PostGres-kyselyssä Herokussa. SQLite-kyselyssä tulee käyttää termiä *GROUP_CONCAT*.
+Käyttäjäparametrien arvot tulevat jälleen samalla periaatteella kuin edellisissä kyselyesimerkeissä. Toisella rivillä oleva *STRING_AGG* toimii vain PostGres-kyselyssä Herokussa. SQLite-kyselyssä tulee käyttää termiä *GROUP_CONCAT*. *WHERE* lauseen perässä hakasuluissa oleva osa on tyhjä, mikäli metodia kutsutaan tiedoston *authors/views.py* metodista *authors_list()*, jolla tulostetaan kaikki lauluntekijät. Jos sen sijaan kutsu tulee saman tiedoston metodista *authors_graph()*, jolla tulostetaan kaikkien laulujen sanafrekvenssit kielittäin, tulee hakasulkuosioon sen sisällä oleva lause ja kieleksi haluttu arvo.
 Jälkimmäinen kysely (*get_authorsongs()*) tuottaa listan tietyn lauluntekijän laluista. Kysely on seuraavanlainen:
 
 ```

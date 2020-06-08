@@ -111,7 +111,7 @@ def stop_words(filtered, new_raw_words_list, language, limit):
 
 
 # create results: songs, graph_data
-def create_results(raw_word_count, db_words_list, new_songlist, graph_list, word_to_find, tot_count):
+def create_results(raw_word_count, db_words_list, new_songlist, graph_list, word_to_find, tot_count, limit):
 
 	if word_to_find is not None:
 		#----------------------------------------
@@ -144,7 +144,7 @@ def create_results(raw_word_count, db_words_list, new_songlist, graph_list, word
 		values_count.items(),
 		key=operator.itemgetter(1),
 		reverse=True
-	)[:10]
+	)[:limit]
 
 	if word_to_find is not None:
 		return songs, graph_data

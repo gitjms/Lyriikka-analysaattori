@@ -21,7 +21,7 @@
     <div class="col-auto">
 
       {% if g.user.role != "GUEST" %}
-      <button class="btn btn-sm btn-danger" type="submit" style="width: 140px; float: right; margin-left: 20px;" name="save" id="save" value="{{ filtered }},{{ graphs }}" action="/authors/show/<author_id>/">Save To Database</button>
+      <button class="btn btn-sm btn-danger" type="submit" style="width: 140px; float: right; margin-left: 20px;" name="save" id="save" value="{{ filtered }},{{ graphs }}" action="/authors/show/<author_id>/<type>/<lang>">Save To Database</button>
       {% endif %}
 
       {% if filtered == False %}
@@ -32,72 +32,164 @@
 	  <br><br>
 
 
-      {% if results is not none %}
+      {% if graph_en is not none and graph_fi is not none and graph_fr is not none %}
 
-        <!-- HIDDEN FREQUENCY BAR CHART -->
-        
-        <!-- <center> -->
-          <!-- <div class="wrapper"> -->
-            <!-- <canvas id="myChart" width="500" height="300"></canvas> -->
-          <!-- </div> -->
-        <!-- </center><br><br> -->
+        <!-- FREQUENCY BAR CHART -->
+        <center>
+          <div class="wrapper">
+            <canvas id="myChartEn" width="500" height="300"></canvas>
+          </div>
+        </center>
+		<br>
+        <center>
+          <div class="wrapper">
+            <canvas id="myChartFi" width="500" height="300"></canvas>
+          </div>
+        </center>
+		<br>
+        <center>
+          <div class="wrapper">
+            <canvas id="myChartFr" width="500" height="300"></canvas>
+          </div>
+        </center>
+		<br><br>
   
+      {% endif %}
+
+
+      {% if table_en is not none and table_fi is not none and table_fr is not none %}
 
         <!-- HIDDEN FREQUENCY TABLES AND BUTTON -->
-      
-        <div id="freqtables" style="display: none">
+		<label for="freqtab">Show/Hide Frequency Tables:</label>
+        <div class="d-flex justify-content-around">
+          <input id="freqtab" class="btn btn-sm btn-primary" type="button" value="English" onClick="showHideDiv('freqtablesEN')" style="width: 100px;"></input>
+		  <input id="freqtab" class="btn btn-sm btn-primary" type="button" value="Finnish" onClick="showHideDiv('freqtablesFI')" style="width: 100px;"></input>
+		  <input id="freqtab" class="btn btn-sm btn-primary" type="button" value="French" onClick="showHideDiv('freqtablesFR')" style="width: 100px;"></input>
+        </div><br><br>
+
+        <div id="freqtablesEN" style="display: none" class="container-fluid">
         
           <h3>Frequencies
-            <small class="text-muted">(top 10)</small>
+            <small class="text-muted">(top 5), english</small>
           </h3><br>
+
+          <div id="frequencies" class="container">
+            <table class="table">
+            <tbody>
+            {% for res in table_en %}
+              <tr>
+                <th>Author:</th><td colspan="6">{{ res[0] }}</td>
+              </tr>
+              <tr>
+              <tr>
+              <tr>
+			    <th>Word:</th>
+                {% for y in res[1] %}
+                  <td>{{ y[0] }}</td>
+                {% endfor %}
+              </tr>
+			    <th>Count:</th>
+                {% for x in res[1] %}
+                  <td>{{ x[1] }}</td>
+                {% endfor %}
+              </tr>
+
+              </tr>
+			  <tr><td colspan="6"></td></tr>
+            {% endfor %}
+            </tbody>
+            </table><br>
+		  </div>
+		</div>
+
+        <div id="freqtablesFI" style="display: none" class="container-fluid">
         
-          <div class="col-sm-3 col-sm-offset-1">
-            <div id="frequencies">
-                <table class="table table-striped">
-                <thead>
-                  <!-- <tr> -->
-                    <!-- <th>Word</th> -->
-                    <!-- <th>Count</th> -->
-                  <!-- </tr> -->
-                </thead>
-                <tr>
-              {% for res in results %}
+          <h3>Frequencies
+            <small class="text-muted">(top 5), finnish</small>
+          </h3><br>
 
-                  <td>{{ res[0] }}</td>
-                  {% for item in res[1] %}
-                
-                  {% for i in item %}
-                    <td>{{ i[0] }}</td>
-                    <td>{{ i[1] }}</td>
-                    <td>{{ i[2] }}</td>
-                    <td>{{ i[3] }}</td>
-                    <td>{{ i[4] }}</td>
-                  {% endfor %}
-                <tr></tr><td></td>
-                  {% endfor %}
-                </tr>
+          <div id="frequencies" class="container">
+            <table class="table">
+            <tbody>
+            {% for res in table_fi %}
+              <tr>
+                <th>Author:</th><td colspan="6">{{ res[0] }}</td>
+              </tr>
+              <tr>
+              <tr>
+              <tr>
+			    <th>Word:</th>
+                {% for y in res[1] %}
+                  <td>{{ y[0] }}</td>
+                {% endfor %}
+              </tr>
+			    <th>Count:</th>
+                {% for x in res[1] %}
+                  <td>{{ x[1] }}</td>
+                {% endfor %}
+              </tr>
 
-              {% endfor %}
-                </table><br>
-            </div>
-          </div>
+              </tr>
+			  <tr><td colspan="6"></td></tr>
+            {% endfor %}
+            </tbody>
+            </table><br>
+		  </div>
+		</div>
+
+        <div id="freqtablesFR" style="display: none" class="container-fluid">
+        
+          <h3>Frequencies
+            <small class="text-muted">(top 5), french</small>
+          </h3><br>
+
+          <div id="frequencies" class="container">
+            <table class="table">
+            <tbody>
+            {% for res in table_fr %}
+              <tr>
+                <th>Author:</th><td colspan="6">{{ res[0] }}</td>
+              </tr>
+              <tr>
+              <tr>
+              <tr>
+			    <th>Word:</th>
+                {% for y in res[1] %}
+                  <td>{{ y[0] }}</td>
+                {% endfor %}
+              </tr>
+			    <th>Count:</th>
+                {% for x in res[1] %}
+                  <td>{{ x[1] }}</td>
+                {% endfor %}
+              </tr>
+
+              </tr>
+			  <tr><td colspan="6"></td></tr>
+            {% endfor %}
+            </tbody>
+            </table>
         </div>
-	  
-        <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Frequency Table(s)" onClick="showHideDiv('freqtables')" style="width: 200px;"></input><br><br>
+        </div>
+	    <br><br>
+
+      {% endif %}
 
 
-        <!-- JAVASCRIPT FOR BARCHART -->
+        <!-- JAVASCRIPTS FOR BARCHARTS -->
         <script>
-          var ctx = document.getElementById('myChart').getContext('2d');
-          var myChart = new Chart(ctx, {
+          var ctxEn = document.getElementById('myChartEn').getContext('2d');
+          var ctxFi = document.getElementById('myChartFi').getContext('2d');
+          var ctxFr = document.getElementById('myChartFr').getContext('2d');
+          var myChartEn = new Chart(ctxEn, {
             type: 'bar',
             data: {
-              labels: [{% for lab in graph_data %}
+              labels: [{% for lab in graph_en %}
                         "{{ lab[0] }}",
                       {% endfor %}],
               datasets: [{
                 label: '',
-                  data: [{% for freq in graph_data %}
+                  data: [{% for freq in graph_en %}
                         {{ freq[1] }},
                       {% endfor %}],
                 backgroundColor: [
@@ -134,7 +226,119 @@
             title: {
                 display: true,
                 fontSize: 16,
-                text: 'Top 10 Word Frequencies in Authors\' Song(s)'
+                text: 'Top 10 Word Frequencies in English Authors\' Song(s)'
+                },
+            scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+            }
+          }
+          });
+          var myChartFi = new Chart(ctxFi, {
+            type: 'bar',
+            data: {
+              labels: [{% for lab in graph_fi %}
+                        "{{ lab[0] }}",
+                      {% endfor %}],
+              datasets: [{
+                label: '',
+                  data: [{% for freq in graph_fi %}
+                        {{ freq[1] }},
+                      {% endfor %}],
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(57, 93, 162, 0.2)',
+                'rgba(102, 189, 55, 0.2)',
+                'rgba(241, 115, 195, 0.2)',
+                'rgba(187, 121, 67, 0.2)'
+                ],
+                borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(57, 93, 162, 1)',
+                'rgba(102, 189, 55, 1)',
+                'rgba(241, 115, 195, 1)',
+                'rgba(187, 121, 67, 1)'
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+            legend: {
+                display: false
+                },
+            title: {
+                display: true,
+                fontSize: 16,
+                text: 'Top 10 Word Frequencies in Finnish Authors\' Song(s)'
+                },
+            scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+            }
+          }
+          });
+          var myChartFr = new Chart(ctxFr, {
+            type: 'bar',
+            data: {
+              labels: [{% for lab in graph_fr %}
+                        "{{ lab[0] }}",
+                      {% endfor %}],
+              datasets: [{
+                label: '',
+                  data: [{% for freq in graph_fr %}
+                        {{ freq[1] }},
+                      {% endfor %}],
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(57, 93, 162, 0.2)',
+                'rgba(102, 189, 55, 0.2)',
+                'rgba(241, 115, 195, 0.2)',
+                'rgba(187, 121, 67, 0.2)'
+                ],
+                borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(57, 93, 162, 1)',
+                'rgba(102, 189, 55, 1)',
+                'rgba(241, 115, 195, 1)',
+                'rgba(187, 121, 67, 1)'
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+            legend: {
+                display: false
+                },
+            title: {
+                display: true,
+                fontSize: 16,
+                text: 'Top 10 Word Frequencies in French Authors\' Song(s)'
                 },
             scales: {
                 yAxes: [{
@@ -146,8 +350,6 @@
           }
           });
         </script>
-
-      {% endif %}
 	    
     </div>
   </form>

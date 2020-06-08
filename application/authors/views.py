@@ -5,9 +5,10 @@ from application import app, db, login_manager, login_required
 from application.songs.models import Song
 from application.auth.models import User
 from application.authors.models import Author
-from application.authors.proc import proc_authors, store_results
+from application.authors.proc import prepare_data, proc_authors, store_results
 from application.words.views import replace_accent
 
+from collections import Counter
 
 @app.before_request
 def before_request():
@@ -17,15 +18,15 @@ def before_request():
 #-----------------------------------------
 #		AUTHORS: authors_list()
 #-----------------------------------------
-@app.route("/authors/list/<type>", methods=["GET", "POST"])
+@app.route("/authors/list/<type>/<lang>", methods=["GET", "POST"])
 @login_required
-def authors_list(type):
+def authors_list(type,lang):
 
-	authors = Author.get_authors()
+	authors = Author.get_authors("")
 	if authors:
-		return render_template("authors/list.html", authors=authors, type=type)
+		return render_template("authors/list.html", authors=authors, type=type, lang=lang)
 	else:
-		return render_template("authors/list.html", authors=None, type=type)
+		return render_template("authors/list.html", authors=None, type=type, lang=lang)
 
 
 #-----------------------------------------
@@ -37,11 +38,10 @@ def authors_graph():
 	filtered = False
 	save = False
 
-	if request.method == "GET":
+	if request.method == "POST":
 			
 		if request.form.get('filter') is not None:
 			data = request.form.get('filter').split(',')
-			graphs = data[1]
 			if data[0] == "True":
 				filtered = False
 			elif data[0] == "False":
@@ -49,34 +49,37 @@ def authors_graph():
 		
 		if request.form.get('save') is not None:
 			data = request.form.get('save').split(',')
-			graphs = data[1]
 			if data[0] == "True":
 				filtered = True
 			elif data[0] == "False":
 				filtered = False
 			save = True
 
+	if request.method == "GET" or  request.method == "POST":
+
 		#-------------------------------------------------------
 		# get data: authors = [ name, lyrics, language, id ]
 		# get author
 		#-------------------------------------------------------
-		authors = Author.get_authors()
+		authors_en = Author.get_authors('english')
+		results_en = []
+		for row in authors_en:
+			results_en.append(authors_show(row['id'], 'graph', 'english'))
 
-		results = []
-		for row in authors:
-			results.append(authors_show(row['id'], 'graph'))
+		authors_fi = Author.get_authors('finnish')
+		results_fi = []
+		for row in authors_fi:
+			results_fi.append(authors_show(row['id'], 'graph', 'finnish'))
 
-		author_names = [w[0] for w in results]
-		results_lists = [w[1] for w in results]
-		# db_words_lists = [w[2] for w in results]
-		graph_data = [w[3] for w in results]
-		# raw_word_counts = [w[4] for w in results]
-		# new_songlists = [w[5] for w in results]
-		languages = [w[6] for w in results]
+		authors_fr = Author.get_authors('french')
+		results_fr = []
+		for row in authors_fr:
+			results_fr.append(authors_show(row['id'], 'graph', 'french'))
 
-		# print('\n\n\n',results_lists,'\n\n\n')
+		table_en, table_fi, table_fr, graph_en, graph_fi, graph_fr = prepare_data(results_en, results_fi, results_fr)
 
-		return render_template("authors/graph.html", results=results, filtered=filtered)
+
+		return render_template("authors/graph.html", table_en=table_en, table_fi=table_fi, table_fr=table_fr, graph_en=graph_en, graph_fi=graph_fi, graph_fr=graph_fr, filtered=filtered)
 
 	return redirect(url_for("index"))
 
@@ -84,20 +87,22 @@ def authors_graph():
 #-----------------------------------------
 #		AUTHORS: authors_show()
 #-----------------------------------------
-@app.route("/authors/show/<author_id>/<type>", methods=["GET", "POST"])
+@app.route("/authors/show/<author_id>/<type>/<lang>", methods=["GET", "POST"])
 @login_required
-def authors_show(author_id, type):
+def authors_show(author_id, type, lang):
 	graphs = False
 	filtered = False
 	save = False
 
 	if request.method == "GET" and type == 'list':
-		return render_template("authors/show.html", author = Author.query.get(author_id), graphs=graphs, type=type)
+		return render_template("authors/show.html", author = Author.query.get(author_id), graphs=graphs, type=type, lang=lang)
+	# if request.form.get("Back") == "Back":
+		# return redirect(url_for("authors_list", type=type, lang=lang))
 
 	if request.method == "POST" or type == 'graph':
 
 		if request.form.get("Back") == "Back":
-			return redirect(url_for("authors_list", type=type))
+			return redirect(url_for("authors_list", type=type, lang=lang))
 
 		if request.form.get("graph") == "graph":
 			graphs = True
@@ -129,7 +134,10 @@ def authors_show(author_id, type):
 		#-------------------------------------------------------
 		# get results
 		#-------------------------------------------------------
-		results_list, db_words_list, graph_data, raw_word_count, new_songlist, language = proc_authors(author_songs, filtered)
+		if type == 'graph':
+			results_list, db_words_list, graph_data, raw_word_count, new_songlist, language = proc_authors(author_songs, filtered, lang)
+		else:
+			results_list, db_words_list, graph_data, raw_word_count, new_songlist, language = proc_authors(author_songs, filtered, "")
 
 		#-------------------------------------------------------
 		# store to database
@@ -144,7 +152,7 @@ def authors_show(author_id, type):
 		if type == 'graph':
 			return author.name, results_list, db_words_list, graph_data, raw_word_count, replace_accent(new_songlist), language
 		else:
-			return render_template("authors/show.html", author=author, frequencies=results_list, songs=replace_accent(new_songlist), errors=errors, graph_data=graph_data, language=language, filtered=filtered, graphs=graphs)
+			return render_template("authors/show.html", author=author, frequencies=results_list, songs=replace_accent(new_songlist), errors=errors, graph_data=graph_data, language=language, filtered=filtered, graphs=graphs, lang=lang)
 
-	return render_template("authors/show.html", author = Author.query.get(author_id), graphs=graphs, type=type)
+	return render_template("authors/show.html", author = Author.query.get(author_id), graphs=graphs, type=type, lang=lang)
 

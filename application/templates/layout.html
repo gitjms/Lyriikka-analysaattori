@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fi" lang="fi">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" charset="utf-8"></meta>
-<title>LyrFreq - Lyrics Frequency Analysator: Analyze songs' word frequencies</title>
+<title>LyrFreq (Lyrics Frequency Analyzer) Main Page</title>
 
 <!-- BOOTSTRAP CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"></link>
-
-<!-- BOOTSTRAP TOGGLE -->
-<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet"></link>
 
 <!-- APPLICATION'S OWN JAVASCRIPTS -->
 <script type="text/javascript" src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
@@ -16,19 +13,18 @@
   
 <!-- APPLICATION'S OWN STYLES -->
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}"></link>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dropdown.css') }}"></link>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dropstyle.css') }}"></link>
 
 <!-- BOOTSTRAP TOOLTIPS -->
-  <script>
-    $(function(){
-      $('[data-toggle="tooltip"]').tooltip();
-    })
-  </script>
+<script>
+  $(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+  })
+</script>
+
 </head>
 
-
 <body>
-
 <!-- NAVBAR -->
 
 <div class="container-fluid" >
@@ -54,12 +50,12 @@
         <b id="nav-b" style="color:#b0746a; padding-right: 20px;" aria-label="Hello">
           Hello {{ g.user.username }}
         </b>
-        <a id="nav-a" href="{{ url_for('auth_logout') }}"aria-label="Logout">Logout</a>
+        <a id="nav-a" href="{{ url_for('auth_logout') }}" aria-label="Logout">Logout</a>
       </div>
       {% else %}
       <div class="d-inline" style="">
         <a id="nav-a" style="padding-right: 20px;" href="{{ url_for('auth_login') }}" aria-label="Login">Login</a>
-        <a id="nav-a" href="{{ url_for('auth_create') }}" aria-label="Create account">Create account</a>
+        <a id="nav-a" href="{{ url_for('auth_create') }}" data-toggle="tooltip" data-placement="top" title="Create account" aria-label="Create account">Create account</a>
       </div>
       {% endif %}
     </nav>
@@ -74,12 +70,16 @@
         <form class="form-inline my-0 my-lg-0" action="/words/find/" method="POST" name="wordform">
           <div class="d-inline-flex">
             <input class="form-control mr-sm-2" type="text" style="width: 160px" placeholder="Quick Word Search" aria-label="Search" name="wordsearch" id="wordsearch" required autofocus aria-label="Search Word Input"></input>
+          </div>
+          <div  class="btn-group" role="group">
+		    <style type="text/css">
+              #custbtn:hover { background-color: #35bf04; }
+			</style>
+            <button id="custbtn" type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 45px;" name="langchoice" id="langchoice" value="finnish" data-toggle="tooltip" data-placement="top" title="Search for finnish word" aria-label="Finnish Language Choice">Fi</button>
 
-            <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 45px;" name="langchoice" id="langchoice" value="finnish" data-toggle="tooltip" data-placement="top" title="Search for finnish word" aria-label="Finnish Language Choice">Fi</button>
+            <button id="custbtn" type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 45px; margin-left: 3px;" name="langchoice" id="langchoice" value="english" data-toggle="tooltip" data-placement="top" title="Search for english word" aria-label="English Language Choice">En</button>
 
-            <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 45px; margin-left: 3px;" name="langchoice" id="langchoice" value="english" data-toggle="tooltip" data-placement="top" title="Search for english word" aria-label="English Language Choice">En</button>
-
-            <button type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 45px; margin-left: 3px;" name="langchoice" id="langchoice" value="french" data-toggle="tooltip" data-placement="top" title="Search for french word" aria-label="French Language Choice">Fr</button>
+            <button id="custbtn" type="button form-control" class="btn btn-secondary" style="color: #5e1b0f; font-weight: bold; width: 45px; margin-left: 3px;" name="langchoice" id="langchoice" value="french" data-toggle="tooltip" data-placement="top" title="Search for french word" aria-label="French Language Choice">Fr</button>
           </div>
         </form>
       </div>
@@ -90,31 +90,36 @@
 
 <!-- PAGES: SONGS (LIST / ADD) / AUTHORS / STATS / INFO -->
 {% if g.user.is_authenticated %}
+  <style type="text/css">
+    #custbtn { height: 30px; padding-bottom: 32px; padding-top: 7px; }
+    #dropbtn { border-radius: 0; }
+    #pageLink:visited { color: white; font-weight: bold; }
+	.dropdown-menu a:hover {background-color: #4069e6; min-width: 100px; color: #ffffff; }
+	.dropdown:hover #dropbtn { background-color: #27a32a; }
+	#pageBtn:hover, #pageBtn:focus #pageLink { background-color: #27a32a; }
+	.dropdown-menu { margin: 0px 0; padding: 3px; }
+  </style>
   <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-    <style type="text/css" >
-      #dropBtn { border-radius: 0; }
-      #pageLink:visited { color: white; font-weight: bold; }
-    </style>
     <div class="dropdown" role="group">
-      <button id="dropBtn" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+      <button id="dropbtn" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
         Songs
       </button>
-      <div class="dropdown-content" aria-labelledby="dropbtn">
-        <a style="color: black;" class="dropdown-item" href="{{ url_for('songs_list') }}" aria-label="List Songs">List Songs</a>
-        <a style="color: black;" class="dropdown-item" href="{{ url_for('songs_create') }}" aria-label="Add Song">Add Song</a>
+      <div class="dropdown-menu" data-toggle="tooltip" data-placement="top" title="List Songs" aria-labelledby="dropbtn">
+        <a class="dropdown-item" href="{{ url_for('songs_list') }}" aria-label="List Songs">List Songs</a>
+        <a class="dropdown-item" href="{{ url_for('songs_create') }}" aria-label="Add Song">Add Song</a>
       </div>
     </div>
 	<div class="dropdown" role="group">
-      <button id="dropBtn" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+      <button id="dropbtn" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
         Authors
       </button>
-      <div class="dropdown-content" aria-labelledby="dropbtn">
-        <a style="color: black;" class="dropdown-item" href="{{ url_for('authors_list', type='list') }}" aria-label="List Authors">List Authors</a>
-        <a style="color: black;" class="dropdown-item" href="{{ url_for('authors_graph') }}" aria-label="Authors Graph">Authors Graph</a>
+      <div class="dropdown-menu" aria-labelledby="dropbtn">
+        <a class="dropdown-item" href="{{ url_for('authors_list', type='list',lang='na') }}" aria-label="List Authors">List Authors</a>
+        <a class="dropdown-item" href="{{ url_for('authors_graph') }}" aria-label="Authors Graph">Authors Graph</a>
       </div>
     </div>
-    <button type="button" class="btn btn-secondary"><a id="pageLink" href="{{ url_for('auth_stats') }}" aria-label="Authors Page">Stats</a></button>
-    <button type="button" class="btn btn-secondary"><a id="pageLink" href="{{ url_for('songs_info') }}" aria-label="Authors Page">Info</a></button>
+    <button id="pageBtn" class="btn btn-secondary"><a id="pageLink" href="{{ url_for('auth_stats') }}" aria-label="Stats Page">Stats</a></button>
+    <button id="pageBtn" class="btn btn-secondary"><a id="pageLink" href="{{ url_for('songs_info') }}" aria-label="Info Page">Info</a></button>
   </div>
 
 {% endif %}
@@ -144,47 +149,47 @@
 
 <!-- FOR ADMIN ONLY -->
 
-{% if g.user.role == "ADMIN" %}
-<!-- ADD DEFAULT AUTHORS AND SONGS -->
 <div class="container-fluid">
-  <form action="/defaults/add" method="POST">
-    <div>
-      <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px; margin-right: 50px; margin-bottom: 30px;" name="add" id="add" value="add" aria-label="Add default songs">Add default songs</button>
-    </div>
-  </form>
-</div>
+  {% if g.user.role == "ADMIN" %}
+  <!-- ADD DEFAULT AUTHORS AND SONGS -->
+  <div class="container-fluid">
+    <form action="/defaults/add" method="POST">
+      <div>
+        <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px; margin-right: 50px; margin-bottom: 30px;" name="add" id="add" value="add" aria-label="Add default songs">Add default songs</button>
+      </div>
+    </form>
+  </div>
 
 
-<!-- REMOVE DEFAULT AUTHORS AND SONGS -->
-<div class="container-fluid">
-  <form action="/defaults/remove" method="POST">
-    <div>
-      <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px; margin-bottom: 30px;" name="remove" id="remove" value="remove" aria-label="Remove default songs">Remove default songs</button>
-    </div>
-  </form>
-</div>
+  <!-- REMOVE DEFAULT AUTHORS AND SONGS -->
+  <div class="container-fluid">
+    <form action="/defaults/remove" method="POST">
+      <div>
+        <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px; margin-bottom: 30px;" name="remove" id="remove" value="remove" aria-label="Remove default songs">Remove default songs</button>
+      </div>
+    </form>
+  </div>
 
 
-<!-- LIST USERS -->
-<div class="container-fluid" >
-  <form action="/admin" method="POST">
-    <button class="btn btn-sm btn-primary" type="submit" style="float: left; margin-left: 50px; margin-bottom: 30px;" name="listusers" id="listusers" value="listusers" aria-label="List users">List users</button>
-  </form>
+  <!-- LIST USERS -->
+  <div class="container-fluid" >
+    <form action="/admin" method="POST">
+      <button class="btn btn-sm btn-primary" type="submit" style="float: left; margin-left: 50px; margin-bottom: 30px;" name="listusers" id="listusers" value="listusers" aria-label="List users">List users</button>
+    </form>
+  </div>
 </div>
 {% endif %}
 
-
-<!-- Bootstrap 4.5.0 -->
-<!-- jQuery, Popper.js, and JS -->
+<!-- Bootstrap, jQuery, Popper -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-<!-- Bootstrap Toggle -->
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-  
+
+
 <!-- script below is for Chart.min.js graph -->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
-  
+
+
 <!-- three scripts below are for flash message timeout -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
