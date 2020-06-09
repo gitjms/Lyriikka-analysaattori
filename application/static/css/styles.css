@@ -2,12 +2,12 @@
 	min-width: 140px;
 }
 
-#nav-a {
+#nav-a, #nav-b, #nav-c {
 	font-size: 18px;
 	color: white;
 }
 
-#nav-b {
+#nav-d {
 	font-size: 18px;
 }
 
