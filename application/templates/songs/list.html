@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-<title>LyrFreq - Songs Listing Page (visible to those logged in)</title>
+<title>LyrFreq - Songs Listing Page</title>
 
 {% block body %}
 
@@ -52,7 +52,7 @@
       <th>id</th>
       <th>title</th>
       <th>lang</th>
-      <th style="padding-left: 10px;">delete</th>
+      <th style="padding-left: 12px;">delete</th>
     </tr>
     {% for song in songs %}
       <tr>
@@ -60,7 +60,7 @@
 
   	    <!-- SONG NAME LINK -->
         <td>
-  	      <a href="{{ url_for('songs_show', song_id=song.id, author_id='na', from_page='songs', lang='na') }}" aria-label="Song Title">{{ song.name }}</a>
+  	      <a href="{{ url_for('songs_show', song_id=song.id, author_id='na', from_page='songs') }}" aria-label="Song Title">{{ song.name }}</a>
   	    </td>
 
   	    <!-- SONG LANGUAGE -->
@@ -71,7 +71,10 @@
           <form method="POST" action="{{ url_for('songs_delete', song_id=song.id) }}" onSubmit="return confirm('Are you sure you wish to delete?')">
             <input type="hidden" name="song_id" value="{{ song.id }}"></input>
             <div class="col-auto">
-              <button class="btn btn-sm btn-danger" type="submit" name="Delete" style="width:40px; height:20px;" value="Delete" aria-label="Button For Delete Song"> </button>
+		      <style type="text/css">
+                #skull-img img { margin-bottom: 10px; margin-top: -5px; }
+			  </style>
+              <button id="skull-img" class="btn btn-sm btn-danger" type="submit" name="Delete" style="width:35px; height:20px;" value="Delete" aria-label="Button For Delete Song"><img src="/static/images/warning.png"></button>
             </div>
           </form>
         </td>

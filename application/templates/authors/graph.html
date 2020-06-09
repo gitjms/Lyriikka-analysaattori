@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-<title>LyrFreq - Authors Aggregate Graph Page (visible to those logged in)</title>
+<title>LyrFreq - Authors Aggregate Graph Page</title>
 
 {% block body %}
 
@@ -21,7 +21,7 @@
     <div class="col-auto">
 
       {% if g.user.role != "GUEST" %}
-      <button class="btn btn-sm btn-danger" type="submit" style="width: 140px; float: right; margin-left: 20px;" name="save" id="save" value="{{ filtered }},{{ graphs }}" action="/authors/show/<author_id>/<type>/<lang>">Save To Database</button>
+      <button class="btn btn-sm btn-danger" type="submit" style="width: 140px; float: right; margin-left: 20px;" name="save" id="save" value="{{ filtered }},{{ graphs }}" action="/authors/show/<author_id>">Save To Database</button>
       {% endif %}
 
       {% if filtered == False %}
@@ -61,34 +61,41 @@
 
         <!-- HIDDEN FREQUENCY TABLES AND BUTTON -->
 		<label for="freqtab">Show/Hide Frequency Tables:</label>
-        <div class="d-flex justify-content-around">
+        <div class="d-flex justify-content-between">
           <input id="freqtab" class="btn btn-sm btn-primary" type="button" value="English" onClick="showHideDiv('freqtablesEN')" style="width: 100px;"></input>
 		  <input id="freqtab" class="btn btn-sm btn-primary" type="button" value="Finnish" onClick="showHideDiv('freqtablesFI')" style="width: 100px;"></input>
 		  <input id="freqtab" class="btn btn-sm btn-primary" type="button" value="French" onClick="showHideDiv('freqtablesFR')" style="width: 100px;"></input>
-        </div><br><br>
+        </div><br>
 
         <div id="freqtablesEN" style="display: none" class="container-fluid">
         
-          <h3>Frequencies
+          <h3>Word Frequencies by Authors<br>
             <small class="text-muted">(top 5), english</small>
-          </h3><br>
+          </h3>
 
           <div id="frequencies" class="container">
-            <table class="table">
+            <table class="table table-sm table-hover table-responsive">
             <tbody>
             {% for res in table_en %}
               <tr>
-                <th>Author:</th><td colspan="6">{{ res[0] }}</td>
+                <th>
+				  <small class="text-muted">Author:</small>
+				</th>
+				<th colspan="5">{{ res[0] }}</th>
               </tr>
               <tr>
               <tr>
               <tr>
-			    <th>Word:</th>
+			    <th>
+				  <small class="text-muted">Word:</small>
+				</th>
                 {% for y in res[1] %}
                   <td>{{ y[0] }}</td>
                 {% endfor %}
               </tr>
-			    <th>Count:</th>
+			    <th>
+				  <small class="text-muted">Count:</small>
+				</th>
                 {% for x in res[1] %}
                   <td>{{ x[1] }}</td>
                 {% endfor %}
@@ -109,21 +116,28 @@
           </h3><br>
 
           <div id="frequencies" class="container">
-            <table class="table">
+            <table class="table table-sm table-hover table-responsive">
             <tbody>
             {% for res in table_fi %}
               <tr>
-                <th>Author:</th><td colspan="6">{{ res[0] }}</td>
+                <th>
+				  <small class="text-muted">Author:</small>
+				</th>
+				<th colspan="5">{{ res[0] }}</th>
               </tr>
               <tr>
               <tr>
               <tr>
-			    <th>Word:</th>
+			    <th>
+				  <small class="text-muted">Word:</small>
+				</th>
                 {% for y in res[1] %}
                   <td>{{ y[0] }}</td>
                 {% endfor %}
               </tr>
-			    <th>Count:</th>
+			    <th>
+				  <small class="text-muted">Count:</small>
+				</th>
                 {% for x in res[1] %}
                   <td>{{ x[1] }}</td>
                 {% endfor %}
@@ -144,21 +158,28 @@
           </h3><br>
 
           <div id="frequencies" class="container">
-            <table class="table">
+            <table class="table table-sm table-hover table-responsive">
             <tbody>
             {% for res in table_fr %}
               <tr>
-                <th>Author:</th><td colspan="6">{{ res[0] }}</td>
+                <th>
+				  <small class="text-muted">Author:</small>
+				</th>
+				<th colspan="5">{{ res[0] }}</th>
               </tr>
               <tr>
               <tr>
               <tr>
-			    <th>Word:</th>
+			    <th>
+				  <small class="text-muted">Word:</small>
+				</th>
                 {% for y in res[1] %}
                   <td>{{ y[0] }}</td>
                 {% endfor %}
               </tr>
-			    <th>Count:</th>
+			    <th>
+				  <small class="text-muted">Count:</small>
+				</th>
                 {% for x in res[1] %}
                   <td>{{ x[1] }}</td>
                 {% endfor %}
@@ -226,7 +247,7 @@
             title: {
                 display: true,
                 fontSize: 16,
-                text: 'Top 10 Word Frequencies in English Authors\' Song(s)'
+                text: 'Top 10 Word Frequencies in English Songs'
                 },
             scales: {
                 yAxes: [{
@@ -282,7 +303,7 @@
             title: {
                 display: true,
                 fontSize: 16,
-                text: 'Top 10 Word Frequencies in Finnish Authors\' Song(s)'
+                text: 'Top 10 Word Frequencies in Finnish Songs'
                 },
             scales: {
                 yAxes: [{
@@ -338,7 +359,7 @@
             title: {
                 display: true,
                 fontSize: 16,
-                text: 'Top 10 Word Frequencies in French Authors\' Song(s)'
+                text: 'Top 10 Word Frequencies in French Songs'
                 },
             scales: {
                 yAxes: [{

@@ -73,7 +73,7 @@ def proc_text(song_list, word_to_find):
 
 
 # stop words
-def stop_words(filtered, new_raw_words_list, language, limit):
+def stop_words(filtered, new_raw_words_list, language, table_limit):
 
 	stops = stopwords.words(language)
 
@@ -87,7 +87,7 @@ def stop_words(filtered, new_raw_words_list, language, limit):
 		raw_words = words_list[1][1]
 		raw_words_graph = [w.lower() for w in raw_words if w.lower()]
 		no_stop_words = [w.lower() for w in raw_words if w.lower() not in stops]
-		words_count = Counter(no_stop_words)
+		words_count = Counter(replace_accent(no_stop_words))
 		if filtered:
 			graph_list.append(no_stop_words)
 		else:
@@ -95,12 +95,12 @@ def stop_words(filtered, new_raw_words_list, language, limit):
 
 		db_words_list.append([song_id, words_count])
 		
-		# save the results
+		# save the results for frequency tables
 		results = sorted(
 			words_count.items(),
 			key=operator.itemgetter(1),
 			reverse=True
-		)[:limit]
+		)[:table_limit]
 
 		#----------------------------------------
 		# results_list = [ song_id, Word, Count ]
@@ -111,7 +111,7 @@ def stop_words(filtered, new_raw_words_list, language, limit):
 
 
 # create results: songs, graph_data
-def create_results(raw_word_count, db_words_list, new_songlist, graph_list, word_to_find, tot_count, limit):
+def create_results(raw_word_count, db_words_list, new_songlist, graph_list, word_to_find, tot_count):
 
 	if word_to_find is not None:
 		#----------------------------------------
@@ -144,7 +144,7 @@ def create_results(raw_word_count, db_words_list, new_songlist, graph_list, word
 		values_count.items(),
 		key=operator.itemgetter(1),
 		reverse=True
-	)[:limit]
+	)[:10]
 
 	if word_to_find is not None:
 		return songs, graph_data
@@ -203,4 +203,12 @@ def store_author_words(author, raw_word_count, db_words_list, counts):
 			break
 
 	return errors
+
+
+# difficult accent for Word Frequencies html in Words Find page and Authors Graph page
+def replace_accent(list):
+	for n, item in enumerate(list):
+		if "\´" in item:
+			list[n] = item.replace("\´","\'")
+	return list
 	

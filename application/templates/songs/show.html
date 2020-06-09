@@ -1,13 +1,12 @@
 {% extends "layout.html" %}
 
-<title>LyrFreq - Show Song Page (visible to those logged in)</title>
+<title>LyrFreq - Show Song Page</title>
 
-{{ error }}
 {% block body %}
 
 <div class="col-auto">
 
-  <form method="POST" action="{{ url_for('songs_show', song_id=song_id, author_id=author_id, from_page=from_page, lang='na') }}">
+  <form method="POST" action="{{ url_for('songs_show', song_id=song_id, author_id=author_id, from_page=from_page) }}">
 
     <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px; float: left;" value="Back"/>Back</button>
   </form>
@@ -47,7 +46,7 @@
 </center>
 
 
-<form method="POST" action="{{ url_for('songs_show', song_id=song_id, author_id=author_id, from_page=from_page, lang='na') }}">
+<form method="POST" action="{{ url_for('songs_show', song_id=song_id, author_id=author_id, from_page=from_page) }}">
   <div class="col-auto">
     <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px; float: left;" value="Back"/>Back</button>
   </div>

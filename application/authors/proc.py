@@ -62,33 +62,33 @@ def prepare_data(results_en, results_fi, results_fr):
 
 	table_en = []
 	for i in range(len(author_names_en)):
-		table_en.append([author_names_en[i],[w for w in table_data_en[i]]])
+		table_en.append([author_names_en[i],[w for w in table_data_en[i]][:5]])
 
 	table_fi = []
 	for i in range(len(author_names_fi)):
-		table_fi.append([author_names_fi[i],[w for w in table_data_fi[i]]])
+		table_fi.append([author_names_fi[i],[w for w in table_data_fi[i]][:5]])
 
 	table_fr = []
 	for i in range(len(author_names_fr)):
-		table_fr.append([author_names_fr[i],[w for w in table_data_fr[i]]])
+		table_fr.append([author_names_fr[i],[w for w in table_data_fr[i]][:5]])
 
 
 	return table_en, table_fi, table_fr, graph_en, graph_fi, graph_fr
 	
 
-def proc_authors(author_songs, filtered, type):
+def proc_authors(author_songs, filtered, lang, table_limit):
 
 	#-------------------------------------------------------
 	# prepare data
 	#-------------------------------------------------------
 	song_list = []
-	if type == "":
+	if lang == "":
 		for i in author_songs:
 			song_list.append([i['id'], replace_chars(i['lyrics']), i['title'], i['language']])
 			language = i['language']
 	else:
 		for i in author_songs:
-			if i['language'] == type:
+			if i['language'] == lang:
 				song_list.append([i['id'], replace_chars(i['lyrics']), i['title'], i['language']])
 				language = i['language']
 
@@ -108,7 +108,7 @@ def proc_authors(author_songs, filtered, type):
 	# results_list = [ song_id, Word=None, Count=0 ] => top 5 or 10 word frequencies
 	# db_words_list = [ song_id, Counter() ] => for database storing
 	#-------------------------------------------------------
-	graph_list, results_list, db_words_list = stop_words(filtered, new_raw_words_list, language, limit=5)
+	graph_list, results_list, db_words_list = stop_words(filtered, new_raw_words_list, language, table_limit)
 
 	#-------------------------------------------------------
 	# get results
@@ -116,7 +116,7 @@ def proc_authors(author_songs, filtered, type):
 	# graph_data = {}
 	#-------------------------------------------------------
 	frequencies = None
-	graph_data = create_results(raw_word_count, db_words_list, None, graph_list, None, 0, limit=5)
+	graph_data = create_results(raw_word_count, db_words_list, None, graph_list, None, 0)
 
 	return results_list, db_words_list, graph_data, raw_word_count, new_songlist, language
 

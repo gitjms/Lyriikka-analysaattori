@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-<title>LyrFreq - Author Listing Page (visible to those logged in)</title>
+<title>LyrFreq - Author Listing Page</title>
 
 {% block body %}
 
@@ -21,7 +21,7 @@
   {% for author in authors %}
     <tr>
       <td style="padding-right: 10px;">
-	    <a href="{{ url_for('authors_show', author_id=author.id, type=type, lang='na') }}">{{ author.author }}</a>
+	    <a href="{{ url_for('authors_show', author_id=author.id) }}">{{ author.author }}</a>
       </td>
       <td>{{ author.songs }}</td>
       <td style="padding-left: 10px;">{{ author.language[:2]|upper }}</td>

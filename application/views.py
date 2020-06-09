@@ -14,8 +14,8 @@ def index():
 	return render_template("index.html")
 
 
-@app.route("/info")
-def songs_info():
+@app.route("/info", methods = ["GET"])
+def info():
 
 	return render_template("info.html")
 

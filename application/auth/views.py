@@ -25,9 +25,11 @@ def before_request():
 #-----------------------------------------
 #		STATS: auth_stats()
 #-----------------------------------------
-@app.route("/auth/stats")
+@app.route("/auth/stats", methods = ["GET"])
 @login_required
 def auth_stats():
+
+	errors = []
 
 	# TOP 5 search words
 	words = Words.find_words()
@@ -46,7 +48,8 @@ def auth_stats():
 	if db_status:
 		return render_template("auth/stats.html", db_status=db_status, top_words=result_list)
 	else:
-		return render_template("auth/stats.html", db_status=None, top_words=result_list)
+		errors.append("Cannot load database status.")
+		return render_template("auth/stats.html", db_status=None, top_words=result_list, errors=errors)
 
 
 #-----------------------------------------

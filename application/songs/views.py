@@ -59,16 +59,16 @@ def songs_list():
 #-----------------------------------------
 #		SONGS/SHOW: songs_show()
 #-----------------------------------------
-@app.route("/songs/show/<song_id>/<author_id>/<from_page>/<lang>", methods=["GET", "POST"])
+@app.route("/songs/show/<song_id>/<author_id>/<from_page>", methods=["GET", "POST"])
 @login_required
-def songs_show(song_id,author_id,from_page,lang):
+def songs_show(song_id,author_id,from_page):
 
 	if request.method == "POST":
 		if request.form.get("Back") == "Back":
 			if from_page == 'songs':
 				return redirect(url_for("songs_list"))
 			elif from_page == 'authors':
-				return redirect(url_for("authors_show", author_id = author_id, type='list', lang='na'))
+				return redirect(url_for("authors_show", author_id = author_id))
 			elif from_page == 'edit':
 				return redirect(url_for("songs_list"))
 
@@ -96,7 +96,7 @@ def songs_edit(song_id,author_id,from_page):
 		if from_page == 'songs':
 			return redirect(url_for("songs_list"))
 		elif from_page == 'authors':
-			return redirect(url_for('songs_show', song_id=song_id, author_id=author_id, from_page=from_page, lang=lang))
+			return redirect(url_for('songs_show', song_id=song_id, author_id=author_id, from_page=from_page))
 
 	if request.form.get("Edit") == "Edit":
 		return render_template("songs/edit.html", song=song, form=form, song_id=song_id, author_id=author_id, from_page=from_page)
@@ -145,7 +145,7 @@ def songs_edit(song_id,author_id,from_page):
 					song.language = new_language
 
 				db.session().commit()
-				return redirect(url_for("songs_show", song_id=song_id, author_id=author_id, from_page=from_page, lang=lang))
+				return redirect(url_for("songs_show", song_id=song_id, author_id=author_id, from_page=from_page))
 			except SQLAlchemyError:
 				db.session.rollback()
 				flash("Song exists already.", "danger")

@@ -1,13 +1,12 @@
 {% extends "layout.html" %}
 
-<title>LyrFreq - Stats Page (visible to those logged in)</title>
+<title>LyrFreq - Stats Page</title>
 
-{{ error }}
 {% block body %}
 
 <h1>Statistics</h1><br>
 
-{% for err in error %}
+{% for err in errors %}
   <strong>{{ err }}</strong>
 {% endfor %}
 

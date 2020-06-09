@@ -1,3 +1,9 @@
+/********************************** 
+
+	Dropdown area
+
+**********************************/
+
 /* Dropdown Button */
 .btn.btn-secondary.dropdown-toggle {
   color: white;
@@ -45,8 +51,3 @@
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .btn.btn-secondary.dropdown-toggle {background-color: #3e8e41;}
-
-#custbtn { height: 30px; padding-bottom: 32px; padding-top: 7px; }
-#dropbtn { border-radius: 0; }
-#pageLink:visited { color: white; font-weight: bold; }
-#pageBtn:hover, #pageBtn:focus #pageLink { background-color: #27a32a; }

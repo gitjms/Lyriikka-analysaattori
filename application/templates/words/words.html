@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-<title>LyrFreq - Word Search Results Page (visible to users)</title>
+<title>LyrFreq - Word Search Results Page</title>
 
 {% block body %}
 
@@ -64,7 +64,7 @@
         <div class="wrapper">
           <canvas id="myChart" width="500" height="300"></canvas>
         </div>
-      </center><br><br>
+      </center><br>
   
 
       <!-- HIDDEN FREQUENCY TABLES AND BUTTON -->
@@ -73,33 +73,32 @@
 
       <div id="freqtables" style="display: none">
   
-        <h3>Frequencies
+        <h3>Word Frequencies
           <small class="text-muted">(top 10)</small>
         </h3><br>
   
-        <div class="col-sm-10 col-sm-offset-1">
-          <div id="frequencies">
-            {% for freq in frequencies %}
-              <h4>song: {{ freq[0] }},  count: {{ freq[2] }}</h4>
-              <table class="table table-striped" style="max-width: 300px;">
-              <thead>
-                <tr>
-                  <th>Word</th>
-                  <th>Count</th>
-                </tr>
-              </thead>
-              {% for res in freq[1] %}
-                <tr>
-                  <td>{{ res[0] }}</td>
-                  <td>{{ res[1] }}</td>
-                </tr>
-              {% endfor %}
-              </table><br>
+        <div id="frequencies" class="col-sm-10 col-sm-offset-1">
+          {% for freq in frequencies %}
+            <h4>song: {{ freq[0] }},  count: {{ freq[2] }}</h4>
+            <table class="table table-sm table-striped" style="max-width: 300px;">
+            <thead>
+              <tr>
+                <th>Word</th>
+                <th>Count</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for res in freq[1] %}
+              <tr>
+                <td>{{ res[0] }}</td>
+                <td>{{ res[1] }}</td>
+              </tr>
             {% endfor %}
-          </div>
+            </tbody>
+            </table>
+          {% endfor %}
         </div>
       </div>
-      <br><br>
 
 
       <!-- HIDDEN SONG SOURCES AND BUTTON -->
@@ -121,7 +120,6 @@
           {% endfor %}
         </div>
       </div>
-      <br><br>
 
 
       <!-- JAVASCRIPT FOR BARCHART -->
