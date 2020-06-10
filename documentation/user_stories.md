@@ -67,12 +67,19 @@ Tekstiesimerkkejä käyttötapauksesta *rekisteröityminen*
 
 ## Sovelluksen käyttötapauskaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/84233769-a6ca2400-aafb-11ea-96ca-78be391b0b0e.png" alt="use case" >
+<img src="https://user-images.githubusercontent.com/46410240/84247529-e9e2c200-ab10-11ea-955d-910f566c46a7.png" alt="use case" >
+
+Värikoodien merkitys:
+- vihreä on kaikille käyttäjärooleille sallittu
+- sininen on vain pääkäyttäjälle sallittu
+- punainen on sallittu kirjautuneelle peruskäyttäjälle sekä pääkäyttäjälle
+
+Kuva ei ole kovin selkeä, joten alla vielä kuvat erikseen kunkin käyttäjäroolin osalta:
 
 ### Käyttötapauskaaviot erikseen kullekin roolille
 
-<img src="https://user-images.githubusercontent.com/46410240/84233982-12ac8c80-aafc-11ea-90fb-131b7aa8b696.png" alt="use case admin" >
+<img src="https://user-images.githubusercontent.com/46410240/84247295-8f496600-ab10-11ea-8289-4162badd91f1.png" alt="use case admin" >
 
-<img src="https://user-images.githubusercontent.com/46410240/84234005-1d672180-aafc-11ea-99cc-3048abca0496.png" alt="use case user" >
+<img src="https://user-images.githubusercontent.com/46410240/84247398-bacc5080-ab10-11ea-903c-00272d47a071.png" alt="use case user" >
 
-<img src="https://user-images.githubusercontent.com/46410240/84234024-26f08980-aafc-11ea-9d4e-de5c6dfcf740.png" alt="use case guest" >
+<img src="https://user-images.githubusercontent.com/46410240/84247370-b011bb80-ab10-11ea-82aa-a12145d07819.png" alt="use case guest" >
