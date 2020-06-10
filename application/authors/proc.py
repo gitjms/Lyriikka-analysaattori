@@ -1,29 +1,30 @@
 from flask import flash
 
 from application.words.views import replace_chars, replace_accent
-from application.words.proc import proc_text, stop_words, create_results, store_author_words
+from application.words.proc import proc_text, stop_words, create_results, create_results_graph, store_author_words
 
 from collections import Counter
 import operator
 
 
+#-------------------------------------------------------
+# prepare data for authors_graph() html page
+#-------------------------------------------------------
 def prepare_data(results_en, results_fi, results_fr):
 
 	author_names_en = [w[0] for w in results_en]
 	author_names_fi = [w[0] for w in results_fi]
 	author_names_fr = [w[0] for w in results_fr]
-	# results_lists = [w[1] for w in results]
-	# db_words_lists = [w[2] for w in results]
-	table_data_en = [w[3] for w in results_en]
-	table_data_fi = [w[3] for w in results_fi]
-	table_data_fr = [w[3] for w in results_fr]
-	graph_data_en = [dict(w[3]) for w in results_en]
-	graph_data_fi = [dict(w[3]) for w in results_fi]
-	graph_data_fr = [dict(w[3]) for w in results_fr]
-	# raw_word_counts = [w[4] for w in results]
-	# new_songlists = [w[5] for w in results]
-	# languages = [w[6] for w in results]
+	graph_data_en = [dict(w[1]) for w in results_en]
+	graph_data_fi = [dict(w[1]) for w in results_fi]
+	graph_data_fr = [dict(w[1]) for w in results_fr]
+	table_data_en = [w[2] for w in results_en]
+	table_data_fi = [w[2] for w in results_fi]
+	table_data_fr = [w[2] for w in results_fr]
 
+	#---------------------------------------------------
+	# combine graph dictonaries
+	#---------------------------------------------------
 	graph_dict_en = Counter({})
 	for i in graph_data_en:
 		count = Counter(i)
@@ -60,27 +61,38 @@ def prepare_data(results_en, results_fi, results_fr):
 		reverse=True
 	)[:10]
 
+	#---------------------------------------------------
+	# create table lists
+	#---------------------------------------------------
 	table_en = []
 	for i in range(len(author_names_en)):
-		table_en.append([author_names_en[i],[w for w in table_data_en[i]][:5]])
+		table_en.append([author_names_en[i],[w for w in table_data_en[i]]])
 
 	table_fi = []
 	for i in range(len(author_names_fi)):
-		table_fi.append([author_names_fi[i],[w for w in table_data_fi[i]][:5]])
+		table_fi.append([author_names_fi[i],[w for w in table_data_fi[i]]])
 
 	table_fr = []
 	for i in range(len(author_names_fr)):
-		table_fr.append([author_names_fr[i],[w for w in table_data_fr[i]][:5]])
+		table_fr.append([author_names_fr[i],[w for w in table_data_fr[i]]])
 
 
 	return table_en, table_fi, table_fr, graph_en, graph_fi, graph_fr
 	
 
-def proc_authors(author_songs, filtered, lang, table_limit):
+#-------------------------------------------------------
+# process data
+# for authors_show() return:
+#	results_list, db_words_list, graph_data,
+#	raw_word_count, new_songlist, language
+# for authors_graph() return:
+#	graph_data, table_data, language
+#-------------------------------------------------------
+def proc_authors(author_songs, filtered, lang):
 
-	#-------------------------------------------------------
+	#---------------------------------------------------
 	# prepare data
-	#-------------------------------------------------------
+	#---------------------------------------------------
 	song_list = []
 	if lang == "":
 		for i in author_songs:
@@ -92,40 +104,48 @@ def proc_authors(author_songs, filtered, lang, table_limit):
 				song_list.append([i['id'], replace_chars(i['lyrics']), i['title'], i['language']])
 				language = i['language']
 
-	#-------------------------------------------------------
+	#---------------------------------------------------
 	# process data
-	#-------------------------------------------------------
+	#---------------------------------------------------
 	# raw_word_count = [ Counter(raw_words) ] => word counts
 	# new_songlist = [ song_id, new_string, song_name ] => songs w/o punctuation
 	# new_raw_words_list = [ count=0, [song_id, raw_words] ] => word lists
-	#-------------------------------------------------------
-	raw_word_count, new_songlist, new_raw_words_list = proc_text(song_list, None)
+	#---------------------------------------------------
+	if lang == "":
+		raw_word_count, new_songlist, new_raw_words_list = proc_text(song_list, None, graph="")
+	else:
+		new_raw_words_list = proc_text(song_list, None, graph="graph")
 
-	#-------------------------------------------------------
+	#---------------------------------------------------
 	# stop words
-	#-------------------------------------------------------
+	#---------------------------------------------------
 	# graph_list = [ raw_words ] => word lists for graph
 	# results_list = [ song_id, Word=None, Count=0 ] => top 5 or 10 word frequencies
 	# db_words_list = [ song_id, Counter() ] => for database storing
-	#-------------------------------------------------------
-	graph_list, results_list, db_words_list = stop_words(filtered, new_raw_words_list, language, table_limit)
+	#---------------------------------------------------
+	if lang == "":
+		graph_list, results_list, db_words_list = stop_words(filtered, new_raw_words_list, language, graph="")
+	else:
+		graph_list = stop_words(filtered, new_raw_words_list, language, graph="graph")
 
-	#-------------------------------------------------------
+	#---------------------------------------------------
 	# get results
-	#-------------------------------------------------------
-	# graph_data = {}
-	#-------------------------------------------------------
+	#---------------------------------------------------
 	frequencies = None
-	graph_data = create_results(raw_word_count, db_words_list, None, graph_list, None, 0)
 
-	return results_list, db_words_list, graph_data, raw_word_count, new_songlist, language
+	if lang == "":
+		graph_data = create_results_graph(graph_list, graph="")
+		return results_list, db_words_list, graph_data, raw_word_count, new_songlist, language
+	else:
+		graph_data, table_data = create_results_graph(graph_list, graph="graph")
+		return graph_data, table_data, language
 
 
+#-------------------------------------------------------
+# store to database
+#-------------------------------------------------------
 def store_results(author, results_list, raw_word_count, db_words_list):
 
-	#-------------------------------------------------------
-	# store to database
-	#-------------------------------------------------------
 	# counts per song
 	counts = []
 	for item in results_list:
@@ -134,3 +154,4 @@ def store_results(author, results_list, raw_word_count, db_words_list):
 	errors = store_author_words(author, raw_word_count, db_words_list, counts)
 
 	return errors
+

@@ -23,11 +23,11 @@ Löydät sovelluksen osoitteesta [lyrfreq.herokuapp.com](https://lyrfreq.herokua
 - sanahaun tulosten tarkastelu taulukkomuodossa, pylväskuvaajana, kohostettuna tekstinä ja lukumääränä
 
 ### Yhteenvetokyselyt
-- tietyn sanan esiintymät (laululista frekvensseineen) sekä ko. haun laulujen sanojen frekvenssit top 10(+)
+- tietyn sanan esiintymät (laululista frekvensseineen) sekä ko. haun laulujen sanojen frekvenssit top 10
 - sanahakuhistorian top 5 summia ja keskiarvoja (COUNT, SUM, AVG) [3 taulua + liitostaulu]
 - tietokannan laulu-, lauluntekijä- ja kielitilanne (COUNT) [3 taulua + liitostaulu]
 - sanafrekvenssit lauluntekijöiden mukaan
-- sanojen esiintymisfrekvenssien vertailu kielittäin
+- sanafrekvenssit kielittäin
 
 ## Dokumentteja
 
@@ -42,8 +42,9 @@ Löydät sovelluksen osoitteesta [lyrfreq.herokuapp.com](https://lyrfreq.herokua
 ## Myöhemmin tulevia mahdollisia lisäominaisuuksia
 
 * kaikkien 57 maan data mukana
-* muitakin kuin vain kristillisiä lyriikoita, eli laulugenret mukaan
+* muita kuin kristillisiä lyriikoita ja laulugenret mukaan
 * sanafrekvenssit genreittäin
 * laulujen tunnetilojen analyysit
 * lyhyiden sanayhdistelmien esiintymät ja frekvenssit (yhteenvetokyselyt)
-* Dokumenttien kääntäminen englanniksi
+* yleisimmät (esim top 10) sanat genreittäin ja kielittäin sanapilvinä (word cloud) etusivulla
+* dokumenttien kääntäminen englanniksi

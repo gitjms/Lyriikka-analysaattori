@@ -81,7 +81,7 @@ def words_find():
 	# new_songlist = [ song_id, new_string, song_name ] => songs w/o punctuation
 	# new_raw_words_list = [ count, [song_id, raw_words] ] => word lists
 	#-------------------------------------------------------
-	raw_word_count, new_songlist, new_raw_words_list, tot_count = proc_text(song_list, word_to_find)
+	raw_word_count, new_songlist, new_raw_words_list, tot_count = proc_text(song_list, word_to_find, graph="")
 	
 	#-------------------------------------------------------
 	# stop words, get count data for html and graph
@@ -94,7 +94,7 @@ def words_find():
 	# words_list = [ song_id, Counter() ] => for database storing
 	#-------------------------------------------------------
 	if tot_count > 0:
-		graph_list, results_list, db_words_list = stop_words(filtered, new_raw_words_list, language, table_limit=10)
+		graph_list, results_list, db_words_list = stop_words(filtered, new_raw_words_list, language, graph="")
 	else:
 		return render_template("words/words.html", frequencies = None, word=word_to_find)
 
@@ -108,7 +108,7 @@ def words_find():
 	songs = None
 	if tot_count > 0:
 		
-		songs, graph_data = create_results(raw_word_count, db_words_list, new_songlist, graph_list, word_to_find, tot_count)
+		songs, graph_data = create_results(new_songlist, graph_list, word_to_find)
 
 	#-------------------------------------------------------
 	# store to database

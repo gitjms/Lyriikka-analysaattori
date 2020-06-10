@@ -55,33 +55,29 @@ def authors_graph():
 				filtered = False
 			save = True
 
-	if request.method == "GET" or  request.method == "POST":
+	#-------------------------------------------------------
+	# get data: authors = [ name, lyrics, language, id ]
+	# get author
+	#-------------------------------------------------------
+	authors_en = Author.get_authors('english')
+	results_en = []
+	for row in authors_en:
+		results_en.append(get_results(author_id=row['id'], filtered=filtered, type='graph', lang='english'))
 
-		#-------------------------------------------------------
-		# get data: authors = [ name, lyrics, language, id ]
-		# get author
-		#-------------------------------------------------------
-		authors_en = Author.get_authors('english')
-		results_en = []
-		for row in authors_en:
-			results_en.append(get_results(row['id'], filtered, 'graph', 'english', table_limit=5))
+	authors_fi = Author.get_authors('finnish')
+	results_fi = []
+	for row in authors_fi:
+		results_fi.append(get_results(author_id=row['id'], filtered=filtered, type='graph', lang='finnish'))
 
-		authors_fi = Author.get_authors('finnish')
-		results_fi = []
-		for row in authors_fi:
-			results_fi.append(get_results(row['id'], filtered, 'graph', 'finnish', table_limit=5))
+	authors_fr = Author.get_authors('french')
+	results_fr = []
+	for row in authors_fr:
+		results_fr.append(get_results(author_id=row['id'], filtered=filtered, type='graph', lang='french'))
 
-		authors_fr = Author.get_authors('french')
-		results_fr = []
-		for row in authors_fr:
-			results_fr.append(get_results(row['id'], filtered, 'graph', 'french', table_limit=5))
-
-		table_en, table_fi, table_fr, graph_en, graph_fi, graph_fr = prepare_data(results_en, results_fi, results_fr)
+	table_en, table_fi, table_fr, graph_en, graph_fi, graph_fr = prepare_data(results_en, results_fi, results_fr)
 
 
-		return render_template("authors/graph.html", table_en=table_en, table_fi=table_fi, table_fr=table_fr, graph_en=graph_en, graph_fi=graph_fi, graph_fr=graph_fr, filtered=filtered)
-
-	return redirect(url_for("index"))
+	return render_template("authors/graph.html", table_en=table_en, table_fi=table_fi, table_fr=table_fr, graph_en=graph_en, graph_fi=graph_fi, graph_fr=graph_fr, filtered=filtered)
 
 
 #-----------------------------------------
@@ -97,7 +93,7 @@ def authors_show(author_id):
 	if request.method == "GET":
 		return render_template("authors/show.html", author = Author.query.get(author_id), graphs=graphs)
 
-	if request.method == "POST" or type == 'graph':
+	if request.method == "POST":
 
 		if request.form.get("Back") == "Back":
 			return redirect(url_for("authors_list"))
@@ -122,7 +118,7 @@ def authors_show(author_id):
 				filtered = False
 			save = True
 
-		author, results_list, db_words_list, graph_data, raw_word_count, new_songlist, language = get_results(author_id, filtered, type="", lang="", table_limit=10)
+		author, results_list, db_words_list, graph_data, raw_word_count, new_songlist, language = get_results(author_id, filtered, type="", lang="")
 
 		#-------------------------------------------------------
 		# store to database
@@ -136,22 +132,22 @@ def authors_show(author_id):
 
 		return render_template("authors/show.html", author=author, frequencies=results_list, songs=replace_accent(new_songlist), errors=errors, graph_data=graph_data, language=language, filtered=filtered, graphs=graphs)
 
-	return render_template("authors/show.html", author = Author.query.get(author_id), graphs=graphs, type=type, lang=lang)
+	return render_template("authors/show.html", author = Author.query.get(author_id), graphs=graphs, type=type, lang="")
 
 
 #-----------------------------------------
 #	get_results()
 #-----------------------------------------
-def get_results(author_id, filtered, type, lang, table_limit):
+def get_results(author_id, filtered, type, lang):
 
 	# author_songs = [ song_id, lyrics, language ]
 	author_songs = Author.get_authorsongs(author_id)
 	author = Author.query.get(author_id)
 
-	results_list, db_words_list, graph_data, raw_word_count, new_songlist, language = proc_authors(author_songs, filtered, lang, table_limit)
-
 	if type == 'graph':
-		return author.name, results_list, db_words_list, graph_data, raw_word_count, replace_accent(new_songlist), language
+		graph_data, table_data, language = proc_authors(author_songs, filtered, lang)
+		return author.name, graph_data, table_data, language
 	else:
+		results_list, db_words_list, graph_data, raw_word_count, new_songlist, language = proc_authors(author_songs, filtered, lang)
 		return author, results_list, db_words_list, graph_data, raw_word_count, new_songlist, language
 

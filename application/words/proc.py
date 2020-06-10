@@ -18,7 +18,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 
 # raw words count
-def proc_text(song_list, word_to_find):
+def proc_text(song_list, word_to_find, graph):
 
 	text_list = [] # [ song_id, lyrics, song_name ]
 	nltk.data.path.append(os.getcwd()+'/application/nltk_data/')
@@ -69,17 +69,21 @@ def proc_text(song_list, word_to_find):
 	if word_to_find is not None:
 		return raw_word_count, new_songlist, new_raw_words_list, tot_count
 	else:
-		return raw_word_count, new_songlist, new_raw_words_list
+		if graph == "":
+			return raw_word_count, new_songlist, new_raw_words_list
+		else:
+			return new_raw_words_list
 
 
 # stop words
-def stop_words(filtered, new_raw_words_list, language, table_limit):
+def stop_words(filtered, new_raw_words_list, language, graph):
 
 	stops = stopwords.words(language)
 
-	db_words_list = []
-	results_list = []
-	results = {}
+	if graph == "":
+		db_words_list = []
+		results_list = []
+		results = {}
 	graph_list = []
 	for words_list in new_raw_words_list: # [ count, [song_id, raw_words] ]
 		count = words_list[0]
@@ -87,31 +91,37 @@ def stop_words(filtered, new_raw_words_list, language, table_limit):
 		raw_words = words_list[1][1]
 		raw_words_graph = [w.lower() for w in raw_words if w.lower()]
 		no_stop_words = [w.lower() for w in raw_words if w.lower() not in stops]
-		words_count = Counter(replace_accent(no_stop_words))
 		if filtered:
 			graph_list.append(no_stop_words)
 		else:
 			graph_list.append(raw_words_graph)
 
-		db_words_list.append([song_id, words_count])
+		if graph == "":
+			words_count = Counter(replace_for_table(no_stop_words))
+			db_words_list.append([song_id, words_count])
 		
-		# save the results for frequency tables
-		results = sorted(
-			words_count.items(),
-			key=operator.itemgetter(1),
-			reverse=True
-		)[:table_limit]
+			# save the results for frequency tables
+			results = sorted(
+				words_count.items(),
+				key=operator.itemgetter(1),
+				reverse=True
+			)[:10]
 
-		#----------------------------------------
-		# results_list = [ song_id, Word, Count ]
-		#----------------------------------------
-		results_list.append([song_id, results, count])
+			#----------------------------------------
+			# results_list = [ song_id, Word, Count ]
+			#----------------------------------------
+			results_list.append([song_id, results, count])
 
-	return graph_list, results_list, db_words_list
+	if graph == "":
+		return graph_list, results_list, db_words_list
+	else:
+		return graph_list
 
 
-# create results: songs, graph_data
-def create_results(raw_word_count, db_words_list, new_songlist, graph_list, word_to_find, tot_count):
+#-----------------------------------------
+# create results: (songs,) graph_data
+#-----------------------------------------
+def create_results(new_songlist, graph_list, word_to_find):
 
 	if word_to_find is not None:
 		#----------------------------------------
@@ -152,7 +162,49 @@ def create_results(raw_word_count, db_words_list, new_songlist, graph_list, word
 		return graph_data
 
 
+#-----------------------------------------
+# create results: graph_data, (table_data)
+#-----------------------------------------
+def create_results_graph(graph_list, graph):
+
+	#----------------------------------------
+	# graph_data = {}
+	#----------------------------------------
+	values_graph = []
+	for item in graph_list:
+		for word in item:
+			values_graph.append(word)
+	values_graph_count = Counter(values_graph)
+	graph_data = sorted(
+		values_graph_count.items(),
+		key=operator.itemgetter(1),
+		reverse=True
+	)[:10]
+
+	if graph == "graph":
+		#----------------------------------------
+		# table_data = {}
+		#----------------------------------------
+		values_table = []
+		for item in graph_list:
+			for word in item:
+				values_table.append(word)
+		values_table_count = Counter(replace_for_table(values_table))
+		table_data = sorted(
+			values_table_count.items(),
+			key=operator.itemgetter(1),
+			reverse=True
+		)[:5]
+		
+	if graph == "graph":
+		return graph_data, table_data
+	else:
+		return graph_data
+
+
+#-----------------------------------------
 # database storing for search word results
+#-----------------------------------------
 def store_search_word(raw_word_count, db_words_list, word_to_find, counts):
 	errors = []
 
@@ -182,7 +234,9 @@ def store_search_word(raw_word_count, db_words_list, word_to_find, counts):
 	return errors
 
 
+#-----------------------------------------
 # database storing for author words results
+#-----------------------------------------
 def store_author_words(author, raw_word_count, db_words_list, counts):
 	errors = []
 
@@ -205,10 +259,10 @@ def store_author_words(author, raw_word_count, db_words_list, counts):
 	return errors
 
 
-# difficult accent for Word Frequencies html in Words Find page and Authors Graph page
-def replace_accent(list):
+# difficult accent for word frequency tables html in authors/graph page
+def replace_for_table(list):
 	for n, item in enumerate(list):
 		if "\´" in item:
 			list[n] = item.replace("\´","\'")
 	return list
-	
+

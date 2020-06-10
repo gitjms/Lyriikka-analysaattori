@@ -10,10 +10,10 @@
 
   <form method="POST" class="form-horizontal">
   <dl>
-    {{ render_field(form.name,autofocus=true, placeholder="Enter Full Name") }}
-    {{ render_field(form.username, placeholder="Enter Username") }}
-    {{ render_field(form.password, placeholder="Enter Password") }} 
-    {{ render_field(form.confirm, placeholder="Enter Password Again") }}
+    {{ render_field(form.name,autofocus=true) }}
+    {{ render_field(form.username, placeholder="max 25 characters") }}
+    {{ render_field(form.password, placeholder="min 4, max 10 characters") }} 
+    {{ render_field(form.confirm) }}
   </dl>
   <p><input type="submit" value="Register">
   </form>

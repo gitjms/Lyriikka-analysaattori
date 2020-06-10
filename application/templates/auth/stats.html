@@ -7,7 +7,7 @@
 <h1>Statistics</h1><br>
 
 {% for err in errors %}
-  <strong>{{ err }}</strong>
+  <strong id="big-strong">{{ err }}</strong>
 {% endfor %}
 
 {% if not db_status or db_status is not defined %}
@@ -36,8 +36,8 @@
     </table>
   </div><br><br>
 {% endif %}
-	
-{% if top_words or top_words is not defined and not g.user.admin %}
+
+{% if (top_words or top_words is not defined) and g.user.role != 'ADMIN' %}
   <strong id="big-strong">TOP 5 search words</strong>
   <div id="averages">
     <table class="table table-striped" style="max-width: 1000px;">
