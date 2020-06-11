@@ -47,18 +47,18 @@ Nyt sovelluksen pitäisi näkyä selaimen sivulla ja työkansiossa *application*
 
 Ennen kuin voit kirjautua sovellukseen, tulee tietokantaan asettaa oletuskäyttäjät: pääkäyttäjä *admin* ja vierastili *guest* (lokaali käyttö):
 
-6. Avaa Windowsin komentoikkuna tai *PowerShell* (*Git Bash* ei välttämättä toimi tässä).
-7. Siirry työkansiossa sijaitsevaan *application*-kansioon ja avaa *SQLite*-yhteys ja *songs*-tietokanta komennoilla
+7. Avaa Windowsin komentoikkuna tai *PowerShell* (*Git Bash* ei välttämättä toimi tässä).
+8. Siirry työkansiossa sijaitsevaan *application*-kansioon ja avaa *SQLite*-yhteys ja *songs*-tietokanta komennoilla
    ```
    sqlite3
 
    .open songs.db
    ```
-8. Luo **ensin** pääkäyttäjä. Pääkayttäjän tunnukset (name='admin', username='admin', password='admin') voi vapaasti vaihtaa haluamikseen. Salasanan tulee olla vähintään 4 merkkiä pitkä. Kirjoita komentoikkunaan komento
+9. Luo **ensin** pääkäyttäjä. Pääkayttäjän tunnukset (name='admin', username='admin', password='admin') voi vapaasti vaihtaa haluamikseen. Salasanan tulee olla vähintään 4 merkkiä pitkä. Kirjoita komentoikkunaan komento
    ```
    INSERT INTO account (name, username, password, role, date_created) VALUES ('admin', 'admin', 'admin', 'ADMIN', CURRENT_TIMESTAMP);
    ```
-9. Luo seuraavaksi vierastili komennolla
+10. Luo seuraavaksi vierastili komennolla
    ```
    INSERT INTO account (name, username, password, role, date_created) VALUES ('guest', 'guest', 'guest', 'GUEST', CURRENT_TIMESTAMP);
    ```
@@ -84,7 +84,7 @@ Ennen kuin voit kirjautua sovellukseen, tulee tietokantaan asettaa oletuskäytt�
 
 Nyt sovelluksen pitäisi olla käyttökunnossa ja voit kirjautua sisään äsken luoduilla tunnuksilla tai luoda uuden tunnuksen. Huomaa, että sovelluksen resursseihin on liitetty 18 kappaletta oletuslauluja, jotka vain pääkäyttäjä voi asentaa tietokantaan.
 
----
+## Asennusohje pilvikäyttöön (Windows)
 
 Jos haluat sovelluksen Herokuun, tarvitset [*Heroku*](https://signup.heroku.com/)-tunnukset ja [*Heroku CLI*](https://devcenter.heroku.com/articles/heroku-cli)n, *Git*-tunnukset (Heroku hallitsee sovellusten käyttöönottoa *Git*illä) sekä *PostgreSQL*n.
 
@@ -133,7 +133,7 @@ Myös Herokussa tulee tietokantaan asettaa oletuskäyttäjät: pääkäyttäjä 
    ```
    heroku pg:psql
    ```
-3. Jatka sitten yllä olevista kohdista 8 ja 9.
+3. Jatka sitten yllä olevista kohdista 9 ja 10.
 
 4. Voit lopuksi sulkea PostGres-yhteyden komennolla ```\q```
 5. Avaa sovellus selaimessa syöttämällä terminaaliin komento:
