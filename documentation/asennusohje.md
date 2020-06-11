@@ -81,9 +81,10 @@ Ennen kuin voit kirjautua sovellukseen, tulee tietokantaan asettaa oletuskäytt�
    ```
    INSERT INTO account (name, username, password, role, date_created) VALUES ('vierailija', 'vieras', '12345', 'GUEST', CURRENT_TIMESTAMP);
    ```
----
 
 Nyt sovelluksen pitäisi olla käyttökunnossa ja voit kirjautua sisään äsken luoduilla tunnuksilla tai luoda uuden tunnuksen. Huomaa, että sovelluksen resursseihin on liitetty 18 kappaletta oletuslauluja, jotka vain pääkäyttäjä voi asentaa tietokantaan.
+
+---
 
 Jos haluat sovelluksen Herokuun, tarvitset [*Heroku*](https://signup.heroku.com/)-tunnukset ja [*Heroku CLI*](https://devcenter.heroku.com/articles/heroku-cli)n, *Git*-tunnukset (Heroku hallitsee sovellusten käyttöönottoa *Git*illä) sekä *PostgreSQL*n.
 
@@ -110,7 +111,7 @@ Luo työkansioon tyhjä tiedosto *.gitignore* ja lisää sinne rivit:
 ```
 venv
 
-songs.db
+__pycache__
 ```
 Kommitoi kaikki Gitiin:
 ```
@@ -118,7 +119,7 @@ git add .
 
 git commit -m "initial commit"
 ```
-Lopuksi pushaa sovellus Herokuun:
+Lopuksi puske sovellus Herokuun:
 ```
 git push heroku master
 ```
@@ -139,6 +140,11 @@ Myös Herokussa tulee tietokantaan asettaa oletuskäyttäjät: pääkäyttäjä 
    ```
    heroku open
    ```
+   tai kirjoittamalla suoraan nettiosoite:
+   ```
+   https://[sovelluksen nimi herokussa].herokuapp.com
+   ```
+   tai avaa sovellus herokun kautta sivuilta löytyvällä napilla *Open app*
 
 ---
 
