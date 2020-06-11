@@ -5,31 +5,39 @@
 Esivaatimukset:
 
 * [Python](https://www.python.org/downloads/), vähintään 3.7.3 (mieluiten 3.7.7 Herokun vuoksi)
-* [Pip](https://pypi.org/project/pip/)
-* [SQLite](https://www.sqlite.org/index.html)
+* [SQLite](https://www.sqlite.org/download.html)
+  - *Precompiled Binaries for Windows*: sqlite-tools-win32-x86-3320200.zip ja sqlite-dll-win64-x86-3320200.zip (64-bit)
 * [Git Bash](https://gitforwindows.org/)
 
 Sovellus ladataan GitHub-sivustolta vihreästä napista sivun yläoikealla: [**Clone or download**](https://github.com/gitjms/Lyriikka-analysaattori).
 
-Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa sisäkkäiset kansiot *Lyriikka-analysaattori-master/Lyriikka-analysaattori-master* joiden sisältä löytyvät kaikki tarpeelliset komponentit.
+Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa kansion *Lyriikka-analysaattori-master* jonka sisältä löytyvät kaikki tarpeelliset komponentit.
 Sanotaan tätä tästedes *työkansioksi*.
 
 Mikäli käytät eri Python-versiota kuin 3.7.7, avaa työkansiossa tiedosto *runtime.txt* jollain tekstieditorilla ja muuta siellä oleva ainoa rivi ```python-3.7.7``` vastaamaan omaa Python-versiotasi.
 
+Pythonin asennuksessa tärkeää on asettaa Winsowsin ympäristömuuttujiin polku Pythonin sijaintiin.
+
 1. Avaa työkansiossa *Git Bash* -terminaali
-2. Asenna riippuvuudet työkansiosta löytyvän tiedoston *requirements.txt* avulla komennolla
+2. Luo työkansioon Pythonin virtuaaliympäristö *venv* kirjoittamalla terminaaliin komento
    ```
-   pip install -r requirements.txt
+   python -m venv venv
    ```
-3. Avaa Pythonin virtuaalinen ympäristö kirjoittamalla terminaaliin komento
+   HUOM: käytä ensimmäisenä terminä *python3*, mikäli pelkkä *python* ei riitä
+3. Aktivoi Pythonin virtuaalinen ympäristö kirjoittamalla terminaaliin komento
    ```
    source venv/Scripts/activate
    ```
-4. Käynnistä sovellus komennolla
+   Tähän virtuaaliympäristöön tulevat sovelluksen tarvitsemat riippuvuudet.
+4. Asenna riippuvuudet työkansiosta löytyvän tiedoston *requirements.txt* avulla komennolla
+   ```
+   pip install -r requirements.txt
+   ```
+5. Käynnistä sovellus komennolla
    ```
    python app.py
    ```
-5. Avaa internetselaimessa (esim. Chrome) osoite
+6. Avaa internetselaimessa (esim. Chrome) osoite
    ```
    http://127.0.0.1:5000/
    ```
@@ -39,12 +47,11 @@ Nyt sovelluksen pitäisi näkyä selaimen sivulla ja työkansiossa *application*
 
 Ennen kuin voit kirjautua sovellukseen, tulee tietokantaan asettaa oletuskäyttäjät: pääkäyttäjä *admin* ja vierastili *guest* (lokaali käyttö):
 
-6. Avaa Windowsin komentoikkuna (*Git Bash* ei välttämättä toimi tässä).
-7. Siirry työkansiossa sijaitsevaan *application*-kansioon ja avaa *SQLite*-yhteys ja tietokanta komennoilla
+6. Avaa Windowsin komentoikkuna tai *PowerShell* (*Git Bash* ei välttämättä toimi tässä).
+7. Siirry työkansiossa sijaitsevaan *application*-kansioon ja avaa *SQLite*-yhteys ja *songs*-tietokanta komennoilla
    ```
    sqlite3
-   ```
-   ```
+
    .open songs.db
    ```
 8. Luo **ensin** pääkäyttäjä. Pääkayttäjän tunnukset (name='admin', username='admin', password='admin') voi vapaasti vaihtaa haluamikseen. Salasanan tulee olla vähintään 4 merkkiä pitkä. Kirjoita komentoikkunaan komento
@@ -76,15 +83,40 @@ Ennen kuin voit kirjautua sovellukseen, tulee tietokantaan asettaa oletuskäytt�
    ```
 ---
 
-Jos haluat sovelluksen Herokuun, tarvitset [*Heroku*](https://signup.heroku.com/)-tunnukset.
+Nyt sovelluksen pitäisi olla käyttökunnossa ja voit kirjautua sisään äsken luoduilla tunnuksilla tai luoda uuden tunnuksen. Huomaa, että sovelluksen resursseihin on liitetty 18 kappaletta oletuslauluja, jotka vain pääkäyttäjä voi asentaa tietokantaan.
 
-Kirjaudu terminaalissa Herokuun komennolla:
+Jos haluat sovelluksen Herokuun, tarvitset [*Heroku*](https://signup.heroku.com/)-tunnukset ja [*Heroku CLI*](https://devcenter.heroku.com/articles/heroku-cli)n, *Git*-tunnukset (Heroku hallitsee sovellusten käyttöönottoa *Git*illä) sekä *PostgreSQL*n.
+
+Asenna laitteellesi [PostgreSQL](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) ja Lisää polku Windowsin ympäristömuuttujiin.
+
+Kirjaudu *Git bash* -terminaalissa työkansiossa Herokuun komennolla:
 ```
 heroku login
 ```
+Terminaaliin ilmestyy teksti, joka pyytää painamaan mitä tahansa näppäintä avatakseen nettisivun Herokun sisäänkirjautumissivulle. Kun olet klikannut nettisivulla sisäänkirjautumisnappia, olet myös *Heroku CLI*:ssä kirjautunut sisään.
 Luo sitten sovellukselle paikka Herokussa syöttämällä terminaaliin seuraava komento:
 ```
 heroku create [toivottu-sovelluksen-nimi, eri kuin lyrfreq] --buildpack heroku/python
+```
+Luo Herokuun tuki ilmaiseen (*hobby-dev*) PostGreSQL-tietokantaan:
+```
+heroku addons:create heroku-postgresql:hobby-dev
+```
+Luo Git-repositorio työkansiossa kirjoittamalla *Git bash* -terminaaliin komento
+```
+git init
+```
+Luo työkansioon tyhjä tiedosto *.gitignore* ja lisää sinne rivit:
+```
+venv
+
+songs.db
+```
+Kommitoi kaikki Gitiin:
+```
+git add .
+
+git commit -m "initial commit"
 ```
 Lopuksi pushaa sovellus Herokuun:
 ```
@@ -102,15 +134,13 @@ Myös Herokussa tulee tietokantaan asettaa oletuskäyttäjät: pääkäyttäjä 
    ```
 3. Jatka sitten yllä olevista kohdista 8 ja 9.
 
-4. Voit lopuksi sulkea PostGres-yhteyden komennolla ```\q``` ja vastaamalla ```N``` kysymykseen *Terminate batch job (Y/N)*
+4. Voit lopuksi sulkea PostGres-yhteyden komennolla ```\q```
 5. Avaa sovellus selaimessa syöttämällä terminaaliin komento:
    ```
    heroku open
    ```
 
 ---
-
-Nyt sovelluksen pitäisi olla käyttökunnossa ja voit kirjautua sisään äsken luoduilla tunnuksilla tai luoda uuden tunnuksen. Huomaa, että sovelluksen resursseihin on liitetty 18 kappaletta oletuslauluja, jotka vain pääkäyttäjä voi asentaa tietokantaan.
 
 Mikäli muokkaat sovelluskoodia ja haluat debuggauksen päälle, avaa työkansiossa tiedosto *app.py* jollain teksti- tai koodieditorilla. Tiedostossa on neljä riviä, joista alin on
 ```python
