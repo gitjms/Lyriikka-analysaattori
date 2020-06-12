@@ -4,7 +4,7 @@
 
 Esivaatimukset:
 
-* [Python](https://www.python.org/downloads/), vähintään 3.7.3 (mieluiten 3.7.7 Herokun vuoksi)
+* [Python](https://www.python.org/downloads/), vähintään 3.8 (bcryptin kanssa ongelmia 3.7-versioissa)
 * [SQLite](https://www.sqlite.org/download.html)
   - *Precompiled Binaries for Windows*: sqlite-tools-win32-x86-3320200.zip ja sqlite-dll-win64-x86-3320200.zip (64-bit)
 * [Git Bash](https://gitforwindows.org/)
