@@ -66,16 +66,16 @@ Ennen kuin voit kirjautua sovellukseen, tulee tietokantaan asettaa oletuskäytt�
 
    Vierastilin arvo *name* on vapaasti valittavissa. Mikäli halutaan vaihtaa vierastilin tunnukset *username* ja *password*, täytyy muokata tiedostossa *application/auth/views.py* rivejä 101 ja 102:
    ```python
-   101	username = "guest"
-   102	password = u"guest".encode('utf-8')
+   73	username = "guest"
+   74	password = u"guest".encode('utf-8')
    ```
    Ylempään riviin *guest* tilalle tulee kirjoittaa haluttu käyttäjänimi, ja alempaan riviin *guest* tilalle haluttu salasana.
    Tällöin myös *INSERT INTO* -komennon tulee olla muokkauksen mukainen.
 
    Esimerkki: halutaan vierastili nimellä *vierailija*, käyttäjänimellä *vieras* ja salasanalla *12345*. Muokataan *views.py*-tiedoston rivit:
    ```python
-   101	username = "vieras"
-   102	password = u"12345".encode('utf-8')
+   73	username = "vieras"
+   74	password = u"12345".encode('utf-8')
    ```
    Nyt vasta lisätään käyttäjä tietokantaan:
    ```

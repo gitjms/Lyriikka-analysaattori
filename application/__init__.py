@@ -1,11 +1,13 @@
 from flask import Flask
-app = Flask(__name__)
-
 import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
+app = Flask(__name__)
+
 db_uri = "sqlite:///songs.db"
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 if os.environ.get("HEROKU"):
 	app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
@@ -16,10 +18,6 @@ else:
 	app.config["SQLALCHEMY_ECHO"] = True
 	app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 	app.config["ENV"] = 'development'
-
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
 
 #----------------------------------------------
 # login
