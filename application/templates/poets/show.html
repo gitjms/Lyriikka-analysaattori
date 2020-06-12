@@ -1,0 +1,207 @@
+{% extends "layout.html" %}
+
+<title>LyrFreq - Show Poet Page</title>
+
+{% block body %}
+
+{% for err in errors %}
+  <div class="col-auto">
+    <strong>{{ err }}</strong>
+  </div>
+{% endfor %}
+
+{% if poet is none %}
+
+  <!-- IF DATABASE IS EMPTY -->
+  <strong id="big-strong">Database is empty</strong>
+  
+{% else %}
+
+  <form method="POST" action="{{ url_for('poets_show', poet_id=poet.id) }}">
+    <div class="col-auto">
+  
+      <!-- 'BACK' BUTTON -->
+      <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>
+
+      <!-- 'SAVE TO DATABASE' BUTTON -->
+      {% if g.user.role != "GUEST" %}
+      <button class="btn btn-sm btn-danger" type="submit" style="width: 140px; float: right; margin-left: 20px;" name="save" id="save" value="{{ filtered }},{{ graphs }}" action="/poets/show/<poet_id>">Save To Database</button>
+      {% endif %}
+
+
+      <!-- 'SHOW GRAPHS' BUTTON -->
+      {% if graphs == False %}
+	    <button class="btn btn-sm btn-primary" type="submit" style="width: 140px; float: right;" name="graph" id="graph" value="graph" action="/poets/show/<poet_id>">Show Graphs</button>
+      {% else %}
+        {% if filtered == False %}
+          <button class="btn btn-sm btn-success" type="submit" style="width: 140px; float: right;" name="filter" id="filter" value="{{ filtered }},{{ graphs }}" action="/poets/show/<poet_id>">Filter Stopwords</button>
+        {% else %}
+          <button class="btn btn-sm btn-warning" type="submit" style="width: 140px; float: right;" name="filter" id="filter" value="{{ filtered }},{{ graphs }}" action="/poets/show/<poet_id>">Include Stopwords</button>
+        {% endif %}
+	  
+      {% endif %}
+	  <br><br>
+
+
+      {% if frequencies is not none and graphs %}
+
+        <!-- HIDDEN FREQUENCY BAR CHART -->
+        
+        <center>
+          <div class="wrapper">
+            <canvas id="myChart" width="500" height="300"></canvas>
+          </div>
+        </center><br>
+  
+
+        <!-- HIDDEN FREQUENCY TABLES AND BUTTON -->
+	  
+        <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Frequency Table(s)" onClick="showHideDiv('freqtables')" style="width: 200px;"></input><br><br>
+      
+        <div id="freqtables" style="display: none">
+        
+          <h3>Word Frequencies
+            <small class="text-muted">(top 10)</small>
+          </h3><br>
+        
+          <div class="col-sm-10 col-sm-offset-1">
+            <div id="frequencies">
+              {% for freq in frequencies %}
+                <h4>song: {{ freq[0] }}</h4>
+                <table class="table table-sm table-striped" style="max-width: 300px;">
+                <thead>
+                  <tr>
+                    <th>Word</th>
+                    <th>Count</th>
+                  </tr>
+                </thead>
+                {% for res in freq[1] %}
+                  <tr>
+                    <td>{{ res[0] }}</td>
+                    <td>{{ res[1] }}</td>
+                  </tr>
+                {% endfor %}
+                </table>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+
+        <!-- HIDDEN POEM SOURCES AND BUTTON -->
+    
+        <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Poem Source(s)" onClick="showHideDiv('poemtables')" style="width: 200px;"></input><br><br>
+    
+        <div id="poemtables" style="display: none">
+	    
+          <div id="poems">
+            <h3>Source(s)</h3><br>
+            {% for poem in poems %}
+              <b>
+                <small class="text-muted">poem:</small>
+                  {{ poem[0] }},
+                <small class="text-muted">title:</small>
+                <em>{{ poem[2] }}</em>
+              </b><br>
+              <td>{{ poem[1] }}</td><br><br>
+            {% endfor %}
+          </div>
+        </div>
+
+
+        <!-- JAVASCRIPT FOR BARCHART -->
+        <script>
+          var ctx = document.getElementById('myChart').getContext('2d');
+          var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: [{% for lab in graph_data %}
+                        "{{ lab[0] }}",
+                      {% endfor %}],
+              datasets: [{
+                label: '',
+                  data: [{% for freq in graph_data %}
+                        {{ freq[1] }},
+                      {% endfor %}],
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(57, 93, 162, 0.2)',
+                'rgba(102, 189, 55, 0.2)',
+                'rgba(241, 115, 195, 0.2)',
+                'rgba(187, 121, 67, 0.2)'
+                ],
+                borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(57, 93, 162, 1)',
+                'rgba(102, 189, 55, 1)',
+                'rgba(241, 115, 195, 1)',
+                'rgba(187, 121, 67, 1)'
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+            legend: {
+                display: false
+                },
+            title: {
+                display: true,
+                fontSize: 16,
+                text: 'Top 10 Word Frequencies in Poets\' Poems'
+                },
+            scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+            }
+          }
+          });
+        </script>
+
+      {% endif %}
+
+
+      <!-- LIST OF POET'S POEMS -->
+      <div class="col-auto">
+        <p style="font-size: 20px;">
+          <small class="text-muted">Poet:</small>
+          {{ poet.name }}
+        </p>
+        <small class="text-muted" style="font-size: 18px;">
+          Poems:
+        </small>
+      
+        <table>
+          <tr>
+            <th>id</th>
+            <th>title</th>
+          </tr>
+          {% for poem in poet.poems %}
+            <tr>
+              <td style="text-align: right; padding-right: 20px;">{{ poem.id }}.</td>
+              <td>
+        	    <a style="font-size: 18px;" href="{{ url_for('poems_show', poem_id=poem.id, poet_id=poet.id, from_page='poets') }}">{{ poem.name }}</a>
+        	  </td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div><br>
+	    
+    </div>
+  </form>
+
+{% endif %}
+
+{% endblock %}

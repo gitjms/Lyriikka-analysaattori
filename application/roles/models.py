@@ -1,5 +1,4 @@
 from application import db
-from application import views
 
 
 class Role(db.Model):

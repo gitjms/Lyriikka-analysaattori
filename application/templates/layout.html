@@ -129,11 +129,29 @@
     </div>
 	<div class="dropdown" role="group">
       <button id="dropbtn" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
-        Authors
+        Song Authors
       </button>
       <div class="dropdown-menu" aria-labelledby="dropbtn">
-        <a class="dropdown-item" href="{{ url_for('authors_list') }}" aria-label="List Authors">List Authors</a>
-        <a class="dropdown-item" href="{{ url_for('authors_graph') }}" aria-label="Authors Graph">Authors Graph</a>
+        <a class="dropdown-item" href="{{ url_for('authors_list') }}" aria-label="List Authors">List Song Authors</a>
+        <a class="dropdown-item" href="{{ url_for('authors_graph') }}" aria-label="All Authors Graph">All Authors Graph</a>
+      </div>
+    </div>
+	<div class="dropdown" role="group">
+      <button id="dropbtn" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+        Poems
+      </button>
+      <div class="dropdown-menu" data-toggle="tooltip" data-placement="top" title="List Songs" aria-labelledby="dropbtn">
+        <a class="dropdown-item" href="{{ url_for('poems_list') }}" aria-label="List Poems">List Poems</a>
+        <a class="dropdown-item" href="{{ url_for('poems_create') }}" aria-label="Add Poem">Add Poem</a>
+      </div>
+    </div>
+	<div class="dropdown" role="group">
+      <button id="dropbtn" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+        Poets
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropbtn">
+        <a class="dropdown-item" href="{{ url_for('poets_list') }}" aria-label="List Poets">List Poets</a>
+        <a class="dropdown-item" href="{{ url_for('poets_graph') }}" aria-label="All Poets Graph">All Poets Graph</a>
       </div>
     </div>
 	<div class="btn-group" role="group">
@@ -173,35 +191,44 @@
 
 <!-- FOR ADMIN ONLY -->
 
-<div class="container-fluid">
-  {% if g.user.role == "ADMIN" %}
-  <!-- ADD DEFAULT AUTHORS AND SONGS -->
-  <div class="container-fluid">
-    <form action="/defaults/add" method="POST">
-      <div>
-        <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px; margin-right: 50px; margin-bottom: 30px;" name="add" id="add" value="add" aria-label="Add default songs">Add default songs</button>
+{% if g.user.role == "ADMIN" %}
+  <div class="d-flex bg-dark">
+
+    <div class="p-2 mr-auto" style="margin-left: 50px;">
+      <!-- LIST USERS -->
+      <form action="/admin" method="POST">
+        <button class="btn btn-sm btn-primary" type="submit" name="listusers" id="listusers" value="listusers" aria-label="List users">List users</button>
+      </form>
+    </div>
+
+    <div class="d-flex p-2 ml-auto align-self-center" style="margin-right: 50px;">
+      <div class="btn-group" role="group" style="margin-right: 10px;">
+      
+        <!-- ADD DEFAULT AUTHORS AND SONGS -->
+        <form action="/defaults/addsongs" method="POST">
+            <button class="btn btn-sm btn-success mr-1" type="submit" name="addsongs" id="addsongs" value="addsongs" aria-label="Add default songs">Add default songs</button>
+        </form>
+      
+        <!-- REMOVE DEFAULT AUTHORS AND SONGS -->
+        <form action="/defaults/removesongs" method="POST">
+            <button class="btn btn-sm btn-danger" type="submit" name="removesongs" id="removesongs" value="removesongs" aria-label="Remove default songs">Remove default songs</button>
+        </form>
       </div>
-    </form>
-  </div>
 
-
-  <!-- REMOVE DEFAULT AUTHORS AND SONGS -->
-  <div class="container-fluid">
-    <form action="/defaults/remove" method="POST">
-      <div>
-        <button class="btn btn-sm btn-primary" type="submit" style="float: right; margin-left: 20px; margin-bottom: 30px;" name="remove" id="remove" value="remove" aria-label="Remove default songs">Remove default songs</button>
+      <div class="btn-group" role="group">
+      
+        <!-- ADD DEFAULT POETS AND POEMS -->
+        <form action="/defaults/addpoems" method="POST">
+            <button class="btn btn-sm btn-success mr-1" type="submit" name="addpoems" id="addpoems" value="addpoems" aria-label="Add default poems">Add default poems</button>
+        </form>
+      
+        <!-- REMOVE DEFAULT POETS AND POEMS -->
+        <form action="/defaults/removepoems" method="POST">
+            <button class="btn btn-sm btn-danger" type="submit" name="removepoems" id="removepoems" value="removepoems" aria-label="Remove default poems">Remove default poems</button>
+        </form>
+        </div>
       </div>
-    </form>
   </div>
-
-
-  <!-- LIST USERS -->
-  <div class="container-fluid" >
-    <form action="/admin" method="POST">
-      <button class="btn btn-sm btn-primary" type="submit" style="float: left; margin-left: 50px; margin-bottom: 30px;" name="listusers" id="listusers" value="listusers" aria-label="List users">List users</button>
-    </form>
-  </div>
-</div>
 {% endif %}
 
 <!-- Bootstrap, jQuery, Popper -->

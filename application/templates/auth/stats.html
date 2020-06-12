@@ -10,31 +10,54 @@
   <strong id="big-strong">{{ err }}</strong>
 {% endfor %}
 
-{% if not db_status or db_status is not defined %}
+{% if db_songs_status is none and db_poems_status is none %}
 
   <!-- IF DATABASE IS EMPTY -->
   <strong id="big-strong">Database is empty</strong>
 
 {% else %}
-  <strong id="big-strong">Database status</strong>
-  <div id="index">
-    <table class="table table-striped" style="max-width: 900px;">
-    <thead>
-      <tr>
-        <th>Languages</th>
-        <th id="home-col">Songs</th>
-        <th id="home-col">Authors</th>
-      </tr>
-    </thead>
-    {% for res in db_status %}
-      <tr>
-        <td>{{ res.languages }}</td>
-        <td id="home-col">{{ res.songs }}</td>
-        <td id="home-col">{{ res.authors }}</td>
-      </tr>
-    {% endfor %}
-    </table>
-  </div><br><br>
+  {% if db_songs_status is not none %}
+    <strong id="big-strong">Database songs status</strong>
+    <div id="index">
+      <table class="table table-striped" style="max-width: 900px;">
+      <thead>
+        <tr>
+          <th>Languages</th>
+          <th id="home-col">Songs</th>
+          <th id="home-col">Authors</th>
+        </tr>
+      </thead>
+      {% for res in db_songs_status %}
+        <tr>
+          <td>{{ res.languages }}</td>
+          <td id="home-col">{{ res.songs }}</td>
+          <td id="home-col">{{ res.authors }}</td>
+        </tr>
+      {% endfor %}
+      </table>
+    </div><br>
+  {% endif %}
+  {% if db_poems_status is not none %}
+    <strong id="big-strong">Database poems status</strong>
+    <div id="index">
+      <table class="table table-striped" style="max-width: 900px;">
+      <thead>
+        <tr>
+          <th>Languages</th>
+          <th id="home-col">Poems</th>
+          <th id="home-col">Poets</th>
+        </tr>
+      </thead>
+      {% for res in db_poems_status %}
+        <tr>
+          <td>{{ res.languages }}</td>
+          <td id="home-col">{{ res.poems }}</td>
+          <td id="home-col">{{ res.poets }}</td>
+        </tr>
+      {% endfor %}
+      </table>
+    </div><br>
+  {% endif %}
 {% endif %}
 
 {% if (top_words or top_words is not defined) and g.user.role != 'ADMIN' %}

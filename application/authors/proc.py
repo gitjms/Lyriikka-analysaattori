@@ -1,6 +1,6 @@
 from flask import flash
 
-from application.words.views import replace_chars, replace_accent
+from application.words.views import replace_chars
 from application.words.proc import proc_text, stop_words, create_results, create_results_graph, store_author_words
 
 from collections import Counter
@@ -134,10 +134,10 @@ def proc_authors(author_songs, filtered, lang):
 	frequencies = None
 
 	if lang == "":
-		graph_data = create_results_graph(graph_list, graph="")
+		graph_data = create_results_graph(graph_list, graph="", limit=5)
 		return results_list, db_words_list, graph_data, raw_word_count, new_songlist, language
 	else:
-		graph_data, table_data = create_results_graph(graph_list, graph="graph")
+		graph_data, table_data = create_results_graph(graph_list, graph="graph", limit=10)
 		return graph_data, table_data, language
 
 
@@ -151,7 +151,7 @@ def store_results(author, results_list, raw_word_count, db_words_list):
 	for item in results_list:
 		counts.append(item[2])
 
-	errors = store_author_words(author, raw_word_count, db_words_list, counts)
+	errors = store_author_words(author, raw_word_count, db_words_list, counts, auteur='Author')
 
 	return errors
 

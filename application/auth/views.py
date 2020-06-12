@@ -11,6 +11,7 @@ from application import app, db, login_required
 from application.auth.models import User
 from application.songs.models import Song
 from application.words.models import Words
+from application.poems.models import Poem
 from application.auth.forms import LoginForm
 from application.auth.forms import CreateUserForm
 
@@ -44,12 +45,19 @@ def auth_stats():
 		new_list.append(stats[i]['average'])
 		result_list.append(new_list)
 
-	db_status=Song.find_database_status()
-	if db_status:
-		return render_template("auth/stats.html", db_status=db_status, top_words=result_list)
+	db_songs_status=Song.find_database_songs_status()
+	db_poems_status=Poem.find_database_poems_status()
+	if db.session.query(Song).count() > 0 and db.session.query(Poem).count() > 0:
+		return render_template("auth/stats.html", db_songs_status=Song.find_database_songs_status(), db_poems_status=Poem.find_database_poems_status(), top_words=result_list)
+	elif db.session.query(Song).count() > 0 and db.session.query(Poem).count() == 0:
+		errors.append("Cannot load database status for poems.")
+		return render_template("auth/stats.html", db_songs_status=Song.find_database_songs_status(), db_poems_status=None, top_words=result_list)
+	elif db.session.query(Song).count() == 0 and db.session.query(Poem).count() > 0:
+		errors.append("Cannot load database status for songs.")
+		return render_template("auth/stats.html", db_songs_status=None, db_poems_status=Poem.find_database_poems_status(), top_words=result_list)
 	else:
 		errors.append("Cannot load database status.")
-		return render_template("auth/stats.html", db_status=None, top_words=result_list, errors=errors)
+		return render_template("auth/stats.html", db_songs_status=None, db_poems_status=None, top_words=result_list, errors=errors)
 
 
 #-----------------------------------------

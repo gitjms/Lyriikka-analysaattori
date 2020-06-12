@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+
+<title>LyrFreq - Poems Listing Page</title>
+
+{% block body %}
+
+<h1 aria-label="Poems">Poems</h1><br>
+
+{% if not poems or poems is not defined %}
+
+  <!-- IF DATABASE IS EMPTY -->
+  <strong id="big-strong">Database is empty</strong>
+
+{% else %}
+<div class="form-group col-auto">
+  <b>Sort by:</b>
+  <form action= "{{ url_for('poems_list') }}" method="POST">
+
+    <table>
+      <tr>
+        <th style="padding-left: 125px;">title</th>
+        <th style="padding-left: 95px;">lang:title</th>
+      </tr>
+    </table>
+
+    <table>
+      <tr>
+        <td>
+          <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="width:60px; height:30px;" value="id" aria-label="Sort Poems by id">id</button>
+        </td>
+        <td>
+           <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="margin-left: 20px; width:60px; height:30px;" value="titasc" aria-label="Sort Poems by Title ascending">A->Z</button>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="width:60px; height:30px;" value="titdesc" aria-label="Sort Poems by Title descending">Z->A</button>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="margin-left: 20px; width:60px; height:30px;" value="langtitasc" aria-label="Sort Poems by First Language Then Title ascending">A->Z</button>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-secondary" type="submit" name="sort" style="width:60px; height:30px;" value="langtitdesc" aria-label="Sort Poems by First Language Then Title descending">Z->A</button>
+        </td>
+      </tr>
+    </table>
+
+  </form>
+</div>
+
+<div class="col-auto">
+  <table>
+    <tr>
+      <th>id</th>
+      <th>title</th>
+      <th>lang</th>
+      <th style="padding-left: 12px;">delete</th>
+    </tr>
+    {% for poem in poems %}
+      <tr>
+        <td style="text-align: right; padding-right: 10px;" aria-label="Poem id">{{ poem.id }}.</td>
+
+  	    <!-- POEM NAME LINK -->
+        <td>
+  	      <a href="{{ url_for('poems_show', poem_id=poem.id, poet_id='na', from_page='poems') }}" aria-label="Poem Title">{{ poem.name }}</a>
+  	    </td>
+
+  	    <!-- POEM LANGUAGE -->
+        <td style="padding-left: 10px; padding-right: 10px;" aria-label="Poem Language">{{ poem.language[:2]|upper }}</td>
+
+  	    <!-- DELETE BUTTON -->
+        <td>
+          <form method="POST" action="{{ url_for('poems_delete', poem_id=poem.id) }}" onSubmit="return confirm('Are you sure you wish to delete?')">
+            <input type="hidden" name="poem_id" value="{{ poem.id }}"></input>
+            <div class="col-auto">
+		      <style type="text/css">
+                #skull-img img { margin-bottom: 10px; margin-top: -5px; }
+			  </style>
+              <button id="skull-img" class="btn btn-sm btn-danger" type="submit" name="Delete" style="width:35px; height:20px;" value="Delete" aria-label="Button For Delete Poem"><img src="/static/images/warning.png"></button>
+            </div>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+
+{% endif %}
+
+{% endblock %}

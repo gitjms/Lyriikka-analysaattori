@@ -1,5 +1,4 @@
 from application import app, db
-from application import views
 
 from flask import g
 from flask_login import current_user

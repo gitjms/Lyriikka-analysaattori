@@ -165,7 +165,7 @@ def create_results(new_songlist, graph_list, word_to_find):
 #-----------------------------------------
 # create results: graph_data, (table_data)
 #-----------------------------------------
-def create_results_graph(graph_list, graph):
+def create_results_graph(graph_list, graph, limit):
 
 	#----------------------------------------
 	# graph_data = {}
@@ -174,7 +174,7 @@ def create_results_graph(graph_list, graph):
 	for item in graph_list:
 		for word in item:
 			values_graph.append(word)
-	values_graph_count = Counter(values_graph)
+	values_graph_count = Counter(replace_graph(values_graph))
 	graph_data = sorted(
 		values_graph_count.items(),
 		key=operator.itemgetter(1),
@@ -194,7 +194,7 @@ def create_results_graph(graph_list, graph):
 			values_table_count.items(),
 			key=operator.itemgetter(1),
 			reverse=True
-		)[:5]
+		)[:limit]
 		
 	if graph == "graph":
 		return graph_data, table_data
@@ -237,7 +237,7 @@ def store_search_word(raw_word_count, db_words_list, word_to_find, counts):
 #-----------------------------------------
 # database storing for author words results
 #-----------------------------------------
-def store_author_words(author, raw_word_count, db_words_list, counts):
+def store_author_words(author, raw_word_count, db_words_list, counts, auteur):
 	errors = []
 
 	if g.user.role == "GUEST":
@@ -252,8 +252,8 @@ def store_author_words(author, raw_word_count, db_words_list, counts):
 			db.session.commit()
 		except SQLAlchemyError:
 			db.session.rollback()
-			errors.append("Unable to add item to database.")
-			flash("Unable to add item to Author database.", "danger")
+			errors.append("Unable to add item to " + author + " database.")
+			flash("Unable to add item to " + author + " database.", "danger")
 			break
 
 	return errors
@@ -264,5 +264,13 @@ def replace_for_table(list):
 	for n, item in enumerate(list):
 		if "\´" in item:
 			list[n] = item.replace("\´","\'")
+	return list
+
+
+# difficult accent for Source(s) lyrics html in Results page
+def replace_graph(list):
+	for n, item in enumerate(list):
+		if "\'" in item:
+			list[n] = item.replace("\'","\´")
 	return list
 

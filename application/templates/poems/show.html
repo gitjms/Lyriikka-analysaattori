@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+<title>LyrFreq - Show Poem Page</title>
+
+{% block body %}
+
+<div class="col-auto">
+
+  <form method="POST" action="{{ url_for('poems_show', poem_id=poem_id, poet_id=poet_id, from_page=from_page) }}">
+
+    <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px; float: left;" value="Back"/>Back</button>
+  </form>
+
+  <form method="POST" action="{{ url_for('poems_edit', poem_id=poem_id, poet_id=poet_id, from_page=from_page) }}">
+
+    <button class="btn btn-sm btn-warning" type="submit" name="Edit" style="width:75px; float: right;" value="Edit"/>Edit</button>
+  </form>
+
+</div>
+<div style="clear: both;"></div><br>
+
+
+<div class="col-auto">
+  <p style="font-size: 20px;">
+    <small class="text-muted">Title:</small>
+    {{ poem.name }}
+ <small class="text-muted">
+   ({{ poem.language }})
+ </small>
+  </p>
+</div>
+
+
+<div class="col-auto">
+  <p style="font-size: 18px;">
+    <small class="text-muted">Poet:</small>
+   {% for p in poem.poets %}{{ p.name }}{{ ", " if not loop.last }}{% endfor %}
+  </p>
+</div><br>
+
+
+<center>
+  <pre class="lead" style="width: 100%; margin-left:auto; margin-right:auto; font-family: Arial Unicode MS, Lucida Sans Unicode, DejaVu Sans, Quivira, Symbola, Code2000; font-size: 16px;">
+{{ poem.lyrics }}
+  </pre>
+</center>
+
+
+<form method="POST" action="{{ url_for('poems_show', poem_id=poem_id, poet_id=poet_id, from_page=from_page) }}">
+  <div class="col-auto">
+    <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px; float: left;" value="Back"/>Back</button>
+  </div>
+</form>
+
+{% endblock %}

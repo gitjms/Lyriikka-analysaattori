@@ -1,5 +1,4 @@
 from application import app, db
-from application import views
 from application.models import Base
 
 import os

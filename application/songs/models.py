@@ -1,5 +1,4 @@
 from application import app, db
-from application import views
 from application.models import Base
 
 import os
@@ -50,7 +49,7 @@ class Song(Base):
 
 
 	@staticmethod
-	def find_database_status():
+	def find_database_songs_status():
 
 		if g.user.role == "GUEST" or g.user.role == "ADMIN":
 			user_list = [1,2]
