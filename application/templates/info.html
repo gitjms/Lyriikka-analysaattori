@@ -10,18 +10,44 @@
   
     This application is a simple analysis tool which could be applied to, for example, lingvistics, sociolingvistics, literary studies, literary theory, and whatnot. It may help with characterizing either lyrics or its author. The application is ment for analyzing poems, stories, and all sorts of textual material that is deemed literature, not excluding scientific, philosophical or historical material.<br><br>
 	
+	For the moment this application only holds copyright free religious
+	lyrics. The final purpose for the application is not set as yet, because this is a study project at the <em><a href="https://courses.helsinki.fi/en/tkt20011/135568662" data-toggle="tooltip" data-placement="top" title="Intermediate Studies Project: Database Application">University of Helsinki</a></em>.<br><br>
+
+	<h2>Reading between the lines</h2>
+	
 	With statistical textual analysis one can better understand author's character, intentions, idiolect, mood, and many other factors that may help to construct a fuller view of the area of study. Or it can be used for sosiolingvistical study of social media messages to analyze ethnicity, religion, status, gender, level of education, age, etc. Words that we speak or write down tell one thing about us. Yet still the explicitly written textual content doesn't always reveal everything - sometimes we may infer more from reading between the lines, or from statistical analysis.<br><br>
+
+	<h2>Example: Beowulf</h2>
 
 	For example, it has long been a mystery whether famous Old English epic poem <em>Beowulf</em> was composed by a single author or if it was stiched together from many textual sources [<a href="https://www.theguardian.com/books/2019/apr/08/beowulf-old-english-poem-work-one-author-research-suggests" data-toggle="tooltip" data-placement="top" title="Beowulf the work of single author, research suggests">Guardian</a>][<a href="https://news.harvard.edu/gazette/story/2019/04/did-beowulf-have-one-author-researchers-find-clues-in-stylometry/" data-toggle="tooltip" data-placement="top" title="Breaking down 'Beowulf'">The Harvard Gazette</a>].
 	
 	Recently an academic research team analyzed Beowulf statistically with a computer program and came to a conclusion that Beowulf was written by one author [<a href="https://doi.org/10.1038/s41562-019-0570-1" data-toggle="tooltip" data-placement="top" title="Large-scale quantitative profiling of the Old English verse tradition">Nature</a>]. The program is written in Python and is freely and publicly available at <a href="https://github.com/qcrit" data-toggle="tooltip" data-placement="top" title="Quantitative Criticism Lab">GitHub</a>.<br><br>
+
+	<h2>Personal view</h2>
 	
-	For the moment this application only holds copyright free religious
-	lyrics. The final purpose for the application is not set as yet, because this is a study project at the <em><a href="https://courses.helsinki.fi/en/tkt20011/135568662" data-toggle="tooltip" data-placement="top" title="Intermediate Studies Project: Database Application">University of Helsinki</a></em>.
-	
-	<hr />
-	
-	My personal motivation to create this application was due to learning a new language. I started studying chinese with the help of listening to chinese pop music. At start it is very hard to distinguish words, not to mention the messages in the songs. I decided to create this app so that I could load a lot of chinese songs into it. Then I could find, say, the 10 most used words in them and learn them by heart. This way I would know <em>almost everything</em> what the songs are saying, and could infer the rest by myself.
+	My personal motivation to create this application was due to learning a new language. I started studying chinese with the help of listening to chinese pop music. At start it is very hard to distinguish words, not to mention the messages in the songs. I decided to create this app so that I could load a lot of chinese songs into it. Then I could find, say, the 10 most used words in them and learn them by heart. This way I would know <em>almost everything</em> what the songs are saying, and could infer the rest by myself.<br><br>
+
+	<h2>Acknowledgments</h2>
+
+	Religious lyrics are taken from <em><a href="https://worshipleaderapp.com/en/download-song-database-opensong-openlp-and-quelea" data-toggle="tooltip" data-placement="top" title="Worship Leader App">Worship Leader App</a></em>.
+
+	Edgar Allan Poe's poems are taken from <em><a href="https://poestories.com/poetry.php" data-toggle="tooltip" data-placement="top" title="PoeStories.com">PoeStories.com</a></em> and <em><a href="https://web.archive.org/web/20070407234203/http://bau2.uibk.ac.at/sg/poe/Work.html" data-toggle="tooltip" data-placement="top" title="The Work of Edgar Allan Poe">The Work of Edgar Allan Poe</a></em>.
+
+	Emily Dickinson's poems are taken from <em><a href="https://poets.org/poems/emily-dickinson" data-toggle="tooltip" data-placement="top" title="Poets.org">Poets.org</a></em>.
+
+	Charles Baudelaire's poems are taken from <em><a href="https://fleursdumal.org/" data-toggle="tooltip" data-placement="top" title="FleursDuMal.org">FleursDuMal.org</a></em>, including the whole collections <em>Spleen et idéal</em>, <em>Fleurs du mal</em>, <em>La Mort</em>, and <em>Révolte</em>, and a couple of poems from <em>Tableaux Parisiens</em>.
+
+	Louise Ackermann's poems are taken from <em><a href="http://personal.colby.edu/~ampaliye/poetes/index.html" data-toggle="tooltip" data-placement="top" title="19th-Century French Women Poets">19th-Century French Women Poets</a></em>.
+
+	Uuno Kailas' poems are taken from <em><a href="https://teosofia.net/muut/kailas.htm" data-toggle="tooltip" data-placement="top" title="Teosofia.net">Teosofia.net</a></em> and <em><a href="http://kaino.kotus.fi/korpus/klassikot/meta/kailas/kailas_kootut_runot_rdf.xml" data-toggle="tooltip" data-placement="top" title="Kotimaisten kielten keskus">Kotimaisten kielten keskus</a></em>.
+
+	Edith Södergran's poems are taken from <em><a href="http://kaino.kotus.fi/korpus/klassikot/meta/sodergran/sodergran_coll_rdf.xml" data-toggle="tooltip" data-placement="top" title="Kotimaisten kielten keskus">Kotimaisten kielten keskus</a></em>, including the whole works <em>Runoja</em>, <em>Syyskuun lyyra</em>, <em>Ruusualttari</em>, <em>Tulevaisuuden varjo</em>, and <em>Maa jota ei ole</em> (all translated to finnish by Uuno Kailas).
+
+	Application uses libraries taken from <em><a href="https://www.nltk.org/" data-toggle="tooltip" data-placement="top" title="Natural Language Toolkit">Natural Language Toolkit</a></em> (NLTK).
+
+	Stopwords are taken from <em><a href="https://countwordsfree.com/" data-toggle="tooltip" data-placement="top" title="Countwordsfree.com">Countwordsfree.com</a></em> and modified by myself.
+
+	Some Python coding help regarding NLTK have been taken from <em><a href="https://realpython.com/flask-by-example-part-1-project-setup/" data-toggle="tooltip" data-placement="top" title="Real Python">Real Python</a></em>.
   </p>
 
 {% endblock %}

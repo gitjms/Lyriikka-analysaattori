@@ -5,9 +5,10 @@ from unidecode import unidecode
 import operator
 import re
 import nltk
-nltk.download('stopwords')
+# nltk.download('stopwords')
 nltk.download('punkt')
-from nltk.corpus import stopwords
+# from nltk.corpus import stopwords
+from application.words import plusstops
 from collections import Counter
 
 from application import db, login_manager
@@ -78,7 +79,13 @@ def proc_text(song_list, word_to_find, graph):
 # stop words
 def stop_words(filtered, new_raw_words_list, language, graph):
 
-	stops = stopwords.words(language)
+	# stops = stopwords.words(language)
+	if language == 'english':
+		stops = plusstops.plusstops_en
+	elif language == 'french':
+		stops = plusstops.plusstops_fr
+	elif language == 'finnish':
+		stops = plusstops.plusstops_fi
 
 	if graph == "":
 		db_words_list = []
@@ -273,4 +280,3 @@ def replace_graph(list):
 		if "\'" in item:
 			list[n] = item.replace("\'","\´")
 	return list
-

@@ -10,6 +10,7 @@
 <!-- APPLICATION'S OWN JAVASCRIPTS -->
 <script type="text/javascript" src="{{ url_for('static', filename='/js/Chart.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='/js/showhidediv.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='/js/progressbar.js') }}"></script>
   
 <!-- APPLICATION'S OWN STYLES -->
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/styles.css') }}"></link>
@@ -192,6 +193,7 @@
 <!-- FOR ADMIN ONLY -->
 
 {% if g.user.role == "ADMIN" %}
+
   <div class="d-flex bg-dark">
 
     <div class="p-2 mr-auto" style="margin-left: 50px;">

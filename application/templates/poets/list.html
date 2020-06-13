@@ -12,21 +12,18 @@
   <strong id="big-strong">Database is empty</strong>
 
 {% else %}
-<table>
+<table class="table table-bordered">
   <tr>
     <th>Poet</th>
-    <th>poems
-      <small class="text-muted">&nbsp;(separated with &nbsp;;&nbsp;)</small>
     </th>
     <th>lang</th>
   </tr>
   {% for poet in poets %}
     <tr>
-      <td style="padding-right: 10px;">
+      <td>
 	    <a href="{{ url_for('poets_show', poet_id=poet.id) }}">{{ poet.poet }}</a>
       </td>
-      <td>{{ poet.poems }}</td>
-      <td style="padding-left: 10px;">{{ poet.language[:2]|upper }}</td>
+      <td>{{ poet.language[:2]|upper }}</td>
     </tr>
   {% endfor %}
 </table><br>

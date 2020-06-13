@@ -136,7 +136,7 @@ def words_find():
 
 # own stopwords
 def replace_chars(text):
-	for ch in ['\\n','BRIDGE','POST-CHORUS','CHORUS','VERSE','V1','V2','V3','V4','V5','V6','V7','V8','V9','V10','B1','B2','B3','B4','B5','B6','B7','B8','B9','B10','C1','C2','C3','C4','C5','C6','C7','C8','C9','C10','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','\'n','\n','\'n\'n','\'r','\'r\'n',"'ll","'s","\'"]:
+	for ch in ['\\n','V1','V2','V3','V4','V5','V6','V7','V8','V9','V10','B1','B2','B3','B4','B5','B6','B7','B8','B9','B10','C1','C2','C3','C4','C5','C6','C7','C8','C9','C10','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','\'n','\n','\'n\'n','\'r','\'r\'n',"'ll","'s","\'"]:
 		if ch == "\'" and ch in text:
 			text = text.replace(ch,"\´")
 		if ch in text:

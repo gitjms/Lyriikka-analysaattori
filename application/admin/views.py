@@ -1,4 +1,4 @@
-from flask import url_for, redirect, render_template, request, flash, g
+from flask import url_for, redirect, render_template, request, flash, g, Response
 from flask_login import current_user
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
@@ -18,6 +18,7 @@ from application.poets import poets
 from application.admin.forms import CreateForm
 import itertools
 import os
+# import time
 
 # Admin dashboard.
 
@@ -140,7 +141,7 @@ def add_songs():
 
 	# finnish songs
 	for i in range(1,7):
-		document_path = os.getcwd()+'/application/static/default_songs/fi/song'+str(i)+'.txt'
+		document_path = os.getcwd()+'/application/static/default_songs/fi/'+str(i)+'.txt'
 		file = open(document_path, 'r', encoding='utf-8')
 		name = file.readline().rstrip()
 		file.close()
@@ -175,7 +176,7 @@ def add_songs():
 
 	# english songs
 	for i in range(7,13):
-		document_path = os.getcwd()+'/application/static/default_songs/en/song'+str(i)+'.txt'
+		document_path = os.getcwd()+'/application/static/default_songs/en/'+str(i)+'.txt'
 		file = open(document_path, 'r', encoding='utf-8')
 		name = file.readline().rstrip()
 		file.close()
@@ -210,7 +211,7 @@ def add_songs():
 
 	# french songs
 	for i in range(13,19):
-		document_path = os.getcwd()+'/application/static/default_songs/fr/song'+str(i)+'.txt'
+		document_path = os.getcwd()+'/application/static/default_songs/fr/'+str(i)+'.txt'
 		file = open(document_path, 'r', encoding='utf-8')
 		name = file.readline().rstrip()
 		file.close()
@@ -323,124 +324,242 @@ def add_poems():
 	if g.user.role != "ADMIN":
 		return login_manager.unauthorized()
 
-	#------------------------------------------------
-	# add default authors
-	#------------------------------------------------
+	progress()
 
-	if db.session.query(Poet).count() > 0:
-		flash("Default poets already exist.", "warning")
+	# if fi_added:
+		# flash("Finnish poems added.", "success")
+	# else:
+		# flash("Finnish poems not added.", "danger")
+	# if en_added:
+		# flash("English poems added.", "success")
+	# else:
+		# flash("English poems not added.", "danger")
+	# if fr_added:
+		# flash("French poems added.", "success")
+	# else:
+		# flash("French poems not added.", "danger")
 
-	for item in poets.poets_fi:
-		db.session.add(Poet(name=item[0],result_all=None,result_no_stop_words=None))
-		db.session.commit()
-
-	for item in poets.poets_en:
-		db.session.add(Poet(name=item[0],result_all=None,result_no_stop_words=None))
-		db.session.commit()
-	
-	for item in poets.poets_fr:
-		db.session.add(Poet(name=item[0],result_all=None,result_no_stop_words=None))
-		db.session.commit()
-
-	#------------------------------------------------
-	# add default poems
-	#------------------------------------------------
-
-	if db.session.query(Poem).count() > 0:
-		flash("Default poems already exist.", "warning")
-		return redirect(url_for("auth_stats"))
-
-	fi_added = False
-	en_added = False
-	fr_added = False
-
-	# finnish poems
-	for i in range(1,31):
-		document_path = os.getcwd()+'/application/static/default_poems/fi/uuno_kailas/poem'+str(i)+'.txt'
-		file = open(document_path, 'r', encoding='utf-8')
-		name = file.readline().rstrip()
-		file.close()
-		lyrics = ""
-		with open(document_path, encoding='utf-8') as f:
-			for line in itertools.islice(f, 1, None):
-				lyrics += line
-		language = 'finnish'
-
-		poem = Poem(name,lyrics,language)
-		poem.account_id = 1
-	
-		poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Uuno Kailas'))
-
-		try:
-			db.session.add(poem)
-			db.session.commit()
-			fi_added = True
-		except:
-			db.session.rollback()
-
-	# english poems
-	for i in range(31,61):
-		document_path = os.getcwd()+'/application/static/default_poems/en/edgar_allan_poe/poem'+str(i)+'.txt'
-		file = open(document_path, 'r', encoding='utf-8')
-		name = file.readline().rstrip()
-		file.close()
-		lyrics = ""
-		with open(document_path, encoding='utf-8') as f:
-			for line in itertools.islice(f, 1, None):
-				lyrics += line
-		language = 'english'
-
-		poem = Poem(name,lyrics,language)
-		poem.account_id = 1
-	
-		poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Edgar Allan Poe'))
-
-		try:
-			db.session.add(poem)
-			db.session.commit()
-			en_added = True
-		except:
-			db.session.rollback()
-
-	# french poems
-	for i in range(61,91):
-		document_path = os.getcwd()+'/application/static/default_poems/fr/charles_baudelaire/poem'+str(i)+'.txt'
-		file = open(document_path, 'r', encoding='utf-8')
-		name = file.readline().rstrip()
-		file.close()
-		lyrics = ""
-		with open(document_path, encoding='utf-8') as f:
-			for line in itertools.islice(f, 1, None):
-				lyrics += line
-		language = 'french'
-
-		poem = Poem(name,lyrics,language)
-		poem.account_id = 1
-	
-		poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Charles Baudelaire'))
-
-		try:
-			db.session.add(poem)
-			db.session.commit()
-			fr_added = True
-		except:
-			db.session.rollback()
-
-	if fi_added:
-		flash("Finnish poems added.", "success")
-	else:
-		flash("Finnish poems not added.", "danger")
-	if en_added:
-		flash("English poems added.", "success")
-	else:
-		flash("English poems not added.", "danger")
-	if fr_added:
-		flash("French poems added.", "success")
-	else:
-		flash("French poems not added.", "danger")
-	
-	
 	return redirect(url_for("auth_stats"))
+
+
+#----------------------------------------------------
+# Table operations: add default poets, poems
+#----------------------------------------------------
+@app.route("/progress")
+def progress():
+
+	def generate():
+		x = 0
+		#------------------------------------------------
+		# add default authors
+		#------------------------------------------------
+		
+		if db.session.query(Poet).count() > 0:
+			flash("Default poets already exist.", "warning")
+		else:
+			for item in poets.poets_fi:
+				db.session.add(Poet(name=item,result_all=None,result_no_stop_words=None))
+				db.session.commit()
+			for item in poets.poets_en:
+				db.session.add(Poet(name=item,result_all=None,result_no_stop_words=None))
+				db.session.commit()
+			for item in poets.poets_fr:
+				db.session.add(Poet(name=item,result_all=None,result_no_stop_words=None))
+				db.session.commit()
+	
+			yield "data:" + str(x) + "\n\n"
+			x = x + 1
+		# time.sleep(0.5)
+		
+		#------------------------------------------------
+		# add default poems
+		#------------------------------------------------
+		
+		if db.session.query(Poem).count() > 0:
+			flash("Default poems already exist.", "warning")
+			# return redirect(url_for("auth_stats"))
+			return Response(generate(), mimetype= 'text/event-stream')
+		
+		fi_added = False
+		en_added = False
+		fr_added = False
+		
+		#------------------------------------------------
+		# finnish poems
+		#------------------------------------------------
+		for i in range(1,61):
+			document_path = os.getcwd()+'/application/static/default_poems/fi/uuno_kailas/'+str(i)+'.txt'
+			file = open(document_path, 'r', encoding='utf-8')
+			name = file.readline().rstrip()
+			file.close()
+			lyrics = ""
+			with open(document_path, encoding='utf-8') as f:
+				for line in itertools.islice(f, 1, None):
+					lyrics += line
+			language = 'finnish'
+		
+			poem = Poem(name,lyrics,language)
+			poem.account_id = 1
+		
+			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Uuno Kailas'))
+		
+			try:
+				db.session.add(poem)
+				db.session.commit()
+				fi_added = True
+			except:
+				db.session.rollback()
+	
+			yield "data:" + str(x) + "\n\n"
+			x = x + 1
+		# time.sleep(0.5)
+		
+		for i in range(1,78):
+			document_path = os.getcwd()+'/application/static/default_poems/fi/edith_sodergran/'+str(i)+'.txt'
+			file = open(document_path, 'r', encoding='utf-8')
+			name = file.readline().rstrip()
+			file.close()
+			lyrics = ""
+			with open(document_path, encoding='utf-8') as f:
+				for line in itertools.islice(f, 1, None):
+					lyrics += line
+			language = 'finnish'
+		
+			poem = Poem(name,lyrics,language)
+			poem.account_id = 1
+		
+			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Edith Södergran'))
+		
+			try:
+				db.session.add(poem)
+				db.session.commit()
+				fi_added = True
+			except:
+				db.session.rollback()
+	
+			yield "data:" + str(x) + "\n\n"
+			x = x + 1
+		# time.sleep(0.5)
+		
+		
+		#------------------------------------------------
+		# english poems
+		#------------------------------------------------
+		for i in range(1,50):
+			document_path = os.getcwd()+'/application/static/default_poems/en/edgar_allan_poe/'+str(i)+'.txt'
+			file = open(document_path, 'r', encoding='utf-8')
+			name = file.readline().rstrip()
+			file.close()
+			lyrics = ""
+			with open(document_path, encoding='utf-8') as f:
+				for line in itertools.islice(f, 1, None):
+					lyrics += line
+			language = 'english'
+		
+			poem = Poem(name,lyrics,language)
+			poem.account_id = 1
+		
+			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Edgar Allan Poe'))
+		
+			try:
+				db.session.add(poem)
+				db.session.commit()
+				en_added = True
+			except:
+				db.session.rollback()
+	
+			yield "data:" + str(x) + "\n\n"
+			x = x + 1
+		# time.sleep(0.5)
+		
+		
+		for i in range(1,46):
+			document_path = os.getcwd()+'/application/static/default_poems/en/emily_dickinson/'+str(i)+'.txt'
+			file = open(document_path, 'r', encoding='utf-8')
+			name = file.readline().rstrip()
+			file.close()
+			lyrics = ""
+			with open(document_path, encoding='utf-8') as f:
+				for line in itertools.islice(f, 1, None):
+					lyrics += line
+			language = 'english'
+		
+			poem = Poem(name,lyrics,language)
+			poem.account_id = 1
+		
+			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Emily Dickinson'))
+		
+			try:
+				db.session.add(poem)
+				db.session.commit()
+				en_added = True
+			except:
+				db.session.rollback()
+	
+			yield "data:" + str(x) + "\n\n"
+			x = x + 1
+		# time.sleep(0.5)
+		
+		
+		#------------------------------------------------
+		# french poems
+		#------------------------------------------------
+		for i in range(1,105):
+			document_path = os.getcwd()+'/application/static/default_poems/fr/charles_baudelaire/'+str(i)+'.txt'
+			file = open(document_path, 'r', encoding='utf-8')
+			name = file.readline().rstrip()
+			file.close()
+			lyrics = ""
+			with open(document_path, encoding='utf-8') as f:
+				for line in itertools.islice(f, 1, None):
+					lyrics += line
+			language = 'french'
+		
+			poem = Poem(name,lyrics,language)
+			poem.account_id = 1
+		
+			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Charles Baudelaire'))
+		
+			try:
+				db.session.add(poem)
+				db.session.commit()
+				fr_added = True
+			except:
+				db.session.rollback()
+	
+			yield "data:" + str(x) + "\n\n"
+			x = x + 1
+		# time.sleep(0.5)
+		
+		
+		for i in range(1,44):
+			document_path = os.getcwd()+'/application/static/default_poems/fr/louise_ackermann/'+str(i)+'.txt'
+			file = open(document_path, 'r', encoding='utf-8')
+			name = file.readline().rstrip()
+			file.close()
+			lyrics = ""
+			with open(document_path, encoding='utf-8') as f:
+				for line in itertools.islice(f, 1, None):
+					lyrics += line
+			language = 'french'
+		
+			poem = Poem(name,lyrics,language)
+			poem.account_id = 1
+		
+			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Louise Ackermann'))
+		
+			try:
+				db.session.add(poem)
+				db.session.commit()
+				fr_added = True
+			except:
+				db.session.rollback()
+	
+			yield "data:" + str(x) + "\n\n"
+			x = x + 1
+		# time.sleep(0.5)
+
+	return Response(generate(), mimetype= 'text/event-stream')
 
 
 #----------------------------------------------------
