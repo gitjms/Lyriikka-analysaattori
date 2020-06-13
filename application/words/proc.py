@@ -8,7 +8,7 @@ import nltk
 # nltk.download('stopwords')
 nltk.download('punkt')
 # from nltk.corpus import stopwords
-from application.words import plusstops
+from application.words import ownstops
 from collections import Counter
 
 from application import db, login_manager
@@ -81,11 +81,11 @@ def stop_words(filtered, new_raw_words_list, language, graph):
 
 	# stops = stopwords.words(language)
 	if language == 'english':
-		stops = plusstops.plusstops_en
+		stops = ownstops.stops_en
 	elif language == 'french':
-		stops = plusstops.plusstops_fr
+		stops = ownstops.stops_fr
 	elif language == 'finnish':
-		stops = plusstops.plusstops_fi
+		stops = ownstops.stops_fi
 
 	if graph == "":
 		db_words_list = []
