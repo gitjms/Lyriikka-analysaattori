@@ -10,7 +10,6 @@
 <!-- APPLICATION'S OWN JAVASCRIPTS -->
 <script type="text/javascript" src="{{ url_for('static', filename='/js/Chart.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='/js/showhidediv.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='/js/progressbar.js') }}"></script>
   
 <!-- APPLICATION'S OWN STYLES -->
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/styles.css') }}"></link>
@@ -156,7 +155,7 @@
       </div>
     </div>
 	<div class="btn-group" role="group">
-	  <form action="/auth/stats" method="GET">
+	  <form action="/auth/stats/na" method="GET">
       <button id="pageBtn" class="btn btn-secondary" type="submit">Stats</button>
 	  </form>
 	  <form action="/info" method="GET">
@@ -228,8 +227,8 @@
         <form action="/defaults/removepoems" method="POST">
             <button class="btn btn-sm btn-danger" type="submit" name="removepoems" id="removepoems" value="removepoems" aria-label="Remove default poems">Remove default poems</button>
         </form>
-        </div>
       </div>
+    </div>
   </div>
 {% endif %}
 

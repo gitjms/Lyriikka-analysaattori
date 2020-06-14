@@ -26,9 +26,9 @@ def before_request():
 #-----------------------------------------
 #		STATS: auth_stats()
 #-----------------------------------------
-@app.route("/auth/stats", methods = ["GET"])
+@app.route("/auth/stats/<load>", methods = ["GET"])
 @login_required
-def auth_stats():
+def auth_stats(load):
 
 	errors = []
 
@@ -46,18 +46,23 @@ def auth_stats():
 		result_list.append(new_list)
 
 	db_songs_status=Song.find_database_songs_status()
+	song_count = db.session.query(Song).count()
 	db_poems_status=Poem.find_database_poems_status()
-	if db.session.query(Song).count() > 0 and db.session.query(Poem).count() > 0:
-		return render_template("auth/stats.html", db_songs_status=Song.find_database_songs_status(), db_poems_status=Poem.find_database_poems_status(), top_words=result_list)
-	elif db.session.query(Song).count() > 0 and db.session.query(Poem).count() == 0:
-		errors.append("Cannot load database status for poems.")
-		return render_template("auth/stats.html", db_songs_status=Song.find_database_songs_status(), db_poems_status=None, top_words=result_list)
-	elif db.session.query(Song).count() == 0 and db.session.query(Poem).count() > 0:
-		errors.append("Cannot load database status for songs.")
-		return render_template("auth/stats.html", db_songs_status=None, db_poems_status=Poem.find_database_poems_status(), top_words=result_list)
+	poem_count = db.session.query(Poem).count()
+
+	if song_count > 0 and poem_count > 0:
+		return render_template("auth/stats.html", db_songs_status=db_songs_status, db_poems_status=db_poems_status, top_words=result_list, load=load, errors=errors)
+	elif song_count > 0 and poem_count == 0:
+		errors.append("Cannot load database status for poems:")
+		errors.append("Tables Poem and Poet are empty.")
+		return render_template("auth/stats.html", db_songs_status=db_songs_status, db_poems_status=None, top_words=result_list, load=load, errors=errors)
+	elif song_count == 0 and poem_count > 0:
+		errors.append("Cannot load database status for songs:")
+		errors.append("Tables Song and Author are empty.")
+		return render_template("auth/stats.html", db_songs_status=None, db_poems_status=db_poems_status, top_words=result_list, load=load, errors=errors)
 	else:
-		errors.append("Cannot load database status.")
-		return render_template("auth/stats.html", db_songs_status=None, db_poems_status=None, top_words=result_list, errors=errors)
+		errors.append("Cannot load database status:")
+		return render_template("auth/stats.html", db_songs_status=None, db_poems_status=None, top_words=result_list, load=load, errors=errors)
 
 
 #-----------------------------------------

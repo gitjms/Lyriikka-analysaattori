@@ -17,8 +17,7 @@ from application.poets.models import poet_poem
 from application.poets import poets
 from application.admin.forms import CreateForm
 import itertools
-import os
-# import time
+import os, os.path
 
 # Admin dashboard.
 
@@ -39,7 +38,7 @@ def admin_dashboard():
 		return login_manager.unauthorized()
 
 	if request.method == "GET":
-		return render_template("auth/stats.html")
+		return render_template("auth/stats.html", load='na')
 
 	if request.method == "POST":
 		return render_template("admin/dashboard.html", users = User.query.all())
@@ -108,157 +107,165 @@ def add_songs():
 	if g.user.role != "ADMIN":
 		return login_manager.unauthorized()
 
-	#------------------------------------------------
+	if db.session.query(Song).count() > 0 and db.session.query(Author).count() > 0:
+		flash("Default songs and authors already exist.", "warning")
+		return redirect(url_for("auth_stats", load='na'))
+	else:
+		progress_songs()
+
+		flash("Songs and authors added.", "success")
+
+	db_poems_status=Poem.find_database_poems_status()
+	poem_count = db.session.query(Poem).count()
+
+	if poem_count > 0:
+		return render_template("auth/stats.html", db_songs_status=None, db_poems_status=db_poems_status, top_words=None, load='song')
+	else:
+		return render_template("auth/stats.html", db_songs_status=None, db_poems_status=None, top_words=None, load='song')
+
+#----------------------------------------------------
+# Table operations: add default songs, authors
+#----------------------------------------------------
+@app.route("/progress_songs")
+def progress_songs():
+
+	x = 0.0
+
+	num_authors = len(authors.authors)
+
+	document_dir = os.getcwd()+'/application/static/default_songs/'
+	lang_list = os.listdir(document_dir)
+	num_songs = 0
+	for item in lang_list:
+		author_songs = os.listdir(document_dir+'/'+item)
+		num_songs = num_songs + len(author_songs)
+
+	num_all = num_authors + num_songs
+
+	def generate(x):	#------------------------------------------------
 	# add default authors
 	#------------------------------------------------
-
-	if db.session.query(Song).count() > 0:
-		flash("Default songs and authors already exist.", "warning")
-		return redirect(url_for("auth_stats"))
-
-	for item in authors.authors_fi:
-		for auth in item[0]:
+		for auth in authors.authors:
 			db.session.add(Author(name=auth,result_all=None,result_no_stop_words=None))
 			db.session.commit()
+			x = x + 100.0/num_all
+			yield "data:" + str('%.4f'%(x)) + "\n\n"
 
-	for item in authors.authors_en:
-		for auth in item[0]:
-			db.session.add(Author(name=auth,result_all=None,result_no_stop_words=None))
-			db.session.commit()
+		#------------------------------------------------
+		# add default songs
+		#------------------------------------------------
+		# finnish songs
+		for i in range(1,7):
+			document_path = os.getcwd()+'/application/static/default_songs/fi/'+str(i)+'.txt'
+			file = open(document_path, 'r', encoding='utf-8')
+			name = file.readline().rstrip()
+			file.close()
+			lyrics = ""
+			with open(document_path, encoding='utf-8') as f:
+				for line in itertools.islice(f, 2, None):
+					lyrics += line
+			language = 'finnish'
 	
-	for item in authors.authors_fr:
-		for auth in item[0]:
-			db.session.add(Author(name=auth,result_all=None,result_no_stop_words=None))
-			db.session.commit()
-
-	#------------------------------------------------
-	# add default songs
-	#------------------------------------------------
-
-	fi_added = False
-	en_added = False
-	fr_added = False
-
-	# finnish songs
-	for i in range(1,7):
-		document_path = os.getcwd()+'/application/static/default_songs/fi/'+str(i)+'.txt'
-		file = open(document_path, 'r', encoding='utf-8')
-		name = file.readline().rstrip()
-		file.close()
-		lyrics = ""
-		with open(document_path, encoding='utf-8') as f:
-			for line in itertools.islice(f, 2, None):
-				lyrics += line
-		language = 'finnish'
-
-		song = Song(name,lyrics,language)
-		song.account_id = 1
+			song = Song(name,lyrics,language)
+			song.account_id = 1
+		
+			if i == 1:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='Jens Nicolai Ludvig Schjörring').first(),db.session.query(Author).filter(Author.name=='H. S. Thompson').first()])
+			elif i == 2:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='Abraham Achrenius').first(),db.session.query(Author).filter(Author.name=='Toisinto Ylistarosta').first()])
+			elif i == 3:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='Lina Sandell-Berg').first(),db.session.query(Author).filter(Author.name=='Gunr Wennerberg').first()])
+			elif i == 4:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='Georgiana M. Taylor').first(),db.session.query(Author).filter(Author.name=='Tuntematon').first()])
+			elif i == 5:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='Johnson Jr. Oatman').first(),db.session.query(Author).filter(Author.name=='Edwin O. Excell').first()])
+			elif i == 6:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='Tuntematon').first(),db.session.query(Author).filter(Author.name=='Lewis Hartsoug').first()])
 	
-		if i == 1:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='Jens Nicolai Ludvig Schjörring').first(),db.session.query(Author).filter(Author.name=='H. S. Thompson').first()])
-		elif i == 2:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='Abraham Achrenius').first(),db.session.query(Author).filter(Author.name=='Toisinto Ylistarosta').first()])
-		elif i == 3:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='Lina Sandell-Berg').first(),db.session.query(Author).filter(Author.name=='Gunr Wennerberg').first()])
-		elif i == 4:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='Georgiana M. Taylor').first(),db.session.query(Author).filter(Author.name=='Tuntematon').first()])
-		elif i == 5:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='Johnson Jr. Oatman').first(),db.session.query(Author).filter(Author.name=='Edwin O. Excell').first()])
-		elif i == 6:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='Tuntematon').first(),db.session.query(Author).filter(Author.name=='Lewis Hartsoug').first()])
-
-		try:
-			db.session.add(song)
-			db.session.commit()
-			fi_added = True
-		except:
-			db.session.rollback()
-
-	# english songs
-	for i in range(7,13):
-		document_path = os.getcwd()+'/application/static/default_songs/en/'+str(i)+'.txt'
-		file = open(document_path, 'r', encoding='utf-8')
-		name = file.readline().rstrip()
-		file.close()
-		lyrics = ""
-		with open(document_path, encoding='utf-8') as f:
-			for line in itertools.islice(f, 2, None):
-				lyrics += line
-		language = 'english'
-
-		song = Song(name,lyrics,language)
-		song.account_id = 1
+			try:
+				db.session.add(song)
+				db.session.commit()
+			except:
+				db.session.rollback()
 	
-		if i == 7:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='Chris Tomlin').first()])
-		elif i == 8:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='George Crawford Hugg').first(),db.session.query(Author).filter(Author.name=='Johnson Jr. Oatman').first()])
-		elif i == 9:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='Philip Paul Bliss').first()])
-		elif i == 10:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='Chris Tomlin').first(),db.session.query(Author).filter(Author.name=='Ed Cash').first(),db.session.query(Author).filter(Author.name=='Stephan Conley Sharp').first()])
-		elif i == 11:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='Matt Maher').first()])
-		elif i == 12:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='Hillsong United').first()])
-
-		try:
-			db.session.add(song)
-			db.session.commit()
-			en_added = True
-		except:
-			db.session.rollback()
-
-	# french songs
-	for i in range(13,19):
-		document_path = os.getcwd()+'/application/static/default_songs/fr/'+str(i)+'.txt'
-		file = open(document_path, 'r', encoding='utf-8')
-		name = file.readline().rstrip()
-		file.close()
-		lyrics = ""
-		with open(document_path, encoding='utf-8') as f:
-			for line in itertools.islice(f, 2, None):
-				lyrics += line
-		language = 'french'
-
-		song = Song(name,lyrics,language)
-		song.account_id = 1
+			x = x + 100.0/num_all
+			yield "data:" + str('%.4f'%(x)) + "\n\n"
 	
-		if i == 13:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='John van den Hogen').first()])
-		elif i == 14:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='Mlle Amélie Humbert').first(),db.session.query(Author).filter(Author.name=='George Coles Stebbins').first()])
-		elif i == 15:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='Charles Rochedieu').first(),db.session.query(Author).filter(Author.name=='William Herbert Jude').first()])
-		elif i == 16:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='Mlle Amélie Humbert').first(),db.session.query(Author).filter(Author.name=='C.-C. Williams').first()])
-		elif i == 17:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='Horatio Richmond Palmer').first()])
-		elif i == 18:
-			song.authors.extend([db.session.query(Author).filter(Author.name=='Jean-François Bussy').first()])
-
-		try:
-			db.session.add(song)
-			db.session.commit()
-			fr_added = True
-		except:
-			db.session.rollback()
-
-	if fi_added:
-		flash("Finnish songs added.", "success")
-	else:
-		flash("Finnish songs not added.", "danger")
-	if en_added:
-		flash("English songs added.", "success")
-	else:
-		flash("English songs not added.", "danger")
-	if fr_added:
-		flash("French songs added.", "success")
-	else:
-		flash("French songs not added.", "danger")
+		# english songs
+		for i in range(7,13):
+			document_path = os.getcwd()+'/application/static/default_songs/en/'+str(i)+'.txt'
+			file = open(document_path, 'r', encoding='utf-8')
+			name = file.readline().rstrip()
+			file.close()
+			lyrics = ""
+			with open(document_path, encoding='utf-8') as f:
+				for line in itertools.islice(f, 2, None):
+					lyrics += line
+			language = 'english'
 	
+			song = Song(name,lyrics,language)
+			song.account_id = 1
+		
+			if i == 7:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='Chris Tomlin').first()])
+			elif i == 8:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='George Crawford Hugg').first(),db.session.query(Author).filter(Author.name=='Johnson Jr. Oatman').first()])
+			elif i == 9:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='Philip Paul Bliss').first()])
+			elif i == 10:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='Chris Tomlin').first(),db.session.query(Author).filter(Author.name=='Ed Cash').first(),db.session.query(Author).filter(Author.name=='Stephan Conley Sharp').first()])
+			elif i == 11:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='Matt Maher').first()])
+			elif i == 12:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='Hillsong United').first()])
 	
-	return redirect(url_for("auth_stats"))
+			try:
+				db.session.add(song)
+				db.session.commit()
+			except:
+				db.session.rollback()
+	
+			x = x + 100.0/num_all
+			yield "data:" + str('%.4f'%(x)) + "\n\n"
+	
+		# french songs
+		for i in range(13,19):
+			document_path = os.getcwd()+'/application/static/default_songs/fr/'+str(i)+'.txt'
+			file = open(document_path, 'r', encoding='utf-8')
+			name = file.readline().rstrip()
+			file.close()
+			lyrics = ""
+			with open(document_path, encoding='utf-8') as f:
+				for line in itertools.islice(f, 2, None):
+					lyrics += line
+			language = 'french'
+	
+			song = Song(name,lyrics,language)
+			song.account_id = 1
+		
+			if i == 13:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='John van den Hogen').first()])
+			elif i == 14:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='Mlle Amélie Humbert').first(),db.session.query(Author).filter(Author.name=='George Coles Stebbins').first()])
+			elif i == 15:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='Charles Rochedieu').first(),db.session.query(Author).filter(Author.name=='William Herbert Jude').first()])
+			elif i == 16:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='Mlle Amélie Humbert').first(),db.session.query(Author).filter(Author.name=='C.-C. Williams').first()])
+			elif i == 17:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='Horatio Richmond Palmer').first()])
+			elif i == 18:
+				song.authors.extend([db.session.query(Author).filter(Author.name=='Jean-François Bussy').first()])
+	
+			try:
+				db.session.add(song)
+				db.session.commit()
+			except:
+				db.session.rollback()
+	
+			x = x + 100.0/num_all
+			yield "data:" + str('%.4f'%(x)) + "\n\n"
+
+	return Response(generate(x), mimetype= 'text/event-stream')
 
 
 #----------------------------------------------------
@@ -274,7 +281,6 @@ def remove_songs():
 	try:
 		db.session.query(Song).delete()
 		db.session.commit()
-		flash("Table Song cleared.", "success")
 	except:
 		flash("Table Song not cleared.", "danger")
 		db.session.rollback()
@@ -282,7 +288,6 @@ def remove_songs():
 	try:
 		db.session.query(Author).delete()
 		db.session.commit()
-		flash("Table Author cleared.", "success")
 	except:
 		flash("Table Author not cleared.", "danger")
 		db.session.rollback()
@@ -290,7 +295,6 @@ def remove_songs():
 	try:
 		db.session.query(Words).delete()
 		db.session.commit()
-		flash("Table Words cleared.", "success")
 	except:
 		flash("Table Words not cleared.", "danger")
 		db.session.rollback()
@@ -298,7 +302,6 @@ def remove_songs():
 	try:
 		stmt = text("DELETE FROM author_song;")
 		db.engine.execute(stmt)
-		flash("Join table author_song cleared.", "success")
 	except:
 		flash("Join table author_song not cleared.", "danger")
 		db.session.rollback()
@@ -306,12 +309,15 @@ def remove_songs():
 	try:
 		stmt = text("DELETE FROM song_result;")
 		db.engine.execute(stmt)
-		flash("Join table song_result cleared.", "success")
 	except:
 		flash("Join table song_result not cleared.", "danger")
 		db.session.rollback()
 
-	return redirect(url_for("auth_stats"))
+	flash("Tables cleared.", "success")
+	db_poems_status=Poem.find_database_poems_status()
+	poem_count = db.session.query(Poem).count()
+
+	return redirect(url_for("auth_stats", load='na'))
 
 
 #----------------------------------------------------
@@ -324,71 +330,71 @@ def add_poems():
 	if g.user.role != "ADMIN":
 		return login_manager.unauthorized()
 
-	progress()
+	if db.session.query(Poet).count() > 0 and db.session.query(Poem).count() > 0:
+		flash("Default poets and poems already exist.", "warning")
+		return redirect(url_for("auth_stats", load='na'))
+	else:
+		progress_poems()
 
-	# if fi_added:
-		# flash("Finnish poems added.", "success")
-	# else:
-		# flash("Finnish poems not added.", "danger")
-	# if en_added:
-		# flash("English poems added.", "success")
-	# else:
-		# flash("English poems not added.", "danger")
-	# if fr_added:
-		# flash("French poems added.", "success")
-	# else:
-		# flash("French poems not added.", "danger")
+		flash("Poems and poets added.", "success")
 
-	return redirect(url_for("auth_stats"))
+	db_songs_status=Song.find_database_songs_status()
+	song_count = db.session.query(Song).count()
+
+	if song_count > 0:
+		return render_template("auth/stats.html", db_songs_status=db_songs_status, db_poems_status=None, top_words=None, load='poem')
+	else:
+		return render_template("auth/stats.html", db_songs_status=None, db_poems_status=None, top_words=None, load='poem')
 
 
 #----------------------------------------------------
 # Table operations: add default poets, poems
 #----------------------------------------------------
-@app.route("/progress")
-def progress():
+@app.route("/progress_poems")
+def progress_poems():
 
-	def generate():
-		x = 0
+	x = 0.0
+
+	num_poets = len(poets.poets_fi) + len(poets.poets_en) + len(poets.poets_fr)
+
+	document_dir = os.getcwd()+'/application/static/default_poems/'
+	lang_list = os.listdir(document_dir)
+	num_poems = 0
+	for item in lang_list:
+		poet_list = os.listdir(document_dir+'/'+item)
+		for i in poet_list:
+			poet_poems = os.listdir(document_dir+'/'+item+'/'+i)
+			num_poems = num_poems + len(poet_poems)
+
+	num_all = num_poets + num_poems
+
+	def generate(x):
 		#------------------------------------------------
 		# add default authors
 		#------------------------------------------------
-		
-		if db.session.query(Poet).count() > 0:
-			flash("Default poets already exist.", "warning")
-		else:
-			for item in poets.poets_fi:
-				db.session.add(Poet(name=item,result_all=None,result_no_stop_words=None))
-				db.session.commit()
-			for item in poets.poets_en:
-				db.session.add(Poet(name=item,result_all=None,result_no_stop_words=None))
-				db.session.commit()
-			for item in poets.poets_fr:
-				db.session.add(Poet(name=item,result_all=None,result_no_stop_words=None))
-				db.session.commit()
-	
-			yield "data:" + str(x) + "\n\n"
-			x = x + 1
-		# time.sleep(0.5)
-		
+		for item in poets.poets_fi:
+			db.session.add(Poet(name=item,result_all=None,result_no_stop_words=None))
+			db.session.commit()
+			x = x + 100.0/num_all
+			yield "data:" + str('%.4f'%(x)) + "\n\n"
+		for item in poets.poets_en:
+			db.session.add(Poet(name=item,result_all=None,result_no_stop_words=None))
+			db.session.commit()
+			x = x + 100.0/num_all
+			yield "data:" + str('%.4f'%(x)) + "\n\n"
+		for item in poets.poets_fr:
+			db.session.add(Poet(name=item,result_all=None,result_no_stop_words=None))
+			db.session.commit()
+			x = x + 100.0/num_all
+			yield "data:" + str('%.4f'%(x)) + "\n\n"
+
 		#------------------------------------------------
 		# add default poems
-		#------------------------------------------------
-		
-		if db.session.query(Poem).count() > 0:
-			flash("Default poems already exist.", "warning")
-			# return redirect(url_for("auth_stats"))
-			return Response(generate(), mimetype= 'text/event-stream')
-		
-		fi_added = False
-		en_added = False
-		fr_added = False
-		
 		#------------------------------------------------
 		# finnish poems
 		#------------------------------------------------
 		for i in range(1,61):
-			document_path = os.getcwd()+'/application/static/default_poems/fi/uuno_kailas/'+str(i)+'.txt'
+			document_path = document_dir + 'fi/uuno_kailas/'+str(i)+'.txt'
 			file = open(document_path, 'r', encoding='utf-8')
 			name = file.readline().rstrip()
 			file.close()
@@ -406,16 +412,14 @@ def progress():
 			try:
 				db.session.add(poem)
 				db.session.commit()
-				fi_added = True
 			except:
 				db.session.rollback()
-	
-			yield "data:" + str(x) + "\n\n"
-			x = x + 1
-		# time.sleep(0.5)
+
+			x = x + 100.0/num_all
+			yield "data:" + str('%.4f'%(x)) + "\n\n"
 		
 		for i in range(1,78):
-			document_path = os.getcwd()+'/application/static/default_poems/fi/edith_sodergran/'+str(i)+'.txt'
+			document_path = document_dir + 'fi/edith_sodergran/'+str(i)+'.txt'
 			file = open(document_path, 'r', encoding='utf-8')
 			name = file.readline().rstrip()
 			file.close()
@@ -433,20 +437,18 @@ def progress():
 			try:
 				db.session.add(poem)
 				db.session.commit()
-				fi_added = True
 			except:
 				db.session.rollback()
-	
-			yield "data:" + str(x) + "\n\n"
-			x = x + 1
-		# time.sleep(0.5)
+
+			x = x + 100.0/num_all
+			yield "data:" + str('%.4f'%(x)) + "\n\n"
 		
 		
 		#------------------------------------------------
 		# english poems
 		#------------------------------------------------
 		for i in range(1,50):
-			document_path = os.getcwd()+'/application/static/default_poems/en/edgar_allan_poe/'+str(i)+'.txt'
+			document_path = document_dir + 'en/edgar_allan_poe/'+str(i)+'.txt'
 			file = open(document_path, 'r', encoding='utf-8')
 			name = file.readline().rstrip()
 			file.close()
@@ -464,17 +466,15 @@ def progress():
 			try:
 				db.session.add(poem)
 				db.session.commit()
-				en_added = True
 			except:
 				db.session.rollback()
-	
-			yield "data:" + str(x) + "\n\n"
-			x = x + 1
-		# time.sleep(0.5)
+
+			x = x + 100.0/num_all
+			yield "data:" + str('%.4f'%(x)) + "\n\n"
 		
 		
 		for i in range(1,46):
-			document_path = os.getcwd()+'/application/static/default_poems/en/emily_dickinson/'+str(i)+'.txt'
+			document_path = document_dir + 'en/emily_dickinson/'+str(i)+'.txt'
 			file = open(document_path, 'r', encoding='utf-8')
 			name = file.readline().rstrip()
 			file.close()
@@ -492,20 +492,18 @@ def progress():
 			try:
 				db.session.add(poem)
 				db.session.commit()
-				en_added = True
 			except:
 				db.session.rollback()
-	
-			yield "data:" + str(x) + "\n\n"
-			x = x + 1
-		# time.sleep(0.5)
+
+			x = x + 100.0/num_all
+			yield "data:" + str('%.4f'%(x)) + "\n\n"
 		
 		
 		#------------------------------------------------
 		# french poems
 		#------------------------------------------------
 		for i in range(1,105):
-			document_path = os.getcwd()+'/application/static/default_poems/fr/charles_baudelaire/'+str(i)+'.txt'
+			document_path = document_dir + 'fr/charles_baudelaire/'+str(i)+'.txt'
 			file = open(document_path, 'r', encoding='utf-8')
 			name = file.readline().rstrip()
 			file.close()
@@ -523,17 +521,15 @@ def progress():
 			try:
 				db.session.add(poem)
 				db.session.commit()
-				fr_added = True
 			except:
 				db.session.rollback()
-	
-			yield "data:" + str(x) + "\n\n"
-			x = x + 1
-		# time.sleep(0.5)
+
+			x = x + 100.0/num_all
+			yield "data:" + str('%.4f'%(x)) + "\n\n"
 		
 		
 		for i in range(1,44):
-			document_path = os.getcwd()+'/application/static/default_poems/fr/louise_ackermann/'+str(i)+'.txt'
+			document_path = document_dir + 'fr/louise_ackermann/'+str(i)+'.txt'
 			file = open(document_path, 'r', encoding='utf-8')
 			name = file.readline().rstrip()
 			file.close()
@@ -551,15 +547,13 @@ def progress():
 			try:
 				db.session.add(poem)
 				db.session.commit()
-				fr_added = True
 			except:
 				db.session.rollback()
-	
-			yield "data:" + str(x) + "\n\n"
-			x = x + 1
-		# time.sleep(0.5)
 
-	return Response(generate(), mimetype= 'text/event-stream')
+			x = x + 100.0/num_all
+			yield "data:" + str('%.4f'%(x)) + "\n\n"
+
+	return Response(generate(x), mimetype= 'text/event-stream')
 
 
 #----------------------------------------------------
@@ -572,28 +566,30 @@ def remove_poems():
 	if g.user.role != "ADMIN":
 		return login_manager.unauthorized()
 
-	try:
-		db.session.query(Poem).delete()
-		db.session.commit()
-		flash("Table Poem cleared.", "success")
-	except:
-		flash("Table Poem not cleared.", "danger")
-		db.session.rollback()
-		
-	try:
-		db.session.query(Poet).delete()
-		db.session.commit()
-		flash("Table Poet cleared.", "success")
-	except:
-		flash("Table Poet not cleared.", "danger")
-		db.session.rollback()
+	if db.session.query(Poet).count() == 0 and db.session.query(Poem).count() == 0:
+		flash("Poets and Poems already empty.", "warning")
+	else:
+		try:
+			db.session.query(Poem).delete()
+			db.session.commit()
+		except:
+			flash("Table Poem not cleared.", "danger")
+			db.session.rollback()
+			
+		try:
+			db.session.query(Poet).delete()
+			db.session.commit()
+		except:
+			flash("Table Poet not cleared.", "danger")
+			db.session.rollback()
+	
+		try:
+			stmt = text("DELETE FROM poet_poem;")
+			db.engine.execute(stmt)
+		except:
+			flash("Join table poet_poem not cleared.", "danger")
+			db.session.rollback()
 
-	try:
-		stmt = text("DELETE FROM poet_poem;")
-		db.engine.execute(stmt)
-		flash("Join table poet_poem cleared.", "success")
-	except:
-		flash("Join table poet_poem not cleared.", "danger")
-		db.session.rollback()
+		flash("Tables Poet, Poem, and poet_poem cleared.", "success")
 
-	return redirect(url_for("auth_stats"))
+	return redirect(url_for("auth_stats", load='na'))
