@@ -67,7 +67,7 @@ Tekstiesimerkkejä käyttötapauksesta *rekisteröityminen*
 
 ## Sovelluksen käyttötapauskaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/84679098-83f3a180-af39-11ea-91ce-077025d41808.png" alt="use case" >
+<img src="https://user-images.githubusercontent.com/46410240/84689243-5c0c3a00-af49-11ea-9d91-a1b9347b5c7f.png" alt="use case" >
 
 Värikoodien merkitys:
 - vihreä on kaikille käyttäjärooleille sallittu
@@ -78,8 +78,8 @@ Kuva ei ole kovin selkeä, joten alla vielä kuvat erikseen kunkin käyttäjäro
 
 ### Käyttötapauskaaviot erikseen kullekin roolille
 
-<img src="https://user-images.githubusercontent.com/46410240/84679127-9077fa00-af39-11ea-8f29-19e063a01482.png" alt="use case admin" >
+<img src="https://user-images.githubusercontent.com/46410240/84689296-7514eb00-af49-11ea-8816-28baf8dd81df.png" alt="use case admin" >
 
-<img src="https://user-images.githubusercontent.com/46410240/84679158-9cfc5280-af39-11ea-9753-115d91b91b74.png" alt="use case guest" >
+<img src="https://user-images.githubusercontent.com/46410240/84689327-7e05bc80-af49-11ea-9b18-43403422fe9b.png" alt="use case guest" >
 
-<img src="https://user-images.githubusercontent.com/46410240/84679187-a71e5100-af39-11ea-974a-c8b4cd1c2b26.png" alt="use case user" >
+<img src="https://user-images.githubusercontent.com/46410240/84689350-865df780-af49-11ea-8f83-9eb59597e45f.png" alt="use case user" >
