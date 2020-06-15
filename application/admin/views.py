@@ -37,9 +37,6 @@ def admin_dashboard():
 	if g.user.role != "ADMIN":
 		return login_manager.unauthorized()
 
-	if request.method == "GET":
-		return render_template("auth/stats.html", load='na')
-
 	if request.method == "POST":
 		return render_template("admin/dashboard.html", users = User.query.all())
 

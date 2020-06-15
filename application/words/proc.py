@@ -5,9 +5,7 @@ from unidecode import unidecode
 import operator
 import re
 import nltk
-# nltk.download('stopwords')
 nltk.download('punkt')
-# from nltk.corpus import stopwords
 from application.words import ownstops
 from collections import Counter
 
