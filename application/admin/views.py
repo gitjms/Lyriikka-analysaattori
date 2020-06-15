@@ -38,7 +38,8 @@ def admin_dashboard():
 		return login_manager.unauthorized()
 
 	if request.method == "POST":
-		return render_template("admin/dashboard.html", users = User.query.all())
+		users = User.query.all()
+		return render_template("admin/dashboard.html", users=users)
 
 
 #----------------------------------------------------
