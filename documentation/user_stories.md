@@ -7,8 +7,8 @@ User stories, Use cases
 | :--- | :--- | :--- | :--- |
 | *user* | kirjautua sisään | voin tehdä frekvenssianalyysejä | :heavy_check_mark: |
 | *user* | kirjautua sisään | näen tietokannan sisällön | :heavy_check_mark: |
-| *user* | tehdä frekvenssianalyysinä <br/> top 10 sanat | näen eniten käytety sanat lauluittain/kielittäin | :heavy_check_mark: |
-| *user* | tehdä frekvenssianalyysin <br/> tietyn sanan esiintymistiheydestä | näen missä lauluissa <br/> esiintymisiä on eniten/vähiten | :heavy_check_mark: |
+| *user* | tehdä frekvenssianalyysinä <br/> top 10 sanat | näen eniten käytety sanat lyyrikoittain/kielittäin | :heavy_check_mark: |
+| *user* | tehdä frekvenssianalyysin <br/> tietyn sanan esiintymistiheydestä | näen missä lyriikassa <br/> esiintymisiä on eniten/vähiten | :heavy_check_mark: |
 
 | Roolissa... | haluan... | jotta... | |
 | :--- | :--- | :--- | :--- |
@@ -17,7 +17,7 @@ User stories, Use cases
 | *admin* | lisätä lyriikoita | tietokanta saa lisämateriaalia | :heavy_check_mark: |
 | *admin* | poistaa lyriikoita | poisto korjaa jonkin <br/> ongelman (esim. copyright) | :heavy_check_mark: |
 | *admin* | tyhjentää tietokannan | tyhjentäminen korjaa jonkin vakavan ongelman | :heavy_check_mark: |
-| *admin* | muokata lyriikoita | korjaus korjaa virheen laulussa | :heavy_check_mark: |
+| *admin* | muokata lyriikoita | korjaus korjaa virheen lyriikassa | :heavy_check_mark: |
 | *admin* | poistaa käyttäjiä | lopettaneet käyttäjät saadaan pois | :heavy_check_mark: |
 | *admin* | muuttaa käyttäjien roolin | peruskäyttäjän voi asettaa väliaikaisesti pääkäyttäjäksi | :heavy_check_mark: |
 
@@ -67,7 +67,7 @@ Tekstiesimerkkejä käyttötapauksesta *rekisteröityminen*
 
 ## Sovelluksen käyttötapauskaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/84247529-e9e2c200-ab10-11ea-955d-910f566c46a7.png" alt="use case" >
+<img src="https://user-images.githubusercontent.com/46410240/84679098-83f3a180-af39-11ea-91ce-077025d41808.png" alt="use case" >
 
 Värikoodien merkitys:
 - vihreä on kaikille käyttäjärooleille sallittu
@@ -78,8 +78,8 @@ Kuva ei ole kovin selkeä, joten alla vielä kuvat erikseen kunkin käyttäjäro
 
 ### Käyttötapauskaaviot erikseen kullekin roolille
 
-<img src="https://user-images.githubusercontent.com/46410240/84247295-8f496600-ab10-11ea-8289-4162badd91f1.png" alt="use case admin" >
+<img src="https://user-images.githubusercontent.com/46410240/84679127-9077fa00-af39-11ea-8f29-19e063a01482.png" alt="use case admin" >
 
-<img src="https://user-images.githubusercontent.com/46410240/84247398-bacc5080-ab10-11ea-903c-00272d47a071.png" alt="use case user" >
+<img src="https://user-images.githubusercontent.com/46410240/84679158-9cfc5280-af39-11ea-9753-115d91b91b74.png" alt="use case guest" >
 
-<img src="https://user-images.githubusercontent.com/46410240/84247370-b011bb80-ab10-11ea-82aa-a12145d07819.png" alt="use case guest" >
+<img src="https://user-images.githubusercontent.com/46410240/84679187-a71e5100-af39-11ea-974a-c8b4cd1c2b26.png" alt="use case user" >

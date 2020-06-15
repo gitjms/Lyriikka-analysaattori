@@ -78,10 +78,42 @@
         FOREIGN KEY(results_id) REFERENCES results (id) ON DELETE cascade
   );
   ```
+- **Poem** runot sisältäen runon nimen, lyriikan, kielen sekä sen käyttäjän id:n, joka on runon lisännyt
+  ```
+  CREATE TABLE poem (
+        id INTEGER NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        lyrics TEXT NOT NULL,
+        language VARCHAR(255) NOT NULL,
+        account_id INTEGER NOT NULL,
+        PRIMARY KEY (id),
+        FOREIGN KEY(account_id) REFERENCES account (id)
+  );
+  ```
+- **Poet** runoilijat sisältäen nimen ja tiedot sanafrekvensseistä
+  ```
+  CREATE TABLE poet (
+        id INTEGER NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        result_all JSON,
+        result_no_stop_words JSON,
+        PRIMARY KEY (id)
+  );
+  ```
+- **Poem_poet** liitostaulu runojen ja runoilijoiden välillä
+  ```
+  CREATE TABLE poet_poem (
+        poet_id INTEGER NOT NULL,
+        poem_id INTEGER NOT NULL,
+        PRIMARY KEY (poet_id, poem_id),
+        FOREIGN KEY(poet_id) REFERENCES poet (id) ON DELETE cascade,
+        FOREIGN KEY(poem_id) REFERENCES poem (id) ON DELETE cascade
+  );
+  ```
 
 ## Tietokantakaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/83837605-7d765600-a6ff-11ea-9250-ec9b2a7003be.png" alt="database diagram">
+<img src="https://user-images.githubusercontent.com/46410240/84678924-4e4eb880-af39-11ea-82c5-36b2cb6e9946.png" alt="database diagram">
 
 ## Tietokantakyselyjä
 

@@ -10,7 +10,7 @@
   </div>
 {% endfor %}
 
-{% if frequencies is none and songs is none %}
+{% if frequencies is none and res_material is none %}
 
   <!-- IF DATABASE IS EMPTY -->
   <strong id="big-strong">Database is empty</strong>
@@ -30,14 +30,14 @@
     <div class="col-auto">
 
       {% if g.user.role != "GUEST" %}
-      <button class="btn btn-sm btn-danger" type="submit" style="width: 140px; float: right; margin-left: 20px;" name="save" id="save" value="{{  word  }},{{ language }},{{ filtered }}" action="/words/find/">Save To Database</button>
+      <button class="btn btn-sm btn-danger" type="submit" style="width: 140px; float: right; margin-left: 20px;" name="save" id="save" value="{{  word  }},{{ language }},{{ filtered }},{{ material }}" action="/words/find/">Save To Database</button>
       {% endif %}
 
 
       {% if filtered == False %}
-        <button class="btn btn-sm btn-success" type="submit" style="width: 140px; float: right;" name="filter" id="filter" value="{{  word  }},{{ language }},{{ filtered }}" action="/words/find/">Filter Stopwords</button>
+        <button class="btn btn-sm btn-success" type="submit" style="width: 140px; float: right;" name="filter" id="filter" value="{{  word  }},{{ language }},{{ filtered }},{{ material }}" action="/words/find/">Filter Stopwords</button>
       {% else %}
-        <button class="btn btn-sm btn-warning" type="submit" style="width: 140px; float: right;" name="filter" id="filter" value="{{  word  }},{{ language }},{{ filtered }}" action="/words/find/">Include Stopwords</button>
+        <button class="btn btn-sm btn-warning" type="submit" style="width: 140px; float: right;" name="filter" id="filter" value="{{  word  }},{{ language }},{{ filtered }},{{ material }}" action="/words/find/">Include Stopwords</button>
       {% endif %}
 
 
@@ -52,8 +52,12 @@
         <small class="text-muted">Total match count:&nbsp;</small>
         <font size="+3"><em>{{  count  }}</em></font>&nbsp;&nbsp;
         <small class="text-muted">in</small>&nbsp;&nbsp;
-        <font size="+3"><em>{{  song_count  }}</em></font>&nbsp;&nbsp;
+        <font size="+3"><em>{{  material_count  }}</em></font>&nbsp;&nbsp;
+		{% if material == 'Song' %}
         <small class="text-muted">song(s)</small>
+		{% elif material == 'Poem' %}
+        <small class="text-muted">poem(s)</small>
+		{% endif %}
       </strong>
       <br><br>
 
@@ -79,7 +83,11 @@
   
         <div id="frequencies" class="col-sm-10 col-sm-offset-1">
           {% for freq in frequencies %}
+		    {% if material == 'Song' %}
             <h4>song: {{ freq[0] }},  count: {{ freq[2] }}</h4>
+		    {% elif material == 'Poem' %}
+            <h4>poem: {{ freq[0] }},  count: {{ freq[2] }}</h4>
+		    {% endif %}
             <table class="table table-sm table-striped" style="max-width: 300px;">
             <thead>
               <tr>
@@ -103,20 +111,28 @@
 
       <!-- HIDDEN SONG SOURCES AND BUTTON -->
 
+      {% if material == 'Song' %}
       <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Song Source(s)" onClick="showHideDiv('songtables')" style="width: 200px;"></input><br><br>
+	  {%elif material == 'Poem' %}
+      <input class="btn btn-sm btn-primary" type="button" value="Show/Hide Poem Source(s)" onClick="showHideDiv('songtables')" style="width: 200px;"></input><br><br>
+	  {%endif %}
 
       <div id="songtables" style="display: none">
 
         <div id="songs">
           <h3>Source(s)</h3><br>
-          {% for song in songs %}
+          {% for item in res_material %}
             <b>
-              <small class="text-muted">song:</small>
-                {{ song[0] }},
+			  {% if material == 'Song' %}
+                <small class="text-muted">song:</small>
+		      {% elif material == 'Poem' %}
+                <small class="text-muted">poem:</small>
+		      {% endif %}
+                {{ item[0] }},
               <small class="text-muted">title:</small>
-              <em>{{ song[2] }}</em>
+              <em>{{ item[2] }}</em>
             </b><br>
-            <td>{{ song[1] }}</td><br><br>
+            <td>{{ item[1] }}</td><br><br>
           {% endfor %}
         </div>
       </div>
@@ -170,7 +186,7 @@
           title: {
               display: true,
               fontSize: 16,
-              text: 'Top 10 Word Frequencies in Match Song(s)'
+              text: '{{ title_text }}'
               },
           scales: {
               yAxes: [{

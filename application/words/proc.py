@@ -271,6 +271,8 @@ def replace_for_table(list):
 	for n, item in enumerate(list):
 		if "\´" in item:
 			list[n] = item.replace("\´","\'")
+		if "œ" in item:
+			list[n] = item.replace("œ","oe")
 	return list
 
 
@@ -279,4 +281,6 @@ def replace_graph(list):
 	for n, item in enumerate(list):
 		if "\'" in item:
 			list[n] = item.replace("\'","\´")
+		if "œ" in item:
+			list[n] = item.replace("œ","oe")
 	return list
