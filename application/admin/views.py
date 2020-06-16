@@ -96,7 +96,7 @@ def user_adminate(user_id):
 @login_required(roles=[1])
 def add_songs():
 
-	if db.session.query(Song).count() > 0 and db.session.query(Author).count() > 0:
+	if db.session.query(Song).filter(Song.account_role==1).count() > 0 and db.session.query(Author).count() > 0:
 		flash("Song database is not empty - cannot add default songs.", "warning")
 		return redirect(url_for("auth_stats", load='na'))
 	else:
@@ -266,7 +266,7 @@ def progress_songs():
 @login_required(roles=[1])
 def remove_songs():
 		
-	if db.session.query(Song).count() == 0 and db.session.query(Author).count() == 0:
+	if db.session.query(Song).filter(Song.account_role==1).count() == 0 and db.session.query(Author).count() == 0:
 		flash("Authors and Songs already empty.", "warning")
 	else:
 		try:
@@ -305,6 +305,7 @@ def remove_songs():
 			db.session.rollback()
 
 		flash("Tables cleared.", "success")
+
 	db_poems_status=Poem.find_database_poems_status()
 	poem_count = db.session.query(Poem).count()
 
@@ -318,7 +319,7 @@ def remove_songs():
 @login_required(roles=[1])
 def add_poems():
 
-	if db.session.query(Poet).count() > 0 and db.session.query(Poem).count() > 0:
+	if db.session.query(Poet).count() > 0 and db.session.query(Poem).filter(Poem.account_role==1).count() > 0:
 		flash("Poem database is not empty - cannot add default poems.", "warning")
 		return redirect(url_for("auth_stats", load='na'))
 	else:
@@ -556,7 +557,7 @@ def progress_poems():
 @login_required(roles=[1])
 def remove_poems():
 
-	if db.session.query(Poet).count() == 0 and db.session.query(Poem).count() == 0:
+	if db.session.query(Poet).count() == 0 and db.session.query(Poem).filter(Poem.account_role==1).count() == 0:
 		flash("Poets and Poems already empty.", "warning")
 	else:
 		try:
