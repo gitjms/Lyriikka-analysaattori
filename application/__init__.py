@@ -68,6 +68,9 @@ from application.admin import views
 from application.auth import models
 from application.auth import views
 
+from application.authors import models
+from application.authors import views
+
 from application.songs import models
 from application.songs import views
  
@@ -76,8 +79,6 @@ from application.poets import views
 
 from application.poems import models
 from application.poems import views
-
-from application.authors import models
 
 from application.words import models
 from application.words import views
