@@ -58,8 +58,8 @@ def login_required(_func=None, *, roles=[]):
 
 
 # load application content
-from application import views
 from application import models
+from application import views
 
 from application.roles import models
 
@@ -108,7 +108,4 @@ def load_user(user_id):
 
 
 # database creation
-try: 
-    db.create_all()
-except:
-    pass
+db.create_all()
