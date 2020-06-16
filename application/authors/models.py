@@ -71,7 +71,7 @@ class Author(Base):
 					"INNER JOIN author_song ON author_song.song_id = Song.id "
 					"INNER JOIN author ON author.id = author_song.author_id "
 					"JOIN account ON account.id = Song.account_id "
-					"WHERE (account_id = :userid OR account_role = :accrole) " + lang +
+					"WHERE account_id = :userid OR account_role = :accrole " + lang +
 					"GROUP BY author.name, Song.language, author.id "
 					"ORDER BY Song.language, author.name ASC").params(userid=g.user.id,accrole=1)
 		res = db.engine.execute(stmt)
@@ -93,7 +93,7 @@ class Author(Base):
 					"LEFT JOIN author_song ON Song.id = author_song.song_id "
 					"LEFT JOIN Author ON author_song.author_id = Author.id "
 					"LEFT JOIN account ON account.id = Song.account_id "
-					"WHERE (account_id = :userid OR account_role = :accrole) AND author.id = :id "
+					"WHERE account_id = :userid OR account_role = :accrole AND author.id = :id "
 					"GROUP BY Song.id, Song.lyrics, Song.name, Song.language").params(userid=g.user.id,accrole=1,id=author_id)
 
 		result = db.engine.execute(stmt)

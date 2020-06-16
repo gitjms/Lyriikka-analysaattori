@@ -69,7 +69,7 @@ class Poet(Base):
 					"INNER JOIN poet_poem ON poet_poem.poet_id = Poet.id "
 					"INNER JOIN Poem ON Poem.id = poet_poem.poem_id "
 					"JOIN account ON account.id = Poem.account_id "
-					"WHERE (account_id = :userid OR account_role = :accrole) " + lang +
+					"WHERE account_id = :userid OR account_role = :accrole " + lang +
 					"GROUP BY Poet.name, Poem.language, Poet.id "
 					"ORDER BY Poem.language, Poet.name ASC").params(userid=g.user.id,accrole=1)
 		res = db.engine.execute(stmt)
@@ -91,7 +91,7 @@ class Poet(Base):
 					"LEFT JOIN poet_poem ON Poem.id = poet_poem.poem_id "
 					"LEFT JOIN Poet ON poet_poem.poet_id = Poet.id "
 					"LEFT JOIN account ON account.id = Poem.account_id "
-					"WHERE (account_id = :userid OR account_role = :accrole) AND Poet.id = :id "
+					"WHERE account_id = :userid OR account_role = :accrole AND Poet.id = :id "
 					"GROUP BY Poem.id, Poem.lyrics, Poem.name, Poem.language").params(userid=g.user.id,accrole=1,id=poet_id)
 
 		result = db.engine.execute(stmt)
