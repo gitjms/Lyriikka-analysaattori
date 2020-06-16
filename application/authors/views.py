@@ -19,7 +19,7 @@ def before_request():
 #		AUTHORS: authors_list()
 #-----------------------------------------
 @app.route("/authors/list", methods=["GET", "POST"])
-@login_required
+@login_required(roles=[1,2,3])
 def authors_list():
 
 	authors = Author.get_authors("")
@@ -33,7 +33,7 @@ def authors_list():
 #		AUTHORS: authors_graph()
 #-----------------------------------------
 @app.route("/authors/graph", methods=["GET", "POST"])
-@login_required
+@login_required(roles=[1,2,3])
 def authors_graph():
 	filtered = False
 	save = False
@@ -84,7 +84,7 @@ def authors_graph():
 #		AUTHORS: authors_show()
 #-----------------------------------------
 @app.route("/authors/show/<author_id>", methods=["GET", "POST"])
-@login_required
+@login_required(roles=[1,2,3])
 def authors_show(author_id):
 	graphs = False
 	filtered = False
@@ -138,6 +138,7 @@ def authors_show(author_id):
 #-----------------------------------------
 #	get_results()
 #-----------------------------------------
+@login_required(roles=[1,2,3])
 def get_results(author_id, filtered, type, lang):
 
 	# author_songs = [ song_id, lyrics, language ]

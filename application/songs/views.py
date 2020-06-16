@@ -26,16 +26,11 @@ def before_request():
 #		SONGS: songs_list()
 #-----------------------------------------
 @app.route("/songs/list", methods=["GET", "POST"])
-@login_required
+@login_required(roles=[1,2,3])
 def songs_list():
-
-	if g.user.role == "GUEST" or g.user.role == "ADMIN":
-		user_list = [1,2]
-	else:
-		user_list = [1,g.user.id]
 	
 	if request.method == "GET":
-		songs = Song.query.filter(Song.account_id.in_(user_list)).all()
+		songs = Song.query.filter(Song.account_id==g.user.id or Song.account_role==1).all()
 		
 		if not songs:
 			return render_template("songs/list.html", songs=None, top_words=None)
@@ -43,15 +38,15 @@ def songs_list():
 	if request.method == "POST":
 		# sorting
 		if request.form.get("sort") == "titasc":
-			songs = Song.query.filter(Song.account_id.in_(user_list)).order_by(Song.name.asc()).all()
+			songs = Song.query.filter(Song.account_id==g.user.id or Song.account_role==1).order_by(Song.name.asc()).all()
 		elif request.form.get("sort") == "titdesc":
-			songs = Song.query.filter(Song.account_id.in_(user_list)).order_by(Song.name.desc()).all()
+			songs = Song.query.filter(Song.account_id==g.user.id or Song.account_role==1).order_by(Song.name.desc()).all()
 		elif request.form.get("sort") == "langtitasc":
-			songs = Song.query.filter(Song.account_id.in_(user_list)).order_by(Song.language).order_by(Song.name.asc()).all()
+			songs = Song.query.filter(Song.account_id==g.user.id or Song.account_role==1).order_by(Song.language).order_by(Song.name.asc()).all()
 		elif request.form.get("sort") == "langtitdesc":
-			songs = Song.query.filter(Song.account_id.in_(user_list)).order_by(Song.language).order_by(Song.name.desc()).all()
+			songs = Song.query.filter(Song.account_id==g.user.id or Song.account_role==1).order_by(Song.language).order_by(Song.name.desc()).all()
 		elif request.form.get("sort") == "id":
-			songs = Song.query.filter(Song.account_id.in_(user_list)).order_by(Song.id.asc()).all()
+			songs = Song.query.filter(Song.account_id==g.user.id or Song.account_role==1).order_by(Song.id.asc()).all()
 
 	return render_template("songs/list.html", songs=songs)
 
@@ -60,7 +55,7 @@ def songs_list():
 #		SONGS/SHOW: songs_show()
 #-----------------------------------------
 @app.route("/songs/show/<song_id>/<author_id>/<from_page>", methods=["GET", "POST"])
-@login_required
+@login_required(roles=[1,2,3])
 def songs_show(song_id,author_id,from_page):
 
 	if request.method == "POST":
@@ -80,11 +75,8 @@ def songs_show(song_id,author_id,from_page):
 #		SONGS/EDIT: songs_edit()
 #-----------------------------------------
 @app.route("/songs/edit/<song_id>/<author_id>/<from_page>", methods=["GET", "POST"])
-@login_required
+@login_required(roles=[1,3])
 def songs_edit(song_id,author_id,from_page):
-
-	if g.user.role != "USER" and g.user.role != "ADMIN":
-		return login_manager.unauthorized()
 
 	form = EditSongForm(request.form)
 	
@@ -159,11 +151,8 @@ def songs_edit(song_id,author_id,from_page):
 #		SONGS/DELETE: songs_delete()
 #-----------------------------------------
 @app.route("/songs/delete/<song_id>", methods=["GET","POST"])
-@login_required
+@login_required(roles=[1,3])
 def songs_delete(song_id):
-
-	if g.user.role != "USER" and g.user.role != "ADMIN":
-		return login_manager.unauthorized()
 
 	if request.method == "GET":
 		return
@@ -184,11 +173,8 @@ def songs_delete(song_id):
 #		SONGS/NEW: song_create()
 #-----------------------------------------
 @app.route("/songs/new/", methods=["GET", "POST"])
-@login_required
+@login_required(roles=[1,3])
 def songs_create():
-
-	if g.user.role != "USER" and g.user.role != "ADMIN":
-		return login_manager.unauthorized()
 
 	form = NewSongForm(request.form)
 
@@ -206,6 +192,7 @@ def songs_create():
 
 	song = Song(form.title.data,form.lyrics.data,form.language.data)
 	song.account_id = g.user.id
+	song.account_role = g.user.role
 	
 	authors = request.form["author"].split(',')
 	for auth in authors:

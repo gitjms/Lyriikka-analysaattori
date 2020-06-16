@@ -50,11 +50,6 @@ class Poet(Base):
 	@staticmethod
 	def get_poets(language):
 
-		if g.user.role == "GUEST" or g.user.role == "ADMIN":
-			user_list = [1,2]
-		else:
-			user_list = [1,g.user.id]
-
 		if os.environ.get("HEROKU"):
 			song_group = "STRING_AGG (Poem.name,'; ') poems, "
 		else:
@@ -74,9 +69,9 @@ class Poet(Base):
 					"INNER JOIN poet_poem ON poet_poem.poet_id = Poet.id "
 					"INNER JOIN Poem ON Poem.id = poet_poem.poem_id "
 					"JOIN account ON account.id = Poem.account_id "
-					"WHERE account.id IN (:user1,:user2) " + lang +
+					"WHERE (account_id = :userid OR account_role = :accrole) " + lang +
 					"GROUP BY Poet.name, Poem.language, Poet.id "
-					"ORDER BY Poem.language, Poet.name ASC").params(user1=user_list[0],user2=user_list[1])
+					"ORDER BY Poem.language, Poet.name ASC").params(userid=g.user.id,accrole=1)
 		res = db.engine.execute(stmt)
 		response = []
 		for row in res:
@@ -88,11 +83,6 @@ class Poet(Base):
 	@staticmethod
 	def get_poetpoems(poet_id):
 
-		if g.user.role == "GUEST" or g.user.role == "ADMIN":
-			user_list = [1,2]
-		else:
-			user_list = [1,g.user.id]
-
 		stmt = text("SELECT Poem.id, "
 					"		Poem.lyrics, "
 					"		Poem.name, "
@@ -101,8 +91,8 @@ class Poet(Base):
 					"LEFT JOIN poet_poem ON Poem.id = poet_poem.poem_id "
 					"LEFT JOIN Poet ON poet_poem.poet_id = Poet.id "
 					"LEFT JOIN account ON account.id = Poem.account_id "
-					"WHERE account.id IN (:user1,:user2) AND Poet.id = :id "
-					"GROUP BY Poem.id, Poem.lyrics, Poem.name, Poem.language").params(user1=user_list[0],user2=user_list[1],id=poet_id)
+					"WHERE (account_id = :userid OR account_role = :accrole) AND Poet.id = :id "
+					"GROUP BY Poem.id, Poem.lyrics, Poem.name, Poem.language").params(userid=g.user.id,accrole=1,id=poet_id)
 
 		result = db.engine.execute(stmt)
 

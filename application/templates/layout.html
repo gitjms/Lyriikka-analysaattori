@@ -96,13 +96,13 @@
             <input class="form-control mr-sm-2 mt-1" type="text" style="width: 160px" placeholder="Quick Word Search" aria-label="Search" name="wordsearch" id="wordsearch" required autofocus aria-label="Search Word Input"></input>
             <div class="form-check-inline">
               <label id="langlabel" class="form-check-label">
-			    <input type="radio" class="form-check-input mx-2" name="langchoice" id="langchoice" value="finnish" data-toggle="tooltip" data-placement="top" title="Search for finnish word" aria-label="Finnish Language Choice">Fi</input>
+			    <input type="radio" class="form-check-input mx-2" name="langchoice" id="langchoice" value="finnish" data-toggle="tooltip" data-placement="top" title="Search for finnish word" aria-label="Finnish Language Choice" required>Fi</input>
 			  </label>
               <label id="langlabel" class="form-check-label">
-			    <input type="radio" class="form-check-input mx-2" name="langchoice" id="langchoice" value="english" data-toggle="tooltip" data-placement="top" title="Search for english word" aria-label="English Language Choice">En</input>
+			    <input type="radio" class="form-check-input mx-2" name="langchoice" id="langchoice" value="english" data-toggle="tooltip" data-placement="top" title="Search for english word" aria-label="English Language Choice" required>En</input>
 			  </label>
               <label id="langlabel" class="form-check-label">
-			    <input type="radio" class="form-check-input mx-2" name="langchoice" id="langchoice" value="french" data-toggle="tooltip" data-placement="top" title="Search for french word" aria-label="French Language Choice">Fr</input>
+			    <input type="radio" class="form-check-input mx-2" name="langchoice" id="langchoice" value="french" data-toggle="tooltip" data-placement="top" title="Search for french word" aria-label="French Language Choice" required>Fr</input>
 			  </label>
             </div>
 
@@ -145,7 +145,7 @@
       </button>
       <div class="dropdown-menu" aria-labelledby="dropbtn">
         <a class="dropdown-item" href="{{ url_for('authors_list') }}" aria-label="List Authors">List Song Authors</a>
-        <a class="dropdown-item" href="{{ url_for('authors_graph') }}" aria-label="All Authors Graph">All Authors Graph</a>
+        <a class="dropdown-item" href="{{ url_for('authors_graph') }}" aria-label="All Authors Graph">Top 10 Song Words</a>
       </div>
     </div>
 	<div class="dropdown" role="group">
@@ -163,7 +163,7 @@
       </button>
       <div class="dropdown-menu" aria-labelledby="dropbtn">
         <a class="dropdown-item" href="{{ url_for('poets_list') }}" aria-label="List Poets">List Poets</a>
-        <a class="dropdown-item" href="{{ url_for('poets_graph') }}" aria-label="All Poets Graph">All Poets Graph</a>
+        <a class="dropdown-item" href="{{ url_for('poets_graph') }}" aria-label="All Poets Graph">Top 10 Poem Words</a>
       </div>
     </div>
 	<div class="btn-group" role="group">
@@ -203,7 +203,7 @@
 
 <!-- FOR ADMIN ONLY -->
 
-{% if g.user.role == "ADMIN" %}
+{% if g.user.role == 1 %}
 
   <div class="d-flex bg-dark">
 
@@ -224,7 +224,7 @@
       
         <!-- REMOVE DEFAULT AUTHORS AND SONGS -->
         <form action="/defaults/removesongs" method="POST">
-            <button class="btn btn-sm btn-danger" type="submit" name="removesongs" id="removesongs" value="removesongs" aria-label="Remove default songs">Remove default songs</button>
+            <button class="btn btn-sm btn-danger" type="submit" name="removesongs" id="removesongs" value="removesongs" aria-label="Remove default songs">Remove all songs</button>
         </form>
       </div>
 
@@ -237,7 +237,7 @@
       
         <!-- REMOVE DEFAULT POETS AND POEMS -->
         <form action="/defaults/removepoems" method="POST">
-            <button class="btn btn-sm btn-danger" type="submit" name="removepoems" id="removepoems" value="removepoems" aria-label="Remove default poems">Remove default poems</button>
+            <button class="btn btn-sm btn-danger" type="submit" name="removepoems" id="removepoems" value="removepoems" aria-label="Remove default poems">Remove all poems</button>
         </form>
       </div>
     </div>

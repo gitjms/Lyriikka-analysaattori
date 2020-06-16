@@ -26,16 +26,11 @@ def before_request():
 #		SONGS: poems_list()
 #-----------------------------------------
 @app.route("/poems/list", methods=["GET", "POST"])
-@login_required
+@login_required(roles=[1,2,3])
 def poems_list():
-
-	if g.user.role == "GUEST" or g.user.role == "ADMIN":
-		user_list = [1,2]
-	else:
-		user_list = [1,g.user.id]
 	
 	if request.method == "GET":
-		poems = Poem.query.filter(Poem.account_id.in_(user_list)).all()
+		poems = Poem.query.filter(Poem.account_id==g.user.id or Poem.account_role==1).all()
 
 		if not poems:
 			return render_template("poems/list.html", poems=None, top_words=None)
@@ -43,15 +38,15 @@ def poems_list():
 	if request.method == "POST":
 		# sorting
 		if request.form.get("sort") == "titasc":
-			poems = Poem.query.filter(Poem.account_id.in_(user_list)).order_by(Poem.name.asc()).all()
+			poems = Poem.query.filter(Poem.account_id==g.user.id or Poem.account_role==1).order_by(Poem.name.asc()).all()
 		elif request.form.get("sort") == "titdesc":
-			poems = Poem.query.filter(Poem.account_id.in_(user_list)).order_by(Poem.name.desc()).all()
+			poems = Poem.query.filter(Poem.account_id==g.user.id or Poem.account_role==1).order_by(Poem.name.desc()).all()
 		elif request.form.get("sort") == "langtitasc":
-			poems = Poem.query.filter(Poem.account_id.in_(user_list)).order_by(Poem.language).order_by(Poem.name.asc()).all()
+			poems = Poem.query.filter(Poem.account_id==g.user.id or Poem.account_role==1).order_by(Poem.language).order_by(Poem.name.asc()).all()
 		elif request.form.get("sort") == "langtitdesc":
-			poems = Poem.query.filter(Poem.account_id.in_(user_list)).order_by(Poem.language).order_by(Poem.name.desc()).all()
+			poems = Poem.query.filter(Poem.account_id==g.user.id or Poem.account_role==1).order_by(Poem.language).order_by(Poem.name.desc()).all()
 		elif request.form.get("sort") == "id":
-			poems = Poem.query.filter(Poem.account_id.in_(user_list)).order_by(Poem.id.asc()).all()
+			poems = Poem.query.filter(Poem.account_id==g.user.id or Poem.account_role==1).order_by(Poem.id.asc()).all()
 
 	return render_template("poems/list.html", poems=poems)
 
@@ -60,7 +55,7 @@ def poems_list():
 #		SONGS/SHOW: poems_show()
 #-----------------------------------------
 @app.route("/poems/show/<poem_id>/<poet_id>/<from_page>", methods=["GET", "POST"])
-@login_required
+@login_required(roles=[1,2,3])
 def poems_show(poem_id,poet_id,from_page):
 
 	if request.method == "POST":
@@ -80,11 +75,8 @@ def poems_show(poem_id,poet_id,from_page):
 #		SONGS/EDIT: poems_edit()
 #-----------------------------------------
 @app.route("/poems/edit/<poem_id>/<poet_id>/<from_page>", methods=["GET", "POST"])
-@login_required
+@login_required(roles=[1,3])
 def poems_edit(poem_id,poet_id,from_page):
-
-	if g.user.role != "USER" and g.user.role != "ADMIN":
-		return login_manager.unauthorized()
 
 	form = EditPoemForm(request.form)
 	
@@ -109,13 +101,13 @@ def poems_edit(poem_id,poet_id,from_page):
 			if not form.validate():
 				return render_template("poems/edit.html", poem=poem, form=form, poem_id=poem_id, poet_id=poet_id, from_page=from_page, error="Fields must not be empty.")
 
-			new_name = form.title.data
-			new_lyrics = form.lyrics.data
-			new_poet = form.poet.data
+			new_name = form.title.data.strip()
+			new_lyrics = form.lyrics.data.strip()
+			new_poet = form.poet.data.strip()
 			new_language = form.language.data
 
-			old_name = poem.name
-			old_lyrics = poem.lyrics
+			old_name = poem.name.strip()
+			old_lyrics = poem.lyrics.strip()
 			old_poet = poem.poets
 			old_language = poem.language
 
@@ -157,11 +149,8 @@ def poems_edit(poem_id,poet_id,from_page):
 #		SONGS/DELETE: poems_delete()
 #-----------------------------------------
 @app.route("/poems/delete/<poem_id>", methods=["GET","POST"])
-@login_required
+@login_required(roles=[1,3])
 def poems_delete(poem_id):
-
-	if g.user.role != "USER" and g.user.role != "ADMIN":
-		return login_manager.unauthorized()
 
 	if request.method == "GET":
 		return
@@ -182,11 +171,8 @@ def poems_delete(poem_id):
 #		POEMS/NEW: poem_create()
 #-----------------------------------------
 @app.route("/poems/new/", methods=["GET", "POST"])
-@login_required
+@login_required(roles=[1,3])
 def poems_create():
-
-	if g.user.role != "USER" and g.user.role != "ADMIN":
-		return login_manager.unauthorized()
 
 	form = NewPoemForm(request.form)
 
@@ -204,19 +190,21 @@ def poems_create():
 
 	poem = Poem(form.title.data,form.lyrics.data,form.language.data)
 	poem.account_id = g.user.id
+	poem.account_role = g.user.role
 	
-	new_poet = request.form["poet"]
-	if Poet.query.filter_by(name=new_poet.strip()) is None:
-		poet = Poet(name=new_poet.strip())
+	new_poet_name = request.form["poet"]
+	old_poet = Poet.query.filter_by(name=new_poet_name.strip()).first()
+	if old_poet is None:
+		new_poet = Poet(name=new_poet_name.strip(),result_all=None,result_no_stop_words=None)
 		try:
-			db.session().add(poet)
+			db.session().add(new_poet)
 			db.session().commit()
 		except SQLAlchemyError:
 			db.session.rollback()
 			flash("Poet not added to database.", "danger")
-			return render_template("poems/new.html", form = form)
+			return render_template("poems/new.html", form=form)
 
-	poem.poet.extend(Poet.query.filter_by(name=new_poet.strip()))
+		poem.poets.extend(db.session.query(Poet).filter(Poet.name==new_poet_name))
 
 	try:
 		db.session().add(poem)
@@ -224,11 +212,11 @@ def poems_create():
 	except IntegrityError:
 		db.session.rollback()
 		flash("Poem already exists. Consider changing name.", "warning")
-		return render_template("poems/new.html", form = form)
+		return render_template("poems/new.html", form=form)
 	except SQLAlchemyError:
 		db.session.rollback()
 		flash("Something went wrong.", "danger")
-		return render_template("poems/new.html", form = form)
+		return render_template("poems/new.html", form=form)
 
-	return render_template("poems/list.html", poems = Poem.query.all())
+	return render_template("poems/list.html", poems=Poem.query.all())
 

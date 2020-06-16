@@ -52,11 +52,6 @@ class Author(Base):
 	@staticmethod
 	def get_authors(language):
 
-		if g.user.role == "GUEST" or g.user.role == "ADMIN":
-			user_list = [1,2]
-		else:
-			user_list = [1,g.user.id]
-
 		if os.environ.get("HEROKU"):
 			song_group = "STRING_AGG (Song.name,'; ') songs, "
 		else:
@@ -76,9 +71,9 @@ class Author(Base):
 					"INNER JOIN author_song ON author_song.song_id = Song.id "
 					"INNER JOIN author ON author.id = author_song.author_id "
 					"JOIN account ON account.id = Song.account_id "
-					"WHERE account.id IN (:user1,:user2) " + lang +
+					"WHERE (account_id = :userid OR account_role = :accrole) " + lang +
 					"GROUP BY author.name, Song.language, author.id "
-					"ORDER BY Song.language, author.name ASC").params(user1=user_list[0],user2=user_list[1])
+					"ORDER BY Song.language, author.name ASC").params(userid=g.user.id,accrole=1)
 		res = db.engine.execute(stmt)
 		response = []
 		for row in res:
@@ -90,11 +85,6 @@ class Author(Base):
 	@staticmethod
 	def get_authorsongs(author_id):
 
-		if g.user.role == "GUEST" or g.user.role == "ADMIN":
-			user_list = [1,2]
-		else:
-			user_list = [1,g.user.id]
-
 		stmt = text("SELECT Song.id, "
 					"		Song.lyrics, "
 					"		Song.name, "
@@ -103,8 +93,8 @@ class Author(Base):
 					"LEFT JOIN author_song ON Song.id = author_song.song_id "
 					"LEFT JOIN Author ON author_song.author_id = Author.id "
 					"LEFT JOIN account ON account.id = Song.account_id "
-					"WHERE account.id IN (:user1,:user2) AND author.id = :id "
-					"GROUP BY Song.id, Song.lyrics, Song.name, Song.language").params(user1=user_list[0],user2=user_list[1],id=author_id)
+					"WHERE (account_id = :userid OR account_role = :accrole) AND author.id = :id "
+					"GROUP BY Song.id, Song.lyrics, Song.name, Song.language").params(userid=g.user.id,accrole=1,id=author_id)
 
 		result = db.engine.execute(stmt)
 

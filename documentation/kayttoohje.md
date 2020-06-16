@@ -52,7 +52,7 @@ Pudotusvalikon *Songs* alempi nappi *Add Song* avaa editorin, jossa voi lisätä
 
 <img src="https://user-images.githubusercontent.com/46410240/84684696-b43f3e00-af41-11ea-9598-fa5af69fa9b3.png" alt="add song view" width="500">
 
-Sivustonappirivin toinen pudotusvalikko *Song Authors* avaa valikon, jossa on linkit *List Song Authors* ja *All Authors Graph*. Ylempi näistä avaa näkymän, jolla listataan kaikki tietokannan lauluntekijät:
+Sivustonappirivin toinen pudotusvalikko *Song Authors* avaa valikon, jossa on linkit *List Song Authors* ja *Top 10 Song Words*. Ylempi näistä avaa näkymän, jolla listataan kaikki tietokannan lauluntekijät:
 
 <img src="https://user-images.githubusercontent.com/46410240/84684843-ecdf1780-af41-11ea-9ee7-3c3c02b838aa.png" alt="list authors view" width="500">
 
@@ -76,6 +76,10 @@ Alla esimerkki sanan *oh* hakutuloksista englanninkielisistä lauluista:
 
 Kuvan oikeassa yläreunassa ovat napit *Filter Stopwords* (vihreä) ja *Save To Database* (punainen). Ensimmäinen nappi suodattaa tuloksista turhat sanat ja jälkimmäisestä saa tulosdatan tallennettua tietokantaan. Alempana olevat siniset napit *Show/Hide Frequency Table(s)* ja *Show/Hide Song Source(s)* avaavat sanafrekvenssitaulukot ja lyriikoiden tekstimateriaalit. Kuvassa ne on jo aukaistu.
 
+Alla vielä kuva runojen Top 10 frekvenssituloksesta (yläbannerin *Poets*/*Top 10 Poem Words*):
+
+<img src="https://user-images.githubusercontent.com/46410240/84826123-29d30900-b02b-11ea-909f-9e5d34eec9ec.png" alt="top 10 poem words" width="500">
+
 ## Käyttäjäroolit
 
 Käyttäjärooleja on kolme: **ADMIN**, **USER** ja **GUEST**. Valmiita oletuskäyttäjiä ovat *admin* täysillä *ADMIN*-oikeuksilla (toisten käyttäjien poisto ja roolin vaihdot sekä oletuslaulujen lisäys ja poisto) sekä *guest* rajoitetuilla **GUEST**-oikeuksilla.
@@ -92,6 +96,6 @@ Pääkäyttäjällä on joka näkymässä esillä alhaalla kolme nappia, joista 
 
 <img src="https://user-images.githubusercontent.com/46410240/84241534-44c3eb80-ab08-11ea-8f02-25fa71b24a65.png" alt="admin buttons" width="500">
 
-Pääkäyttäjä pääsee käyttäjien listausnäkymään napista *List Users*. Näkymässä näkyvät käyttäjien koko nimet, käyttäjänimet sekä rekisteröitymispäivä. Rivien perässä on lisäksi napit käyttäjän poistamiseen ja käyttäjäroolin vaihtamiseen peruskäyttäjästä pääkäyttäjäksi ja päin vastoin. Pääkäyttäjän ja vierastilin rooleja ei voi muuttaa.
+Pääkäyttäjä pääsee käyttäjien listausnäkymään napista *List Users*. Näkymässä näkyvät käyttäjien koko nimet, käyttäjänimet sekä rekisteröitymispäivä. Rivien perässä on lisäksi napit käyttäjän poistamiseen ja käyttäjäroolin vaihtamiseen peruskäyttäjästä pääkäyttäjäksi ja päin vastoin. Kulloinenkin pääkäyttäjä ei voi itse poistaa pääkäyttäjän rooliaan, eikä vierastilin roolia voi muuttaa.
 
 <img src="https://user-images.githubusercontent.com/46410240/83651339-0d15ea80-a5c2-11ea-897c-0ed25e5ea4ab.png" alt="admin dashboard users" width="500">

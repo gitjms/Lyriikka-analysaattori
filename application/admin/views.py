@@ -31,11 +31,8 @@ def before_request():
 #		LIST: users_list()
 #----------------------------------------------------
 @app.route("/admin", methods=["GET", "POST"])
-@login_required
+@login_required(roles=[1])
 def admin_dashboard():
-
-	if g.user.role != "ADMIN":
-		return login_manager.unauthorized()
 
 	if request.method == "POST":
 		users = User.query.all()
@@ -46,11 +43,8 @@ def admin_dashboard():
 #		DELETE: user_delete()
 #----------------------------------------------------
 @app.route("/admin/delete/<user_id>", methods=["POST"])
-@login_required
+@login_required(roles=[1])
 def user_delete(user_id):
-
-	if g.user.role != "ADMIN":
-		return login_manager.unauthorized()
 
 	user_qry = db.session().query(User).filter(User.id==user_id)
 
@@ -69,28 +63,28 @@ def user_delete(user_id):
 #		CHANGE ADMIN STATUS user_adminate()
 #----------------------------------------------------
 @app.route("/admin/status/<user_id>", methods=["POST"])
-@login_required
+@login_required(roles=[1])
 def user_adminate(user_id):
-
-	if g.user.role != "ADMIN":
-		return login_manager.unauthorized()
 
 	user_qry = db.session().query(User).filter(User.id==user_id)
 
 	form = CreateForm(request.form)
 	if request.form.get("userate") == "userate":
-		if user_qry.first().role not in ["ADMIN","GUEST"]:
-			user_qry.first().role = "USER"
+		if int(user_id) != g.user.id:
+			user_qry.first().role = 3
+			try:
+				db.session().commit()
+			except SQLAlchemyError:
+				db.session.rollback()
+				flash("User's status not changed.", "danger")
 	elif request.form.get("adminate") == "adminate":
-		if user_qry.first().role not in ["ADMIN","GUEST"]:
-			user_qry.first().role = "ADMIN"
-
-	if request.method == "POST":
-		try:
-			db.session().commit()
-		except SQLAlchemyError:
-			db.session.rollback()
-			flash("User's status not changed.", "danger")
+		if user_qry.first().role not in [1,2]:
+			user_qry.first().role = 1
+			try:
+				db.session().commit()
+			except SQLAlchemyError:
+				db.session.rollback()
+				flash("User's status not changed.", "danger")
 
 	return render_template("admin/dashboard.html", users = User.query.all())
 
@@ -99,19 +93,14 @@ def user_adminate(user_id):
 # Table operations: add default songs, authors
 #----------------------------------------------------
 @app.route("/defaults/addsongs", methods = ["POST"])
-@login_required
+@login_required(roles=[1])
 def add_songs():
 
-	if g.user.role != "ADMIN":
-		return login_manager.unauthorized()
-
 	if db.session.query(Song).count() > 0 and db.session.query(Author).count() > 0:
-		flash("Default songs and authors already exist.", "warning")
+		flash("Song database is not empty - cannot add default songs.", "warning")
 		return redirect(url_for("auth_stats", load='na'))
 	else:
 		progress_songs()
-
-		flash("Songs and authors added.", "success")
 
 	db_poems_status=Poem.find_database_poems_status()
 	poem_count = db.session.query(Poem).count()
@@ -125,6 +114,7 @@ def add_songs():
 # Table operations: add default songs, authors
 #----------------------------------------------------
 @app.route("/progress_songs")
+@login_required(roles=[1])
 def progress_songs():
 
 	x = 0.0
@@ -166,6 +156,7 @@ def progress_songs():
 	
 			song = Song(name,lyrics,language)
 			song.account_id = 1
+			song.account_role = 1
 		
 			if i == 1:
 				song.authors.extend([db.session.query(Author).filter(Author.name=='Jens Nicolai Ludvig Schjörring').first(),db.session.query(Author).filter(Author.name=='H. S. Thompson').first()])
@@ -203,6 +194,7 @@ def progress_songs():
 	
 			song = Song(name,lyrics,language)
 			song.account_id = 1
+			song.account_role = 1
 		
 			if i == 7:
 				song.authors.extend([db.session.query(Author).filter(Author.name=='Chris Tomlin').first()])
@@ -240,6 +232,7 @@ def progress_songs():
 	
 			song = Song(name,lyrics,language)
 			song.account_id = 1
+			song.account_role = 1
 		
 			if i == 13:
 				song.authors.extend([db.session.query(Author).filter(Author.name=='John van den Hogen').first()])
@@ -270,48 +263,48 @@ def progress_songs():
 # Table operations: remove default songs, authors, results
 #----------------------------------------------------
 @app.route("/defaults/removesongs", methods = ["POST"])
-@login_required
+@login_required(roles=[1])
 def remove_songs():
-
-	if g.user.role != "ADMIN":
-		return login_manager.unauthorized()
 		
-	try:
-		db.session.query(Song).delete()
-		db.session.commit()
-	except:
-		flash("Table Song not cleared.", "danger")
-		db.session.rollback()
-	
-	try:
-		db.session.query(Author).delete()
-		db.session.commit()
-	except:
-		flash("Table Author not cleared.", "danger")
-		db.session.rollback()
-	
-	try:
-		db.session.query(Words).delete()
-		db.session.commit()
-	except:
-		flash("Table Words not cleared.", "danger")
-		db.session.rollback()
-
-	try:
-		stmt = text("DELETE FROM author_song;")
-		db.engine.execute(stmt)
-	except:
-		flash("Join table author_song not cleared.", "danger")
-		db.session.rollback()
+	if db.session.query(Song).count() == 0 and db.session.query(Author).count() == 0:
+		flash("Authors and Songs already empty.", "warning")
+	else:
+		try:
+			db.session.query(Song).delete()
+			db.session.commit()
+		except:
+			flash("Table Song not cleared.", "danger")
+			db.session.rollback()
 		
-	try:
-		stmt = text("DELETE FROM song_result;")
-		db.engine.execute(stmt)
-	except:
-		flash("Join table song_result not cleared.", "danger")
-		db.session.rollback()
+		try:
+			db.session.query(Author).delete()
+			db.session.commit()
+		except:
+			flash("Table Author not cleared.", "danger")
+			db.session.rollback()
+		
+		try:
+			db.session.query(Words).delete()
+			db.session.commit()
+		except:
+			flash("Table Words not cleared.", "danger")
+			db.session.rollback()
+	
+		try:
+			stmt = text("DELETE FROM author_song;")
+			db.engine.execute(stmt)
+		except:
+			flash("Join table author_song not cleared.", "danger")
+			db.session.rollback()
+		
+		try:
+			stmt = text("DELETE FROM song_result;")
+			db.engine.execute(stmt)
+		except:
+			flash("Join table song_result not cleared.", "danger")
+			db.session.rollback()
 
-	flash("Tables cleared.", "success")
+		flash("Tables cleared.", "success")
 	db_poems_status=Poem.find_database_poems_status()
 	poem_count = db.session.query(Poem).count()
 
@@ -322,19 +315,14 @@ def remove_songs():
 # Table operations: add default poets, poems
 #----------------------------------------------------
 @app.route("/defaults/addpoems", methods = ["POST"])
-@login_required
+@login_required(roles=[1])
 def add_poems():
 
-	if g.user.role != "ADMIN":
-		return login_manager.unauthorized()
-
 	if db.session.query(Poet).count() > 0 and db.session.query(Poem).count() > 0:
-		flash("Default poets and poems already exist.", "warning")
+		flash("Poem database is not empty - cannot add default poems.", "warning")
 		return redirect(url_for("auth_stats", load='na'))
 	else:
 		progress_poems()
-
-		flash("Poems and poets added.", "success")
 
 	db_songs_status=Song.find_database_songs_status()
 	song_count = db.session.query(Song).count()
@@ -349,6 +337,7 @@ def add_poems():
 # Table operations: add default poets, poems
 #----------------------------------------------------
 @app.route("/progress_poems")
+@login_required(roles=[1])
 def progress_poems():
 
 	x = 0.0
@@ -404,6 +393,7 @@ def progress_poems():
 		
 			poem = Poem(name,lyrics,language)
 			poem.account_id = 1
+			poem.account_role = 1
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Uuno Kailas'))
 		
@@ -429,6 +419,7 @@ def progress_poems():
 		
 			poem = Poem(name,lyrics,language)
 			poem.account_id = 1
+			poem.account_role = 1
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Edith Södergran'))
 		
@@ -458,6 +449,7 @@ def progress_poems():
 		
 			poem = Poem(name,lyrics,language)
 			poem.account_id = 1
+			poem.account_role = 1
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Edgar Allan Poe'))
 		
@@ -484,6 +476,7 @@ def progress_poems():
 		
 			poem = Poem(name,lyrics,language)
 			poem.account_id = 1
+			poem.account_role = 1
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Emily Dickinson'))
 		
@@ -513,6 +506,7 @@ def progress_poems():
 		
 			poem = Poem(name,lyrics,language)
 			poem.account_id = 1
+			poem.account_role = 1
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Charles Baudelaire'))
 		
@@ -539,6 +533,7 @@ def progress_poems():
 		
 			poem = Poem(name,lyrics,language)
 			poem.account_id = 1
+			poem.account_role = 1
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Louise Ackermann'))
 		
@@ -558,11 +553,8 @@ def progress_poems():
 # Table operations: remove default poets, poems
 #----------------------------------------------------
 @app.route("/defaults/removepoems", methods = ["POST"])
-@login_required
+@login_required(roles=[1])
 def remove_poems():
-
-	if g.user.role != "ADMIN":
-		return login_manager.unauthorized()
 
 	if db.session.query(Poet).count() == 0 and db.session.query(Poem).count() == 0:
 		flash("Poets and Poems already empty.", "warning")

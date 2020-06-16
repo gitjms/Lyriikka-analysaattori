@@ -14,7 +14,7 @@ Sovellus ladataan GitHub-sivustolta vihreästä napista sivun yläoikealla: [**C
 Esimerkiksi lataus zip-tiedostona ja purettuna tuottaa kansion *Lyriikka-analysaattori-master* jonka sisältä löytyvät kaikki tarpeelliset komponentit.
 Sanotaan tätä tästedes *työkansioksi*.
 
-Mikäli käytät eri Python-versiota kuin 3.7.7, avaa työkansiossa tiedosto *runtime.txt* jollain tekstieditorilla ja muuta siellä oleva ainoa rivi ```python-3.7.7``` vastaamaan omaa Python-versiotasi.
+Mikäli käytät eri Python-versiota kuin 3.8.3, avaa työkansiossa tiedosto *runtime.txt* jollain tekstieditorilla ja muuta siellä oleva ainoa rivi ```python-3.8.3``` vastaamaan omaa Python-versiotasi.
 
 Pythonin asennuksessa tärkeää on asettaa Winsowsin ympäristömuuttujiin polku Pythonin sijaintiin.
 
@@ -27,6 +27,10 @@ Pythonin asennuksessa tärkeää on asettaa Winsowsin ympäristömuuttujiin polk
 3. Aktivoi Pythonin virtuaalinen ympäristö kirjoittamalla terminaaliin komento
    ```
    source venv/Scripts/activate
+   ```
+   Unix (mac, linux) -käyttäjillä yllä oleva komento olisi:
+   ```
+   source venv/bin/activate
    ```
    Tähän virtuaaliympäristöön tulevat sovelluksen tarvitsemat riippuvuudet.
 4. Asenna riippuvuudet työkansiosta löytyvän tiedoston *requirements.txt* avulla komennolla
@@ -58,6 +62,12 @@ Ennen kuin voit kirjautua sovellukseen, tulee tietokantaan asettaa oletuskäytt�
    ```
    INSERT INTO account (name, username, password, role, date_created) VALUES ('admin', 'admin', 'admin', 'ADMIN', CURRENT_TIMESTAMP);
    ```
+   Tämä on oletus-pääkäyttäjä, joka pääsee kirjautumaan sisään ilman sen kummempia tarkistuksia aikä salasana ole hash-koodattu.
+   Jos sovelluksen haluaa räätälöidä itselleen sopivaksi omine pääkäyttäjätunnuksineen ilman Python-koodiin kajoamista, suosittelen seuraavaa proseduuria:
+   - Luo uusi tunnus ja kirjaudu ulos
+   - Kirjaudu sisään oletus-pääkäyttäjätunnuksilla ja aseta äsken luodun tunnuksen rooli pääkäyttäjäksi, kirjaudu ulos
+   - Kirjaudu sisään uusilla tunnuksilla, poista oletuspääkäyttäjätili
+   Nyt on vai yksi pääkäyttäjä, joka on itse luotu ja jonka salasana on hash-koodattu. Sitä ei myöskään näy missään Python-koodissa.
 10. Luo seuraavaksi vierastili komennolla
     ```
     INSERT INTO account (name, username, password, role, date_created) VALUES ('guest', 'guest', 'guest', 'GUEST', CURRENT_TIMESTAMP);
@@ -81,8 +91,10 @@ Ennen kuin voit kirjautua sovellukseen, tulee tietokantaan asettaa oletuskäytt�
     ```
     INSERT INTO account (name, username, password, role, date_created) VALUES ('vierailija', 'vieras', '12345', 'GUEST', CURRENT_TIMESTAMP);
     ```
+    Vierastilin tulisi olla aina mukana, eli sitä ei saa poistaa.
 
-Nyt sovelluksen pitäisi olla käyttökunnossa ja voit kirjautua sisään äsken luoduilla tunnuksilla tai luoda uuden tunnuksen. Huomaa, että sovelluksen resursseihin on liitetty 18 kappaletta oletuslauluja, jotka vain pääkäyttäjä voi asentaa tietokantaan.
+Nyt sovelluksen pitäisi olla käyttökunnossa ja voit kirjautua sisään äsken luoduilla tunnuksilla tai luoda uuden tunnuksen. Huomaa, että sovelluksen resursseihin on liitetty 18 kappaletta oletuslauluja ja yli 300 runoa, jotka vain pääkäyttäjä voi asentaa tietokantaan.
+Oletuslaulujen ja -runojen asennuksessa on tärkeää, että ne asennetaan ennen mitään muita lauluja ja runoja. Ne siis tulee asentaa ennen, kuin sovelluksen antaa tarjolle muille käyttäjille. Mikäli oletuslaulut tai -runot pitää jossain vaiheessa poistaa, on kyse katastrofista, sillä niiden poistaminen poistaa kaikki käyttäjien itse lisäämät laulut ja runot. Eli poistoa tulee käyttää vain hvyin harkiten.
 
 ## Asennusohje pilvikäyttöön (Windows)
 
@@ -106,12 +118,6 @@ heroku addons:create heroku-postgresql:hobby-dev
 Luo Git-repositorio työkansiossa kirjoittamalla *Git bash* -terminaaliin komento
 ```
 git init
-```
-Luo työkansioon tyhjä tiedosto *.gitignore* ja lisää sinne rivit:
-```
-venv
-
-__pycache__
 ```
 Kommitoi kaikki Gitiin:
 ```

@@ -1,5 +1,7 @@
-from flask import flash
+from flask import flash, g
+from flask_login import current_user
 
+from application import app, login_required
 from application.words.views import replace_chars
 from application.words.proc import proc_text, stop_words, create_results, create_results_graph, store_author_words
 
@@ -7,9 +9,15 @@ from collections import Counter
 import operator
 
 
+@app.before_request
+def before_request():
+	g.user = current_user
+
+
 #-------------------------------------------------------
 # prepare data for authors_graph() html page
 #-------------------------------------------------------
+@login_required(roles=[1,2,3])
 def prepare_data(results_en, results_fi, results_fr):
 
 	author_names_en = [w[0] for w in results_en]
@@ -88,8 +96,10 @@ def prepare_data(results_en, results_fi, results_fr):
 # for authors_graph() return:
 #	graph_data, table_data, language
 #-------------------------------------------------------
+@login_required(roles=[1,2,3])
 def proc_authors(author_songs, filtered, lang):
 
+	language = ""
 	#---------------------------------------------------
 	# prepare data
 	#---------------------------------------------------
@@ -144,6 +154,7 @@ def proc_authors(author_songs, filtered, lang):
 #-------------------------------------------------------
 # store to database
 #-------------------------------------------------------
+@login_required(roles=[1,3])
 def store_results(author, results_list, raw_word_count, db_words_list):
 
 	# counts per song

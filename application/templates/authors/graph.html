@@ -20,7 +20,7 @@
   <form method="POST" action="{{ url_for('authors_graph') }}">
     <div class="col-auto">
 
-      {% if g.user.role != "GUEST" %}
+      {% if g.user.role != 2 %}
       <button class="btn btn-sm btn-danger" type="submit" style="width: 140px; float: right; margin-left: 20px;" name="save" id="save" value="{{ filtered }},{{ graphs }}" action="/authors/show/<author_id>">Save To Database</button>
       {% endif %}
 

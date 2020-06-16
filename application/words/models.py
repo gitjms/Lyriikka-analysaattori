@@ -29,11 +29,6 @@ class Words(db.Model):
 	@staticmethod
 	def find_words():
 
-		if g.user.role == "GUEST" or g.user.role == "ADMIN":
-			user_list = [1,2]
-		else:
-			user_list = [1,g.user.id]
-
 		stmt1 = text("SELECT "
 					"	DISTINCT results.word, "
                     "	COUNT(Song.id) AS w_count, "
@@ -42,10 +37,10 @@ class Words(db.Model):
 					"JOIN song_result ON song_result.results_id = results.id "
 					"JOIN Song ON Song.id = song_result.song_id "
 					"JOIN account ON account.id = Song.account_id "
-					"WHERE account.id IN (:user1,:user2) "
+					"WHERE account_id = :userid OR account_role = :accrole "
 					"GROUP BY results.word "
 					"ORDER BY SUM(results.matches) DESC "
-					"LIMIT :limit").params(user1=user_list[0],user2=user_list[1], limit=5)
+					"LIMIT :limit").params(userid=g.user.id,accrole=1, limit=5)
 		res1 = db.engine.execute(stmt1)
 		response1 = []
 		for row in res1:
@@ -55,11 +50,6 @@ class Words(db.Model):
 
 	@staticmethod
 	def find_stats():
-
-		if g.user.role == "GUEST" or g.user.role == "ADMIN":
-			user_list = [1,2]
-		else:
-			user_list = [1,g.user.id]
 
 		stmt2 = text("SELECT "
                     "	co.matches, "
@@ -75,14 +65,14 @@ class Words(db.Model):
 					"	JOIN song_result ON song_result.results_id = results.id "
 					"	JOIN Song ON Song.id = song_result.song_id "
 					"	JOIN account ON account.id = Song.account_id "
-					"	WHERE account.id IN (:user1,:user2) "
+					"	WHERE account_id = :userid OR account_role = :accrole "
 					"	GROUP BY results.word "
 					"	ORDER BY matches DESC "
 					") as co "
 					"ON co.words = results.word "
 					"GROUP BY co.matches, co.words, results.word, co.average "
 					"ORDER BY co.matches DESC "
-					"LIMIT :limit").params(user1=user_list[0],user2=user_list[1], limit=5)
+					"LIMIT :limit").params(userid=g.user.id,accrole=1, limit=5)
 		res2 = db.engine.execute(stmt2)
 		response2 = []
 		for row in res2:

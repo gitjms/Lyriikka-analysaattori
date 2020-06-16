@@ -11,7 +11,7 @@
 {% endfor %}<br>
 
 <!-- PROGRESSBAR FOR ADDING SONGS OR POEMS - ADMIN ONLY -->
-{% if g.user.role == "ADMIN" and load != 'na' %}
+{% if g.user.role == 1 and load != 'na' %}
   {% if load == 'poem' %}
     <script>
       var source_poems = new EventSource("/progress_poems");
@@ -103,7 +103,7 @@
 
 {% endif %}
 
-{% if (top_words or top_words is not defined) and g.user.role != 'ADMIN' %}
+{% if (top_words or top_words is not defined) and g.user.role != 1 %}
   <strong id="big-strong">TOP 5 search words</strong>
   <div id="averages">
     <table class="table table-striped" style="max-width: 1000px;">

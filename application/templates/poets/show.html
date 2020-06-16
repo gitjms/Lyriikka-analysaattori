@@ -24,7 +24,7 @@
       <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>
 
       <!-- 'SAVE TO DATABASE' BUTTON -->
-      {% if g.user.role != "GUEST" %}
+      {% if g.user.role != 2 %}
       <button class="btn btn-sm btn-danger" type="submit" style="width: 140px; float: right; margin-left: 20px;" name="save" id="save" value="{{ filtered }},{{ graphs }}" action="/poets/show/<poet_id>">Save To Database</button>
       {% endif %}
 

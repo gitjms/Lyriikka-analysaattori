@@ -9,11 +9,11 @@
         name VARCHAR(255) NOT NULL,
         username VARCHAR(255) NOT NULL,
         password VARCHAR(255) NOT NULL,
-        role VARCHAR(255) NOT NULL,
+        role INTEGER NOT NULL,
         date_created DATETIME,
         PRIMARY KEY (id),
         UNIQUE (username),
-        FOREIGN KEY(role) REFERENCES roles (role)
+        FOREIGN KEY(role) REFERENCES roles (id)
   );
   ```
 - **Role** Taulu käyttäjärooleille
@@ -33,8 +33,10 @@
         lyrics TEXT NOT NULL,
         language VARCHAR(255) NOT NULL,
         account_id INTEGER NOT NULL,
+        account_role INTEGER NOT NULL,
         PRIMARY KEY (id),
-        FOREIGN KEY(account_id) REFERENCES account (id)
+        FOREIGN KEY(account_id) REFERENCES account (id),
+        FOREIGN KEY(account_role) REFERENCES account (role)
   );
   ```
 - **Author** laulujen tekijä/tekijät sisältäen nimen
@@ -86,8 +88,10 @@
         lyrics TEXT NOT NULL,
         language VARCHAR(255) NOT NULL,
         account_id INTEGER NOT NULL,
+        account_role INTEGER NOT NULL,
         PRIMARY KEY (id),
-        FOREIGN KEY(account_id) REFERENCES account (id)
+        FOREIGN KEY(account_id) REFERENCES account (id),
+        FOREIGN KEY(account_role) REFERENCES account (role)
   );
   ```
 - **Poet** runoilijat sisältäen nimen ja tiedot sanafrekvensseistä
@@ -119,7 +123,7 @@
 
 Sovelluksessa on kiolme automaattista kyselyä, jotka suoritetaan sisäänkirjautuessa. Näiden kyselyjen tulokset tulostetaan kotisivulle, eli ensimmäiselle sivulle sisäänkirjauduttua.
 
-Ensimmäinen kysely on *Song*-luokassa (*application/songs/models.py*) sijaitsevassa staattinen metodi *find_database_status()*. Sen tulos on katsaus tietokannan kulloiseenkin sisältöön. Kysely on seuraavanlainen:
+Ensimmäinen kysely on *Song*-luokassa (*application/songs/models.py*) sijaitsevassa staattinen metodi *find_database_songs_status()*. Sen tulos on katsaus tietokannan kulloiseenkin sisältöön. Kysely on seuraavanlainen:
 
 ```
 SELECT DISTINCT Song.language,
@@ -129,12 +133,12 @@ FROM Song
 LEFT JOIN author_song ON Song.id = author_song.song_id
 LEFT JOIN Author ON author_song.author_id = Author.id
 LEFT JOIN account ON account.id = Song.account_id
-WHERE account.id IN (?,?)
+WHERE account.id = ? OR account_role = ?
 GROUP BY Song.language
 ORDER BY Song.language ASC;
 ```
 
-missä vierastiliä käyttäen parametrien arvot ovat ```(1, 2)```. Näistä ensimmäinen numero on pääkäyttäjän id, toinen numero vierastilin id.
+missä parametri *account.id* ja *account.role* saavat ulkoiset arvot. Edellinen on kulloisenki käyttäjän oma id ja jälkimmäinen on pääkäyttäjän rooli-id.
 
 ---
 
@@ -148,7 +152,7 @@ FROM results
 JOIN song_result ON song_result.results_id = results.id
 JOIN Song ON Song.id = song_result.song_id
 JOIN account ON account.id = Song.account_id
-WHERE account.id IN (?,?)
+WHERE account.id = ? OR account_role = ?
 GROUP BY results.word
 ORDER BY SUM(results.matches) DESC
 LIMIT ?
@@ -166,7 +170,7 @@ INNER JOIN (select DISTINCT results.word AS words,
             JOIN song_result ON song_result.results_id = results.id
             JOIN Song ON Song.id = song_result.song_id
             JOIN account ON account.id = Song.account_id
-            WHERE account.id IN (?,?)
+            WHERE account.id = ? OR account_role = ?
             GROUP BY results.word
             ORDER BY matches DESC
 ) AS co
@@ -191,7 +195,7 @@ FROM Song
 INNER JOIN author_song ON author_song.song_id = Song.id
 INNER JOIN author ON author.id = author_song.author_id
 JOIN account ON account.id = Song.account_id
-WHERE account.id IN (?,?) [AND Song.language = ?]
+WHERE (account.id = ? OR account_role = ?) [AND Song.language = ?]
 GROUP BY author.name, Song.language, author.id
 ORDER BY Song.language, author.name ASC;
 ```
@@ -208,15 +212,49 @@ FROM Song
 LEFT JOIN author_song ON Song.id = author_song.song_id
 LEFT JOIN Author ON author_song.author_id = Author.id
 LEFT JOIN account ON account.id = Song.account_id
-WHERE account.id IN (?,?) AND author.id = :id
+WHERE (account.id = ? OR account_role = ?) AND author.id = :id
 GROUP BY Song.id, Song.lyrics, Song.name, Song.language;
 ```
 
-Parametreinä jälleen käyttäjän sallitut id:t sekä halutun lauluntekijän id.
+Parametreinä jälleen käyttäjän id, pääkäyttäjän rooli-id sekä halutun lauluntekijän id.
+
+Myös *Poet*-luokassa (*application/poets/models.py*) on staattisia metodeja. Kyseessä ovat metodit *get_poets()* ja *get_poetpoems()*. Edellinen tuottaa listan runoilijoista runoineen, joka esitetään *Poets*-sivulla. Kysely on seuraavanlainen:
+
+```
+SELECT DISTINCT poet.name,
+       STRING_AGG (Poem.name,'; ') poems,
+       Poem.language,
+       Poet.id
+FROM Poet
+INNER JOIN poet_poem ON poet_poem.poet_id = Poet.id
+INNER JOIN Poem ON Poem.id = poet_poem.poem_id
+JOIN account ON account.id = Poem.account_id
+WHERE (account_id = ? OR account_role = ?) [AND Song.language = ?]
+GROUP BY Poet.name, Poem.language, Poet.id
+ORDER BY Poem.language, Poet.name ASC;
+```
+
+Käyttäjäparametrien arvot tulevat jälleen samalla periaatteella kuin edellisissä kyselyesimerkeissä. Toisella rivillä oleva *STRING_AGG* toimii vain PostGres-kyselyssä Herokussa. SQLite-kyselyssä tulee käyttää termiä *GROUP_CONCAT*. *WHERE* lauseen perässä hakasuluissa oleva osa on tyhjä, mikäli metodia kutsutaan tiedoston *poets/views.py* metodista *poets_list()*, jolla tulostetaan kaikki runoilijat. Jos sen sijaan kutsu tulee saman tiedoston metodista *poets_graph()*, jolla tulostetaan kaikkien runojen sanafrekvenssit kielittäin, tulee hakasulkuosioon sen sisällä oleva lause ja kieleksi haluttu arvo.
+Jälkimmäinen kysely (*get_poetpoems()*) tuottaa listan tietyn runoilijan runoista. Kysely on seuraavanlainen:
+
+```
+SELECT Poem.id,
+       Poem.lyrics,
+       Poem.name,
+       Poem.language
+FROM Poem
+LEFT JOIN poet_poem ON Poem.id = poet_poem.poem_id
+LEFT JOIN Poet ON poet_poem.poet_id = Poet.id
+LEFT JOIN account ON account.id = Poem.account_id
+WHERE (account.id = ? OR account_role = ?) AND Poet.id = :id
+GROUP BY Poem.id, Poem.lyrics, Poem.name, Poem.language;
+```
+
+Parametreinä jälleen käyttäjän id, pääkäyttäjän rooli-id sekä halutun runoilijan id.
 
 ---
 
-Sanahaun kysely esimerkiksi englanninkielisellä termillä tehdään seuraavan kyselyn avulla:
+Sanahaun Sqlalchemy-kysely esimerkiksi englanninkielisellä termillä *oh* tehdään seuraavan kyselyn avulla:
 
 ```
 SELECT song.id AS song_id,
@@ -224,11 +262,22 @@ SELECT song.id AS song_id,
        song.name AS song_name,
        song.language AS song_language
 FROM song
-WHERE song.account_id IN (?, ?) AND song.language = ?
+WHERE song.account_role = ? AND song.language = ?
 ```
 
-Kaksi ensimmäistä arvoa ovat jälleen edellisten esimerkkien mukaiset, mutta kolmas arvo on tässä esimerkissä ```'english'```, viitaten haetun sanan kielivalintaan.
-
+Ensimmäinen syötetty parametrin arvo on käyttäjän id ja toinen arvo on tässä esimerkissä ```'english'```, viitaten haetun sanan kielivalintaan.
+Kielihakutuloksesta rajataan vielä haettu sana:
+```
+SELECT results.id AS results_id,
+       results.word AS results_word,
+       results.matches AS results_matches,
+       results.result_all AS results_result_all,
+       results.result_no_stop_words AS results_result_no_stop_words
+FROM results
+WHERE results.result_all = ?
+LIMIT ? OFFSET ?
+```
+missä ensimmäinen parametri saa arvokseen haetun sanan *oh* ja kaksi jälkimmäistä Sqlalchemyn automaattisesti luomat LIMIT ja OFFSET saavat arvoikseen 1 ja 0.
 ---
 
 Hakutuloksen tallennus tietokantaan tapahtuu seuraavasti:
@@ -255,7 +304,7 @@ SELECT song.id AS song_id,
        song.language AS song_language,
        song.account_id AS song_account_id
 FROM song
-WHERE song.account_id IN (?, ?)
+WHERE song.account_role = ?
 ```
 
 ---
@@ -269,7 +318,7 @@ SELECT song.id AS song_id,
        song.language AS song_language,
        song.account_id AS song_account_id
 FROM song
-WHERE song.account_id IN (?, ?)
+WHERE song.account_role = ?
 ORDER BY song.name ASC
 ```
 
@@ -282,7 +331,7 @@ SELECT song.id AS song_id,
        song.language AS song_language,
        song.account_id AS song_account_id
 FROM song
-WHERE song.account_id IN (?, ?)
+WHERE  song.account_role = ?
 ORDER BY song.name DESC
 ```
 
@@ -295,7 +344,7 @@ SELECT song.id AS song_id,
        song.language AS song_language,
        song.account_id AS song_account_id
 FROM song
-WHERE song.account_id IN (?, ?)
+WHERE  song.account_role = ?
 ORDER BY song.language, song.name ASC
 ```
 
@@ -308,7 +357,7 @@ SELECT song.id AS song_id,
        song.language AS song_language,
        song.account_id AS song_account_id
 FROM song
-WHERE song.account_id IN (?, ?)
+WHERE  song.account_role = ?
 ORDER BY song.language, song.name DESC
 ```
 

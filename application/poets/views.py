@@ -19,7 +19,7 @@ def before_request():
 #		POETS: poets_list()
 #-----------------------------------------
 @app.route("/poets/list", methods=["GET", "POST"])
-@login_required
+@login_required(roles=[1,2,3])
 def poets_list():
 
 	poets = Poet.get_poets("")
@@ -33,7 +33,7 @@ def poets_list():
 #		POETS: poets_graph()
 #-----------------------------------------
 @app.route("/poets/graph", methods=["GET", "POST"])
-@login_required
+@login_required(roles=[1,2,3])
 def poets_graph():
 	filtered = False
 	save = False
@@ -84,7 +84,7 @@ def poets_graph():
 #		POETS: poets_show()
 #-----------------------------------------
 @app.route("/poets/show/<poet_id>", methods=["GET", "POST"])
-@login_required
+@login_required(roles=[1,2,3])
 def poets_show(poet_id):
 	graphs = False
 	filtered = False

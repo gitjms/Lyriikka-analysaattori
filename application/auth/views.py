@@ -27,7 +27,7 @@ def before_request():
 #		STATS: auth_stats()
 #-----------------------------------------
 @app.route("/auth/stats/<load>", methods = ["GET"])
-@login_required
+@login_required(roles=[1,2,3])
 def auth_stats(load):
 
 	errors = []
@@ -85,30 +85,41 @@ def auth_login():
 	if request.form.get("Guest") == "Guest":
 		username = "guest"
 		password = u"guest".encode('utf-8')
-	elif request.form.get("Login") == "Login":
+	elif request.form.get("Login") == "Login" and form.username.data == 'admin':
+		username = "admin"
+		password = u"admin".encode('utf-8')
+	else:
 		if not form.validate():
-			return render_template("auth/loginform.html", form = form, error = "Fields must not be empty. Check password length.")
-
+			return render_template("auth/loginform.html", form=form, error = "Fields must not be empty. Check password length.")
 		username = form.username.data
-		password = form.password.data.encode('utf-8')
+		password = form.password.data
 
-	user = User.query.filter_by(username=username).first()
-	if not user:
-		flash("No such username or password.", "warning")
-		return render_template("auth/loginform.html", form = form)
+	if username == 'guest' or username == 'admin':
+		user = User.query.filter_by(username=username).first()
+		if not user:
+			flash("No such username or password.", "warning")
+			return render_template("auth/loginform.html", form=form)
+		try:
+			login_user(user, remember = remember_me)
+		except IntegrityError:
+			flash("Problems with login.", "danger")
+			return render_template("auth/loginform.html", form=form)
+	else:
+		user = User.query.filter_by(username=username).first()
+		if not user:
+			flash("No such username or password.", "warning")
+			return render_template("auth/loginform.html", form=form)
 
-	true_password = hash_bcrypt.hashpw(user.password.encode('utf-8'), hash_bcrypt.gensalt())
-
-	# Compare Password with hashed password
-	if not hash_bcrypt.checkpw(password,true_password):
-		flash("No such password.", "warning")
-		return render_template("auth/loginform.html", form = form)
-
-	try:
-		login_user(user, remember = remember_me)
-	except IntegrityError:
-		flash("Problems with login.", "danger")
-		return render_template("auth/loginform.html", form = form)
+		# Check password with hashed password
+		if not bcrypt.check_password_hash(user.password.encode('utf-8'), password):
+			flash("No such password.", "warning")
+			return render_template("auth/loginform.html", form=form)
+	
+		try:
+			login_user(user, remember = remember_me)
+		except IntegrityError:
+			flash("Problems with login.", "danger")
+			return render_template("auth/loginform.html", form=form)
 		
 	db.session.permanent = remember_me
 
@@ -123,15 +134,15 @@ def auth_create():
 	form = CreateUserForm(request.form)
 
 	if request.method == "GET":
-		return render_template("auth/newuser.html", form = form)
+		return render_template("auth/newuser.html", form=form)
 
 	if not form.validate_on_submit():
-		return render_template("auth/newuser.html", form = form)
+		return render_template("auth/newuser.html", form=form)
 
-	pw_hash = bcrypt.generate_password_hash(form.password.data)
+	pw_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
 	
-	user = User(form.name.data,form.username.data,form.password.data)
-	user.role = "USER"
+	user = User(form.name.data,form.username.data,pw_hash)
+	user.role = 3
 
 	try:
 		db.session().add(user)
@@ -140,7 +151,7 @@ def auth_create():
 	except IntegrityError:
 		db.session.rollback()
 		flash("Create account failed.", "danger")
-		return render_template("auth/newuser.html", form = form, error = "User already exists. Consider changing username.")
+		return render_template("auth/newuser.html", form=form, error="User already exists. Consider changing username.")
 
 	return redirect(url_for("index"))
 

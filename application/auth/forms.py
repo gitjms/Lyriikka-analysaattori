@@ -14,9 +14,9 @@ class LoginForm(FlaskForm):
 
 class CreateUserForm(FlaskForm):
 	name = StringField("Full name", [validators.Length(min=1,max=200),
-			validators.DataRequired(),])
+			validators.DataRequired()])
 	username = StringField("Username", [validators.Length(min=1,max=25),
-			validators.DataRequired(),])
+			validators.DataRequired()])
 	password = PasswordField("Password", [validators.Length(min=4,max=10),
 			validators.DataRequired(),
 			validators.EqualTo('confirm', message='Passwords must match')]
