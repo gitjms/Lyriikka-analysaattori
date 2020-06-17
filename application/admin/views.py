@@ -48,11 +48,11 @@ def admin_dashboard():
 @login_required(roles=[1])
 def user_delete(user_id):
 
-	user_qry = db.session().query(User).filter(User.id==user_id)
+	user_query = db.session().query(User).filter(User.id==user_id)
 
 	if request.method == "POST":
 		try:
-			db.session().delete(user_qry.first())
+			db.session().delete(user_query.first())
 			db.session().commit()
 		except SQLAlchemyError:
 			db.session.rollback()
@@ -68,20 +68,20 @@ def user_delete(user_id):
 @login_required(roles=[1])
 def user_adminate(user_id):
 
-	user_qry = db.session().query(User).filter(User.id==user_id)
+	user_query = db.session().query(User).filter(User.id==user_id)
 
 	form = CreateForm(request.form)
 	if request.form.get("userate") == "userate":
 		if int(user_id) != g.user.id:
-			user_qry.first().role = 3
+			user_query.first().role = 3
 			try:
 				db.session().commit()
 			except SQLAlchemyError:
 				db.session.rollback()
 				flash("User's status not changed.", "danger")
 	elif request.form.get("adminate") == "adminate":
-		if user_qry.first().role not in [1,2]:
-			user_qry.first().role = 1
+		if user_query.first().role not in [1,2]:
+			user_query.first().role = 1
 			try:
 				db.session().commit()
 			except SQLAlchemyError:

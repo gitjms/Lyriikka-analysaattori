@@ -6,7 +6,7 @@ from flask_login import current_user
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.sql import text
-from sqlalchemy import func, distinct, asc
+from sqlalchemy import func, distinct, asc, or_
 
 from application import app, db, login_manager, login_required
 from application.poems.models import Poem
@@ -30,7 +30,7 @@ def before_request():
 def poems_list():
 	
 	if request.method == "GET":
-		poems = Poem.query.filter(Poem.account_id==g.user.id or Poem.account_role==1).all()
+		poems = Poem.query.filter(or_(Poem.account_id==g.user.id,Poem.account_role==1)).all()
 
 		if not poems:
 			return render_template("poems/list.html", poems=None, top_words=None)
@@ -38,15 +38,15 @@ def poems_list():
 	if request.method == "POST":
 		# sorting
 		if request.form.get("sort") == "titasc":
-			poems = Poem.query.filter(Poem.account_id==g.user.id or Poem.account_role==1).order_by(Poem.name.asc()).all()
+			poems = Poem.query.filter(or_(Poem.account_id==g.user.id,Poem.account_role==1)).order_by(Poem.name.asc()).all()
 		elif request.form.get("sort") == "titdesc":
-			poems = Poem.query.filter(Poem.account_id==g.user.id or Poem.account_role==1).order_by(Poem.name.desc()).all()
+			poems = Poem.query.filter(or_(Poem.account_id==g.user.id,Poem.account_role==1)).order_by(Poem.name.desc()).all()
 		elif request.form.get("sort") == "langtitasc":
-			poems = Poem.query.filter(Poem.account_id==g.user.id or Poem.account_role==1).order_by(Poem.language).order_by(Poem.name.asc()).all()
+			poems = Poem.query.filter(or_(Poem.account_id==g.user.id,Poem.account_role==1)).order_by(Poem.language).order_by(Poem.name.asc()).all()
 		elif request.form.get("sort") == "langtitdesc":
-			poems = Poem.query.filter(Poem.account_id==g.user.id or Poem.account_role==1).order_by(Poem.language).order_by(Poem.name.desc()).all()
+			poems = Poem.query.filter(or_(Poem.account_id==g.user.id,Poem.account_role==1)).order_by(Poem.language).order_by(Poem.name.desc()).all()
 		elif request.form.get("sort") == "id":
-			poems = Poem.query.filter(Poem.account_id==g.user.id or Poem.account_role==1).order_by(Poem.id.asc()).all()
+			poems = Poem.query.filter(or_(Poem.account_id==g.user.id,Poem.account_role==1)).order_by(Poem.id.asc()).all()
 
 	return render_template("poems/list.html", poems=poems)
 
@@ -155,10 +155,10 @@ def poems_delete(poem_id):
 	if request.method == "GET":
 		return
 
-	qry = db.session().query(Poem).filter(Poem.id==poem_id)
+	poem_query = db.session().query(Poem).filter(Poem.id==poem_id)
 	if request.method == "POST":
 		try:
-			db.session().delete(qry.first())
+			db.session().delete(poem_query.first())
 			db.session().commit()
 		except SQLAlchemyError:
 			db.session.rollback()

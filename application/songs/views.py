@@ -6,7 +6,7 @@ from flask_login import current_user
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.sql import text
-from sqlalchemy import func, distinct, asc
+from sqlalchemy import func, distinct, asc, or_
 
 from application import app, db, login_manager, login_required
 from application.songs.models import Song
@@ -30,7 +30,7 @@ def before_request():
 def songs_list():
 	
 	if request.method == "GET":
-		songs = Song.query.filter(Song.account_id==g.user.id or Song.account_role==1).all()
+		songs = Song.query.filter(or_(Song.account_id==g.user.id,Song.account_role==1)).all()
 		
 		if not songs:
 			return render_template("songs/list.html", songs=None, top_words=None)
@@ -38,15 +38,15 @@ def songs_list():
 	if request.method == "POST":
 		# sorting
 		if request.form.get("sort") == "titasc":
-			songs = Song.query.filter(Song.account_id==g.user.id or Song.account_role==1).order_by(Song.name.asc()).all()
+			songs = Song.query.filter(or_(Song.account_id==g.user.id,Song.account_role==1)).order_by(Song.name.asc()).all()
 		elif request.form.get("sort") == "titdesc":
-			songs = Song.query.filter(Song.account_id==g.user.id or Song.account_role==1).order_by(Song.name.desc()).all()
+			songs = Song.query.filter(or_(Song.account_id==g.user.id,Song.account_role==1)).order_by(Song.name.desc()).all()
 		elif request.form.get("sort") == "langtitasc":
-			songs = Song.query.filter(Song.account_id==g.user.id or Song.account_role==1).order_by(Song.language).order_by(Song.name.asc()).all()
+			songs = Song.query.filter(or_(Song.account_id==g.user.id,Song.account_role==1)).order_by(Song.language).order_by(Song.name.asc()).all()
 		elif request.form.get("sort") == "langtitdesc":
-			songs = Song.query.filter(Song.account_id==g.user.id or Song.account_role==1).order_by(Song.language).order_by(Song.name.desc()).all()
+			songs = Song.query.filter(or_(Song.account_id==g.user.id,Song.account_role==1)).order_by(Song.language).order_by(Song.name.desc()).all()
 		elif request.form.get("sort") == "id":
-			songs = Song.query.filter(Song.account_id==g.user.id or Song.account_role==1).order_by(Song.id.asc()).all()
+			songs = Song.query.filter(or_(Song.account_id==g.user.id,Song.account_role==1)).order_by(Song.id.asc()).all()
 
 	return render_template("songs/list.html", songs=songs)
 
@@ -157,10 +157,10 @@ def songs_delete(song_id):
 	if request.method == "GET":
 		return
 
-	qry = db.session().query(Song).filter(Song.id==song_id)
+	song_query = db.session().query(Song).filter(Song.id==song_id)
 	if request.method == "POST":
 		try:
-			db.session().delete(qry.first())
+			db.session().delete(song_query.first())
 			db.session().commit()
 		except SQLAlchemyError:
 			db.session.rollback()

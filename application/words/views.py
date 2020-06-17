@@ -1,6 +1,8 @@
 from flask import render_template, redirect, flash, url_for, request, g, Markup
 from flask_login import current_user
 
+from sqlalchemy import or_
+
 from application import app, db, login_manager, login_required
 from application.songs.models import Song
 from application.poems.models import Poem
@@ -64,12 +66,12 @@ def words_find():
 	#
 	#-------------------------------------------------------
 	if material == 'Song':
-		materials = db.session().query(Song.id,Song.lyrics,Song.name,Song.language).filter(Song.account_id==g.user.id or Song.account_role==1).filter(Song.language==language).all()
+		materials = db.session().query(Song.id,Song.lyrics,Song.name,Song.language).filter(or_(Song.account_id==g.user.id,Song.account_role==1)).filter(Song.language==language).all()
 		if not materials:
 			return render_template("words/words.html", frequencies = None, res_material=None)
 		title_text = 'Top 10 Word Frequencies in Match Song(s)'
 	elif material == 'Poem':
-		materials = db.session().query(Poem.id,Poem.lyrics,Poem.name,Poem.language).filter(Poem.account_id==g.user.id or Poem.account_role==1).filter(Poem.language==language).all()
+		materials = db.session().query(Poem.id,Poem.lyrics,Poem.name,Poem.language).filter(or_(Poem.account_id==g.user.id,Poem.account_role==1)).filter(Poem.language==language).all()
 		if not materials:
 			return render_template("words/words.html", frequencies = None, res_material=None)
 		title_text = 'Top 10 Word Frequencies in Match Poem(s)'
