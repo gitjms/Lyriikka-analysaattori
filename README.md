@@ -41,6 +41,13 @@ Löydät sovelluksen osoitteesta [lyrfreq.herokuapp.com](https://lyrfreq.herokua
 
 [**Käyttäjätarinat ja käyttötapaukset**](documentation/user_stories.md)
 
+## Puutteita ja ongelmia
+
+* Kun oletuslaulut/-runot poistaa, poistetaan kaikki tiedot tauluista (paitsi User ja Role). Pitäisi tulla poistetuksi vain oletusrunot/-laulut ja oletusrunoilijat/-lauluntekijät.
+* Pitäisi olla joku nappi, jolla käyttäjä saa listattua vain omat runot ja laulut eikä oletussisältöä. Nyt käyttäjän pitää yksitellen deletoida oletussisältö, mikäli ei niitä halua käyttää.
+* Varmasti on vielä muitakin ongelmia, mutta en ole vain löytänyt niitä vielä. Ajan kanssa niitä varmasti putkahtelee esiin.
+* Myös parannuksia pitäisi tehdä, mutta niitä voi tehdä lähinnä tiettyä käyttöä silmällä pitäen, eikä tällä työllä ole vielä kiveen hakattua tarkoitusta. Tämä on nyt demo-esittely sovelluksesta, jota voi räätälöidä spesifimpään tarkoitukseen.
+
 ## Myöhemmin tulevia mahdollisia lisäominaisuuksia
 
 * kaikkien 57 maan data mukana
