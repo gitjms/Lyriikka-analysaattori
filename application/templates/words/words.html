@@ -10,12 +10,12 @@
   </div>
 {% endfor %}
 
-{% if frequencies is none and res_material is none %}
+{% if frequencies is none and word is none %}
 
   <!-- IF DATABASE IS EMPTY -->
   <strong id="big-strong">Database is empty</strong>
   
-{% elif frequencies is none and lang %}
+{% elif frequencies is none and word is not none %}
 
 <!-- IF NOT RESULTS -->
   <strong style="font-size: 20px;">
@@ -24,7 +24,7 @@
       &nbsp;&nbsp;&#8594;&nbsp;&nbsp;&nbsp;no results
   </strong>
 
-{% elif lang == none %}
+{% elif language == none %}
   <strong>
     <br>You didn't choose any language.
   </strong>

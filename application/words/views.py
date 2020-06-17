@@ -42,8 +42,11 @@ def check_data(payload, which):
 def words_find():
 	filtered = False
 	save = False
+	word = None
 	material = None
 	language = None
+	frequencies = None
+	res_material = None
 
 	if request.method == "GET":
 		return redirect(url_for("index"))
@@ -68,16 +71,16 @@ def words_find():
 	if material == 'Song':
 		materials = db.session().query(Song.id,Song.lyrics,Song.name,Song.language).filter(or_(Song.account_id==g.user.id,Song.account_role==1)).filter(Song.language==language).all()
 		if not materials:
-			return render_template("words/words.html", frequencies = None, res_material=None)
+			return render_template("words/words.html", frequencies = frequencies)
 		title_text = 'Top 10 Word Frequencies in Match Song(s)'
 	elif material == 'Poem':
 		materials = db.session().query(Poem.id,Poem.lyrics,Poem.name,Poem.language).filter(or_(Poem.account_id==g.user.id,Poem.account_role==1)).filter(Poem.language==language).all()
 		if not materials:
-			return render_template("words/words.html", frequencies = None, res_material=None)
+			return render_template("words/words.html", frequencies = frequencies)
 		title_text = 'Top 10 Word Frequencies in Match Poem(s)'
 
 	if not language:
-		return render_template("words/words.html", frequencies = None, res_material=None, word=word_to_find, lang=None)
+		return render_template("words/words.html", language=language)
 
 	# prepare data
 	material_list = []
@@ -103,11 +106,11 @@ def words_find():
 	#
 	#-------------------------------------------------------
 	# graph_list = [ raw_words ] => with or without stopwords
-	# results_list = [ song_id/poem_id, Word, Count ] => for frequency tables
+	# frequencies = [ song_id/poem_id, Word, Count ] => for frequency tables
 	# words_list = [ song_id/poem_id, Counter() ] => for database storing
 	#-------------------------------------------------------
 	if tot_count > 0:
-		graph_list, results_list, db_words_list = stop_words(filtered, new_raw_words_list, language, graph="")
+		graph_list, frequencies, db_words_list = stop_words(filtered, new_raw_words_list, language, graph="")
 	else:
 		return render_template("words/words.html", frequencies = None, word=word_to_find)
 
@@ -117,8 +120,6 @@ def words_find():
 	# -> proc.create_results()
 	#
 	#-------------------------------------------------------
-	frequencies = None
-	res_material = None
 	if tot_count > 0:
 		
 		res_material, graph_data = create_results(new_material_list, graph_list, word_to_find)
@@ -134,7 +135,7 @@ def words_find():
 	if save == True and tot_count > 0 and Words.query.filter_by(word=word_to_find).first() is None:
 		# counts per song
 		counts = []
-		for item in results_list:
+		for item in frequencies:
 				counts.append(item[2])
 
 		errors = store_search_word(raw_word_count, db_words_list, word_to_find, counts)
@@ -143,7 +144,7 @@ def words_find():
 		errors.append("Results already in the database.")
 		flash("Results not added to results database.", "warning")
 
-	return render_template("words/words.html", frequencies=results_list, res_material=replace_accent(res_material), word=word_to_find, errors=errors, count=tot_count, material_count=len(new_material_list), graph_data=graph_data, language=language, filtered=filtered, material=material, title_text=title_text)
+	return render_template("words/words.html", frequencies=frequencies, res_material=replace_accent(res_material), word=word_to_find, errors=errors, count=tot_count, material_count=len(new_material_list), graph_data=graph_data, language=language, filtered=filtered, material=material, title_text=title_text)
 
 
 # own stopwords

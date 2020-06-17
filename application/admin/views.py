@@ -3,6 +3,7 @@ from flask_login import current_user
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.sql import func, text
+from sqlalchemy import or_
 
 from application import app, db, login_manager, login_required
 from application.auth.models import User
@@ -48,11 +49,30 @@ def admin_dashboard():
 @login_required(roles=[1])
 def user_delete(user_id):
 
-	user_query = db.session().query(User).filter(User.id==user_id)
+	user = db.session().query(User).filter(User.id==user_id).first()
 
 	if request.method == "POST":
+		poems = Poem.query.filter(Poem.account_id==user_id).all()
+		songs = Song.query.filter(Song.account_id==user_id).all()
+		if songs:
+			try:
+				for song in songs:
+					db.session().delete(song)
+					db.session().commit()
+			except SQLAlchemyError:
+				db.session.rollback()
+				flash("User's songs not deleted.", "danger")
+
+		if poems:
+			try:
+				for poem in poems:
+					db.session().delete(poem)
+					db.session().commit()
+			except SQLAlchemyError:
+				db.session.rollback()
+				flash("User's poems not deleted.", "danger")
 		try:
-			db.session().delete(user_query.first())
+			db.session().delete(user)
 			db.session().commit()
 		except SQLAlchemyError:
 			db.session.rollback()
