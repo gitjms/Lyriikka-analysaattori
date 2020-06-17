@@ -22,7 +22,7 @@ class Poem(Base):
 	language = db.Column(db.String(255), nullable=False)
 
 	account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-	account_role = db.Column(db.Integer, db.ForeignKey('account.role'), nullable=False, unique=True)
+	account_role = db.Column(db.Integer, db.ForeignKey('account.role'), nullable=False)
 
 
 	def __init__(self, name, lyrics, language):
@@ -41,7 +41,10 @@ class Poem(Base):
 					"LEFT JOIN poet_poem ON Poem.id = poet_poem.poem_id "
 					"LEFT JOIN Poet ON poet_poem.poet_id = Poet.id "
 					"LEFT JOIN account ON account.id = Poem.account_id "
-					"WHERE account_id = :userid OR account_role = :accrole "
+					"AND account.role = Poem.account_role "
+					"LEFT JOIN roles ON roles.id = account.role "
+					"WHERE account_id = :userid "
+					"OR account_role = :accrole "
 					"GROUP BY Poem.language "
 					"ORDER BY Poem.language ASC").params(userid=g.user.id,accrole=1)
 

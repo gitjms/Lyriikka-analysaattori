@@ -33,7 +33,7 @@ class Song(Base):
 	language = db.Column(db.String(255), nullable=False)
 
 	account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-	account_role = db.Column(db.Integer, db.ForeignKey('account.role'), nullable=False, unique=True)
+	account_role = db.Column(db.Integer, db.ForeignKey('account.role'), nullable=False)
 
 	results = db.relationship("Words",
 		secondary=song_result,
@@ -59,7 +59,10 @@ class Song(Base):
 					"LEFT JOIN author_song ON Song.id = author_song.song_id "
 					"LEFT JOIN Author ON author_song.author_id = Author.id "
 					"LEFT JOIN account ON account.id = Song.account_id "
-					"WHERE account_id = :userid OR account_role = :accrole "
+					"AND account.role = Song.account_role "
+					"LEFT JOIN roles ON roles.id = account.role "
+					"WHERE account_id = :userid "
+					"OR account_role = :accrole "
 					"GROUP BY Song.language "
 					"ORDER BY Song.language ASC").params(userid=g.user.id,accrole=1)
 

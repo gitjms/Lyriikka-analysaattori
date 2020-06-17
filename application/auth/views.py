@@ -49,7 +49,7 @@ def auth_stats(load):
 	song_count = db.session.query(Song).count()
 	db_poems_status=Poem.find_database_poems_status()
 	poem_count = db.session.query(Poem).count()
-
+	
 	if song_count > 0 and poem_count > 0:
 		return render_template("auth/stats.html", db_songs_status=db_songs_status, db_poems_status=db_poems_status, top_words=result_list, load=load, errors=errors)
 	elif song_count > 0 and poem_count == 0:

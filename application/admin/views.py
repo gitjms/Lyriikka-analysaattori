@@ -16,8 +16,10 @@ from application.poets.models import Poet
 from application.poets.models import poet_poem
 from application.poets import poets
 from application.admin.forms import CreateForm
+
 import itertools
 import os, os.path
+import traceback
 
 # Admin dashboard.
 
@@ -96,7 +98,7 @@ def user_adminate(user_id):
 @login_required(roles=[1])
 def add_songs():
 
-	if db.session.query(Song).count() > 0 and db.session.query(Author).count() > 0:
+	if db.session.query(Song).filter(Song.account_role==1).count() > 0 and db.session.query(Author).count() > 0:
 		flash("Default songs already exist.", "warning")
 		return redirect(url_for("auth_stats", load='na'))
 	else:
@@ -113,11 +115,12 @@ def add_songs():
 #----------------------------------------------------
 # Table operations: add default songs, authors
 #----------------------------------------------------
-@app.route("/progress_songs")
+@app.route("/progress_songs", methods=["GET", "POST"])
 @login_required(roles=[1])
 def progress_songs():
 
 	x = 0.0
+	id = g.user.id
 
 	num_authors = len(authors.authors)
 
@@ -130,7 +133,7 @@ def progress_songs():
 
 	num_all = num_authors + num_songs
 
-	def generate(x):	#------------------------------------------------
+	def generate(x,id):	#------------------------------------------------
 	# add default authors
 	#------------------------------------------------
 		for auth in authors.authors:
@@ -155,7 +158,7 @@ def progress_songs():
 			language = 'finnish'
 	
 			song = Song(name,lyrics,language)
-			song.account_id = 1
+			song.account_id = id
 			song.account_role = 1
 		
 			if i == 1:
@@ -193,7 +196,7 @@ def progress_songs():
 			language = 'english'
 	
 			song = Song(name,lyrics,language)
-			song.account_id = 1
+			song.account_id = id
 			song.account_role = 1
 		
 			if i == 7:
@@ -231,7 +234,7 @@ def progress_songs():
 			language = 'french'
 	
 			song = Song(name,lyrics,language)
-			song.account_id = 1
+			song.account_id = id
 			song.account_role = 1
 		
 			if i == 13:
@@ -256,7 +259,7 @@ def progress_songs():
 			x = x + 100.0/num_all
 			yield "data:" + str('%.4f'%(x)) + "\n\n"
 
-	return Response(generate(x), mimetype= 'text/event-stream')
+	return Response(generate(x,id), mimetype= 'text/event-stream')
 
 
 #----------------------------------------------------
@@ -266,7 +269,7 @@ def progress_songs():
 @login_required(roles=[1])
 def remove_songs():
 		
-	if db.session.query(Song).count() == 0 and db.session.query(Author).count() == 0:
+	if db.session.query(Song).filter(Song.account_role==1).count() == 0 and db.session.query(Author).count() == 0:
 		flash("Authors and Songs already empty.", "warning")
 	else:
 		try:
@@ -319,7 +322,7 @@ def remove_songs():
 @login_required(roles=[1])
 def add_poems():
 
-	if db.session.query(Poet).count() > 0 and db.session.query(Poem).count() > 0:
+	if db.session.query(Poet).count() > 0 and db.session.query(Poem).filter(Poem.account_role==1).count() > 0:
 		flash("Default poems already exist.", "warning")
 		return redirect(url_for("auth_stats", load='na'))
 	else:
@@ -342,6 +345,7 @@ def add_poems():
 def progress_poems():
 
 	x = 0.0
+	id = g.user.id
 
 	num_poets = len(poets.poets_fi) + len(poets.poets_en) + len(poets.poets_fr)
 
@@ -356,7 +360,7 @@ def progress_poems():
 
 	num_all = num_poets + num_poems
 
-	def generate(x):
+	def generate(x,id):
 		#------------------------------------------------
 		# add default authors
 		#------------------------------------------------
@@ -393,7 +397,7 @@ def progress_poems():
 			language = 'finnish'
 		
 			poem = Poem(name,lyrics,language)
-			poem.account_id = 1
+			poem.account_id = id
 			poem.account_role = 1
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Uuno Kailas'))
@@ -419,7 +423,7 @@ def progress_poems():
 			language = 'finnish'
 		
 			poem = Poem(name,lyrics,language)
-			poem.account_id = 1
+			poem.account_id = id
 			poem.account_role = 1
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Edith Södergran'))
@@ -449,7 +453,7 @@ def progress_poems():
 			language = 'english'
 		
 			poem = Poem(name,lyrics,language)
-			poem.account_id = 1
+			poem.account_id = id
 			poem.account_role = 1
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Edgar Allan Poe'))
@@ -476,7 +480,7 @@ def progress_poems():
 			language = 'english'
 		
 			poem = Poem(name,lyrics,language)
-			poem.account_id = 1
+			poem.account_id = id
 			poem.account_role = 1
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Emily Dickinson'))
@@ -506,7 +510,7 @@ def progress_poems():
 			language = 'french'
 		
 			poem = Poem(name,lyrics,language)
-			poem.account_id = 1
+			poem.account_id = id
 			poem.account_role = 1
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Charles Baudelaire'))
@@ -533,7 +537,7 @@ def progress_poems():
 			language = 'french'
 		
 			poem = Poem(name,lyrics,language)
-			poem.account_id = 1
+			poem.account_id = id
 			poem.account_role = 1
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Louise Ackermann'))
@@ -547,7 +551,7 @@ def progress_poems():
 			x = x + 100.0/num_all
 			yield "data:" + str('%.4f'%(x)) + "\n\n"
 
-	return Response(generate(x), mimetype= 'text/event-stream')
+	return Response(generate(x,id), mimetype= 'text/event-stream')
 
 
 #----------------------------------------------------
@@ -557,7 +561,7 @@ def progress_poems():
 @login_required(roles=[1])
 def remove_poems():
 
-	if db.session.query(Poet).count() == 0 and db.session.query(Poem).count() == 0:
+	if db.session.query(Poet).count() == 0 and db.session.query(Poem).filter(Poem.account_role==1).count() == 0:
 		flash("Poets and Poems already empty.", "warning")
 	else:
 		try:
