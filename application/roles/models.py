@@ -6,7 +6,7 @@ class Role(db.Model):
 	__tablename__ = "roles"
 
 	id = db.Column(db.Integer, primary_key=True)
-	role = db.Column(db.String(255), nullable=False)
+	role = db.Column(db.String(255), nullable=False, unique=True)
 
 
 	def __init__(self, role):
