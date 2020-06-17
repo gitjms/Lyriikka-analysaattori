@@ -36,6 +36,7 @@
         account_role INTEGER NOT NULL,
         PRIMARY KEY (id),
         FOREIGN KEY(account_id) REFERENCES account (id),
+        UNIQUE (account_role),
         FOREIGN KEY(account_role) REFERENCES account (role)
   );
   ```
@@ -91,6 +92,7 @@
         account_role INTEGER NOT NULL,
         PRIMARY KEY (id),
         FOREIGN KEY(account_id) REFERENCES account (id),
+        UNIQUE (account_role),
         FOREIGN KEY(account_role) REFERENCES account (role)
   );
   ```
@@ -117,7 +119,7 @@
 
 ## Tietokantakaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/84678924-4e4eb880-af39-11ea-82c5-36b2cb6e9946.png" alt="database diagram">
+<img src="https://user-images.githubusercontent.com/46410240/84840076-3feec280-b047-11ea-9daa-cfcf819dd99d.png" alt="database diagram">
 
 ## Tietokantakyselyjä
 

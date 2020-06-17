@@ -92,7 +92,7 @@ Kukin käyttäjä näkee kaikki oletuslaulut sekä itse lisäämänsä laulut. M
 
 Ohjelmaan voi siis rekisteröityä luomalla omat tunnukset, mutta helpoin tapa kokeilla sovellusta on kirjautua yhtä nappia painamalla vieras-tilille (*guest*) jolla on rajoitetut peruskäyttäjän oikeudet.
 
-Pääkäyttäjällä on joka näkymässä esillä alhaalla kolme nappia, joista voi listata käyttäjät tai lisätä/poistaa laulut tietokannasta.
+Pääkäyttäjällä on joka näkymässä esillä alhaalla viisi nappia, joista voi listata käyttäjät, lisätä oletuslaulut/-runot tietokannasta tai poistaa kaikki laulut/runot.
 
 <img src="https://user-images.githubusercontent.com/46410240/84241534-44c3eb80-ab08-11ea-8f02-25fa71b24a65.png" alt="admin buttons" width="500">
 

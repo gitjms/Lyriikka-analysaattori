@@ -94,7 +94,7 @@ Ennen kuin voit kirjautua sovellukseen, tulee tietokantaan asettaa oletuskäytt�
     Vierastilin tulisi olla aina mukana, eli sitä ei saa poistaa.
 
 Nyt sovelluksen pitäisi olla käyttökunnossa ja voit kirjautua sisään äsken luoduilla tunnuksilla tai luoda uuden tunnuksen. Huomaa, että sovelluksen resursseihin on liitetty 18 kappaletta oletuslauluja ja yli 300 runoa, jotka vain pääkäyttäjä voi asentaa tietokantaan.
-Oletuslaulujen ja -runojen asennuksessa on tärkeää, että ne asennetaan ennen mitään muita lauluja ja runoja. Ne siis tulee asentaa ennen, kuin sovelluksen antaa tarjolle muille käyttäjille. Mikäli oletuslaulut tai -runot pitää jossain vaiheessa poistaa, on kyse katastrofista, sillä niiden poistaminen poistaa kaikki käyttäjien itse lisäämät laulut ja runot. Eli poistoa tulee käyttää vain hvyin harkiten.
+Mikäli oletuslaulut tai -runot pitää jossain vaiheessa poistaa, on kyse katastrofista, sillä niiden poistaminen poistaa kaikki käyttäjien itse lisäämät laulut ja runot. Eli poistoa tulee käyttää vain hvyin harkiten.
 
 ## Asennusohje pilvikäyttöön (Windows)
 
