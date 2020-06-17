@@ -130,7 +130,6 @@ def words_find():
 	#
 	#-------------------------------------------------------
 	errors = []
-	is_already = Words.query.filter_by(result_all=word_to_find).first()
 	
 	if save == True and tot_count > 0 and Words.query.filter_by(word=word_to_find).first() is None:
 		# counts per song
