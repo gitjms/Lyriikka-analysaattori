@@ -13,6 +13,7 @@
         date_created DATETIME,
         PRIMARY KEY (id),
         UNIQUE (username),
+        UNIQUE (role),
         FOREIGN KEY(role) REFERENCES roles (id)
   );
   ```
@@ -21,8 +22,7 @@
   CREATE TABLE roles (
         id INTEGER NOT NULL,
         role VARCHAR(255) NOT NULL,
-        PRIMARY KEY (id),
-        UNIQUE (role)
+        PRIMARY KEY (id)
   );
   ```
 - **Song** laulut sisältäen laulun nimen, lyriikan, kielen sekä sen käyttäjän id:n, joka on laulun lisännyt
@@ -36,7 +36,6 @@
         account_role INTEGER NOT NULL,
         PRIMARY KEY (id),
         FOREIGN KEY(account_id) REFERENCES account (id),
-        UNIQUE (account_role),
         FOREIGN KEY(account_role) REFERENCES account (role)
   );
   ```
@@ -92,7 +91,6 @@
         account_role INTEGER NOT NULL,
         PRIMARY KEY (id),
         FOREIGN KEY(account_id) REFERENCES account (id),
-        UNIQUE (account_role),
         FOREIGN KEY(account_role) REFERENCES account (role)
   );
   ```
