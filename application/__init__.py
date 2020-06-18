@@ -62,11 +62,11 @@ from application import models
 from application import views
 
 from application.roles import models
-
-from application.admin import views
  
 from application.auth import models
 from application.auth import views
+
+from application.admin import views
 
 from application.authors import models
 from application.authors import views
