@@ -108,4 +108,7 @@ def load_user(user_id):
 
 
 # database creation
-db.create_all()
+try:
+	db.create_all()
+except:
+	pass
