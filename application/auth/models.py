@@ -13,7 +13,7 @@ class User(Base):
 	username = db.Column(db.String(255), nullable=False, unique=True)
 	password = db.Column(db.String(255), nullable=False)
 
-	role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), unique=True)
+	role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), primary_key=True, unique=False)
 
 	date_created = db.Column(db.DateTime(), default=db.func.current_timestamp())
 
