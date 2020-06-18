@@ -14,7 +14,7 @@ class User(Base):
 	username = db.Column(db.String(255), nullable=False, unique=True)
 	password = db.Column(db.String(255), nullable=False)
 
-	role = db.relationship("Role", backref='account', lazy=True)
+	role = db.relationship("roles", backref='account', lazy=True)
 
 	date_created = db.Column(db.DateTime(), default=db.func.current_timestamp())
 
