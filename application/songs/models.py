@@ -33,7 +33,7 @@ class Song(Base):
 	language = db.Column(db.String(255), nullable=False)
 
 	account_id = db.Column(db.Integer, db.ForeignKey('account.id'))
-	account_role = db.Column(db.Integer, db.ForeignKey('account.role'), unique=False)
+	account_role = db.Column(db.Integer, db.ForeignKey('account.role'))
 
 	results = db.relationship("Words",
 		secondary=song_result,
