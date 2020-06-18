@@ -8,7 +8,7 @@ class Role(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	role = db.Column(db.String(255), nullable=False)
 
-	account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
+	user = db.relationship("User", backref='roles', lazy=True)
 
 	def __init__(self, role):
 		self.role = role

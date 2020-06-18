@@ -22,7 +22,7 @@ class Poem(Base):
 	language = db.Column(db.String(255), nullable=False)
 
 	account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-	account_role = db.Column(db.Integer, db.ForeignKey('roles.role'), nullable=False)
+	account_role = db.Column(db.Integer, db.ForeignKey('account.role'), nullable=False)
 
 
 	def __init__(self, name, lyrics, language):
