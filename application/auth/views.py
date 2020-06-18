@@ -148,7 +148,7 @@ def auth_create():
 		db.session().add(user)
 		db.session().commit()
 		login_user(user)
-	except:
+	except IntegrityError:
 		db.session.rollback()
 		flash("Create account failed.", "danger")
 		return render_template("auth/newuser.html", form=form, error="User already exists. Consider changing username.")
