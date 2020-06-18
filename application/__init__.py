@@ -66,8 +66,6 @@ from application.roles import models
 from application.auth import models
 from application.auth import views
 
-from application.admin import views
-
 from application.authors import models
 from application.authors import views
 
@@ -82,6 +80,8 @@ from application.poems import views
 
 from application.words import models
 from application.words import views
+
+from application.admin import views
 
 
 #----------------------------------------------
@@ -108,7 +108,4 @@ def load_user(user_id):
 
 
 # database creation
-try:
-	db.create_all()
-except:
-	pass
+db.create_all()
