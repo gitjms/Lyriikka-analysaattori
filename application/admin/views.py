@@ -93,15 +93,15 @@ def user_adminate(user_id):
 	form = CreateForm(request.form)
 	if request.form.get("userate") == "userate":
 		if int(user_id) != g.user.id:
-			user_query.first().role_id = 3
+			user_query.first().role = 3
 			try:
 				db.session().commit()
 			except SQLAlchemyError:
 				db.session.rollback()
 				flash("User's status not changed.", "danger")
 	elif request.form.get("adminate") == "adminate":
-		if user_query.first().role_id not in [1,2]:
-			user_query.first().role_id = 1
+		if user_query.first().role not in [1,2]:
+			user_query.first().role = 1
 			try:
 				db.session().commit()
 			except SQLAlchemyError:

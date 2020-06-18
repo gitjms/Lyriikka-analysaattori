@@ -6,6 +6,7 @@ import datetime
 
 from sqlalchemy import DateTime
 
+
 class User(Base):
 
 	__tablename__ = "account"
@@ -13,7 +14,7 @@ class User(Base):
 	username = db.Column(db.String(255), nullable=False, unique=True)
 	password = db.Column(db.String(255), nullable=False)
 
-	role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), primary_key=True, unique=False)
+	role = db.relationship("Role", backref='account', lazy=True)
 
 	date_created = db.Column(db.DateTime(), default=db.func.current_timestamp())
 
