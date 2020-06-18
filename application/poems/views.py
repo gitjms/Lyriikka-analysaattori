@@ -188,9 +188,7 @@ def poems_create():
 	if not form.validate():
 		return render_template("poems/new.html", form=form, error="Fields must not be empty.")
 
-	poem = Poem(form.title.data,form.lyrics.data,form.language.data)
-	poem.account_id = g.user.id
-	poem.account_role = g.user.role
+	poem = Poem(form.title.data,form.lyrics.data,form.language.data,g.user.id,g.user.role)
 	
 	new_poet_name = request.form["poet"]
 	old_poet = Poet.query.filter_by(name=new_poet_name.strip()).first()

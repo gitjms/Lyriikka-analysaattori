@@ -190,9 +190,7 @@ def songs_create():
 	if not form.validate():
 		return render_template("songs/new.html", form = form, error = "Fields must not be empty.")
 
-	song = Song(form.title.data,form.lyrics.data,form.language.data)
-	song.account_id = g.user.id
-	song.account_role = g.user.role
+	song = Song(form.title.data,form.lyrics.data,form.language.data,g.user.id,g.user.role)
 	
 	authors = request.form["author"].split(',')
 	for auth in authors:

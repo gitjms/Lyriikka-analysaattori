@@ -177,9 +177,7 @@ def progress_songs():
 					lyrics += line
 			language = 'finnish'
 	
-			song = Song(name,lyrics,language)
-			song.account_id = id
-			song.account_role = 1
+			song = Song(name,lyrics,language,account_id=id,account_role=1)
 		
 			if i == 1:
 				song.authors.extend([db.session.query(Author).filter(Author.name=='Jens Nicolai Ludvig Schjörring').first(),db.session.query(Author).filter(Author.name=='H. S. Thompson').first()])
@@ -215,9 +213,7 @@ def progress_songs():
 					lyrics += line
 			language = 'english'
 	
-			song = Song(name,lyrics,language)
-			song.account_id = id
-			song.account_role = 1
+			song = Song(name,lyrics,language,account_id=id,account_role=1)
 		
 			if i == 7:
 				song.authors.extend([db.session.query(Author).filter(Author.name=='Chris Tomlin').first()])
@@ -253,9 +249,7 @@ def progress_songs():
 					lyrics += line
 			language = 'french'
 	
-			song = Song(name,lyrics,language)
-			song.account_id = id
-			song.account_role = 1
+			song = Song(name,lyrics,language,account_id=id,account_role=1)
 		
 			if i == 13:
 				song.authors.extend([db.session.query(Author).filter(Author.name=='John van den Hogen').first()])
@@ -416,9 +410,7 @@ def progress_poems():
 					lyrics += line
 			language = 'finnish'
 		
-			poem = Poem(name,lyrics,language)
-			poem.account_id = id
-			poem.account_role = 1
+			poem = Poem(name,lyrics,language,account_id=id,account_role=1)
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Uuno Kailas'))
 		
@@ -442,9 +434,7 @@ def progress_poems():
 					lyrics += line
 			language = 'finnish'
 		
-			poem = Poem(name,lyrics,language)
-			poem.account_id = id
-			poem.account_role = 1
+			poem = Poem(name,lyrics,language,account_id=id,account_role=1)
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Edith Södergran'))
 		
@@ -472,9 +462,7 @@ def progress_poems():
 					lyrics += line
 			language = 'english'
 		
-			poem = Poem(name,lyrics,language)
-			poem.account_id = id
-			poem.account_role = 1
+			poem = Poem(name,lyrics,language,account_id=id,account_role=1)
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Edgar Allan Poe'))
 		
@@ -499,9 +487,7 @@ def progress_poems():
 					lyrics += line
 			language = 'english'
 		
-			poem = Poem(name,lyrics,language)
-			poem.account_id = id
-			poem.account_role = 1
+			poem = Poem(name,lyrics,language,account_id=id,account_role=1)
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Emily Dickinson'))
 		
@@ -529,9 +515,7 @@ def progress_poems():
 					lyrics += line
 			language = 'french'
 		
-			poem = Poem(name,lyrics,language)
-			poem.account_id = id
-			poem.account_role = 1
+			poem = Poem(name,lyrics,language,account_id=id,account_role=1)
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Charles Baudelaire'))
 		
@@ -556,9 +540,7 @@ def progress_poems():
 					lyrics += line
 			language = 'french'
 		
-			poem = Poem(name,lyrics,language)
-			poem.account_id = id
-			poem.account_role = 1
+			poem = Poem(name,lyrics,language,account_id=id,account_role=1)
 		
 			poem.poets.extend(db.session.query(Poet).filter(Poet.name=='Louise Ackermann'))
 		

@@ -20,15 +20,18 @@ class Poem(Base):
 
 	lyrics = db.Column(db.Text, nullable=False)
 	language = db.Column(db.String(255), nullable=False)
-
-	account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
+	account_id = db.Column(db.Integer, nullable=False)
 	account_role = db.Column(db.Integer, nullable=False)
 
+	# account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
+	# account_role = db.Column(db.Integer, nullable=False)
 
-	def __init__(self, name, lyrics, language, account_role):
+
+	def __init__(self, name, lyrics, language, account_id, account_role):
 		self.name = name
 		self.lyrics = lyrics
 		self.language = language
+		self.account_role = account_id
 		self.account_role = account_role
 
 
