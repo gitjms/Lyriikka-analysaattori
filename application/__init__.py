@@ -93,11 +93,11 @@ from sqlalchemy import event, DDL
 
 @event.listens_for(Role.__table__, 'after_create')
 def insert_initial_roles(*args, **kwargs):
-	db.session.add(Role(role='ADMIN'))
+	db.session.add(Role(role='ADMIN',account_id=1))
 	db.session.commit()
-	db.session.add(Role(role='GUEST'))
+	db.session.add(Role(role='GUEST',account_id=2))
 	db.session.commit()
-	db.session.add(Role(role='USER'))
+	db.session.add(Role(role='USER',account_id=3))
 	db.session.commit()
 
 
