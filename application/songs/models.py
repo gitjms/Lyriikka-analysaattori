@@ -46,7 +46,7 @@ class Song(Base):
 		self.name = name
 		self.lyrics = lyrics
 		self.language = language
-		self.account_role = account_id
+		self.account_id = account_id
 		self.account_role = account_role
 
 
