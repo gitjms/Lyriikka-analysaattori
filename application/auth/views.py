@@ -142,7 +142,7 @@ def auth_create():
 	pw_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
 	
 	user = User(form.name.data,form.username.data,pw_hash)
-	user.role = 3
+	user.role_id = 3
 
 	try:
 		db.session().add(user)
