@@ -22,13 +22,14 @@ class Poem(Base):
 	language = db.Column(db.String(255), nullable=False)
 
 	account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-	account_role = db.Column(db.Integer, db.ForeignKey('account.role'), nullable=False)
+	account_role = db.Column(db.Integer, nullable=False)
 
 
-	def __init__(self, name, lyrics, language):
+	def __init__(self, name, lyrics, language, account_role):
 		self.name = name
 		self.lyrics = lyrics
 		self.language = language
+		self.account_role = account_role
 
 
 	@staticmethod
