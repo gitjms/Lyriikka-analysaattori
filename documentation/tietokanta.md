@@ -13,7 +13,6 @@
         date_created DATETIME,
         PRIMARY KEY (id),
         UNIQUE (username),
-        UNIQUE (role),
         FOREIGN KEY(role) REFERENCES roles (id)
   );
   ```
@@ -34,9 +33,7 @@
         language VARCHAR(255) NOT NULL,
         account_id INTEGER NOT NULL,
         account_role INTEGER NOT NULL,
-        PRIMARY KEY (id),
-        FOREIGN KEY(account_id) REFERENCES account (id),
-        FOREIGN KEY(account_role) REFERENCES account (role)
+        PRIMARY KEY (id)
   );
   ```
 - **Author** laulujen tekijä/tekijät sisältäen nimen
@@ -89,9 +86,7 @@
         language VARCHAR(255) NOT NULL,
         account_id INTEGER NOT NULL,
         account_role INTEGER NOT NULL,
-        PRIMARY KEY (id),
-        FOREIGN KEY(account_id) REFERENCES account (id),
-        FOREIGN KEY(account_role) REFERENCES account (role)
+        PRIMARY KEY (id)
   );
   ```
 - **Poet** runoilijat sisältäen nimen ja tiedot sanafrekvensseistä
@@ -117,7 +112,7 @@
 
 ## Tietokantakaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/84840076-3feec280-b047-11ea-9daa-cfcf819dd99d.png" alt="database diagram">
+<img src="https://user-images.githubusercontent.com/46410240/85081769-9427ad00-b1d5-11ea-8a23-dc4c5406e38c.png" alt="database diagram">
 
 ## Tietokantakyselyjä
 
