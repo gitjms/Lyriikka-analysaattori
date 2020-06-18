@@ -34,8 +34,6 @@ class Song(Base):
 	account_id = db.Column(db.Integer, nullable=False)
 	account_role = db.Column(db.Integer, nullable=False)
 
-	# account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-
 	results = db.relationship("Words",
 		secondary=song_result,
  		cascade='all, delete',

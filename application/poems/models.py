@@ -23,9 +23,6 @@ class Poem(Base):
 	account_id = db.Column(db.Integer, nullable=False)
 	account_role = db.Column(db.Integer, nullable=False)
 
-	# account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-	# account_role = db.Column(db.Integer, nullable=False)
-
 
 	def __init__(self, name, lyrics, language, account_id, account_role):
 		self.name = name
