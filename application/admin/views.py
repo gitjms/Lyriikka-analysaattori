@@ -31,7 +31,7 @@ def before_request():
 
 
 #----------------------------------------------------
-#		LIST: users_list()
+#		LIST USERS: admin_dashboard()
 #----------------------------------------------------
 @app.route("/admin/dashboard", methods=["GET", "POST"])
 @login_required(roles=[1])
@@ -42,7 +42,7 @@ def admin_dashboard():
 
 
 #----------------------------------------------------
-#		DELETE: user_delete()
+#		DELETE USER: user_delete()
 #----------------------------------------------------
 @app.route("/admin/delete/<user_id>", methods=["POST"])
 @login_required(roles=[1])
