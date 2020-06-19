@@ -58,38 +58,38 @@ Ennen kuin voit kirjautua sovellukseen, tulee tietokantaan asettaa oletuskäytt�
 
    .open songs.db
    ```
-9. Luo **ensin** pääkäyttäjä. Pääkayttäjän tunnukset (name='admin', username='admin', password='admin') voi vapaasti vaihtaa haluamikseen. Salasanan tulee olla vähintään 4 merkkiä pitkä. Kirjoita komentoikkunaan komento
+9. Luo **ensin** pääkäyttäjä. Pääkayttäjän tunnukset ovat: name='admin', username='admin', password='admin'. Kirjoita komentoikkunaan komento:
    ```
-   INSERT INTO account (name, username, password, role, date_created) VALUES ('admin', 'admin', 'admin', 'ADMIN', CURRENT_TIMESTAMP);
+   INSERT INTO account (name, username, password, role_id, date_created) VALUES ('admin', 'admin', 'admin', 1, CURRENT_TIMESTAMP);
    ```
    Tämä on oletus-pääkäyttäjä, joka pääsee kirjautumaan sisään ilman sen kummempia tarkistuksia aikä salasana ole hash-koodattu.
    Jos sovelluksen haluaa räätälöidä itselleen sopivaksi omine pääkäyttäjätunnuksineen ilman Python-koodiin kajoamista, suosittelen seuraavaa proseduuria:
-   - Luo uusi tunnus ja kirjaudu ulos
+   - Luo uusi peruskäyttäjätunnus, josta haluat pääkäyttäjän, ja kirjaudu ulos
    - Kirjaudu sisään oletus-pääkäyttäjätunnuksilla ja aseta äsken luodun tunnuksen rooli pääkäyttäjäksi, kirjaudu ulos
-   - Kirjaudu sisään uusilla tunnuksilla, poista oletuspääkäyttäjätili
-   Nyt on vai yksi pääkäyttäjä, joka on itse luotu ja jonka salasana on hash-koodattu. Sitä ei myöskään näy missään Python-koodissa.
+   - Kirjaudu sisään uusilla tunnuksilla ja poista oletuspääkäyttäjätili
+   Nyt on vain yksi pääkäyttäjä, joka on itse luotu ja jonka salasana on hash-koodattu. Sitä ei myöskään näy missään Python-koodissa.
 10. Luo seuraavaksi vierastili komennolla
     ```
-    INSERT INTO account (name, username, password, role, date_created) VALUES ('guest', 'guest', 'guest', 'GUEST', CURRENT_TIMESTAMP);
+    INSERT INTO account (name, username, password, role_id, date_created) VALUES ('guest', 'guest', 'guest', 2, CURRENT_TIMESTAMP);
     ```
-    Huomaa, että pääkäyttäjän *role*-arvo on **ADMIN**, kun taas vierastilin vastaava arvo on **GUEST**.
+    Huomaa, että pääkäyttäjän *role*-arvo on ain **1**, kun taas vierastilin vastaava arvo on aina **2**. Muiden peruskäyttäjien rooli on **3**.
 
-    Vierastilin arvo *name* on vapaasti valittavissa. Mikäli halutaan vaihtaa vierastilin tunnukset *username* ja *password*, täytyy muokata tiedostossa *application/auth/views.py* rivejä 101 ja 102:
+    Vierastilin arvo *name* on vapaasti valittavissa. Mikäli halutaan vaihtaa vierastilin tunnukset *username* ja *password*, täytyy muokata tiedostossa *application/auth/views.py* rivejä 87 ja 88:
     ```python
-    86	username = "guest"
-    87	password = u"guest".encode('utf-8')
+    87	username = "guest"
+    88	password = u"guest".encode('utf-8')
     ```
     Ylempään riviin *guest* tilalle tulee kirjoittaa haluttu käyttäjänimi, ja alempaan riviin *guest* tilalle haluttu salasana.
     Tällöin myös *INSERT INTO* -komennon tulee olla muokkauksen mukainen.
 
     Esimerkki: halutaan vierastili nimellä *vierailija*, käyttäjänimellä *vieras* ja salasanalla *12345*. Muokataan *views.py*-tiedoston rivit:
     ```python
-    86	username = "vieras"
-    87	password = u"12345".encode('utf-8')
+    87	username = "vieras"
+    88	password = u"12345".encode('utf-8')
     ```
     Nyt vasta lisätään käyttäjä tietokantaan:
     ```
-    INSERT INTO account (name, username, password, role, date_created) VALUES ('vierailija', 'vieras', '12345', 'GUEST', CURRENT_TIMESTAMP);
+    INSERT INTO account (name, username, password, role_id, date_created) VALUES ('vierailija', 'vieras', '12345', 2, CURRENT_TIMESTAMP);
     ```
     Vierastilin tulisi olla aina mukana, eli sitä ei saa poistaa.
 

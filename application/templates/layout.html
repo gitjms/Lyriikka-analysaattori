@@ -203,7 +203,7 @@
 
 <!-- FOR ADMIN ONLY -->
 
-{% if g.user.role == 1 %}
+{% if g.user.role_id == 1 %}
 
   <div class="d-flex bg-dark">
 
@@ -213,6 +213,7 @@
         <button class="btn btn-sm btn-primary" type="submit" name="listusers" id="listusers" value="listusers" aria-label="List users">List users</button>
       </form>
     </div>
+
 
     <div class="d-flex p-2 ml-auto align-self-center" style="margin-right: 50px;">
       <div class="btn-group" role="group" style="margin-right: 10px;">

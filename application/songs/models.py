@@ -19,8 +19,8 @@ song_result = db.Table('song_result', Base.metadata,
 	db.Column(	'song_id',								# left
 				db.ForeignKey('song.id', ondelete='cascade'),
 				primary_key=True),
-	db.Column(	'results_id',							# right
-				db.ForeignKey('results.id', ondelete='cascade'),
+	db.Column(	'result_id',							# right
+				db.ForeignKey('result.id', ondelete='cascade'),
 				primary_key=True)
 )
 
@@ -34,7 +34,7 @@ class Song(Base):
 	account_id = db.Column(db.Integer, nullable=False)
 	account_role = db.Column(db.Integer, nullable=False)
 
-	results = db.relationship("Words",
+	results = db.relationship("Word",
 		secondary=song_result,
  		cascade='all, delete',
  		passive_deletes=True,
@@ -60,8 +60,7 @@ class Song(Base):
 					"LEFT JOIN author_song ON Song.id = author_song.song_id "
 					"LEFT JOIN Author ON author_song.author_id = Author.id "
 					"LEFT JOIN account ON account.id = Song.account_id "
-					"AND account.role = Song.account_role "
-					"LEFT JOIN roles ON roles.id = account.role "
+					"AND account.role_id = Song.account_role "
 					"WHERE account_id = :userid "
 					"OR account_role = :accrole "
 					"GROUP BY Song.language "

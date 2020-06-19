@@ -10,9 +10,9 @@ from sqlalchemy.sql import text
 def before_request():
 	g.user = current_user
 
-class Words(db.Model):
+class Word(db.Model):
 
-	__tablename__ = 'results'
+	__tablename__ = 'result'
 
 	id = db.Column(db.Integer, primary_key=True)
 	word = db.Column(db.String(255), nullable=False)
@@ -30,16 +30,17 @@ class Words(db.Model):
 	def find_words():
 
 		stmt1 = text("SELECT "
-					"	DISTINCT results.word, "
+					"	DISTINCT result.word, "
                     "	COUNT(Song.id) AS w_count, "
-					"	SUM(results.matches) "
-					"FROM results "
-					"JOIN song_result ON song_result.results_id = results.id "
+					"	SUM(result.matches) "
+					"FROM result "
+					"JOIN song_result ON song_result.result_id = result.id "
 					"JOIN Song ON Song.id = song_result.song_id "
 					"JOIN account ON account.id = Song.account_id "
+					"AND account.role_id = Song.account_role "
 					"WHERE account_id = :userid OR account_role = :accrole "
-					"GROUP BY results.word "
-					"ORDER BY SUM(results.matches) DESC "
+					"GROUP BY result.word "
+					"ORDER BY SUM(result.matches) DESC "
 					"LIMIT :limit").params(userid=g.user.id,accrole=1, limit=5)
 		res1 = db.engine.execute(stmt1)
 		response1 = []
@@ -54,23 +55,24 @@ class Words(db.Model):
 		stmt2 = text("SELECT "
                     "	co.matches, "
                     "	co.average, "
-					"	results.word "
-					"FROM results "
+					"	result.word "
+					"FROM result "
 					"INNER JOIN ( "
 					"	SELECT "
-					"		DISTINCT results.word AS words, "
-					"		SUM(results.matches) AS matches, "
-					"		ROUND( AVG(results.matches), 1 ) AS average "
-					"	FROM results "
-					"	JOIN song_result ON song_result.results_id = results.id "
+					"		DISTINCT result.word AS words, "
+					"		SUM(result.matches) AS matches, "
+					"		ROUND( AVG(result.matches), 1 ) AS average "
+					"	FROM result "
+					"	JOIN song_result ON song_result.result_id = result.id "
 					"	JOIN Song ON Song.id = song_result.song_id "
 					"	JOIN account ON account.id = Song.account_id "
+					"	AND account.role_id = Song.account_role "
 					"	WHERE account_id = :userid OR account_role = :accrole "
-					"	GROUP BY results.word "
+					"	GROUP BY result.word "
 					"	ORDER BY matches DESC "
 					") as co "
-					"ON co.words = results.word "
-					"GROUP BY co.matches, co.words, results.word, co.average "
+					"ON co.words = result.word "
+					"GROUP BY co.matches, co.words, result.word, co.average "
 					"ORDER BY co.matches DESC "
 					"LIMIT :limit").params(userid=g.user.id,accrole=1, limit=5)
 		res2 = db.engine.execute(stmt2)

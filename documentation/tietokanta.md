@@ -9,16 +9,16 @@
         name VARCHAR(255) NOT NULL,
         username VARCHAR(255) NOT NULL,
         password VARCHAR(255) NOT NULL,
-        role INTEGER NOT NULL,
+        role_id INTEGER NOT NULL,
         date_created DATETIME,
         PRIMARY KEY (id),
         UNIQUE (username),
-        FOREIGN KEY(role) REFERENCES roles (id)
+        FOREIGN KEY(role_id) REFERENCES role (id)
   );
   ```
 - **Role** Taulu käyttäjärooleille
   ```
-  CREATE TABLE roles (
+  CREATE TABLE role (
         id INTEGER NOT NULL,
         role VARCHAR(255) NOT NULL,
         PRIMARY KEY (id)
@@ -48,7 +48,7 @@
   ```
 - **Words** sanahakujen tulostaulu (taulunimi *results*) sisältäen hakusanan, löytöjen määrän, tiedot sanafrekvensseistä sekä laulujen id:t
   ```
-  CREATE TABLE results (
+  CREATE TABLE result (
         id INTEGER NOT NULL,
         word VARCHAR(255) NOT NULL,
         matches INTEGER NOT NULL,
@@ -71,10 +71,10 @@
   ```
   CREATE TABLE song_result (
         song_id INTEGER NOT NULL,
-        results_id INTEGER NOT NULL,
-        PRIMARY KEY (song_id, results_id),
+        result_id INTEGER NOT NULL,
+        PRIMARY KEY (song_id, result_id),
         FOREIGN KEY(song_id) REFERENCES song (id) ON DELETE cascade,
-        FOREIGN KEY(results_id) REFERENCES results (id) ON DELETE cascade
+        FOREIGN KEY(result_id) REFERENCES result (id) ON DELETE cascade
   );
   ```
 - **Poem** runot sisältäen runon nimen, lyriikan, kielen sekä sen käyttäjän id:n, joka on runon lisännyt
@@ -112,7 +112,7 @@
 
 ## Tietokantakaavio
 
-<img src="https://user-images.githubusercontent.com/46410240/85081769-9427ad00-b1d5-11ea-8a23-dc4c5406e38c.png" alt="database diagram">
+<img src="https://user-images.githubusercontent.com/46410240/85147252-418ed500-b257-11ea-8168-693c1a7a7aef.png" alt="database diagram">
 
 ## Tietokantakyselyjä
 
@@ -128,6 +128,7 @@ FROM Song
 LEFT JOIN author_song ON Song.id = author_song.song_id
 LEFT JOIN Author ON author_song.author_id = Author.id
 LEFT JOIN account ON account.id = Song.account_id
+     AND account.role_id = Song.account_role
 WHERE account.id = ? OR account_role = ?
 GROUP BY Song.language
 ORDER BY Song.language ASC;
@@ -137,39 +138,41 @@ missä parametri *account.id* ja *account.role* saavat ulkoiset arvot. Edellinen
 
 ---
 
-Seuraavat kaksi kyselyä sijaitsevat *Words*-luokassa (*results*-taulu, *application/words/models.py*). Kyse on jälleen staattisista metodeista *find_words()* ja *find_stats()*. Kyselyiden tulos tulostaa kotisivulle hakusanojen *top 5* -tilanteen (vain peruskäyttäjille). Kyselyt kuuluvat seuraavasti:
+Seuraavat kaksi kyselyä sijaitsevat *Word*-luokassa (*result*-taulu, *application/words/models.py*). Kyse on jälleen staattisista metodeista *find_words()* ja *find_stats()*. Kyselyiden tulos tulostaa kotisivulle hakusanojen *top 5* -tilanteen (vain peruskäyttäjille). Kyselyt kuuluvat seuraavasti:
 
 ```
-SELECT DISTINCT results.word,
+SELECT DISTINCT result.word,
        COUNT(Song.id) AS w_count,
-       SUM(results.matches)
-FROM results
-JOIN song_result ON song_result.results_id = results.id
+       SUM(result.matches)
+FROM result
+JOIN song_result ON song_result.result_id = result.id
 JOIN Song ON Song.id = song_result.song_id
 JOIN account ON account.id = Song.account_id
+     AND account.role_id = Song.account_role
 WHERE account.id = ? OR account_role = ?
-GROUP BY results.word
-ORDER BY SUM(results.matches) DESC
+GROUP BY result.word
+ORDER BY SUM(result.matches) DESC
 LIMIT ?
 ```
 
 ```
 SELECT co.matches,
        co.average,
-       results.word
-FROM results
-INNER JOIN (select DISTINCT results.word AS words,
-                   SUM(results.matches) AS matches,
-                   ROUND( AVG(results.matches), 1 ) AS average
-            FROM results
-            JOIN song_result ON song_result.results_id = results.id
+       result.word
+FROM result
+INNER JOIN (select DISTINCT result.word AS words,
+                   SUM(result.matches) AS matches,
+                   ROUND( AVG(result.matches), 1 ) AS average
+            FROM result
+            JOIN song_result ON song_result.result_id = result.id
             JOIN Song ON Song.id = song_result.song_id
             JOIN account ON account.id = Song.account_id
+                 AND account.role_id = Song.account_role
             WHERE account.id = ? OR account_role = ?
-            GROUP BY results.word
+            GROUP BY result.word
             ORDER BY matches DESC
 ) AS co
-ON co.words = results.word
+ON co.words = result.word
 GROUP BY co.matches, co.words, results.word, co.average
 ORDER BY co.matches DESC
 LIMIT ?
@@ -190,7 +193,8 @@ FROM Song
 INNER JOIN author_song ON author_song.song_id = Song.id
 INNER JOIN author ON author.id = author_song.author_id
 JOIN account ON account.id = Song.account_id
-WHERE (account.id = ? OR account_role = ?) [AND Song.language = ?]
+     AND account.role_id = Song.account_role
+WHERE account.id = ? OR account_role = ? [AND Song.language = ?]
 GROUP BY author.name, Song.language, author.id
 ORDER BY Song.language, author.name ASC;
 ```
@@ -207,7 +211,8 @@ FROM Song
 LEFT JOIN author_song ON Song.id = author_song.song_id
 LEFT JOIN Author ON author_song.author_id = Author.id
 LEFT JOIN account ON account.id = Song.account_id
-WHERE (account.id = ? OR account_role = ?) AND author.id = :id
+     AND account.role_id = Song.account_role
+WHERE account.id = ? OR account_role = ? AND author.id = :id
 GROUP BY Song.id, Song.lyrics, Song.name, Song.language;
 ```
 
@@ -224,7 +229,8 @@ FROM Poet
 INNER JOIN poet_poem ON poet_poem.poet_id = Poet.id
 INNER JOIN Poem ON Poem.id = poet_poem.poem_id
 JOIN account ON account.id = Poem.account_id
-WHERE (account_id = ? OR account_role = ?) [AND Song.language = ?]
+     AND account.role_id = Poem.account_role
+WHERE account_id = ? OR account_role = ? [AND Song.language = ?]
 GROUP BY Poet.name, Poem.language, Poet.id
 ORDER BY Poem.language, Poet.name ASC;
 ```
@@ -241,7 +247,8 @@ FROM Poem
 LEFT JOIN poet_poem ON Poem.id = poet_poem.poem_id
 LEFT JOIN Poet ON poet_poem.poet_id = Poet.id
 LEFT JOIN account ON account.id = Poem.account_id
-WHERE (account.id = ? OR account_role = ?) AND Poet.id = :id
+     AND account.role_id = Poem.account_role
+WHERE account.id = ? OR account_role = ? AND Poet.id = :id
 GROUP BY Poem.id, Poem.lyrics, Poem.name, Poem.language;
 ```
 
@@ -263,13 +270,13 @@ WHERE song.account_role = ? AND song.language = ?
 Ensimmäinen syötetty parametrin arvo on käyttäjän id ja toinen arvo on tässä esimerkissä ```'english'```, viitaten haetun sanan kielivalintaan.
 Kielihakutuloksesta rajataan vielä haettu sana:
 ```
-SELECT results.id AS results_id,
-       results.word AS results_word,
-       results.matches AS results_matches,
-       results.result_all AS results_result_all,
-       results.result_no_stop_words AS results_result_no_stop_words
-FROM results
-WHERE results.result_all = ?
+SELECT result.id AS result_id,
+       result.word AS result_word,
+       result.matches AS result_matches,
+       result.result_all AS result_result_all,
+       result.result_no_stop_words AS result_result_no_stop_words
+FROM result
+WHERE result.result_all = ?
 LIMIT ? OFFSET ?
 ```
 missä ensimmäinen parametri saa arvokseen haetun sanan *oh* ja kaksi jälkimmäistä Sqlalchemyn automaattisesti luomat LIMIT ja OFFSET saavat arvoikseen 1 ja 0.
@@ -278,14 +285,14 @@ missä ensimmäinen parametri saa arvokseen haetun sanan *oh* ja kaksi jälkimm�
 Hakutuloksen tallennus tietokantaan tapahtuu seuraavasti:
 
 ```
-INSERT INTO results (word, matches, result_all, result_no_stop_words)
+INSERT INTO result (word, matches, result_all, result_no_stop_words)
 VALUES (?, ?, ?, ?)
 ```
 
 Myös liitostauluun tehdään kysely:
 
 ```
-INSERT INTO song_result (song_id, results_id) VALUES (?, ?)
+INSERT INTO song_result (song_id, result_id) VALUES (?, ?)
 ```
 
 ---
@@ -297,9 +304,10 @@ SELECT song.id AS song_id,
        song.name AS song_name,
        song.lyrics AS song_lyrics,
        song.language AS song_language,
-       song.account_id AS song_account_id
+       song.account_id AS song_account_id,
+       song.account_role AS song_account_role
 FROM song
-WHERE song.account_role = ?
+WHERE song.account_id = ? OR song.account_role = ?
 ```
 
 ---
@@ -311,9 +319,10 @@ SELECT song.id AS song_id,
        song.name AS song_name,
        song.lyrics AS song_lyrics,
        song.language AS song_language,
-       song.account_id AS song_account_id
+       song.account_id AS song_account_id,
+       song.account_role AS song_account_role
 FROM song
-WHERE song.account_role = ?
+WHERE song.account_id = ? OR song.account_role = ?
 ORDER BY song.name ASC
 ```
 
@@ -324,9 +333,10 @@ SELECT song.id AS song_id,
        song.name AS song_name,
        song.lyrics AS song_lyrics,
        song.language AS song_language,
-       song.account_id AS song_account_id
+       song.account_id AS song_account_id,
+       song.account_role AS song_account_role
 FROM song
-WHERE  song.account_role = ?
+WHERE song.account_id = ? OR song.account_role = ?
 ORDER BY song.name DESC
 ```
 
@@ -337,9 +347,10 @@ SELECT song.id AS song_id,
        song.name AS song_name,
        song.lyrics AS song_lyrics,
        song.language AS song_language,
-       song.account_id AS song_account_id
+       song.account_id AS song_account_id,
+       song.account_role AS song_account_role
 FROM song
-WHERE  song.account_role = ?
+WHERE song.account_id = ? OR song.account_role = ?
 ORDER BY song.language, song.name ASC
 ```
 
@@ -350,9 +361,10 @@ SELECT song.id AS song_id,
        song.name AS song_name,
        song.lyrics AS song_lyrics,
        song.language AS song_language,
-       song.account_id AS song_account_id
+       song.account_id AS song_account_id,
+       song.account_role AS song_account_role
 FROM song
-WHERE  song.account_role = ?
+WHERE song.account_id = ? OR song.account_role = ?
 ORDER BY song.language, song.name DESC
 ```
 
@@ -374,7 +386,8 @@ SELECT song.id AS song_id,
        song.name AS song_name,
        song.lyrics AS song_lyrics,
        song.language AS song_language,
-       song.account_id AS song_account_id
+       song.account_id AS song_account_id,
+       song.account_role AS song_account_role
 FROM song
 WHERE song.id = ?
 ```

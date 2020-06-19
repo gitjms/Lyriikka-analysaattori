@@ -9,14 +9,15 @@ nltk.download('punkt')
 from application.words import ownstops
 from collections import Counter
 
-from application import db, login_manager
-from application.words.models import Words
+from application import db, login_manager, login_required
+from application.words.models import Word
 from application.songs.models import Song
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 
 # raw words count
+@login_required(roles=[1,2,3])
 def proc_text(song_list, word_to_find, graph):
 
 	text_list = [] # [ song_id, lyrics, song_name ]
@@ -75,6 +76,7 @@ def proc_text(song_list, word_to_find, graph):
 
 
 # stop words
+@login_required(roles=[1,2,3])
 def stop_words(filtered, new_raw_words_list, language, graph):
 
 	# stops = stopwords.words(language)
@@ -126,6 +128,7 @@ def stop_words(filtered, new_raw_words_list, language, graph):
 #-----------------------------------------
 # create results: (songs,) graph_data
 #-----------------------------------------
+@login_required(roles=[1,2,3])
 def create_results(new_songlist, graph_list, word_to_find):
 
 	if word_to_find is not None:
@@ -170,6 +173,7 @@ def create_results(new_songlist, graph_list, word_to_find):
 #-----------------------------------------
 # create results: graph_data, (table_data)
 #-----------------------------------------
+@login_required(roles=[1,2,3])
 def create_results_graph(graph_list, graph, limit):
 
 	#----------------------------------------
@@ -210,16 +214,14 @@ def create_results_graph(graph_list, graph, limit):
 #-----------------------------------------
 # database storing for search word results
 #-----------------------------------------
+@login_required(roles=[1,3])
 def store_search_word(raw_word_count, db_words_list, word_to_find, counts):
 	errors = []
-
-	if g.user.role == "GUEST":
-		return login_manager.unauthorized()
 
 	# database
 	for i in range(len(raw_word_count)):
 		try:
-			result = Words(
+			result = Word(
 				word = word_to_find.lower(),
 				matches = counts[i],
 				result_all = raw_word_count[i],
@@ -242,11 +244,9 @@ def store_search_word(raw_word_count, db_words_list, word_to_find, counts):
 #-----------------------------------------
 # database storing for author words results
 #-----------------------------------------
+@login_required(roles=[1,3])
 def store_author_words(author, raw_word_count, db_words_list, counts, auteur):
 	errors = []
-
-	if g.user.role == "GUEST":
-		return login_manager.unauthorized()
 
 	# database
 	for i in range(len(raw_word_count)):
@@ -265,6 +265,7 @@ def store_author_words(author, raw_word_count, db_words_list, counts, auteur):
 
 
 # difficult accent for word frequency tables html in authors/graph page
+@login_required(roles=[1,2,3])
 def replace_for_table(list):
 	for n, item in enumerate(list):
 		if "\´" in item:
@@ -275,6 +276,7 @@ def replace_for_table(list):
 
 
 # difficult accent for Source(s) lyrics html in Results page
+@login_required(roles=[1,2,3])
 def replace_graph(list):
 	for n, item in enumerate(list):
 		if "\'" in item:

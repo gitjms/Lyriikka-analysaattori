@@ -11,7 +11,7 @@
 {% endfor %}<br>
 
 <!-- PROGRESSBAR FOR ADDING SONGS OR POEMS - ADMIN ONLY -->
-{% if g.user.role == 1 and load != 'na' %}
+{% if g.user.role_id == 1 and load != 'na' %}
   {% if load == 'poem' %}
     <script>
       var source_poems = new EventSource("/progress_poems");
@@ -48,6 +48,8 @@
       <span class="progress-bar-label">0%</span>
     </div>
   </div>
+  
+  <div>When the progressbar is full, click the Stats button.</div>
 {% endif %}
 
 {% if db_songs_status is none and db_poems_status is none %}
@@ -103,7 +105,7 @@
 
 {% endif %}
 
-{% if top_words is not none and g.user.role != 1 %}
+{% if top_words is not none and g.user.role_id != 1 %}
   <strong id="big-strong">TOP 5 search words</strong>
   <div id="averages">
     <table class="table table-striped" style="max-width: 1000px;">

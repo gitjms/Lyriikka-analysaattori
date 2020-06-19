@@ -10,7 +10,7 @@ from sqlalchemy.sql import text
 from application import app, db, login_required
 from application.auth.models import User
 from application.songs.models import Song
-from application.words.models import Words
+from application.words.models import Word
 from application.poems.models import Poem
 from application.auth.forms import LoginForm
 from application.auth.forms import CreateUserForm
@@ -33,8 +33,8 @@ def auth_stats(load):
 	errors = []
 
 	# TOP 5 search words
-	words = Words.find_words()
-	stats = Words.find_stats()
+	words = Word.find_words()
+	stats = Word.find_stats()
 	result_list = []
 
 	if len(words) > 0:
@@ -143,7 +143,7 @@ def auth_create():
 	pw_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
 	
 	user = User(form.name.data,form.username.data,pw_hash)
-	user.role = 3
+	user.role_id = 3
 
 	try:
 		db.session().add(user)

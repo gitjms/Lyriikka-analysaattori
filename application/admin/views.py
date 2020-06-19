@@ -11,12 +11,11 @@ from application.songs.models import Song
 from application.authors.models import Author
 from application.authors.models import author_song
 from application.authors import authors
-from application.words.models import Words
+from application.words.models import Word
 from application.poems.models import Poem
 from application.poets.models import Poet
 from application.poets.models import poet_poem
 from application.poets import poets
-from application.admin.forms import CreateForm
 
 import itertools
 import os, os.path
@@ -89,18 +88,17 @@ def user_adminate(user_id):
 
 	user_query = db.session().query(User).filter(User.id==user_id)
 
-	form = CreateForm(request.form)
 	if request.form.get("userate") == "userate":
 		if int(user_id) != g.user.id:
-			user_query.first().role = 3
+			user_query.first().role_id = 3
 			try:
 				db.session().commit()
 			except SQLAlchemyError:
 				db.session.rollback()
 				flash("User's status not changed.", "danger")
 	elif request.form.get("adminate") == "adminate":
-		if user_query.first().role not in [1,2]:
-			user_query.first().role = 1
+		if user_query.first().role_id not in [1,2]:
+			user_query.first().role_id = 1
 			try:
 				db.session().commit()
 			except SQLAlchemyError:
@@ -300,10 +298,10 @@ def remove_songs():
 			db.session.rollback()
 		
 		try:
-			db.session.query(Words).delete()
+			db.session.query(Word).delete()
 			db.session.commit()
 		except:
-			flash("Table Words not cleared.", "danger")
+			flash("Table Word not cleared.", "danger")
 			db.session.rollback()
 	
 		try:

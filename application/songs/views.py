@@ -11,7 +11,6 @@ from sqlalchemy import func, distinct, asc, or_
 from application import app, db, login_manager, login_required
 from application.songs.models import Song
 from application.auth.models import User
-from application.words.models import Words
 from application.authors.views import authors_list
 from application.authors.models import Author, author_song
 from application.songs.forms import NewSongForm, EditSongForm
@@ -190,7 +189,7 @@ def songs_create():
 	if not form.validate():
 		return render_template("songs/new.html", form = form, error = "Fields must not be empty.")
 
-	song = Song(form.title.data,form.lyrics.data,form.language.data,g.user.id,g.user.role)
+	song = Song(form.title.data,form.lyrics.data,form.language.data,g.user.id,g.user.role_id)
 	
 	authors = request.form["author"].split(',')
 	for auth in authors:

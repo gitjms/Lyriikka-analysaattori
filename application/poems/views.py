@@ -11,7 +11,6 @@ from sqlalchemy import func, distinct, asc, or_
 from application import app, db, login_manager, login_required
 from application.poems.models import Poem
 from application.auth.models import User
-from application.words.models import Words
 from application.poets.views import poets_list
 from application.poets.models import Poet, poet_poem
 from application.poems.forms import NewPoemForm, EditPoemForm
@@ -188,7 +187,7 @@ def poems_create():
 	if not form.validate():
 		return render_template("poems/new.html", form=form, error="Fields must not be empty.")
 
-	poem = Poem(form.title.data,form.lyrics.data,form.language.data,g.user.id,g.user.role)
+	poem = Poem(form.title.data,form.lyrics.data,form.language.data,g.user.id,g.user.role_id)
 	
 	new_poet_name = request.form["poet"]
 	old_poet = Poet.query.filter_by(name=new_poet_name.strip()).first()

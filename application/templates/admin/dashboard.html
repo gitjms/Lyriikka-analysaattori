@@ -31,11 +31,11 @@
         <td colspan="6">
           <b style="float: left; margin-right:10px;">{{ user.id }}.</b>
         </td>
-        {% if user.role == 1 %}
+        {% if user.role_id == 1 %}
           <td><a style="color: red;margin-right:20px;">{{ user.name }}</a></td>
           <td><a style="color: red;margin-right:10px;">{{ user.username }}</a></td>
           <td><a style="color: red;margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
-        {% elif user.role == 2 %}
+        {% elif user.role_id == 2 %}
           <td><a style="color: green;margin-right:20px;">{{ user.name }}</a></td>
           <td><a style="color: green;margin-right:10px;">{{ user.username }}</a></td>
           <td><a style="color: green;margin-right:10px;">{{ user.date_created['day'] }}.{{ user.date_created['month'] }}.{{ user.date_created['year'] }}</a></td>
@@ -61,11 +61,11 @@
           <form method="POST" action="{{ url_for('user_adminate', user_id=user.id) }}">
             <input type="hidden" name="user_id" value="{{ user.id }}"></input>
             <div class="col-auto">
-              {% if user.role == 1 %}
+              {% if user.role_id == 1 %}
               <button class="btn btn-sm btn-secondary" type="submit" name="userate" style="background-color: red; width:60px;" value="userate">ADMIN</button>
-              {% elif user.role == 2 %}
+              {% elif user.role_id == 2 %}
               <button class="btn btn-sm btn-secondary" type="submit" name="adminate" style="width:60px;" value="adminate">GUEST</button>
-              {% elif user.role == 3 %}
+              {% elif user.role_id == 3 %}
               <button class="btn btn-sm btn-secondary" type="submit" name="adminate" style="width:60px;" value="adminate">USER</button>
               {% endif %}
             </div>

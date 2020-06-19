@@ -94,8 +94,8 @@ Ohjelmaan voi siis rekisteröityä luomalla omat tunnukset, mutta helpoin tapa k
 
 Pääkäyttäjällä on joka näkymässä esillä alhaalla viisi nappia, joista voi listata käyttäjät, lisätä oletuslaulut/-runot tietokannasta tai poistaa kaikki laulut/runot.
 
-<img src="https://user-images.githubusercontent.com/46410240/84241534-44c3eb80-ab08-11ea-8f02-25fa71b24a65.png" alt="admin buttons" width="500">
+<img src="https://user-images.githubusercontent.com/46410240/85137231-87dd3780-b249-11ea-8c3a-311ebd8a9021.png" alt="admin buttons" width="500">
 
 Pääkäyttäjä pääsee käyttäjien listausnäkymään napista *List Users*. Näkymässä näkyvät käyttäjien koko nimet, käyttäjänimet sekä rekisteröitymispäivä. Rivien perässä on lisäksi napit käyttäjän poistamiseen ja käyttäjäroolin vaihtamiseen peruskäyttäjästä pääkäyttäjäksi ja päin vastoin. Kulloinenkin pääkäyttäjä ei voi itse poistaa pääkäyttäjän rooliaan, eikä vierastilin roolia voi muuttaa.
 
-<img src="https://user-images.githubusercontent.com/46410240/83651339-0d15ea80-a5c2-11ea-897c-0ed25e5ea4ab.png" alt="admin dashboard users" width="500">
+<img src="https://user-images.githubusercontent.com/46410240/85137459-f0c4af80-b249-11ea-9a55-2d4975b45f46.png" alt="admin dashboard users" width="500">

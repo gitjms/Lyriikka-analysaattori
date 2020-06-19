@@ -22,7 +22,7 @@
   
       <button class="btn btn-sm btn-secondary" type="submit" name="Back" style="width:75px;" value="Back"/>Back</button>
 
-      {% if g.user.role != 2 %}
+      {% if g.user.role_id != 2 %}
       <button class="btn btn-sm btn-danger" type="submit" style="width: 140px; float: right; margin-left: 20px;" name="save" id="save" value="{{ filtered }},{{ graphs }}" action="/authors/show/<author_id>">Save To Database</button>
       {% endif %}
 
