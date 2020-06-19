@@ -33,13 +33,12 @@ def before_request():
 #----------------------------------------------------
 #		LIST: users_list()
 #----------------------------------------------------
-@app.route("/admin", methods=["GET", "POST"])
+@app.route("/admin/dashboard", methods=["GET", "POST"])
 @login_required(roles=[1])
 def admin_dashboard():
 
-	if request.method == "POST":
-		users = User.query.all()
-		return render_template("admin/dashboard.html", users=users)
+	users = User.query.all()
+	return render_template("admin/dashboard.html", users=users)
 
 
 #----------------------------------------------------
