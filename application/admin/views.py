@@ -38,7 +38,7 @@ def before_request():
 def admin_dashboard():
 
 	users = User.query.all()
-	return render_template("admin/dashboard.html", users=users)
+	return redirect(url_for("admin/dashboard.html", users=users))
 
 
 #----------------------------------------------------
