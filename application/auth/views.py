@@ -26,7 +26,7 @@ def before_request():
 #-----------------------------------------
 #		STATS: auth_stats()
 #-----------------------------------------
-@app.route("/auth/stats/<load>", methods = ["GET"])
+@app.route("/auth/stats/<load>", methods = ["GET","POST"])
 @login_required(roles=[1,2,3])
 def auth_stats(load):
 
