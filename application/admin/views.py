@@ -128,9 +128,9 @@ def add_songs():
 	poem_count = db.session.query(Poem).count()
 
 	if poem_count > 0:
-		return render_template("auth/stats.html", db_songs_status=None, db_poems_status=db_poems_status, top_words=None, load='song')
+		return redirect(url_for("auth_stats", db_songs_status=None, db_poems_status=db_poems_status, top_words=None, load='song'))
 	else:
-		return render_template("auth/stats.html", db_songs_status=None, db_poems_status=None, top_words=None, load='song')
+		return redirect(url_for("auth_stats", db_songs_status=None, db_poems_status=None, top_words=None, load='song'))
 
 #----------------------------------------------------
 # Table operations: add default songs, authors
@@ -346,9 +346,9 @@ def add_poems():
 	song_count = db.session.query(Song).count()
 
 	if song_count > 0:
-		return render_template("auth/stats.html", db_songs_status=db_songs_status, db_poems_status=None, top_words=None, load='poem')
+		return redirect(url_for("auth_stats", db_songs_status=db_songs_status, db_poems_status=None, top_words=None, load='poem'))
 	else:
-		return render_template("auth/stats.html", db_songs_status=None, db_poems_status=None, top_words=None, load='poem')
+		return redirect(url_for("auth_stats", db_songs_status=None, db_poems_status=None, top_words=None, load='poem'))
 
 
 #----------------------------------------------------
