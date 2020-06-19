@@ -103,7 +103,7 @@
 
 {% endif %}
 
-{% if (top_words or top_words is not defined) and g.user.role != 1 %}
+{% if top_words is not none and g.user.role != 1 %}
   <strong id="big-strong">TOP 5 search words</strong>
   <div id="averages">
     <table class="table table-striped" style="max-width: 1000px;">

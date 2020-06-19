@@ -37,13 +37,16 @@ def auth_stats(load):
 	stats = Words.find_stats()
 	result_list = []
 
-	for i in range(len(words)):
-		new_list = []
-		new_list.append(words[i]['word'])
-		new_list.append(words[i]['count'])
-		new_list.append(stats[i]['matches'])
-		new_list.append(stats[i]['average'])
-		result_list.append(new_list)
+	if len(words) > 0:
+		for i in range(len(words)):
+			new_list = []
+			new_list.append(words[i]['word'])
+			new_list.append(words[i]['count'])
+			new_list.append(stats[i]['matches'])
+			new_list.append(stats[i]['average'])
+			result_list.append(new_list)
+	else:
+		result_list = None
 
 	song_count = db.session.query(Song).count()
 	poem_count = db.session.query(Poem).count()
