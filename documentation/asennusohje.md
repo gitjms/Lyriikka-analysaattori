@@ -72,7 +72,7 @@ Ennen kuin voit kirjautua sovellukseen, tulee tietokantaan asettaa oletuskäytt�
     ```
     INSERT INTO account (name, username, password, role_id, date_created) VALUES ('guest', 'guest', 'guest', 2, CURRENT_TIMESTAMP);
     ```
-    Huomaa, että pääkäyttäjän *role*-arvo on ain **1**, kun taas vierastilin vastaava arvo on aina **2**. Muiden peruskäyttäjien rooli on **3**.
+    Huomaa, että pääkäyttäjän *role*-arvo on aina **1**, kun taas vierastilin vastaava arvo on aina **2**. Muiden peruskäyttäjien rooli on **3**.
 
     Vierastilin arvo *name* on vapaasti valittavissa. Mikäli halutaan vaihtaa vierastilin tunnukset *username* ja *password*, täytyy muokata tiedostossa *application/auth/views.py* rivejä 87 ja 88:
     ```python
